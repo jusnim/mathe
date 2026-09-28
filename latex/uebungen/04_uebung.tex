@@ -9,11 +9,12 @@ Wie viele ganze Zahlen zwischen 1 und 1000 (einschließlich) sind weder durch 2,
 \end{aufgabe}
 
 \begin{loesung}
-$\Omega = \{1 \le k \le 1000\}$. Sei $A_i = \{\ \Omega \mid i \text{ ist Teiler von } 1000\ \}$.
-% Hinweis: so im Original (gemeint ist wohl A_i = { k in Omega | i ist Teiler von k }).
+% KORRIGIERT: "Omega = {1 <= k <= 1000}" ohne Grundmenge, "A_i = { Omega | i ist Teiler von 1000 }"
+$\Omega = \{k \in \Z \mid 1 \le k \le 1000\}$. Sei $A_i = \{\, k \in \Omega \mid i \text{ ist Teiler von } k \,\}$.
 Die gesuchte Anzahl ist dann
+% KORRIGIERT: Klammern um A_2 u A_3 u A_5 fehlten (hier und unten)
 \begin{align*}
-|\,\Omega \setminus A_2 \cup A_3 \cup A_5\,| &= |\Omega| - \alpha_1 + \alpha_2 - \alpha_3
+|\,\Omega \setminus (A_2 \cup A_3 \cup A_5)\,| &= |\Omega| - \alpha_1 + \alpha_2 - \alpha_3
 \end{align*}
 mit
 \begin{align*}
@@ -28,15 +29,16 @@ mit
 \Rightarrow\quad &\alpha_2 = 166 + 100 + 66 = 332\\
 &|A_2 \cap A_3 \cap A_5| = \left\lfloor \frac{1000}{30} \right\rfloor,\\
 \Rightarrow\quad &\alpha_3 = 33\\
-\Rightarrow\quad &|\,\Omega \setminus A_2 \cup A_3 \cup A_5\,| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3\\
+\Rightarrow\quad &|\,\Omega \setminus (A_2 \cup A_3 \cup A_5)\,| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3\\
 &= 1000 - 1033 + 332 - 33 = 266
 \end{align*}
 
 Schneller findet man die Lösung, wenn man die Produktformel benutzt, die hier aber nur näherungsweise gilt:
+% KORRIGIERT: "=" statt "ungefähr gleich"; "266,66" statt 266,6 periodisch
 \begin{align*}
-|\,\Omega \setminus A_2 \cup A_3 \cup A_5\,| &= 1000 \cdot \left(1 - \frac{1}{2}\right)\left(1 - \frac{1}{3}\right)\left(1 - \frac{1}{5}\right)\\
+|\,\Omega \setminus (A_2 \cup A_3 \cup A_5)\,| &\approx 1000 \cdot \left(1 - \frac{1}{2}\right)\left(1 - \frac{1}{3}\right)\left(1 - \frac{1}{5}\right)\\
 &= 100 \cdot \frac{8}{3}\\
-&= 266{,}66
+&= 266{,}\overline{6}
 \end{align*}
 % Hinweis: "100 * 8/3" so im Original (entspricht 1000 * 4/15).
 \end{loesung}
@@ -47,8 +49,9 @@ Wie viele fixpunktfreie Permutationen aus $S_4$ gibt es? Welche sind das?
 
 \begin{loesung}
 \begin{align*}
-d_4 &= 4!\left(1 - \frac{1}{1!} + \frac{1}{2!} - \frac{1}{3!} + \frac{1}{4!}\right) = 4!\left(\frac{1}{2} - \frac{1}{6} + \frac{1}{24}\right) = 4!\ \frac{9}{24} = 9\\
-P(4) &= \frac{9}{24} = \frac{3}{8} = 0{,}375 \qquad\qquad P = 1/e = 0{,}3678\ldots
+d_4 &= 4!\left(1 - \frac{1}{1!} + \frac{1}{2!} - \frac{1}{3!} + \frac{1}{4!}\right) = 4!\left(\frac{1}{2} - \frac{1}{6} + \frac{1}{24}\right) = 4! \cdot \frac{9}{24} = 9\\
+% KORRIGIERT: fehlender Malpunkt bei 4!; "P = 1/e" ohne Grenzwert
+P(4) &= \frac{9}{24} = \frac{3}{8} = 0{,}375 \qquad\qquad \lim_{n \to \infty} P(n) = 1/e = 0{,}3678\ldots
 \end{align*}
 
 2 3 4 1, \quad 2 4 1 3, \quad 2 1 4 3, \quad 3 1 4 2, \quad 3 4 2 1, \quad 3 4 1 2,\\
@@ -57,9 +60,11 @@ P(4) &= \frac{9}{24} = \frac{3}{8} = 0{,}375 \qquad\qquad P = 1/e = 0{,}3678\ldo
 
 \subsection{Teileranzahl- und Teilersummenfunktion, vollkommene Zahlen}
 
+% KORRIGIERT: Summationsindex "d" kollidierte mit der Funktion d(n); Voraussetzungen an p_i, e_i fehlten
 \[
-d(n) = \sum_{d \mid n} 1, \qquad \sigma(n) = \sum_{d \mid n} d \qquad\qquad n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r}.
+d(n) = \sum_{t \mid n} 1, \qquad \sigma(n) = \sum_{t \mid n} t \qquad\qquad n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r}
 \]
+mit paarweise verschiedenen Primzahlen $p_1, \ldots, p_r$ und $e_1, \ldots, e_r \geq 1$.
 
 \begin{aufgabe}[Aufgabe 3]
 Leiten Sie Formeln für $d(n)$ und $\sigma(n)$ her.\\
@@ -73,14 +78,15 @@ Hinweis:
 \begin{loesung}
 Die Teiler von $n = p$ sind $1, p$, also $d(p) = 1 + 1$.\\
 Die Teiler von $n = p^e$ sind $1, p, p^2, \ldots, p^e$, also $d(p^e) = 1 + e$
+% KORRIGIERT: Begründung (Multiplikativität, ggT = 1, p - 1 != 0) ergänzt; \ldots/\cdots vereinheitlicht
 \[
-\Rightarrow\qquad d(n) = (1 + e_1) \cdots (1 + e_r)
+\Rightarrow\qquad d(n) = (1 + e_1) \cdots (1 + e_r) \qquad (\text{da } \ggT(p_i^{e_i}, p_j^{e_j}) = 1 \text{ für } i \neq j)
 \]
 \[
-\sigma(p) = 1 + p, \qquad \sigma(p^e) = 1 + p + p^2 + \ldots + p^e = \frac{p^{1+e} - 1}{p - 1},
+\sigma(p) = 1 + p, \qquad \sigma(p^e) = 1 + p + p^2 + \cdots + p^e = \frac{p^{1+e} - 1}{p - 1} \quad (p \geq 2, \text{ also } p - 1 \neq 0),
 \]
 \[
-\Rightarrow\qquad \sigma(n) = \frac{p_1^{1+e_1} - 1}{p_1 - 1} \cdot \ldots \cdot \frac{p_r^{1+e_r} - 1}{p_r - 1}
+\Rightarrow\qquad \sigma(n) = \frac{p_1^{1+e_1} - 1}{p_1 - 1} \cdots \frac{p_r^{1+e_r} - 1}{p_r - 1}
 \]
 \end{loesung}
 
@@ -116,21 +122,26 @@ Sei $2^k - 1$ eine Primzahl. Eine solche heißt Mersenne Primzahl.
 
 \begin{loesung}
 \begin{enumerate}[label=\alph*)]
-  \item $\sigma(n) = \sigma(2^{k-1}) \cdot \sigma(2^k - 1) = (2^k - 1) \cdot 2^k = 2\,n$
+  % KORRIGIERT: Begründung ggT = 1 für die Multiplikativität fehlte
+  \item Da $2^k - 1$ ungerade ist, gilt $\ggT(2^{k-1}, 2^k - 1) = 1$. Also
+  $\sigma(n) = \sigma(2^{k-1}) \cdot \sigma(2^k - 1) = (2^k - 1) \cdot 2^k = 2\,n$
   \item $n = 2^4 \cdot (2^5 - 1) = 16 \cdot 31 = 496$ \quad ist vollkommen.
   \item \[ q^n - 1 = (q - 1)(1 + q + q^2 + \ldots + q^{n-1}) \]
-  Setzt man $q = 2^m$, folgt die Behauptung.
+  % KORRIGIERT: Begründung, dass beide Faktoren > 1 sind, fehlte
+  Setzt man $q = 2^m$, folgt die Behauptung: Wegen $m > 1$ ist $q - 1 = 2^m - 1 > 1$, und wegen $n > 1$ ist $1 + q + \cdots + q^{n-1} > 1$.
 \end{enumerate}
 \end{loesung}
 
 \subsection{Potenzen, Ordnung und Inverse in $\Zm{m}^*$}
 
 \begin{aufgabe}[Aufgabe 7]
-Gesucht: $3^{1000}$ in $\Zm{7}$ bzw.\ $3^{1000} \pmod 7$
+% KORRIGIERT: "3^1000 (mod 7)" als Wert, jetzt \bmod
+Gesucht: $3^{1000}$ in $\Zm{7}$ bzw.\ $3^{1000} \bmod 7$
 \end{aufgabe}
 
 \begin{loesung}
-Nach Fermat ist $3^6 \equiv 1 \pmod 7$,\\
+% KORRIGIERT: Voraussetzung ggT(3, 7) = 1 für Fermat ergänzt
+Nach Fermat ist $3^6 \equiv 1 \pmod 7$ (da $\ggT(3, 7) = 1$),\\
 $1000 = 996 + 4 = 166 \cdot 6 + 4$\\
 Also $3^{1000} = (3^6)^{166} \cdot 3^4 \equiv 3^4 = 81 = 77 + 4 \equiv 4 \pmod 7$
 \end{loesung}
@@ -142,6 +153,9 @@ Bestimmen Sie die Inversen.
 \end{aufgabe}
 
 \begin{loesung}
+% KORRIGIERT: Kontext "in Z_17" für die Gleichungen ergänzt
+Alle Rechnungen in $\Zm{17}$:
+
 \begin{tabular}{lcrcr}
 $2,\ 4,\ 8,\ -1,\ -2,\ -4,\ -8,\ 1$ & $\Rightarrow$ & $\operatorname{ord}(2) = 8$ & $\Rightarrow$ & $2^{-1} = -8$\\
 $3,\ -8,\ -7,\ -4,\ 5,\ -2,\ -6,\ -1,\ \ldots$ & $\Rightarrow$ & $\operatorname{ord}(3) = 16$ & $\Rightarrow$ & $3^{-1} = 6$\\
@@ -160,7 +174,8 @@ Primitiv sind 3, 5
 \end{loesung}
 
 \textbf{Formel für $a^{-1}$ in $\Zm{m}^*$}\\
-Es gilt (Satz von Euler) $a\, a^{\varphi(m)-1} = a^{\varphi(m)} = 1$, also $a^{-1} = a^{\varphi(m)-1}$
+% KORRIGIERT: "a a^(phi(m)-1) = a^phi(m) = 1" ohne ggT-Voraussetzung und ohne mod m
+Für alle $a$ mit $\ggT(a, m) = 1$ gilt (Satz von Euler) $a \cdot a^{\varphi(m)-1} = a^{\varphi(m)} \equiv 1 \pmod m$, also $a^{-1} \equiv a^{\varphi(m)-1} \pmod m$
 
 \subsection{RSA}
 
@@ -178,20 +193,24 @@ Alice will die Nachricht $a = 715$ (GO) verschlüsseln und als verschlüsselte N
 \begin{enumerate}[label=\alph*)]
   \item $e = 113$, binär $e = 1110001$
   \[
-  c = a^e = 715 * 715^{16} * 715^{32} * 715^{64} \equiv 715 * 163 * 2287 * 2774 \equiv 708 \pmod{2803}
+  % KORRIGIERT: "715^16 = 163" (richtig: 1653); "c = a^e" statt Kongruenz; "*" als Malzeichen
+  c \equiv a^e = 715 \cdot 715^{16} \cdot 715^{32} \cdot 715^{64} \equiv 715 \cdot 1653 \cdot 2287 \cdot 2774 \equiv 708 \pmod{2803}
   \]
-  \item $w = c^d \pmod m$
+  % KORRIGIERT: "(mod m)" als Wert, jetzt \bmod
+  \item $w = c^d \bmod m$
   \item 1.\ Lösungsweg
   \[
-  e\,d \equiv 1 \pmod{\varphi(m)}. \qquad 113 * d \equiv 1 \pmod{2802}. \qquad \text{EA mit } 2802,\ 113
+  % KORRIGIERT: "*" als Malzeichen (ganze Rechnung); Voraussetzung ggT(e, phi(m)) = 1 ergänzt
+  e \cdot d \equiv 1 \pmod{\varphi(m)}. \qquad 113 \cdot d \equiv 1 \pmod{2802} \ (\varphi(2803) = 2802, \text{ da } 2803 \text{ prim}). \qquad \text{EA mit } 2802,\ 113
   \]
+  Die Inverse von $e$ existiert, weil $\ggT(113, 2802) = 1$ (letzter Rest $\neq 0$ im EA ist $1$).
   \begin{align*}
-  2802 &= 24 * 113 + 90\\
-  113 &= 1 * 90 + 23\\
-  90 &= 3 * 23 + 21\\
-  23 &= 1 * 21 + 2\\
-  21 &= 10 * 2 + 1\\
-  2 &= 2 * 1
+  2802 &= 24 \cdot 113 + 90\\
+  113 &= 1 \cdot 90 + 23\\
+  90 &= 3 \cdot 23 + 21\\
+  23 &= 1 \cdot 21 + 2\\
+  21 &= 10 \cdot 2 + 1\\
+  2 &= 2 \cdot 1
   \end{align*}
   \[
   Q = \begin{pmatrix} 24 & 1\\ 1 & 0 \end{pmatrix}
@@ -203,7 +222,7 @@ Alice will die Nachricht $a = 715$ (GO) verschlüsseln und als verschlüsselte N
     = \begin{pmatrix} 2802 & 1339\\ 113 & 54 \end{pmatrix}
   \]
   \[
-  \det Q = 2802 * 54 - 113 * 1339 = 1
+  \det Q = 2802 \cdot 54 - 113 \cdot 1339 = 1
   \]
   \[
   \Rightarrow\quad d = -1339 \equiv 1463 \pmod{2802}
@@ -211,13 +230,14 @@ Alice will die Nachricht $a = 715$ (GO) verschlüsseln und als verschlüsselte N
 
   2.\ Lösungsweg
   \begin{align*}
-  & d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}. \qquad \varphi(\varphi(2803)) = \varphi(2802), \quad 2802 = 2 * 3 * 467\\
-  \Rightarrow\quad & \varphi(\varphi(2803)) = 2 * 466 = 932\\
+  & d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)} \quad (\text{Euler, da } \ggT(e, \varphi(m)) = 1).\\
+  & \qquad \varphi(\varphi(2803)) = \varphi(2802), \quad 2802 = 2 \cdot 3 \cdot 467\\
+  \Rightarrow\quad & \varphi(\varphi(2803)) = 2 \cdot 466 = 932\\
   \Rightarrow\quad & \varphi(\varphi(2803)) - 1 = 931 = 512 + 256 + 128 + 32 + 2 + 1
   \end{align*}
 \end{enumerate}
 
-Rechnung modulo 2802
+Rechnung modulo 2802 (alle Gleichungen als $\equiv \pmod{2802}$ zu lesen)
 \begin{align*}
 e &= 113\\
 e^2 &= 1561\\
@@ -231,21 +251,21 @@ e^{256} &= 49\\
 e^{512} &= 2401
 \end{align*}
 \[
-d = 113 * 1561 * 2539 * 7 * 49 * 2401 \equiv 1463 \pmod{2802}
+d = 113 \cdot 1561 \cdot 2539 \cdot 7 \cdot 49 \cdot 2401 \equiv 1463 \pmod{2802}
 \]
 
 \medskip
 Probe:
 \[
-a = c^d = 708^{1463} = 708 * 2330 * 2292 * 1957 * 951 * 822\ 161 * 2323 \equiv 715 \pmod{2803}
+% KORRIGIERT: "a = c^d = ..." statt Kongruenz; "822 161" ohne Malzeichen
+a \equiv c^d = 708^{1463} \equiv 708 \cdot 2330 \cdot 2292 \cdot 1957 \cdot 951 \cdot 822 \cdot 161 \cdot 2323 \equiv 715 \pmod{2803}
 \]
-% Hinweis: "822 161" so im Original (fehlendes * zwischen 822 und 161).
 
 \[
 1463 = 1024 + 256 + 128 + 32 + 16 + 4 + 2 + 1
 \]
 \begin{align*}
-c^1 &= 708 \qquad \text{alles } \pmod{2803}\\
+c^1 &= 708 \qquad \text{alles modulo } 2803\\
 c^2 &= 2330\\
 c^4 &= 2292\\
 c^8 &= 442\\

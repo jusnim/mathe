@@ -19,14 +19,16 @@ a) EA für 7, 5 \qquad $z = 5x + 3 = 7y + 4$
 5 &= 2 \cdot 2 + 1\\
 2 &= 2 \cdot 1 + 0
 \end{align*}
-Der letzte Rest $\neq 0$ ist $r_3 = 1$. Jetzt gibt es zwei Lösingsvarianten.
+% KORRIGIERT: "Lösingsvarianten"; Hinweis auf ggT ergänzt
+Der letzte Rest $\neq 0$ ist $r_3 = 1$, also $\ggT(7, 5) = 1$ und das System ist lösbar. Jetzt gibt es zwei Lösungsvarianten.
 
 Variante 1: EA rückwärts
 \begin{align*}
 \Rightarrow\quad 1 &= 5 - 2 \cdot 2\\
 &= 5 - 2 \cdot (7 - 1 \cdot 5)\\
-&= 3 \cdot 5 - 2 \cdot 7 = 4 - 3\\
-\Rightarrow\quad z &= 3 \cdot 5 + 3 = 2 \cdot 7 + 4 = 18 \pmod{35}
+% KORRIGIERT: "= 18 (mod 35)" statt Kongruenz; "= 4 - 3" als b - a gekennzeichnet
+&= 3 \cdot 5 - 2 \cdot 7 = 4 - 3 \quad (= b - a)\\
+\Rightarrow\quad z &= 3 \cdot 5 + 3 = 2 \cdot 7 + 4 = 18, \quad \text{also } z \equiv 18 \pmod{35}
 \end{align*}
 Variante 2: mittels der Matrix $Q$
 \[
@@ -39,7 +41,8 @@ Q = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}\begin{pmatrix} 2 & 1 \\ 1 & 0 \
 \operatorname{Det} Q = 7 \cdot 2 - 5 \cdot 3 = -1 = a - b,
 \]
 \[
-\Rightarrow\quad z = 7 \cdot 2 + 4 = 5 \cdot 3 + 3 = 18 \pmod{35}
+% KORRIGIERT: "= 18 (mod 35)" statt Kongruenz
+\Rightarrow\quad z = 7 \cdot 2 + 4 = 5 \cdot 3 + 3 = 18, \quad \text{also } z \equiv 18 \pmod{35}
 \]
 
 b) EA für 12, 5
@@ -47,12 +50,16 @@ b) EA für 12, 5
 12 &= 2 \cdot 5 + 2\\
 5 &= 2 \cdot 2 + 1
 \end{align*}
+% KORRIGIERT: Begründung der Lösbarkeit ergänzt
+Also $\ggT(12, 5) = 1$, das System ist lösbar.
+
 EA rückwärts \qquad $b - a = 2 - (-1) = 3$
 \begin{align*}
 \Rightarrow\quad 1 &= 5 - 2 \cdot 2 = 5 - 2 \cdot (12 - 2 \cdot 5)\\
 &= 5 \cdot 5 - 2 \cdot 12\\
 2 - (-1) &= 5 \cdot 5 \cdot 3 - 2 \cdot 12 \cdot 3\\
-\Rightarrow\quad z &= 2 - 5 \cdot 5 \cdot 3 = (-1) - 2 \cdot 12 \cdot 3 = -73 \pmod{60}
+% KORRIGIERT: "= -73 (mod 60)" statt Kongruenz
+\Rightarrow\quad z &= 2 - 5 \cdot 5 \cdot 3 = (-1) - 2 \cdot 12 \cdot 3 = -73, \quad \text{also } z \equiv -73 \equiv 47 \pmod{60}
 \end{align*}
 \end{loesung}
 
@@ -68,16 +75,17 @@ n = 1000, \qquad n = 1001, \qquad n = 1002
 \begin{loesung}
 \begin{align*}
 n &= 1000 = 2^3 \cdot 5^3\\
-\varphi(1000) &= \varphi(2^3) \cdot \varphi(5^3) = (2^3 - 2^2) \cdot (5^3 - 5^2) = 4 \cdot 100 = 400
+% KORRIGIERT: Voraussetzung ggT = 1 für die Multiplikativität ergänzt
+\varphi(1000) &= \varphi(2^3) \cdot \varphi(5^3) = (2^3 - 2^2) \cdot (5^3 - 5^2) = 4 \cdot 100 = 400 \quad (\text{da } \ggT(2^3, 5^3) = 1)
 \end{align*}
 \begin{align*}
 n &= 1001 = 7 \cdot 11 \cdot 13\\
-\varphi(1000) &= \varphi(7) \cdot \varphi(11) \cdot \varphi(13) = 6 \cdot 10 \cdot 12 = 720
+% KORRIGIERT: "phi(1000)" statt phi(1001) (vorher als UNSICHER markiert)
+\varphi(1001) &= \varphi(7) \cdot \varphi(11) \cdot \varphi(13) = 6 \cdot 10 \cdot 12 = 720 \quad (\text{Faktoren paarweise teilerfremd})
 \end{align*}
-% UNSICHER: In der Quelle steht hier "phi(1000)", gemeint ist offensichtlich phi(1001); 1:1 übernommen.
 \begin{align*}
 n &= 1002 = 2 \cdot 3 \cdot 167\\
-\varphi(1002) &= \varphi(2) \cdot \varphi(3) \cdot \varphi(167) = 1 \cdot 2 \cdot 166 = 332
+\varphi(1002) &= \varphi(2) \cdot \varphi(3) \cdot \varphi(167) = 1 \cdot 2 \cdot 166 = 332 \quad (\text{Faktoren paarweise teilerfremd})
 \end{align*}
 \end{loesung}
 
@@ -99,7 +107,8 @@ Welche 5 Geraden fehlen in dieser Aufzählung?
 \begin{loesung}
 \begin{enumerate}[label=\alph*)]
 \item $y = 3x + 2$ : $(0, 2), (1, 0), (2, 3), (3, 1), (4, 4)$
-\item $3x + 2 = 4x + 1 \Rightarrow \quad x - 1 = 0 \Rightarrow \quad S = (1, 0)$
+% KORRIGIERT: Rechnung in Z_5 und y-Wert nicht angegeben
+\item In $\Zm{5}$: $3x + 2 = 4x + 1 \Rightarrow \quad x - 1 = 0 \Rightarrow \quad x = 1,\ y = 3 \cdot 1 + 2 = 5 \equiv 0 \pmod 5 \Rightarrow \quad S = (1, 0)$
 \item $x = k$ mit den Punkten $(k, 0)$, $(k, 1)$, $(k, 2)$, $(k, 3)$, $(k, 4)$ \quad ($k \in \Zm{5}$)
 \end{enumerate}
 \end{loesung}
@@ -141,13 +150,15 @@ Die Wege setzen sich aus insgesamt $m+n$ Strecken zusammen, wobei jeweils $m$ St
 \subsection{Binomischer Lehrsatz}
 
 \begin{aufgabe}[Aufgabe 6]
-Berechnen Sie für natürliche Zahlen $k$ die Summe $\binom{k}{1} - \binom{k}{2} + \cdots + (-1)^{k-1}\binom{k}{k}$.
+% KORRIGIERT: "für natürliche Zahlen k" ohne k >= 1 (für k = 0 falsch)
+Berechnen Sie für natürliche Zahlen $k \geq 1$ die Summe $\binom{k}{1} - \binom{k}{2} + \cdots + (-1)^{k-1}\binom{k}{k}$.
 \end{aufgabe}
 
 \begin{loesung}
 Setzen im binomischen Lehrsatz $(a + b)^k = \ldots$ \quad $a = 1$, \ $b = -1$
+% KORRIGIERT: "- + ..." und fehlende Begründung für "= 0"
 \begin{align*}
-\Rightarrow\quad & 1 - \binom{k}{1} + \binom{k}{2} - + \cdots + (-1)^k \binom{k}{k} = 0\\
+\Rightarrow\quad & 1 - \binom{k}{1} + \binom{k}{2} - \cdots + (-1)^k \binom{k}{k} = (1 - 1)^k = 0 \quad (\text{da } k \geq 1)\\
 \Rightarrow\quad & \binom{k}{1} - \binom{k}{2} + \cdots + (-1)^{k-1} \binom{k}{k} = 1 \qquad \square
 \end{align*}
 \end{loesung}
