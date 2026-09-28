@@ -1,0 +1,363 @@
+% Übungsklausur Diskrete Mathematik (Schema der Klausur 29.07.2026, neue Zahlen).
+% Alle Zahlen mit den Werkzeugen in skripte/ berechnet und geprüft
+% (rsa, inklusion_exklusion, euklid, crt, mod11_code).
+\providecommand{\teil}[1]{\par\medskip\textbf{#1)}\ }
+
+\section{Übungsklausur}
+\subsection{Aufgaben}
+
+\begin{aufgabe}[Aufgabe 1]
+Alice will die Nachricht $w = 920$ verschlüsseln und als verschlüsselte Nachricht $c$ (Codewort)
+an Bob senden. Sie verabreden als Modul die Zahl $m = 47 \cdot 59 = 2773$ zu wählen und den
+öffentlichen Schlüssel $e = 157$ zu verwenden.
+\begin{enumerate}[label=\alph*)]
+  \item Schreiben Sie $e$ im Binärsystem.
+  \item Mit welcher Formel verschlüsselt Alice das Wort $w$? Berechnen Sie das Codewort $c$.
+  \item Bob besitzt den privaten Schlüssel $d$. Wie (Formel) entschlüsselt Bob das Codewort $c$?
+  \item Berechnen Sie $\varphi(m)$.
+  \item Oscar erhält Kenntnis von $m$ und $e$. Welche Formeln muss er nutzen, um den privaten
+        Schlüssel $d$ zu berechnen? Berechnen Sie $d$ auf zwei Wegen
+        -- mit dem Euklidischen Algorithmus bzw.\ der Matrix $Q$ und mit dem Satz von Euler:
+        \[ d \equiv e^{\varphi(\varphi(m)) - 1} \bmod \varphi(m) . \]
+        Machen Sie die Probe $c^d \equiv w \pmod m$.
+\end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}[Aufgabe 2]
+Wie viele positive ganze Zahlen $\leq 840$ sind weder durch $3$, $5$ oder $7$ teilbar?
+Verwenden Sie die Symbole $A_i$, $\alpha_i$ aus der Vorlesung. (Inklusion -- Exklusion)
+\end{aufgabe}
+
+\begin{aufgabe}[Aufgabe 3]
+Bestimmen Sie mit Hilfe des Euklidischen Algorithmus
+\begin{enumerate}[label=\alph*)]
+  \item den größten gemeinsamen Teiler von $m = 29$ und $n = 23$,
+  \item eine ganzzahlige Lösung der Gleichung $29x - 23y = 1$ (EA rückwärts und Matrix $Q$),
+  \item sämtliche ganzzahligen Lösungen dieser Gleichung.
+\end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}[Aufgabe 4]
+Gegeben ist das System simultaner Kongruenzen (Chinesischer Restsatz)
+\begin{align*}
+  z &\equiv 4 \pmod{29}\\
+  z &\equiv 7 \pmod{23}
+\end{align*}
+\begin{enumerate}[label=\alph*)]
+  \item Bestimmen Sie eine ganze Zahl $z$ mit Hilfe des Ergebnisses aus Aufgabe 3.
+  \item Bestimmen Sie sämtliche Lösungen dieses Systems, insbesondere die kleinste positive Lösung.
+\end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}[Aufgabe 5]
+Die Parameter eines Modulo-11-Codes sind $[10, 8, 3]_{11}$.
+Vorgelegt ist das Klartextwort $a = 2\,0\,3\,1\,0\,0\,0\,4$.
+\begin{enumerate}[label=\alph*)]
+  \item Wie lautet die Kontrollmatrix $H$?
+  \item Berechnen Sie die Kontrollziffern $c_9$, $c_{10}$ und damit das zugehörige Codewort $c$.
+\end{enumerate}
+Empfangen wurden die Wörter (die Ziffer $10$ steht für eine Stelle)
+\begin{align*}
+  r_1 &= 2\,0\,3\,1\,0\,0\,3\,4\,2\,10\\
+  r_2 &= 2\,0\,3\,1\,1\,1\,0\,4\,2\,10
+\end{align*}
+\begin{enumerate}[label=\alph*), start=3]
+  \item Berechnen Sie die Syndrome $S(r_1)$, $S(r_2)$.
+  \item Welches der beiden Wörter $r_1$, $r_2$ ist nicht dekodierbar und warum nicht?
+  \item Dekodieren Sie das andere Wort und geben Sie das Codewort $c$ an.
+  \item Zeigen Sie, dass $c$ tatsächlich ein Codewort ist.
+\end{enumerate}
+\end{aufgabe}
+
+\clearpage
+% ===========================================================================
+\section{Lösungen der Übungsklausur}
+
+\begin{center}
+\begin{tabular}{@{}llp{0.52\textwidth}@{}}
+\toprule
+Aufgabe & Thema & Ergebnis\\
+\midrule
+1 & RSA & $e = 10011101_2$, $c = 192$, $\varphi(m) = 2668$, $d = 17$\\
+2 & Inklusion -- Exklusion & $384$\\
+3 & Euklidischer Algorithmus & $\ggT(29,23) = 1$, $x = 4 + 23t$, $y = 5 + 29t$\\
+4 & Chinesischer Restsatz & $z \equiv 352 \pmod{667}$, kleinste positive Lösung $352$\\
+5 & Modulo-11-Code & $c = 2\,0\,3\,1\,0\,0\,0\,4\,2\,10$; $r_1 \to c$ (Stelle 7); $r_2$ nicht dekodierbar\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ---------------------------------------------------------------------------
+\subsection*{Aufgabe 1}
+Gegeben: $w = 920$, $m = 47 \cdot 59 = 2773$, $e = 157$.
+
+\teil{a} \textbf{$e$ im Binärsystem.}
+\[
+157 = 128 + 16 + 8 + 4 + 1 = 2^7 + 2^4 + 2^3 + 2^2 + 2^0
+\quad\Rightarrow\quad e = 10011101_2 .
+\]
+
+\teil{b} \textbf{Verschlüsseln.} Formel (Alice): $c \equiv w^e \pmod m$, also $c \equiv 920^{157} \pmod{2773}$.
+
+Schnelles Potenzieren: $920^{157} = 920^{1} \cdot 920^{4} \cdot 920^{8} \cdot 920^{16} \cdot 920^{128}$.
+
+Quadrattabelle (mod 2773, jede Zeile ist das Quadrat der Zeile davor):
+\[
+\begin{array}{r@{\;\equiv\;}l@{\qquad}l}
+920^{1}   & 920 & \leftarrow\\
+920^{2}   & 920^2 = 846400 = 305 \cdot 2773 + 635 \equiv 635 & \\
+920^{4}   & 635^2 = 403225 = 145 \cdot 2773 + 1140 \equiv 1140 & \leftarrow\\
+920^{8}   & 1140^2 = 1299600 = 468 \cdot 2773 + 1836 \equiv 1836 & \leftarrow\\
+920^{16}  & 1836^2 = 3370896 = 1215 \cdot 2773 + 1701 \equiv 1701 & \leftarrow\\
+920^{32}  & 1701^2 = 2893401 = 1043 \cdot 2773 + 1162 \equiv 1162 & \\
+920^{64}  & 1162^2 = 1350244 = 486 \cdot 2773 + 2566 \equiv 2566 & \\
+920^{128} & 2566^2 = 6584356 = 2374 \cdot 2773 + 1254 \equiv 1254 & \leftarrow
+\end{array}
+\]
+Produkt Schritt für Schritt (mod 2773):
+\begin{align*}
+920 \cdot 1140 &= 1048800 = 378 \cdot 2773 + 606 \equiv 606\\
+606 \cdot 1836 &= 1112616 = 401 \cdot 2773 + 643 \equiv 643\\
+643 \cdot 1701 &= 1093743 = 394 \cdot 2773 + 1181 \equiv 1181\\
+1181 \cdot 1254 &= 1480974 = 534 \cdot 2773 + 192 \equiv 192
+\end{align*}
+\begin{ergebnis} $c = 920^{157} \bmod 2773 = 192$ \end{ergebnis}
+
+\teil{c} \textbf{Entschlüsseln.} Formel (Bob): $w \equiv c^d \pmod m$.
+Das funktioniert, weil $e \cdot d \equiv 1 \pmod{\varphi(m)}$ und nach Euler
+$c^d \equiv (w^e)^d = w^{ed} \equiv w \pmod m$.
+
+\teil{d} \textbf{$\varphi(m)$.} $47$ und $59$ sind Primzahlen (Probedivision: $47$ ist durch $2, 3, 5$ nicht teilbar und $7^2 > 47$;
+$59$ ist durch $2, 3, 5, 7$ nicht teilbar und $8^2 > 59$). Also
+\[
+\varphi(2773) = \varphi(47)\,\varphi(59) = (47 - 1)(59 - 1) = 46 \cdot 58 = 2668 .
+\]
+(Produktformel: $2773 \cdot \tfrac{46}{47} \cdot \tfrac{58}{59} = 2668$.)
+\begin{ergebnis} $\varphi(m) = 2668$ \end{ergebnis}
+
+\teil{e} \textbf{Privater Schlüssel $d$.}
+Oscar zerlegt $m = 47 \cdot 59$, berechnet $\varphi(m) = 2668$ und löst
+\[
+e \cdot d \equiv 1 \pmod{\varphi(m)}, \quad\text{also}\quad 157 \cdot d \equiv 1 \pmod{2668}.
+\]
+
+\emph{Weg 1: Euklidischer Algorithmus (Lemma von Bezout).}
+\[
+\begin{array}{r@{\;=\;}l}
+2668 & 16 \cdot 157 + 156\\
+157 & 1 \cdot 156 + 1\\
+156 & 156 \cdot 1 + 0
+\end{array}
+\qquad\Rightarrow\quad \ggT(2668, 157) = 1 .
+\]
+EA rückwärts:
+\[
+1 = 157 - 156 = 157 - (2668 - 16 \cdot 157) = 17 \cdot 157 - 1 \cdot 2668 .
+\]
+Matrix $Q = \prod \begin{pmatrix} q_i & 1\\ 1 & 0\end{pmatrix}$ mit $q = 16, 1, 156$:
+\[
+\begin{pmatrix}16&1\\1&0\end{pmatrix}\begin{pmatrix}1&1\\1&0\end{pmatrix} = \begin{pmatrix}17&16\\1&1\end{pmatrix},\qquad
+\begin{pmatrix}17&16\\1&1\end{pmatrix}\begin{pmatrix}156&1\\1&0\end{pmatrix} = \begin{pmatrix}2668&17\\157&1\end{pmatrix} = Q .
+\]
+$\det Q = 2668 \cdot 1 - 157 \cdot 17 = 2668 - 2669 = -1$, also $157 \cdot 17 - 2668 \cdot 1 = 1$, d.\,h.
+$157 \cdot 17 \equiv 1 \pmod{2668}$ und $d = 17$.
+
+\emph{Weg 2: Satz von Euler.} Aus $e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)}$ folgt
+\[
+d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)} .
+\]
+Zerlegung $2668 = 2 \cdot 1334 = 2^2 \cdot 667 = 2^2 \cdot 23 \cdot 29$, also
+\[
+\varphi(2668) = \varphi(2^2)\,\varphi(23)\,\varphi(29) = 2 \cdot 22 \cdot 28 = 1232,
+\qquad d \equiv 157^{1231} \pmod{2668}.
+\]
+$1231 = 1024 + 128 + 64 + 8 + 4 + 2 + 1 = 10011001111_2$.
+Quadrattabelle (mod 2668):
+\[
+\begin{array}{r@{\;\equiv\;}l@{\qquad}l}
+157^{1}    & 157 & \leftarrow\\
+157^{2}    & 157^2 = 24649 = 9 \cdot 2668 + 637 \equiv 637 & \leftarrow\\
+157^{4}    & 637^2 = 405769 = 152 \cdot 2668 + 233 \equiv 233 & \leftarrow\\
+157^{8}    & 233^2 = 54289 = 20 \cdot 2668 + 929 \equiv 929 & \leftarrow\\
+157^{16}   & 929^2 = 863041 = 323 \cdot 2668 + 1277 \equiv 1277 & \\
+157^{32}   & 1277^2 = 1630729 = 611 \cdot 2668 + 581 \equiv 581 & \\
+157^{64}   & 581^2 = 337561 = 126 \cdot 2668 + 1393 \equiv 1393 & \leftarrow\\
+157^{128}  & 1393^2 = 1940449 = 727 \cdot 2668 + 813 \equiv 813 & \leftarrow\\
+157^{256}  & 813^2 = 660969 = 247 \cdot 2668 + 1973 \equiv 1973 & \\
+157^{512}  & 1973^2 = 3892729 = 1459 \cdot 2668 + 117 \equiv 117 & \\
+157^{1024} & 117^2 = 13689 = 5 \cdot 2668 + 349 \equiv 349 & \leftarrow
+\end{array}
+\]
+Produkt Schritt für Schritt (mod 2668):
+\begin{align*}
+157 \cdot 637 &= 100009 = 37 \cdot 2668 + 1293 \equiv 1293\\
+1293 \cdot 233 &= 301269 = 112 \cdot 2668 + 2453 \equiv 2453\\
+2453 \cdot 929 &= 2278837 = 854 \cdot 2668 + 365 \equiv 365\\
+365 \cdot 1393 &= 508445 = 190 \cdot 2668 + 1525 \equiv 1525\\
+1525 \cdot 813 &= 1239825 = 464 \cdot 2668 + 1873 \equiv 1873\\
+1873 \cdot 349 &= 653677 = 245 \cdot 2668 + 17 \equiv 17
+\end{align*}
+Beide Wege liefern $d = 17$. Kontrolle: $157 \cdot 17 = 2669 = 1 \cdot 2668 + 1 \equiv 1 \pmod{2668}$ \checkmark
+\begin{ergebnis} $d = 17$ \end{ergebnis}
+
+\textbf{Probe} $c^d \equiv w$: $192^{17} = 192^{16} \cdot 192^{1}$, Quadrattabelle (mod 2773):
+\[
+\begin{array}{r@{\;\equiv\;}l@{\qquad}l}
+192^{1}  & 192 & \leftarrow\\
+192^{2}  & 192^2 = 36864 = 13 \cdot 2773 + 815 \equiv 815 & \\
+192^{4}  & 815^2 = 664225 = 239 \cdot 2773 + 1478 \equiv 1478 & \\
+192^{8}  & 1478^2 = 2184484 = 787 \cdot 2773 + 2133 \equiv 2133 & \\
+192^{16} & 2133^2 = 4549689 = 1640 \cdot 2773 + 1969 \equiv 1969 & \leftarrow
+\end{array}
+\]
+\[
+192 \cdot 1969 = 378048 = 136 \cdot 2773 + 920 \equiv 920 = w \quad\checkmark
+\]
+
+% ---------------------------------------------------------------------------
+\subsection*{Aufgabe 2}
+$\Omega = \{1, \dots, 840\}$, $|\Omega| = 840$. Sei $A_i = \{k \in \Omega \mid i \text{ teilt } k\}$ für $i = 3, 5, 7$.
+Gesucht ist
+\[
+|\Omega \setminus (A_3 \cup A_5 \cup A_7)| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3 .
+\]
+\begin{align*}
+\alpha_1 &= |A_3| + |A_5| + |A_7| = \tfrac{840}{3} + \tfrac{840}{5} + \tfrac{840}{7} = 280 + 168 + 120 = 568,\\
+\alpha_2 &= |A_3 \cap A_5| + |A_3 \cap A_7| + |A_5 \cap A_7| = \tfrac{840}{15} + \tfrac{840}{21} + \tfrac{840}{35} = 56 + 40 + 24 = 120,\\
+\alpha_3 &= |A_3 \cap A_5 \cap A_7| = \tfrac{840}{105} = 8 .
+\end{align*}
+(Schnittmengen über das kgV: $\kgV(3,5) = 15$, $\kgV(3,7) = 21$, $\kgV(5,7) = 35$, $\kgV(3,5,7) = 105$.)
+\[
+840 - 568 + 120 - 8 = 384 .
+\]
+Kontrolle: $840 \cdot (1 - \tfrac13)(1 - \tfrac15)(1 - \tfrac17) = 840 \cdot \tfrac23 \cdot \tfrac45 \cdot \tfrac67 = 384$.
+\begin{ergebnis} $384$ Zahlen $\le 840$ sind durch keine der Zahlen $3, 5, 7$ teilbar. \end{ergebnis}
+
+% ---------------------------------------------------------------------------
+\subsection*{Aufgabe 3}
+\teil{a}
+\[
+\begin{array}{r@{\;=\;}l}
+29 & 1 \cdot 23 + 6\\
+23 & 3 \cdot 6 + 5\\
+6 & 1 \cdot 5 + 1\\
+5 & 5 \cdot 1 + 0
+\end{array}
+\qquad\Rightarrow\quad \ggT(29, 23) = 1 .
+\]
+
+\teil{b} EA rückwärts (von unten nach oben einsetzen):
+\begin{align*}
+1 &= 6 - 5\\
+  &= 6 - (23 - 3 \cdot 6) = 4 \cdot 6 - 23\\
+  &= 4 \cdot (29 - 23) - 23 = 4 \cdot 29 - 5 \cdot 23 .
+\end{align*}
+Also $29 \cdot 4 - 23 \cdot 5 = 116 - 115 = 1$.
+
+Matrix $Q$ mit den Quotienten $q = 1, 3, 1, 5$:
+\begin{align*}
+\begin{pmatrix}1&1\\1&0\end{pmatrix}\begin{pmatrix}3&1\\1&0\end{pmatrix} &= \begin{pmatrix}4&1\\3&1\end{pmatrix},\qquad
+\begin{pmatrix}4&1\\3&1\end{pmatrix}\begin{pmatrix}1&1\\1&0\end{pmatrix} = \begin{pmatrix}5&4\\4&3\end{pmatrix},\\
+\begin{pmatrix}5&4\\4&3\end{pmatrix}\begin{pmatrix}5&1\\1&0\end{pmatrix} &= \begin{pmatrix}29&5\\23&4\end{pmatrix} = Q .
+\end{align*}
+$\det Q = 29 \cdot 4 - 23 \cdot 5 = 1$ ($= (-1)^{n+1}$ mit $n = 3$), also dieselbe Lösung $x = 4$, $y = 5$.
+
+\teil{c} Homogene Gleichung $29x - 23y = 0$ hat die Lösung $(23, 29)$. Alle Lösungen:
+\[
+x = 4 + 23t, \qquad y = 5 + 29t \qquad (t \in \Z).
+\]
+Probe: $29 \cdot 4 - 23 \cdot 5 = 116 - 115 = 1$ \checkmark
+\begin{ergebnis} $\ggT(29,23) = 1$; eine Lösung $x = 4$, $y = 5$; alle Lösungen $x = 4 + 23t$, $y = 5 + 29t$ ($t \in \Z$). \end{ergebnis}
+
+% ---------------------------------------------------------------------------
+\subsection*{Aufgabe 4}
+\teil{a} Ansatz: $z = 29x + 4 = 23y + 7$, also
+\[
+29x - 23y = 7 - 4 = 3 .
+\]
+Aus Aufgabe 3: $29 \cdot 4 - 23 \cdot 5 = 1$. Multiplikation mit $3$:
+\[
+29 \cdot 12 - 23 \cdot 15 = 3, \qquad x = 12,\ y = 15 .
+\]
+\[
+z = 29 \cdot 12 + 4 = 352 = 23 \cdot 15 + 7 .
+\]
+
+\teil{b} Da $\ggT(29, 23) = 1$, sind alle Lösungen $z \equiv 352 \pmod{29 \cdot 23 = 667}$:
+\[
+z = 352 + k \cdot 667 \quad (k \in \Z).
+\]
+Kleinste positive Lösung: $z = 352$ (denn $352 - 667 < 0$).
+
+Probe: $352 = 12 \cdot 29 + 4 \equiv 4 \pmod{29}$ \checkmark, \quad $352 = 15 \cdot 23 + 7 \equiv 7 \pmod{23}$ \checkmark
+\begin{ergebnis} $z \equiv 352 \pmod{667}$, also $z = 352 + 667k$ ($k \in \Z$); kleinste positive Lösung $z = 352$. \end{ergebnis}
+
+% ---------------------------------------------------------------------------
+\subsection*{Aufgabe 5}
+\teil{a} Kontrollmatrix (Stellen $1, \dots, 10$):
+\[
+H = \begin{pmatrix}
+1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10
+\end{pmatrix}
+\]
+Ein Wort $c$ ist Codewort genau dann, wenn $H c^T = 0$, also
+$\sum_{i=1}^{10} c_i \equiv 0$ und $\sum_{i=1}^{10} i \cdot c_i \equiv 0 \pmod{11}$.
+
+\teil{b} Kontrollziffern für $a = 2\,0\,3\,1\,0\,0\,0\,4$ ($c_i = a_i$ für $i = 1, \dots, 8$):
+\begin{align*}
+c_9 &\equiv \sum_{i=1}^{8} (1+i)\, c_i = 2 \cdot 2 + 4 \cdot 3 + 5 \cdot 1 + 9 \cdot 4\\ &= 57 = 5 \cdot 11 + 2 \equiv 2 \pmod{11},\\
+c_{10} &\equiv \sum_{i=1}^{8} (9-i)\, c_i = 8 \cdot 2 + 6 \cdot 3 + 5 \cdot 1 + 1 \cdot 4\\ &= 43 = 3 \cdot 11 + 10 \equiv 10 \pmod{11}.
+\end{align*}
+\begin{ergebnis} $c_9 = 2$, $c_{10} = 10$, $c = 2\,0\,3\,1\,0\,0\,0\,4\,2\,10$ \end{ergebnis}
+
+\teil{c} Syndrome $S(r) = H r^T = (s_1, s_2)^T$.
+
+$r_1 = 2\,0\,3\,1\,0\,0\,3\,4\,2\,10$:
+\begin{align*}
+s_1 &= 2 + 3 + 1 + 3 + 4 + 2 + 10 = 25 \equiv 3,\\
+s_2 &= 2 + 3 \cdot 3 + 4 \cdot 1 + 7 \cdot 3 + 8 \cdot 4 + 9 \cdot 2 + 10 \cdot 10\\
+    &= 2 + 9 + 4 + 21 + 32 + 18 + 100\\
+    &= 186 = 16 \cdot 11 + 10 \equiv 10
+\quad\Rightarrow\quad S(r_1) = (3, 10)^T .
+\end{align*}
+$r_2 = 2\,0\,3\,1\,1\,1\,0\,4\,2\,10$:
+\begin{align*}
+s_1 &= 2 + 3 + 1 + 1 + 1 + 4 + 2 + 10 = 24 \equiv 2,\\
+s_2 &= 2 + 3 \cdot 3 + 4 \cdot 1 + 5 \cdot 1 + 6 \cdot 1 + 8 \cdot 4 + 9 \cdot 2 + 10 \cdot 10\\
+    &= 2 + 9 + 4 + 5 + 6 + 32 + 18 + 100\\
+    &= 176 = 16 \cdot 11 \equiv 0
+\quad\Rightarrow\quad S(r_2) = (2, 0)^T .
+\end{align*}
+
+\teil{d} Bei genau einem Fehler der Größe $e_x$ an der Stelle $x$ gilt $S = e_x \cdot (1, x)^T$,
+also $e_x = s_1$ und $x = s_2 / s_1$.
+
+Für $r_2$: $x = 0 / 2 = 0 \cdot 2^{-1} = 0 \cdot 6 \equiv 0$. Die Stelle $0$ gibt es nicht (Stellen $1, \dots, 10$).
+Das Syndrom passt also zu keinem Einzelfehler: $r_2$ enthält mindestens zwei Fehler
+(tatsächlich an den Stellen $5$ und $6$, je $+1$: $s_1 = 1 + 1 = 2$, $s_2 = 5 + 6 = 11 \equiv 0$).
+Der Code hat $d = 3$ und korrigiert nur $1$ Fehler.
+\begin{ergebnis} $r_2$ ist nicht dekodierbar (mindestens 2 Fehler). \end{ergebnis}
+\begin{achtung}
+Zwei Fehler sind nicht immer erkennbar: Wären die Stellen $9$ und $10$ je um $1$ verfälscht
+($r = 2\,0\,3\,1\,0\,0\,0\,4\,3\,0$), so wäre $S = (2, 19)^T \equiv (2, 8)^T$ und $x = 8 \cdot 2^{-1} = 8 \cdot 6 = 48 \equiv 4$.
+Das sieht aus wie ein Einzelfehler an Stelle $4$ und wird \emph{falsch} zu $2\,0\,3\,10\,0\,0\,0\,4\,3\,0$ decodiert.
+\end{achtung}
+
+\teil{e} Für $r_1$: $e_x = s_1 = 3$ und $x = s_2 / s_1 = 10 \cdot 3^{-1} = 10 \cdot 4 = 40 \equiv 7 \pmod{11}$
+(denn $3 \cdot 4 = 12 \equiv 1$). Fehler an Stelle $7$ mit Größe $3$:
+\[
+c_7 = r_7 - 3 = 3 - 3 = 0 .
+\]
+\begin{ergebnis} $c = 2\,0\,3\,1\,0\,0\,0\,4\,2\,10$ \end{ergebnis}
+
+\teil{f} Probe $H c^T = 0$:
+\begin{align*}
+\text{Zeile 1:}\quad & 2 + 3 + 1 + 4 + 2 + 10 = 22 = 2 \cdot 11 \equiv 0 \pmod{11},\\
+\text{Zeile 2:}\quad & 2 + 9 + 4 + 32 + 18 + 100 = 165 = 15 \cdot 11 \equiv 0 \pmod{11}.
+\end{align*}
+Also ist $c$ ein Codewort. \checkmark
+
+\medskip
+{\small\textit{Hinweis:} Andere Formen von $H$ (z.\,B. systematisch $H = (A \mid E)$) beschreiben denselben Code.
+Die Syndromwerte sehen dann anders aus, das Ergebnis (Fehlerstelle, Codewort) ist dasselbe.}
