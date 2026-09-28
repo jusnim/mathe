@@ -58,8 +58,9 @@ d.h.\ $e < 3$ Fehler werden erkannt.\\
 $\mathbf{r} = 010001$ \ ist kein Codewort.\\
 Unter der Annahme, dass 2 Fehler seltener sind als 1 Fehler, wird das Wort
 \[ \mathbf{r} \to \mathbf{c}_2 = 010101 \]
-rekonstruiert. $\mathbf{y}$ unterscheidet sich in 2 Stellen von $\mathbf{c}_4$. 2 Fehler kann $C$ nicht korrigieren.
-% UNSICHER: im Original steht "y"; gemeint ist vermutlich r = 010001 (unterscheidet sich in 2 Stellen von c4 = 000000).
+rekonstruiert.
+% KORRIGIERT: im Original stand "y" statt r (r = 010001 unterscheidet sich in 2 Stellen von c4 = 000000)
+$\mathbf{r}$ unterscheidet sich in 2 Stellen von $\mathbf{c}_4$. 2 Fehler kann $C$ nicht korrigieren.
 \end{beispiel}
 
 \begin{definition}[Gewicht]
@@ -77,11 +78,11 @@ Für den Hamming Abstand gelten die \textbf{Abstandsregeln}: \ $\mathbf{v}, \mat
 \begin{tabular}{ll}
 $|\mathbf{v}-\mathbf{w}| = |\mathbf{w}-\mathbf{v}|$ & Symmetrie \\
 $|\mathbf{v}-\mathbf{w}| \geq 0$ & positiv semidefinit \\
-$|\mathbf{v}-\mathbf{w}| = 0 \ \Rightarrow \ \mathbf{w} = \mathbf{y}$ & positiv definit \\
+% KORRIGIERT: im Original stand "w = y" statt "v = w"
+$|\mathbf{v}-\mathbf{w}| = 0 \ \Rightarrow \ \mathbf{v} = \mathbf{w}$ & positiv definit \\
 $|\mathbf{v}-\mathbf{w}| \leq |\mathbf{v}-\mathbf{y}| + |\mathbf{y}-\mathbf{w}|$ & Dreiecksungleichung \\
 \end{tabular}
 \end{center}
-% UNSICHER: "w = y" so im Original; gemeint ist vermutlich v = w.
 
 \begin{definition}[Minimalgewicht]
 \textbf{Minimalgewicht} des Codes $C$ \ (minimum distance)
@@ -93,10 +94,11 @@ Der obige Code $C$ hat das Minimalgewicht $d_C = 3$.
 \end{beispiel}
 
 \begin{satz}
-Sei $e$ = Anzahl der Fehler im Wort $\mathbf{r}$.\\
+% KORRIGIERT: im Original "Sei e = Anzahl der Fehler im Wort r ... C erkennt/korrigiert das Wort r"; die Äquivalenz gilt nur für "jedes Wort mit höchstens e Fehlern"
+Sei $e \geq 1$ eine natürliche Zahl.\\
 \begin{tabular}{lcl}
-$C$ \textit{erkennt} das Wort $\mathbf{r}$ als falsch & $\Leftrightarrow$ & $e + 1 \leq d_C$ \\
-$C$ \textit{korrigiert} das Wort $\mathbf{r} \to \mathbf{c}$ & $\Leftrightarrow$ & $2e + 1 \leq d_C$ \\
+$C$ \textit{erkennt} jedes Wort $\mathbf{r}$ mit höchstens $e$ Fehlern als falsch & $\Leftrightarrow$ & $e + 1 \leq d_C$ \\
+$C$ \textit{korrigiert} jedes Wort $\mathbf{r}$ mit höchstens $e$ Fehlern, $\mathbf{r} \to \mathbf{c}$ & $\Leftrightarrow$ & $2e + 1 \leq d_C$ \\
 \end{tabular}
 \end{satz}
 
@@ -144,14 +146,15 @@ heißt \textbf{Erzeugermatrix} des Codes $C$.
 \end{korollar}
 
 Jede Nachricht $\mathbf{a} \in F_q^{\,k}$ besitzt ein Codewort aus $C$. Die \textbf{Codierungsfunktion}
-\[ \varphi : F_q^{\,k} \to C \qquad \mathbf{a} \to \mathbf{c} = \mathbf{a}\,G \]
+% KORRIGIERT: Zuordnungspfeil "\to" durch "\mapsto" ersetzt (auch in den beiden folgenden Beispielen)
+\[ \varphi : F_q^{\,k} \to C \qquad \mathbf{a} \mapsto \mathbf{c} = \mathbf{a}\,G \]
 ist bijektiv.
 
 Parameter des linearen Codes $C$: \ $[n, k, d]_q$, \ $k = \operatorname{Dim} C = \operatorname{Dim} F_q^{\,k}$, \ $d = d_C$.\\
 Informationsdichte \ bei linearen Codes; \ $k / n$.
 
 \begin{beispiel}[Wiederholungscode]
-\[ \varphi : F_q \to C, \quad a \to (a, a, \dots, a) = a\,(1\ 1\ \dots\ 1) \]
+\[ \varphi : F_q \to C, \quad a \mapsto (a, a, \dots, a) = a\,(1\ 1\ \dots\ 1) \]
 \[ G = (1\ 1\ \dots\ 1), \quad d_C = n \]
 $C$ ist ein $[n, 1, n]_q$ Code.
 
@@ -163,16 +166,18 @@ $\begin{cases} \textit{ungerade} \\ \textit{gerade} \end{cases}$
 \end{beispiel}
 
 \begin{beispiel}[Paritätscode]
-\[ \varphi : F_q^{\,n-1} \to C, \quad (a_1, \dots, a_{n-1}) \to (a_1, \dots, a_{n-1}, \textstyle\sum a_i) = \mathbf{a}
+\[ \varphi : F_q^{\,n-1} \to C, \quad (a_1, \dots, a_{n-1}) \mapsto (a_1, \dots, a_{n-1}, \textstyle\sum a_i) = \mathbf{a}
 \begin{pmatrix} 1 & & & 1 \\ & \ddots & & \vdots \\ & & 1 & 1 \end{pmatrix}, \quad d_C = 2 \]
-$C$ ist ein $[n, n-1, 2]$ Code, \quad d.h.\ 1 Fehler erkennend.\\
+% KORRIGIERT: im Original fehlte der Index q bei [n, n-1, 2]
+$C$ ist ein $[n, n-1, 2]_q$ Code, \quad d.h.\ 1 Fehler erkennend.\\
 Informationsdichte = $(n-1)/n = 1 - 1/n$ = fast 100\,\% \ für großes $n$,\\
 $d_C = 2$, \ d.h.\ $C$ kann keinen Fehler korrigieren.
 \end{beispiel}
 
 \begin{definition}[Kontrollmatrix]
 \textbf{Kontrollmatrix} für $C$\\
-Eine $(n-k, n)$-Matrix $H$ mit
+% KORRIGIERT: Voraussetzung "Rang H = n - k" ergänzt
+Eine $(n-k, n)$-Matrix $H$ mit $\operatorname{Rang} H = n - k$ und
 \[ C = \operatorname{Kern} H = \{\, \mathbf{c} \in F_q^{\,n} \mid H\,\mathbf{c}^T = \mathbf{o} \,\} \]
 $H$ heißt \textbf{Kontrollmatrix} für $C$.
 \end{definition}
@@ -193,14 +198,16 @@ d_C &= \min\{\, |\mathbf{c} - \mathbf{c}'| \mid \mathbf{c}, \mathbf{c}' \in C,\ 
 &= \min\{\, |\mathbf{c}| \mid \mathbf{c} \in C,\ \mathbf{c} \neq \mathbf{o} \,\}
 \end{align*}
 \begin{align*}
-& H\,\mathbf{c}^T = \mathbf{o} \ \Rightarrow \ |\mathbf{c}| \text{ Spalten von } H \text{ sind l.a.} \\
+% KORRIGIERT: Voraussetzung c != o ergänzt und gesagt, welche Spalten l.a. sind
+& \mathbf{c} \in C,\ \mathbf{c} \neq \mathbf{o}:\ H\,\mathbf{c}^T = \mathbf{o} \ \Rightarrow \ \text{die } |\mathbf{c}| \text{ Spalten } \mathbf{h}_i \text{ von } H \text{ mit } c_i \neq 0 \text{ sind l.a.} \\
 \Rightarrow\quad & d_C = 1 + \max\{\, e \mid \text{jeweils } e \text{ Spalten von } H \text{ sind l.u.} \,\}
 \end{align*}
 
 \begin{satz}[Dualitätssatz]
 Je $s$ Spalten der Kontrollmatrix $H$ seien l.\,u. \ Dann ist\\
 \begin{tabular}{ll}
-schwacher: & $s + 1 \leq d_C \leq |\mathbf{c}|$ \\
+% KORRIGIERT: Quantor "für alle c in C mit c != o" ergänzt
+schwacher: & $s + 1 \leq d_C \leq |\mathbf{c}|$ \ für alle $\mathbf{c} \in C$, $\mathbf{c} \neq \mathbf{o}$ \\
 starker: & $\max\{s + 1\} = d_C = \min\{\, |\mathbf{c}| \mid \mathbf{o} \neq \mathbf{c} \in C \,\}$ \\
 \end{tabular}
 \end{satz}
@@ -241,12 +248,13 @@ d.h.\ $H_2(3)$ ist ein \ $[7, 4, 3]_2$ Code, $|H_2(3)| = 2^k = 16$, \ 1-Fehler k
 \end{beispiel}
 
 \begin{satz}
-Die Parameter von $H_2(m)$ sind \ $[n, k, d]_q = [\,n = 2^m - 1,\ n - m,\ 3\,]_2$.
+% KORRIGIERT: im Original "[n, k, d]_q = [n = 2^m - 1, n - m, 3]_2" (q und 2 gemischt, Voraussetzung m >= 2 fehlte)
+Für $m \geq 2$ sind die Parameter von $H_2(m)$ \ $[n, k, d]_2 = [\,n,\ n - m,\ 3\,]_2$ \ mit $n = 2^m - 1$.
 \end{satz}
 
 \paragraph{Kodieren}
 \[ \mathbf{a} = (a_1\ a_2\ a_3\ a_4) \ \to \ \mathbf{c} = \mathbf{a}\,G = c_1\ c_2\ c_3\ a_1\ a_2\ a_3\ a_4 \]
-mit
+mit (Rechnung in $F_2$, also modulo 2)
 \begin{align*}
 c_1 &= a_1 + a_3 + a_4 \\
 c_2 &= a_1 + a_2 + a_3 \\
@@ -269,7 +277,8 @@ $S(\mathbf{r}) := H\,\mathbf{r}^T \in F_2^{\,m}$ & \textbf{Syndrom} des Wortes $
 \[ S(\mathbf{r}) := H\,\mathbf{r}^T = H\,\mathbf{c}^T + H\,\mathbf{e}^T = H\,\mathbf{e}^T = \mathbf{h}_x = x\text{-te Spalte von } H \]
 $F_2 = \{0, 1\}$\\
 $\Rightarrow$ Ändern den Buchstaben an der Stelle $x$ von $\mathbf{r}$
-\[ \mathbf{c} := \mathbf{r} - \mathbf{e} = r_1\ r_2\ \dots\ r_x{-}1\ \dots\ r_n \]
+% KORRIGIERT: im Original "r_x-1" (verwechselbar mit r_{x-1}); jetzt geklammert
+\[ \mathbf{c} := \mathbf{r} - \mathbf{e} = r_1\ r_2\ \dots\ (r_x - 1)\ \dots\ r_n \]
 
 \begin{algorithmus}
 \ \\
@@ -285,12 +294,14 @@ End If
 \subsection{4.4 Der $q$-näre Hamming Code $H_q(m)$, \ $F = F_q$}
 
 Wie viele Spalten hat die Kontrollmatrix $H$ von $H_q(m)$, so dass jeweils $s = 2$ Spalten l.u.\ sind?\\
-Die Punkte der Geraden
+% KORRIGIERT: Voraussetzung h != o ergänzt; "sind l.a." präzisiert zu "je zwei Punkte sind l.a."
+Für $\mathbf{h} \in F^m$, $\mathbf{h} \neq \mathbf{o}$, sind je zwei Punkte der Geraden
 \[ g_h = \{\, \lambda\,\mathbf{h} \mid \lambda \in F \,\} \subseteq F^m \]
-sind l.a. Die Spalten von $H$ dürfen also höchstens einen Repräsentanten von $g_h$ enthalten. Die $g_h \setminus \{\mathbf{o}\}$ bilden eine Zerlegung von $F^m \setminus \{\mathbf{o}\}$ in \textbf{Klassen}. Jede Klasse besitzt $q - 1$ Elemente.
+l.a. Die Spalten von $H$ dürfen also höchstens einen Repräsentanten von $g_h$ enthalten. Die $g_h \setminus \{\mathbf{o}\}$ bilden eine Zerlegung von $F^m \setminus \{\mathbf{o}\}$ in \textbf{Klassen}. Jede Klasse besitzt $q - 1$ Elemente.
 
 \begin{definition}[$q$-närer Hamming Code]
-Die Spalten von $H$ bestehen aus Repräsentanten $\mathbf{h}$ der 1-dimensionalen Unterräume (Geraden durch $\mathbf{o}$) des Vektorraums $F^m$.\\
+% KORRIGIERT: "je genau einem Repräsentanten h != o" statt "Repräsentanten h"
+Die Spalten von $H$ bestehen aus je genau einem Repräsentanten $\mathbf{h} \neq \mathbf{o}$ jedes der 1-dimensionalen Unterräume (Geraden durch $\mathbf{o}$) des Vektorraums $F^m$.\\
 Anzahl dieser Klassen: \qquad $n = (q^m - 1) / (q - 1)$
 \end{definition}
 
@@ -302,7 +313,8 @@ Klassen von $F^2$
 H = (E \mid A) = \begin{pmatrix} 1 & 0 & 1 & 1 \\ 0 & 1 & 1 & 2 \end{pmatrix}, \qquad
 G = (-A^T \mid E) = \begin{pmatrix} 2 & 2 & 1 & 0 \\ 2 & 1 & 0 & 1 \end{pmatrix}
 \]
-\[ 2 + 1 \leq s + 1 \leq d_C \leq 3 \quad \Rightarrow \quad d_C = 3 \]
+% KORRIGIERT: obere Schranke begründet (im Original nur "<= 3")
+\[ 2 + 1 \leq s + 1 \leq d_C \leq |\mathbf{g}_1| = 3 \quad \Rightarrow \quad d_C = 3 \]
 d.h.\ 1-Fehler korrigierend.
 
 % GRAFIK: Sternförmiges Diagramm der Klassen von F_3^2 mit 00 in der Mitte; vier Geraden durch 00:
@@ -329,7 +341,8 @@ diagonal & $\{21,\ 12\}$ \\
 \begin{align*}
 & \mathbf{e} = (0\ \dots\ e_x\ \dots\ 0) \\
 \Rightarrow\quad & S(\mathbf{r}) := H\,\mathbf{r}^T = H\,\mathbf{e}^T = \mathbf{h}_x\,e_x \\
-\Rightarrow\quad & \mathbf{c} = \mathbf{r} - \mathbf{e} = r_1\ \dots\ r_x{-}e_x\ \dots\ r_n \quad \text{d.h. } e_x \text{ vom } x\text{-ten Element subtrahieren.}
+% KORRIGIERT: im Original "r_x-e_x" ohne Klammern (verwechselbar mit r_{x-e_x})
+\Rightarrow\quad & \mathbf{c} = \mathbf{r} - \mathbf{e} = r_1\ \dots\ (r_x - e_x)\ \dots\ r_n \quad \text{d.h. } e_x \text{ vom } x\text{-ten Element subtrahieren.}
 \end{align*}
 
 \begin{definition}[Klassenführer]
@@ -342,13 +355,14 @@ Solche Repräsentanten der Klassen heißen \textbf{Klassenführer}.
 Berechne das Syndrom \ $S(\mathbf{r}) := H\,\mathbf{r}^T$\\
 If ( $S(\mathbf{r}) = \mathbf{o}$ ) \ $\mathbf{c} = \mathbf{r}$;\\
 Else\\
-\hspace*{2em} Ermittle den Spaltenindex $x$ von $H$ mit \ $H\,\mathbf{e}^T = \mathbf{h}_x\,e_x$;\\
+% KORRIGIERT: im Original "mit H e^T = h_x e_x" (e ist unbekannt); gesucht sind x und e_x aus dem Syndrom
+\hspace*{2em} Ermittle den Spaltenindex $x$ von $H$ und $e_x \neq 0$ mit \ $S(\mathbf{r}) = \mathbf{h}_x\,e_x$;\\
 \hspace*{2em} $\mathbf{c} = \mathbf{r} - \mathbf{e}$\\
 End If
 \end{algorithmus}
 
 \begin{beispiel}
-$H_3(2)$, \quad $\mathbf{r}_1 = 1111$, \ $\mathbf{r}_2 = 0011$
+$H_3(2)$, \quad $\mathbf{r}_1 = 1111$, \ $\mathbf{r}_2 = 0011$ \quad (Rechnung in $F_3$, also modulo 3)
 \begin{align*}
 S(\mathbf{r}_1) &= H\,\mathbf{r}_1^T = \begin{pmatrix} 0 \\ 1 \end{pmatrix} = \mathbf{h}_2 \ \Rightarrow \ x = 2,\ e_2 = 1 \ \Rightarrow \ \mathbf{c}_1 = 1011 \\
 S(\mathbf{r}_2) &= H\,\mathbf{r}_2^T = \begin{pmatrix} 2 \\ 0 \end{pmatrix} = \mathbf{h}_1\,2 \ \Rightarrow \ x = 1,\ e_1 = 2 \ \Rightarrow \ \mathbf{c}_2 = 1011
@@ -365,7 +379,7 @@ Gesucht: \qquad $|C| \leq$ obere Schranke
 \[ B(e) := \{\, \mathbf{v} \in F_q^{\,n} \mid |\mathbf{c} - \mathbf{v}| \leq e \,\}. \]
 \end{definition}
 
-Die Kugeln $B(e)$ um die $|C|$ Codewörter dürfen sich nicht überschneiden.
+Die Kugeln $B(e)$ um die $|C|$ Codewörter dürfen sich nicht überschneiden (das gilt wegen $2e + 1 \leq d_C$ und der Dreiecksungleichung).
 \[ \Rightarrow \qquad |C| \cdot |B(e)| \leq |F_q^{\,n}| = q^n \]
 \[ |B(e)| = \sum_{i=0}^{e} |\{\, \mathbf{v} \in F_q^{\,n} \mid |\mathbf{c} - \mathbf{v}| = i \,\}| \]
 Anzahl der Wörter mit Abstand $i$ von $\mathbf{c} = c_1\,c_2 \dots c_n$
@@ -376,13 +390,16 @@ Anzahl der Wörter mit Abstand $i$ von $\mathbf{c} = c_1\,c_2 \dots c_n$
 Es gibt $n$ Stellen an denen sich $\mathbf{c}$, $\mathbf{v}$ unterscheiden können.\\
 An jeder Stelle von $\mathbf{v}$ können $q - 1$ verschiedene Buchstaben stehen.
 
+% KORRIGIERT: im Original uneinheitlich "d(c, v)" statt "|c - v|" (auch in der nächsten Formel)
 Analog
-\[ |\{\, \mathbf{v} \in F_q^{\,n} \mid d(\mathbf{c}, \mathbf{v}) = 2 \,\}| = \binom{n}{2}\,(q - 1)^2 \]
+\[ |\{\, \mathbf{v} \in F_q^{\,n} \mid |\mathbf{c} - \mathbf{v}| = 2 \,\}| = \binom{n}{2}\,(q - 1)^2 \]
 Allgemein
-\[ |\{\, \mathbf{v} \in F_q^{\,n} \mid d(\mathbf{c}, \mathbf{v}) = i \,\}| = \binom{n}{i}\,(q - 1)^i \]
+\[ |\{\, \mathbf{v} \in F_q^{\,n} \mid |\mathbf{c} - \mathbf{v}| = i \,\}| = \binom{n}{i}\,(q - 1)^i \]
 \[ \Rightarrow \qquad |B(e)| = \sum_{i=0}^{e} \binom{n}{i} (q-1)^i \]
 
 \begin{satz}[Hamming-Schranke]
+% KORRIGIERT: Voraussetzung ergänzt (im Original fehlte sie im Satz)
+Sei $C \subseteq F_q^{\,n}$ ein Code, der $e$ Fehler korrigiert, d.h.\ $2e + 1 \leq d_C$. Dann gilt
 \[ |C| \cdot \sum_{i=0}^{e} \binom{n}{i} (q-1)^i \leq q^n \]
 \end{satz}
 

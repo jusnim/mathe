@@ -15,13 +15,16 @@
 \end{aufgabe}
 
 \begin{loesung}
-\textbf{a)} Ein solches Polynom hat die Form $X^3 + aX^2 + bX + 1$, $a, b \in F_2$.\\
-Für $a = b = 0$ oder $a = b = 1$ ist $X = 1$ Nullstelle, also $a \neq b$.\\
+% KORRIGIERT: Begründung fehlte (Absolutglied 1; Grad 3: irreduzibel genau dann, wenn keine Nullstelle)
+\textbf{a)} Ein Polynom vom Grad 3 über $F_2$ ist genau dann irreduzibel, wenn es keine Nullstelle in $F_2$ hat.
+Wegen $X = 0$ muss das Absolutglied $1$ sein. Ein solches Polynom hat also die Form $X^3 + aX^2 + bX + 1$, $a, b \in F_2$.\\
+Für $a = b = 0$ oder $a = b = 1$ ist $X = 1$ Nullstelle (denn $1 + a + b + 1 \equiv a + b \equiv 0 \pmod{2}$), also $a \neq b$.\\
 $\Rightarrow\ X^3 + X + 1$ oder $X^3 + X^2 + 1$
 
 \medskip
-\textbf{b)} Kreisteilungsklassen: $\{s, sp, sp^2, \dots, sp^{d-1}\}$\\
-$\{0\}$, $\{1, 2, -3\}$, $\{-1, -2, 3\}$\\
+% KORRIGIERT: Original ohne Malpunkte, ohne Modul und ohne Angabe von n, p: "{s, sp, sp^2, ..., sp^{d-1}}"
+\textbf{b)} Kreisteilungsklassen modulo $n = 7$ zu $p = 2$: $\{s, s \cdot p, s \cdot p^2, \dots, s \cdot p^{d-1}\} \pmod{7}$, wobei $d$ die kleinste Zahl mit $s \cdot p^d \equiv s \pmod{7}$ ist\\
+$\{0\}$, $\{1, 2, -3\}$, $\{-1, -2, 3\}$ \quad (wegen $4 \equiv -3$, $6 \equiv -1$, $5 \equiv -2 \pmod{7}$)\\
 $X^7 - 1 = (X + 1)(X^3 + X + 1)(X^3 + X^2 + 1)$
 \end{loesung}
 
@@ -56,9 +59,9 @@ G = \begin{pmatrix}
 1 & 0 & 1 & 1 & 0 & 0 & 0\\
 0 & 1 & 0 & 1 & 1 & 0 & 0\\
 0 & 0 & 1 & 0 & 1 & 1 & 0\\
-0 & 0 & 0 & 1 & 1 & 0 & 1
+% KORRIGIERT: letzte Zeile lautete "0 0 0 1 1 0 1"; die Verschiebung X^3 g(X) = X^3 + X^5 + X^6 ergibt "0 0 0 1 0 1 1"
+0 & 0 & 0 & 1 & 0 & 1 & 1
 \end{pmatrix}$
-% UNSICHER: Letzte Zeile im 2. Fall so in der Quelle ("0 0 0 1 1 0 1"); zur zyklischen Verschiebung von g(X) = 1 + X^2 + X^3 würde "0 0 0 1 0 1 1" passen (vermutlich Tippfehler in der Quelle).
 \end{loesung}
 
 \begin{aufgabe}[6\_3]
@@ -70,7 +73,8 @@ Bestimmen Sie von dem binären $[7, 6, 2]_2$ Paritätscode
 \end{aufgabe}
 
 \begin{loesung}
-Der $[7, 6]$ Paritätscode hat Wortlänge $n = 7$ und $k = \dim C = 6$.
+% KORRIGIERT: "[7, 6]" ohne Alphabetgröße
+Der $[7, 6]_2$ Paritätscode hat Wortlänge $n = 7$ und $k = \dim C = 6$.
 
 Generatorpolynom $g(X) = X + 1 \mid X^7 - 1$. \quad $\operatorname{grad} g(X) = p = n - k = 1$
 \[
@@ -94,9 +98,10 @@ Erinnern Sie sich an: die Parameter $[n, k, d]$, eine Generatormatrix $G$ und ei
 \begin{loesung}
 Ternärer Hammingcode $H_3(2)$\\
 Parameter $[4, 2, 3]_3$
+% KORRIGIERT: "=" statt "≡ (mod 3)" (Einträge von -A^T modulo 3 reduziert)
 \[
 H = (\, E \mid A \,) = \begin{pmatrix} 1 & 0 & 1 & 1\\ 0 & 1 & 1 & 2 \end{pmatrix}, \qquad
-G = (-A^T \mid E\,) = \begin{pmatrix} 2 & 2 & 1 & 0\\ 2 & 1 & 0 & 1 \end{pmatrix}
+G = (-A^T \mid E\,) \equiv \begin{pmatrix} 2 & 2 & 1 & 0\\ 2 & 1 & 0 & 1 \end{pmatrix} \pmod{3}
 \]
 \end{loesung}
 
@@ -105,12 +110,15 @@ Zerlegen Sie $X^4 - 1 \in F_3[X]$ in irreduzible Polynome.
 \end{aufgabe}
 
 \begin{loesung}
-Kreisteilungsklassen: $\{s, sp, sp^2, \dots, sp^{d-1}\}$\\
-$\{0\}$, $\{1, -1\}$, $\{2\}$
+% KORRIGIERT: Original ohne Malpunkte und ohne Modul: "{s, sp, sp^2, ..., sp^{d-1}}"
+Kreisteilungsklassen modulo $n = 4$ zu $p = 3$: $\{s, s \cdot p, s \cdot p^2, \dots, s \cdot p^{d-1}\} \pmod{4}$\\
+$\{0\}$, $\{1, -1\}$, $\{2\}$ \quad (wegen $3 \equiv -1 \pmod{4}$)
 \begin{align*}
 X^4 - 1 &= (X - 1)(X^3 + X^2 + X + 1) = (X - 1)\bigl(X^2(X + 1) + (X + 1)\bigr)\\
         &= (X - 1)(X + 1)(X^2 + 1)
 \end{align*}
+% KORRIGIERT: Begründung der Irreduzibilität von X^2 + 1 fehlte
+$X^2 + 1$ ist irreduzibel über $F_3$, denn es hat Grad 2 und keine Nullstelle: $0^2 + 1 = 1$, $1^2 + 1 = 2$, $2^2 + 1 = 5 \equiv 2 \pmod{3}$.
 \end{loesung}
 
 \begin{aufgabe}[6\_6]
@@ -132,7 +140,8 @@ Gibt es folglich einen zu $H_3(2)$ isomorphen zyklischen Code?
 \end{aufgabe}
 
 \begin{loesung}
-Nein, denn beide zyklischen Codes haben nur $d = 2$, während $H_3(2)$ einen Fehler korrigieren kann, also $d = 3$.
+Nein, denn beide zyklischen Codes haben nur $d = 2$, % KORRIGIERT: "also d = 3" -- aus "korrigiert einen Fehler" folgt nur d >= 3; d = 3 ist der Parameter aus 6_4
+während $H_3(2)$ einen Fehler korrigieren kann, also $d \geq 3$ (genauer $d = 3$, siehe Aufgabe 6\_4). Äquivalente Codes haben dieselbe Minimaldistanz.
 \end{loesung}
 
 \subsection{Standardarray-Decodierung}
@@ -174,20 +183,21 @@ $\operatorname{Syn}(\mathbf{r}) = H\mathbf{r}^T$
 \medskip
 $\mathbf{r}_1 = 2\,2\,0\,0$
 \[
-\operatorname{Syn} \mathbf{r}_1 = H\mathbf{r}_1^T = \begin{pmatrix} 1\\ 0 \end{pmatrix} 2 + \begin{pmatrix} 0\\ 1 \end{pmatrix} 2 = \begin{pmatrix} 2\\ 2 \end{pmatrix}
+% KORRIGIERT: fehlende Malpunkte, fehlendes (mod 3) in Syndrom- und Codewortrechnung (6_8)
+\operatorname{Syn} \mathbf{r}_1 = H\mathbf{r}_1^T = 2 \cdot \begin{pmatrix} 1\\ 0 \end{pmatrix} + 2 \cdot \begin{pmatrix} 0\\ 1 \end{pmatrix} = \begin{pmatrix} 2\\ 2 \end{pmatrix}
 \quad\Rightarrow \text{Klassenführer } \mathbf{e}_1 = 0\,0\,2\,0
 \]
 d.h.\ Fehlerstelle $x = 3$, Fehlergröße $e_x = 2$\\
-$\mathbf{c}_1 = \mathbf{r}_1 - \mathbf{e}_1 = 2\,2\,1\,0$
+$\mathbf{c}_1 = \mathbf{r}_1 - \mathbf{e}_1 = 2\,2\,(-2)\,0 \equiv 2\,2\,1\,0 \pmod{3}$
 
 \medskip
 $\mathbf{r}_2 = 0\,1\,2\,1$
 \[
-\operatorname{Syn} \mathbf{r}_2 = H\mathbf{r}_2^T = \begin{pmatrix} 0\\ 1 \end{pmatrix} + \begin{pmatrix} 1\\ 1 \end{pmatrix} 2 + \begin{pmatrix} 1\\ 2 \end{pmatrix} = \begin{pmatrix} 3\\ 5 \end{pmatrix} = \begin{pmatrix} 0\\ 2 \end{pmatrix}
+\operatorname{Syn} \mathbf{r}_2 = H\mathbf{r}_2^T = 1 \cdot \begin{pmatrix} 0\\ 1 \end{pmatrix} + 2 \cdot \begin{pmatrix} 1\\ 1 \end{pmatrix} + 1 \cdot \begin{pmatrix} 1\\ 2 \end{pmatrix} = \begin{pmatrix} 3\\ 5 \end{pmatrix} \equiv \begin{pmatrix} 0\\ 2 \end{pmatrix} \pmod{3}
 \quad\Rightarrow \text{Klassenführer } \mathbf{e}_2 = 0\,2\,0\,0
 \]
 d.h.\ Fehlerstelle $x = 2$, Fehlergröße $e_x = 2$\\
-$\mathbf{c}_2 = \mathbf{r}_2 - \mathbf{e}_2 = 0\,2\,2\,1$
+$\mathbf{c}_2 = \mathbf{r}_2 - \mathbf{e}_2 = 0\,(-1)\,2\,1 \equiv 0\,2\,2\,1 \pmod{3}$
 \end{loesung}
 
 \subsection{$[10, 8, 3]_{11}$ Code}
@@ -204,6 +214,8 @@ r_3 &= 1\,1\,1\,1\,1\,1\,1\,1\,0\,3
 \begin{loesung}
 Inverse Modulo 11
 \begin{center}
+% KORRIGIERT: Tabelle ohne Hinweis, dass a * a^{-1} ≡ 1 (mod 11) gemeint ist
+(Es gilt $a \cdot a^{-1} \equiv 1 \pmod{11}$; alle Inversen existieren, da $11$ prim ist und $\ggT(a, 11) = 1$ für $a \not\equiv 0$.)
 \begin{tabular}{c|rrrrrrrrrr}
 $a$      & 1 & 2  & 3 & 4 & 5  & $-5$ & $-4$ & $-3$ & $-2$ & $-1$\\
 \midrule
@@ -217,6 +229,7 @@ $a^{-1}$ & 1 & $-5$ & 4 & 3 & $-2$ & 2 & $-3$ & $-4$ & 5 & $-1$\\
 \mathbf{r}_3 &= 1\,1\,1\,1\,1\,1\,1\,1\,0\,3
 \end{align*}
 
+% KORRIGIERT: "≡" ohne Modulangabe
 \[
 H = \begin{pmatrix}
 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
@@ -227,25 +240,31 @@ H = \begin{pmatrix}
 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
 1 & 2 & 3 & 4 & 5 & -5 & -4 & -3 & -2 & -1
 \end{pmatrix}
+\pmod{11}
 \]
 
-$\mathbf{e} = \mathbf{r} - \mathbf{c} = (\,0 \dots m \dots 0\,)$, \quad
-$S(\mathbf{r}) = \begin{pmatrix} s_0\\ s_1 \end{pmatrix} = \begin{pmatrix} 1\\ x \end{pmatrix} y$, \quad
+% KORRIGIERT: Fehlergröße hieß erst "m", danach "y"; "=" statt "≡ (mod 11)"; Voraussetzungen (ein Fehler, y ≠ 0) fehlten
+Bei genau einem Fehler an Stelle $x$ mit Fehlergröße $y \not\equiv 0$ gilt:
+$\mathbf{e} = \mathbf{r} - \mathbf{c} = (\,0 \dots y \dots 0\,)$, \quad
+$S(\mathbf{r}) = H\mathbf{r}^T = \begin{pmatrix} s_0\\ s_1 \end{pmatrix} \equiv y \cdot \begin{pmatrix} 1\\ x \end{pmatrix} \pmod{11}$, \quad
+also $y \equiv s_0$ und $x \equiv s_1 \cdot s_0^{-1} \pmod{11}$ (die Inverse existiert, da $s_0 \not\equiv 0$), \quad
 $\mathbf{c} = \mathbf{r} - \mathbf{e}$
 
 \[
-S(\mathbf{r}_1) = \begin{pmatrix} 15\\ 4 \cdot 3 \end{pmatrix} = \begin{pmatrix} 4\\ 4 \cdot 3 \end{pmatrix} = \begin{pmatrix} 1\\ 3 \end{pmatrix} 4
+% KORRIGIERT: "=" statt "≡ (mod 11)" in den Syndromrechnungen (s_1(r_1) = 78 ≡ 1 ≡ 4 · 3)
+S(\mathbf{r}_1) = \begin{pmatrix} 15\\ 78 \end{pmatrix} \equiv \begin{pmatrix} 4\\ 4 \cdot 3 \end{pmatrix} = 4 \cdot \begin{pmatrix} 1\\ 3 \end{pmatrix} \pmod{11}
 \qquad\Rightarrow\ x = 3,\ y = 4
 \]
-$\Rightarrow \mathbf{c}_1 = 1\,1\,1\,1\,1\,1\,1\,1\,0\,3 = \mathbf{r}_3$
+$\Rightarrow \mathbf{c}_1 = \mathbf{r}_1 - \mathbf{e} = 1\,1\,(5 - 4)\,1\,1\,1\,1\,1\,0\,3 = 1\,1\,1\,1\,1\,1\,1\,1\,0\,3 = \mathbf{r}_3$
 
 \[
-S(\mathbf{r}_2) = \begin{pmatrix} 9\\ 1 + 5 \cdot 4 \end{pmatrix} = \begin{pmatrix} -2\\ -1 \end{pmatrix} = \begin{pmatrix} 1\\ 6 \end{pmatrix} (-2)
-\qquad\Rightarrow\ x = 6,\ y = -2
+S(\mathbf{r}_2) \equiv \begin{pmatrix} 4 + 5\\ 1 + 4 \cdot 5 \end{pmatrix} = \begin{pmatrix} 9\\ 21 \end{pmatrix} \equiv \begin{pmatrix} -2\\ -1 \end{pmatrix} \equiv (-2) \cdot \begin{pmatrix} 1\\ 6 \end{pmatrix} \pmod{11}
+\qquad\Rightarrow\ y = -2,\ x \equiv (-1) \cdot (-2)^{-1} \equiv (-1) \cdot 5 \equiv 6 \pmod{11}
 \]
-$\Rightarrow \mathbf{c}_2 = 1\,1\,5\,6\,1\,3\,1\,1\,0\,3$
+($\mathbf{r}_2$ unterscheidet sich von $\mathbf{r}_1$ nur an Stelle $4$ um $+5$, daher $S(\mathbf{r}_2) = S(\mathbf{r}_1) + 5 \cdot (1, 4)^T$.)
+$\Rightarrow \mathbf{c}_2 = \mathbf{r}_2 - \mathbf{e} = 1\,1\,5\,6\,1\,(1 + 2)\,1\,1\,0\,3 = 1\,1\,5\,6\,1\,3\,1\,1\,0\,3$
 
 \[
-S(\mathbf{r}_3) = \begin{pmatrix} 0\\ 0 \end{pmatrix} \qquad\Rightarrow \mathbf{c}_3 = \mathbf{r}_3
+S(\mathbf{r}_3) = \begin{pmatrix} 11\\ 66 \end{pmatrix} \equiv \begin{pmatrix} 0\\ 0 \end{pmatrix} \pmod{11} \qquad\Rightarrow \mathbf{c}_3 = \mathbf{r}_3
 \]
 \end{loesung}
