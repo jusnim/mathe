@@ -18,13 +18,13 @@ an Bob senden. Sie verabreden als Modul die Zahl $m = 47 \cdot 59 = 2773$ zu wä
   \item Oscar erhält Kenntnis von $m$ und $e$. Welche Formeln muss er nutzen, um den privaten
         Schlüssel $d$ zu berechnen? Berechnen Sie $d$ auf zwei Wegen
         -- mit dem Euklidischen Algorithmus bzw.\ der Matrix $Q$ und mit dem Satz von Euler:
-        \[ d \equiv e^{\varphi(\varphi(m)) - 1} \bmod \varphi(m) . \]
+        \[ d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)} . \]
         Machen Sie die Probe $c^d \equiv w \pmod m$.
 \end{enumerate}
 \end{aufgabe}
 
 \begin{aufgabe}[Aufgabe 2]
-Wie viele positive ganze Zahlen $\leq 840$ sind weder durch $3$, $5$ oder $7$ teilbar?
+Wie viele positive ganze Zahlen $\leq 840$ sind weder durch $3$ noch durch $5$ noch durch $7$ teilbar?
 Verwenden Sie die Symbole $A_i$, $\alpha_i$ aus der Vorlesung. (Inklusion -- Exklusion)
 \end{aufgabe}
 
@@ -80,7 +80,7 @@ Aufgabe & Thema & Ergebnis\\
 \midrule
 1 & RSA & $e = 10011101_2$, $c = 192$, $\varphi(m) = 2668$, $d = 17$\\
 2 & Inklusion -- Exklusion & $384$\\
-3 & Euklidischer Algorithmus & $\ggT(29,23) = 1$, $x = 4 + 23t$, $y = 5 + 29t$\\
+3 & Euklidischer Algorithmus & $\ggT(29,23) = 1$, $x = 4 + 23t$, $y = 5 + 29t$ ($t \in \Z$)\\
 4 & Chinesischer Restsatz & $z \equiv 352 \pmod{667}$, kleinste positive Lösung $352$\\
 5 & Modulo-11-Code & $c = 2\,0\,3\,1\,0\,0\,0\,4\,2\,10$; $r_1 \to c$ (Stelle 7); $r_2$ nicht dekodierbar\\
 \bottomrule
@@ -124,8 +124,9 @@ Produkt Schritt für Schritt (mod 2773):
 \begin{ergebnis} $c = 920^{157} \bmod 2773 = 192$ \end{ergebnis}
 
 \teil{c} \textbf{Entschlüsseln.} Formel (Bob): $w \equiv c^d \pmod m$.
-Das funktioniert, weil $e \cdot d \equiv 1 \pmod{\varphi(m)}$ und nach Euler
-$c^d \equiv (w^e)^d = w^{ed} \equiv w \pmod m$.
+Das funktioniert, weil $e \cdot d \equiv 1 \pmod{\varphi(m)}$, also $e \cdot d = 1 + k \cdot \varphi(m)$ mit $k \in \Z$, und nach Euler
+(für $\ggT(w, m) = 1$; hier $\ggT(920, 2773) = 1$, denn $920 = 2^3 \cdot 5 \cdot 23$)
+$c^d \equiv (w^e)^d = w^{ed} = w \cdot \bigl(w^{\varphi(m)}\bigr)^k \equiv w \pmod m$.
 
 \teil{d} \textbf{$\varphi(m)$.} $47$ und $59$ sind Primzahlen (Probedivision: $47$ ist durch $2, 3, 5$ nicht teilbar und $7^2 > 47$;
 $59$ ist durch $2, 3, 5, 7$ nicht teilbar und $8^2 > 59$). Also
@@ -162,7 +163,9 @@ Matrix $Q = \prod \begin{pmatrix} q_i & 1\\ 1 & 0\end{pmatrix}$ mit $q = 16, 1, 
 $\det Q = 2668 \cdot 1 - 157 \cdot 17 = 2668 - 2669 = -1$, also $157 \cdot 17 - 2668 \cdot 1 = 1$, d.\,h.
 $157 \cdot 17 \equiv 1 \pmod{2668}$ und $d = 17$.
 
-\emph{Weg 2: Satz von Euler.} Aus $e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)}$ folgt
+\emph{Weg 2: Satz von Euler.} Da $\ggT(e, \varphi(m)) = \ggT(157, 2668) = 1$ (Weg 1), gilt nach Euler
+$e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)}$, also $e \cdot e^{\varphi(\varphi(m)) - 1} \equiv 1 \pmod{\varphi(m)}$.
+Da die Inverse von $e$ modulo $\varphi(m)$ eindeutig ist, folgt
 \[
 d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)} .
 \]
@@ -200,7 +203,7 @@ Produkt Schritt für Schritt (mod 2668):
 Beide Wege liefern $d = 17$. Kontrolle: $157 \cdot 17 = 2669 = 1 \cdot 2668 + 1 \equiv 1 \pmod{2668}$ \checkmark
 \begin{ergebnis} $d = 17$ \end{ergebnis}
 
-\textbf{Probe} $c^d \equiv w$: $192^{17} = 192^{16} \cdot 192^{1}$, Quadrattabelle (mod 2773):
+\textbf{Probe} $c^d \equiv w \pmod m$: $192^{17} = 192^{16} \cdot 192^{1}$, Quadrattabelle (mod 2773):
 \[
 \begin{array}{r@{\;\equiv\;}l@{\qquad}l}
 192^{1}  & 192 & \leftarrow\\
@@ -266,6 +269,7 @@ $\det Q = 29 \cdot 4 - 23 \cdot 5 = 1$ ($= (-1)^{n+1}$ mit $n = 3$), also diesel
 \[
 x = 4 + 23t, \qquad y = 5 + 29t \qquad (t \in \Z).
 \]
+(Das sind alle Lösungen, da $\ggT(29, 23) = 1$.)
 Probe: $29 \cdot 4 - 23 \cdot 5 = 116 - 115 = 1$ \checkmark
 \begin{ergebnis} $\ggT(29,23) = 1$; eine Lösung $x = 4$, $y = 5$; alle Lösungen $x = 4 + 23t$, $y = 5 + 29t$ ($t \in \Z$). \end{ergebnis}
 
@@ -283,7 +287,7 @@ Aus Aufgabe 3: $29 \cdot 4 - 23 \cdot 5 = 1$. Multiplikation mit $3$:
 z = 29 \cdot 12 + 4 = 352 = 23 \cdot 15 + 7 .
 \]
 
-\teil{b} Da $\ggT(29, 23) = 1$, sind alle Lösungen $z \equiv 352 \pmod{29 \cdot 23 = 667}$:
+\teil{b} Da $\ggT(29, 23) = 1$, sind alle Lösungen $z \equiv 352 \pmod{667}$ (mit $29 \cdot 23 = 667$):
 \[
 z = 352 + k \cdot 667 \quad (k \in \Z).
 \]
@@ -301,8 +305,8 @@ H = \begin{pmatrix}
 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10
 \end{pmatrix}
 \]
-Ein Wort $c$ ist Codewort genau dann, wenn $H c^T = 0$, also
-$\sum_{i=1}^{10} c_i \equiv 0$ und $\sum_{i=1}^{10} i \cdot c_i \equiv 0 \pmod{11}$.
+Ein Wort $c$ ist Codewort genau dann, wenn $H c^T \equiv 0 \pmod{11}$, also
+$\sum_{i=1}^{10} c_i \equiv 0 \pmod{11}$ und $\sum_{i=1}^{10} i \cdot c_i \equiv 0 \pmod{11}$.
 
 \teil{b} Kontrollziffern für $a = 2\,0\,3\,1\,0\,0\,0\,4$ ($c_i = a_i$ für $i = 1, \dots, 8$):
 \begin{align*}
@@ -315,37 +319,38 @@ c_{10} &\equiv \sum_{i=1}^{8} (9-i)\, c_i = 8 \cdot 2 + 6 \cdot 3 + 5 \cdot 1 + 
 
 $r_1 = 2\,0\,3\,1\,0\,0\,3\,4\,2\,10$:
 \begin{align*}
-s_1 &= 2 + 3 + 1 + 3 + 4 + 2 + 10 = 25 \equiv 3,\\
+s_1 &= 2 + 3 + 1 + 3 + 4 + 2 + 10 = 25 \equiv 3 \pmod{11},\\
 s_2 &= 2 + 3 \cdot 3 + 4 \cdot 1 + 7 \cdot 3 + 8 \cdot 4 + 9 \cdot 2 + 10 \cdot 10\\
     &= 2 + 9 + 4 + 21 + 32 + 18 + 100\\
-    &= 186 = 16 \cdot 11 + 10 \equiv 10
+    &= 186 = 16 \cdot 11 + 10 \equiv 10 \pmod{11}
 \quad\Rightarrow\quad S(r_1) = (3, 10)^T .
 \end{align*}
 $r_2 = 2\,0\,3\,1\,1\,1\,0\,4\,2\,10$:
 \begin{align*}
-s_1 &= 2 + 3 + 1 + 1 + 1 + 4 + 2 + 10 = 24 \equiv 2,\\
+s_1 &= 2 + 3 + 1 + 1 + 1 + 4 + 2 + 10 = 24 \equiv 2 \pmod{11},\\
 s_2 &= 2 + 3 \cdot 3 + 4 \cdot 1 + 5 \cdot 1 + 6 \cdot 1 + 8 \cdot 4 + 9 \cdot 2 + 10 \cdot 10\\
     &= 2 + 9 + 4 + 5 + 6 + 32 + 18 + 100\\
-    &= 176 = 16 \cdot 11 \equiv 0
+    &= 176 = 16 \cdot 11 \equiv 0 \pmod{11}
 \quad\Rightarrow\quad S(r_2) = (2, 0)^T .
 \end{align*}
 
-\teil{d} Bei genau einem Fehler der Größe $e_x$ an der Stelle $x$ gilt $S = e_x \cdot (1, x)^T$,
-also $e_x = s_1$ und $x = s_2 / s_1$.
+\teil{d} Bei genau einem Fehler der Größe $e_x$ an der Stelle $x$ gilt $S \equiv e_x \cdot (1, x)^T \pmod{11}$,
+also $e_x \equiv s_1$ und $x \equiv s_2 \cdot s_1^{-1} \pmod{11}$
+(die Inverse existiert, da $s_1 \equiv e_x \not\equiv 0$ und $11$ eine Primzahl ist).
 
-Für $r_2$: $x = 0 / 2 = 0 \cdot 2^{-1} = 0 \cdot 6 \equiv 0$. Die Stelle $0$ gibt es nicht (Stellen $1, \dots, 10$).
+Für $r_2$: $x \equiv 0 \cdot 2^{-1} \equiv 0 \cdot 6 \equiv 0 \pmod{11}$ (denn $2 \cdot 6 = 12 \equiv 1$). Die Stelle $0$ gibt es nicht (Stellen $1, \dots, 10$).
 Das Syndrom passt also zu keinem Einzelfehler: $r_2$ enthält mindestens zwei Fehler
-(tatsächlich an den Stellen $5$ und $6$, je $+1$: $s_1 = 1 + 1 = 2$, $s_2 = 5 + 6 = 11 \equiv 0$).
-Der Code hat $d = 3$ und korrigiert nur $1$ Fehler.
+(tatsächlich an den Stellen $5$ und $6$, je $+1$: $s_1 = 1 + 1 = 2$, $s_2 = 5 + 6 = 11 \equiv 0 \pmod{11}$).
+Der Code hat den Minimalabstand $3$ und korrigiert nur $1$ Fehler.
 \begin{ergebnis} $r_2$ ist nicht dekodierbar (mindestens 2 Fehler). \end{ergebnis}
 \begin{achtung}
 Zwei Fehler sind nicht immer erkennbar: Wären die Stellen $9$ und $10$ je um $1$ verfälscht
-($r = 2\,0\,3\,1\,0\,0\,0\,4\,3\,0$), so wäre $S = (2, 19)^T \equiv (2, 8)^T$ und $x = 8 \cdot 2^{-1} = 8 \cdot 6 = 48 \equiv 4$.
-Das sieht aus wie ein Einzelfehler an Stelle $4$ und wird \emph{falsch} zu $2\,0\,3\,10\,0\,0\,0\,4\,3\,0$ decodiert.
+($r = 2\,0\,3\,1\,0\,0\,0\,4\,3\,0$), so wäre $S = (2, 19)^T \equiv (2, 8)^T \pmod{11}$ und $x \equiv 8 \cdot 2^{-1} \equiv 8 \cdot 6 = 48 \equiv 4 \pmod{11}$.
+Das sieht aus wie ein Einzelfehler an Stelle $4$ und wird \emph{falsch} zu $2\,0\,3\,10\,0\,0\,0\,4\,3\,0$ dekodiert ($r_4 - 2 = -1 \equiv 10 \pmod{11}$).
 \end{achtung}
 
-\teil{e} Für $r_1$: $e_x = s_1 = 3$ und $x = s_2 / s_1 = 10 \cdot 3^{-1} = 10 \cdot 4 = 40 \equiv 7 \pmod{11}$
-(denn $3 \cdot 4 = 12 \equiv 1$). Fehler an Stelle $7$ mit Größe $3$:
+\teil{e} Für $r_1$: $e_x = s_1 = 3$ und $x \equiv s_2 \cdot s_1^{-1} \equiv 10 \cdot 3^{-1} \equiv 10 \cdot 4 = 40 \equiv 7 \pmod{11}$
+(denn $3 \cdot 4 = 12 \equiv 1 \pmod{11}$). Fehler an Stelle $7$ mit Größe $3$:
 \[
 c_7 = r_7 - 3 = 3 - 3 = 0 .
 \]

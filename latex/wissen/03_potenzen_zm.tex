@@ -7,14 +7,15 @@
 
 Man schreibt im Restklassenring $\Zm{m}$, wie im Körper $\R$
 \[
-  a^k := a \cdot a \cdot \ldots \cdot a \qquad (a \neq 0)
+% KORRIGIERT: Anzahl der Faktoren und Bereich von k fehlten
+  a^k := \underbrace{a \cdot a \cdot \ldots \cdot a}_{k \text{ Faktoren}} \qquad (a \neq 0,\ k \in \N,\ k \geq 1)
 \]
 Wie immer, wenn es um Multiplikation geht, schließen wir die 0 aus.
 
 \begin{algorithmus}[Schnelles Potenzieren]
 Nutzen die Binärdarstellung von
 \[
-  k = k_0 \cdot 2^0 + k_1 \cdot 2^1 + k_2 \cdot 2^2 + \ldots + k_r \cdot 2^r . \qquad k_i \in \{0, 1\}
+  k = k_0 \cdot 2^0 + k_1 \cdot 2^1 + k_2 \cdot 2^2 + \ldots + k_r \cdot 2^r , \qquad k_i \in \{0, 1\}
 \]
 \end{algorithmus}
 
@@ -24,8 +25,9 @@ Gesucht $12^{100} \pmod{34}$
   & 100 = 2^6 + 2^5 + 2^2 \\
   \Rightarrow\quad & 12^{100} = 12^{64} \cdot 12^{32} \cdot 12^{4} \\
   & 12 \\
-  & 12^2 \equiv 136 + 8 \pmod{34} \\
-  & 12^4 \equiv 8^2 \equiv -4 \pmod{34} \\
+% KORRIGIERT: Original "12^2 \equiv 136 + 8", Rest 8 fehlte
+  & 12^2 = 144 = 136 + 8 \equiv 8 \pmod{34} \\
+  & 12^4 \equiv 8^2 = 64 \equiv -4 \pmod{34} \\
   & 12^8 \equiv (-4)^2 = 16 \pmod{34} \\
   & 12^{16} \equiv 16^2 = 272 - 16 \equiv -16 \pmod{34} \\
   & 12^{32} \equiv (-16)^2 \equiv -16 \pmod{34} \\
@@ -40,36 +42,43 @@ Also
 \subsection{3.2 Die Einheitengruppe $\Zm{m}^*$ von $\Zm{m}$}
 
 \begin{bemerkung}
+% KORRIGIERT: G war nicht eingeführt
 Die Einheiten sind genau die Elemente $k \in \Zm{m}$ mit $\ggT(k, m) = 1$.\\
-$(\Zm{m}^*, \cdot\,)$ ist eine abelsche Gruppe,
+$(\Zm{m}^*, \cdot\,)$ ist eine abelsche Gruppe. Für eine endliche Gruppe $G$ ist
 \[
   \operatorname{ord}(G) = |G|, \qquad\qquad \operatorname{ord}(\Zm{m}^*) = \varphi(m).
 \]
 \end{bemerkung}
 
 \begin{bemerkung}[Kürzungsregel]
-Für Einheiten $a \in \Zm{m}^*$ gilt
+% KORRIGIERT: Quantor für x, y und Begründung fehlten
+Für Einheiten $a \in \Zm{m}^*$ und alle $x, y \in \Zm{m}$ gilt (Multiplikation mit $a^{-1}$)
 \[
   a \cdot x = a \cdot y \quad \Rightarrow \quad x = y \qquad\qquad \text{Kürzungsregel}
 \]
 \end{bemerkung}
 
-Sei $p$ eine Primzahl. Dann ist
+% KORRIGIERT: Original "Sei p eine Primzahl. Dann ist": Voraussetzung a fehlte; {a1, a2, ...} statt {a·1, a·2, ...};
+% "=" statt "\equiv ... (mod p)"; Kürzen von (p-1)! ohne Begründung
+Sei $p$ eine Primzahl und $a \in \Zm{p}^*$. Nach der Kürzungsregel sind $a \cdot 1, a \cdot 2, \ldots, a \cdot (p - 1)$ paarweise verschieden. Dann ist (in $\Zm{p}$)
 \begin{align*}
-  \Rightarrow\quad & \Zm{p}^* = \{1, 2, 3, \ldots, p - 1\} = \{a1, a2, a3, \ldots, a(p - 1)\} \\
+  \Rightarrow\quad & \Zm{p}^* = \{1, 2, 3, \ldots, p - 1\} = \{a \cdot 1, a \cdot 2, a \cdot 3, \ldots, a \cdot (p - 1)\} \\
   \intertext{Dann stimmen auch die Produkte überein}
-  \Rightarrow\quad & 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) = a^{p-1} \cdot 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) \\
-  \Rightarrow\quad & 1 = a^{p-1}
+  \Rightarrow\quad & 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) \equiv a^{p-1} \cdot 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) \pmod{p} \\
+  \intertext{Wegen $\ggT((p - 1)!, p) = 1$ ist $(p - 1)!$ in $\Zm{p}$ invertierbar, man darf also kürzen:}
+  \Rightarrow\quad & 1 \equiv a^{p-1} \pmod{p}
 \end{align*}
 
 \begin{beispiel}
-$p = 7$, $a = 3$ $\Rightarrow$ $\{a1, a2, a3, \ldots, a6\} = \{3, 6, 2, 5, 1, 4\}$
+% KORRIGIERT: {a1, a2, ...} statt {a·1, a·2, ...}
+$p = 7$, $a = 3$ $\Rightarrow$ $\{a \cdot 1, a \cdot 2, a \cdot 3, \ldots, a \cdot 6\} = \{3, 6, 2, 5, 1, 4\}$ \ (in $\Zm{7}$)
 \end{beispiel}
 
 \begin{satz}[Fermat]
-Sei $p$ eine Primzahl und $a \in \Zm{p}^*$, dann gilt \hfill $a^{\operatorname{ord} G} = 1$.
+% KORRIGIERT: G nicht benannt; Voraussetzung für die Form in Z fehlte
+Sei $p$ eine Primzahl und $a \in \Zm{p}^*$, dann gilt \hfill $a^{\operatorname{ord} G} = 1$ \ (mit $G = \Zm{p}^*$).
 \begin{align*}
-  & a^{p-1} \equiv 1 \pmod{p} \\
+  & a^{p-1} \equiv 1 \pmod{p} \qquad \text{für alle } a \in \Z \text{ mit } p \nmid a \\
   \text{bzw.}\quad & a^{p-1} = 1 \quad (\text{in } \Zm{p}). \qquad \square
 \end{align*}
 \end{satz}
@@ -77,7 +86,8 @@ Sei $p$ eine Primzahl und $a \in \Zm{p}^*$, dann gilt \hfill $a^{\operatorname{o
 Im Beweis haben wir genutzt, dass $\Zm{p}^*$ abelsch ist.
 
 \begin{definition}[Bezeichnung]
-Die kleinste Zahl $k > 0$ mit $a^k = 1$ heißt \textbf{Ordnung von $a$} in $G$. Die Menge
+% KORRIGIERT: G und a waren nicht eingeführt
+Sei $G$ eine endliche Gruppe und $a \in G$. Die kleinste Zahl $k > 0$ mit $a^k = 1$ heißt \textbf{Ordnung von $a$} in $G$. Die Menge
 \[
   \langle a \rangle := \{\, a, a^2, a^3, \ldots, a^k = 1 \,\} \subseteq G
 \]
@@ -85,7 +95,7 @@ ist eine zyklische Gruppe der Ordnung $k$.
 
 Ein Element $g \in G$ mit $\operatorname{ord}(g) = |G|$ heißt erzeugendes Element (oder \textbf{primitiv}) von $G$. Für solches $g$ gilt
 \[
-  G = \{\, g, g^2, \ldots, g^k = 1 \} = \langle g \rangle
+  G = \{\, g, g^2, \ldots, g^k = 1 \} = \langle g \rangle \qquad (k = |G|)
 \]
 Besitzt $G$ ein primitives Element, so heißt $G$ zyklisch. Zyklische Gruppen sind abelsch.
 \end{definition}
@@ -100,7 +110,8 @@ $\Zm{7}^* = \{1, 2, \ldots, 6\}$
 \end{beispiel}
 
 \begin{bemerkung}
-Fermat war begeistert von seinem Satz. Er zeige, dass die Griechen noch nicht alles wußten.
+Fermat war begeistert von seinem Satz. % KORRIGIERT: Tippfehler "zeige"
+Er zeigte, dass die Griechen noch nicht alles wußten.
 
 Euler hat den Satz von Fermat etwa 100 Jahre später auf $\Zm{m}^*$ übertragen.\\
 $\operatorname{ord} \Zm{m}^* = \boldsymbol{\varphi}(m)$.
@@ -118,18 +129,20 @@ Formulierung in $\Z$
 \end{satz}
 
 \begin{beispiel}
-Fortsetzung: $\varphi(34) = \varphi(2 \cdot 17) = \varphi(2) \cdot \varphi(17) = 1 \cdot 16$
+% KORRIGIERT: "=" und "\neq" statt "\equiv" und "\not\equiv"; Begründung für phi(2·17) = phi(2)·phi(17) fehlte
+Fortsetzung: $\varphi(34) = \varphi(2 \cdot 17) = \varphi(2) \cdot \varphi(17) = 1 \cdot 16 = 16$ \ (da $\ggT(2, 17) = 1$)
 \[
-  \Rightarrow \quad 12^{16} = -16 \neq 1 \pmod{34}
+  \Rightarrow \quad 12^{16} \equiv -16 \not\equiv 1 \pmod{34}
 \]
-Kein Wunder: $\ggT(12, 34) = 2$ teilt jede Potenz von 12 mod 34.
+Kein Wunder: $\ggT(12, 34) = 2$ teilt jede Potenz von 12 mod 34. Der Satz von Euler setzt $\ggT(a, m) = 1$ voraus.
 \end{beispiel}
 
 \begin{bemerkung}
 Falls $\ggT(a, m) = 1$, geht das Potenzieren schneller:
 \begin{align*}
-  & k = q \cdot \varphi(m) + r \equiv r && (\bmod\ \varphi(m)) \\
-  \Rightarrow\quad & a^k = (a^{\varphi(m)})^q \cdot a^r \equiv 1^q \cdot a^r = a^r && (\bmod\ m) \qquad \square
+% KORRIGIERT: Bereich von r und Verweis auf Euler fehlten; Modulschreibweise vereinheitlicht
+  & k = q \cdot \varphi(m) + r,\ 0 \leq r < \varphi(m), \quad \text{also } k \equiv r \pmod{\varphi(m)} \\
+  \Rightarrow\quad & a^k = (a^{\varphi(m)})^q \cdot a^r \equiv 1^q \cdot a^r = a^r \pmod{m} \quad (\text{Euler}) \qquad \square
 \end{align*}
 \end{bemerkung}
 
@@ -137,9 +150,10 @@ Falls $\ggT(a, m) = 1$, geht das Potenzieren schneller:
 Gesucht: $11^{16} \pmod{34}$
 \begin{align*}
   & 11 \\
-  & 11^2 = 121 = 3 \cdot 34 + 19 \\
-  & 11^4 \equiv 19^2 = 361 = 10 \cdot 34 + 21 \pmod{34} \\
-  & 11^8 \equiv 21^2 = 441 = 13 \cdot 34 - 1 \pmod{34} \\
+% KORRIGIERT: Reste 19, 21, -1 und (mod 34) ergänzt
+  & 11^2 = 121 = 3 \cdot 34 + 19 \equiv 19 \pmod{34} \\
+  & 11^4 \equiv 19^2 = 361 = 10 \cdot 34 + 21 \equiv 21 \pmod{34} \\
+  & 11^8 \equiv 21^2 = 441 = 13 \cdot 34 - 1 \equiv -1 \pmod{34} \\
   & 11^{16} \equiv (-1)^2 = 1 \pmod{34}
 \end{align*}
 \end{beispiel}
@@ -148,19 +162,22 @@ Gesucht: $11^{16} \pmod{34}$
 
 Ändern nun die Blickrichtung und fragen, für welche Exponenten $e\,d$ ist
 \[
-  a^{e\,d} \equiv a \qquad (\bmod\ m)?
+  a^{e\,d} \equiv a \pmod{m}?
 \]
-Multiplizieren die Euler-Formel mit $a$ und finden
+% KORRIGIERT: Voraussetzung ggT(a, m) = 1 fehlte
+Multiplizieren die Euler-Formel mit $a$ (für $\ggT(a, m) = 1$) und finden
 \[
   a^{1 + \varphi(m)} \equiv a \pmod{m}
 \]
-also \quad $e\,d = 1$ oder $1 + \boldsymbol{\varphi}(m)$ \quad allgemein: \quad $e\,d = 1 \pmod{\varphi(m)}$
+also \quad $e\,d = 1$ oder $1 + \boldsymbol{\varphi}(m)$ \quad % KORRIGIERT: "=" statt "\equiv"
+allgemein: \quad $e\,d \equiv 1 \pmod{\varphi(m)}$
 
 \begin{definition}[RSA: Ver- und Entschlüsselung]
-So kann man das Klartextwort $a \in \Z$ verschlüsseln: \quad $a \to c = a^e$\\
+% KORRIGIERT: "=" statt "\equiv ... (mod m)" beim Ver- und Entschlüsseln
+So kann man das Klartextwort $a \in \Z$ verschlüsseln: \quad $a \to c \equiv a^e \pmod{m}$\\
 $c \in \Z$ ist das Codewort
 
-entschlüsseln: \quad $a \to c = a^e \to a = a^{ed} \pmod{m}$
+entschlüsseln: \quad $a \to c \equiv a^e \to c^d \equiv a^{ed} \equiv a \pmod{m}$
 
 Man nennt $e$ den Verschlüsselungsexponenten (encoding exponent) und\\
 $d$ den Entschlüsselungsexponenten (decoding exponent).\\
@@ -173,23 +190,26 @@ Sei $m = 101$, $e = 13 \in \Zm{\varphi(m)}^*$, \quad $\varphi(101) = 100$.\\
 $13 \cdot 7 \cdot 11 = 1001 \equiv 1 \pmod{100}$, also\\
 $d = 77$. Verschlüsselt werden soll die Zahl $a = 8 \in \Zm{m}^*$
 \[
-  c \equiv a^e = 8^{13} \equiv 18 \qquad (\bmod\ 101) \qquad (\text{Codewort})
+  c \equiv a^e = 8^{13} \equiv 18 \pmod{101} \qquad (\text{Codewort})
 \]
 \begin{align*}
   & 13 = 1 + 2^2 + 2^3, \\
   & 8^{13} = 8^8 \cdot 8^4 \cdot 8 \\
   & 8^2 = 64 \\
   & 8^4 = 4096 \equiv 56 \pmod{101} \\
-  & 8^8 = 3136 \equiv 5 \pmod{101} \\
+% KORRIGIERT: Original "8^8 = 3136"; richtig ist 8^8 \equiv 56^2 = 3136
+  & 8^8 \equiv 56^2 = 3136 \equiv 5 \pmod{101} \\
   \Rightarrow\quad & c \equiv 8 \cdot 56 \cdot 5 = 2240 \equiv 18 \pmod{101} && (\text{Codewort}) \\
-  & a = 18^{77} = 8^{13 \cdot 77} \equiv 8 \pmod{101} && (\text{Klartextwort})
+% KORRIGIERT: "=" statt "\equiv"; Begründung ergänzt
+  & a \equiv 18^{77} \equiv 8^{13 \cdot 77} \equiv 8 \pmod{101} && (\text{Klartextwort; } 13 \cdot 77 \equiv 1 \ (\bmod\ 100),\ \ggT(8, 101) = 1)
 \end{align*}
 \end{beispiel}
 
 \subsubsection*{Alice, Bob und Oscar}
 
-Alice verschlüsselt $a \to c = a^e$ und sendet $c$ an Bob. \hfill (Kundin einer Bank)\\
-Bob ist im Besitz von $d$ und entschlüsselt $c \to a = c^d$ \hfill (Bank)\\
+% KORRIGIERT: "=" statt "\equiv ... (mod m)"
+Alice verschlüsselt $a \to c \equiv a^e \pmod{m}$ und sendet $c$ an Bob. \hfill (Kundin einer Bank)\\
+Bob ist im Besitz von $d$ und entschlüsselt $c \to a \equiv c^d \pmod{m}$ \hfill (Bank)\\
 Oscar versucht den Klartext $a$ zu bekommen.
 
 \begin{beispiel}
@@ -197,7 +217,8 @@ Hätte Oscar eine Chance an $a$ zu kommen, wenn er sich $m$ und das verschlüsse
 
 Ja, ganz einfach. Oscar stellt fest, dass $m = 101$ eine Primzahl ist, dann ist $\varphi(m) = m - 1$. Oscar rechnet selbst $d$ aus
 \[
-  e\,d \equiv 1 \quad (\bmod\ \varphi(m)) \qquad \Rightarrow \qquad a = c^d
+% KORRIGIERT: "a = c^d" statt "a \equiv c^d (mod m)"
+  e\,d \equiv 1 \pmod{\varphi(m)} \qquad \Rightarrow \qquad a \equiv c^d \pmod{m}
 \]
 \end{beispiel}
 
@@ -207,18 +228,20 @@ Wie kann das verhindert (oder sehr schwer gemacht) werden?
 \textbf{Öffentlicher Schlüssel}\\
 Alice muss verschlüsseln können
 \[
-  c = a^e \quad (\bmod\ m)
+% KORRIGIERT: "=" statt "\equiv"
+  c \equiv a^e \pmod{m}
 \]
 $\Rightarrow$ \quad öffentlich ist $e$, $m$
 
 \textbf{Privater Schlüssel}\\
 Bob muss entschlüsseln können
 \[
-  a = c^d \quad (\bmod\ m)
+% KORRIGIERT: "=" statt "\equiv"
+  a \equiv c^d \pmod{m}
 \]
 Bob hat $d$ aus
 \[
-  e\,d \equiv 1 \quad (\bmod\ \varphi(m))
+  e\,d \equiv 1 \pmod{\varphi(m)}
 \]
 berechnet.\\
 $\Rightarrow$ \quad privat ist $d$, $\varphi(m)$
@@ -226,7 +249,8 @@ $\Rightarrow$ \quad privat ist $d$, $\varphi(m)$
 
 Wie macht es Bob dem Oscar schwer $\varphi(m)$ zu berechnen? Bob setzt
 \begin{align*}
-  & m = p \cdot q, && p, q \text{ große Primzahlen.} \\
+% KORRIGIERT: Voraussetzung p \neq q fehlte
+  & m = p \cdot q, && p, q \text{ große Primzahlen, } p \neq q. \\
   \Rightarrow\quad & \varphi(m) = (p - 1)(q - 1)
 \end{align*}
 Aber $p$, $q$ und damit auch $\varphi(m)$ kennt nur Bob.
@@ -237,20 +261,21 @@ $m = 11413$, \quad $\varphi(m) = 100 \cdot 112 = 11200 = 2^6 \cdot 5^2 \cdot 7$.
 $e \in \Zm{\varphi(m)}^*$, darf also nicht durch 2, 5 oder 7 teilbar sein. Setzen $e = 3533$.\\
 In der Praxis prüft man $e \in \Zm{\varphi(m)}^*$ bei der Berechnung von $d$ mit dem EA.
 \begin{align*}
-  & d \equiv e^{-1} \pmod{\varphi(m)} \\
+  & d \equiv e^{-1} \pmod{\varphi(m)} \qquad (\text{existiert, da } \ggT(e, \varphi(m)) = 1) \\
   \Rightarrow\quad & d = 6597
 \end{align*}
 Alice wählt die Zahl $a = 9726 \in \Zm{m}^*$ und berechnet.
 \begin{align*}
-  c &\equiv a^e = 9726^{3533} \equiv \qquad (\bmod\ m) \\
-    &= 5761
+% KORRIGIERT: Original "c \equiv a^e = 9726^{3533} \equiv (mod m) = 5761" und "a = 5761^{6597} (mod m) = 9726"
+  c &\equiv a^e = 9726^{3533} \\
+    &\equiv 5761 \pmod{m}
 \end{align*}
-Alice sendet $c$ an Bob und rechnet
+% KORRIGIERT: Original "Alice sendet c an Bob und rechnet"; entschlüsseln kann nur Bob (er kennt d)
+Alice sendet $c$ an Bob. Bob rechnet
 \begin{align*}
-  a &= 5761^{6597} \qquad (\bmod\ m) \\
-    &= 9726
+  a &\equiv 5761^{6597} \\
+    &\equiv 9726 \pmod{m}
 \end{align*}
-% UNSICHER: Im Original steht "Alice sendet c an Bob und rechnet"; gemeint ist vermutlich, dass Bob die Entschlüsselung rechnet. Wortlaut unverändert übernommen.
 \end{beispiel}
 
 \begin{bemerkung}[Fazit]
