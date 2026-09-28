@@ -1,0 +1,399 @@
+% Quelle: 2. Zählprinzipien.pdf
+% Art: Vorlesung
+% Themen: Zählprinzipien, geordnete Auswahlen, fallende Faktorielle, Permutationen, Kombinationen, Binomialkoeffizient, Pascalsche Rekursion, Bijektionsprinzip, Kombinationen mit Wiederholung, doppeltes Abzählen, Inzidenzmatrix, Handschlaglemma, Binomischer Lehrsatz, Inklusion und Exklusion, Siebmethode, Eulersche Phi-Funktion, Derangements, Partitionen von Zahlen, Ferrers-Diagramm, Euler-Identität
+
+\section{Zählprinzipien}
+
+Gegeben: Mengen $M$, \quad $|M| = n$.
+
+%------------------------------------------------------------
+\subsection*{2.1 Geordnete Auswahlen}
+
+Wählen aus $M$ $k$ Elemente \textbf{geordnet} aus.
+
+\begin{center}
+\begin{tabular}{llll}
+ & \textbf{ohne W.} & \textbf{mit Wiederh.} & \\
+Wahl des 1. Elementes: & $n$ & $n$ & Möglichkeiten \\
+Wahl des 2. Elementes: & $n-1$ & $n$ & ,,\\
+\quad \dots \quad \dots & & & \\
+Wahl des $k$-ten Elementes: & $n-k+1$ & $n$ & ,,\\
+\end{tabular}
+\end{center}
+
+\begin{satz}
+Die Anzahl der Möglichkeiten aus einer $n$-elementigen Menge $k$ Elemente geordnet auszuwählen ist
+\[
+n \cdot (n-1) \cdot (n-2) \dots (n-k+1) = \frac{n!}{(n-k)!} \qquad \text{bzw.} \qquad n^k
+\]
+Man nennt erstere Zahl eine \textbf{fallende Faktorielle}.
+\end{satz}
+
+\begin{bemerkung}[Wichtigster Spezialfall]
+Eine \textbf{Permutation} ist eine geordnete Auswahl ohne W. von $n$ Elementen, $k = n$.
+
+Wie viele Permutationen der Menge $M$ gibt es?
+\[
+n! = 1 \cdot 2 \dots n, \qquad 0! = 1
+\]
+\end{bemerkung}
+
+Wie macht man aus einer geordneten Auswahl eine ungeordnete?
+Die $k$ ausgewählten Element dürfen beliebig permutiert werden, also
+
+\begin{definition}[Kombinationen]
+Ungeordnete Auswahl von $k$ Elementen aus $M$
+\[
+\binom{n}{k} = \frac{n(n-1)\cdots(n-k+1)}{1\cdot 2\cdots k} = \frac{n!}{k!(n-k)!}, \qquad \binom{n}{0} = 1
+\]
+$\binom{n}{k}$ heißt \textbf{Binomialkoeffizient}.
+\[
+\binom{n}{k} = \binom{n}{n-k}, \qquad\qquad \binom{n+1}{k+1} = \binom{n}{k} + \binom{n}{k+1}.
+\]
+\end{definition}
+
+\begin{proof}
+Zählen Anzahl $(k+1)$-elementiger Teilmengen von $M \cup \{m\}$ auf zweierlei Weise je nachdem sie das Element $m$ enthalten oder nicht.
+\[
+\text{enthalten } m: \binom{n}{k}, \qquad\qquad \text{enthalten } m \text{ nicht}: \binom{n}{k+1},
+\]
+folglich
+\[
+\binom{n+1}{k+1} = \binom{n}{k} + \binom{n}{k+1}. \qedhere
+\]
+\end{proof}
+
+%------------------------------------------------------------
+\subsection*{2.2 Bijektionen}
+
+Gegeben: Menge $M$ (schwer zu zählen), $N$ (leicht zu zählen).
+Falls eine bijektive Abbildung $\varphi : M \to N$ existiert, ist
+\begin{equation*}
+|M| = |N| \tag{$*$}
+\end{equation*}
+
+\begin{satz}[Kombinationen mit Wiederholung]
+Kombination $=$ ungeordnete Auswahl\\
+$M =$ Menge der Kombinationen von $k$ Elementen aus $\N_n$ mit Wiederholung.\\
+$N =$ Menge der Kombinat.\ von $n-1$ Elementen aus $\N_{n+k-1}$ ohne Wiederholung.\\
+$A = \{ m_1, m_2, \dots, m_k \} \in M$.\\
+Ordnen die Elemente von $A$: \quad $m_1 \le m_2 \le \dots \le m_k$.\\
+Fügen in $A$ $n-1$ Nullen ein.\\
+Bijektion $\varphi : M \to N$ ein $A'' = \varphi(A) \in N$.
+\end{satz}
+
+\begin{proof}
+Konstruktion eines Wortes $A'$\\
+Schreiben
+\begin{center}
+\begin{tabular}{rll}
+ & $m_1 - 1$ & Nullen vor die Zahl $m_1$, \\
+ & $m_i - m_{i-1}$ & Nullen zwischen $m_{i-1}$ und $m_i$, \\
+$+$ & $n - m_k$ & Nullen hinter die Zahl $m_k$. \\
+\midrule
+ & $n - 1$ & insgesamt Nullen in $A'$ \\
+\end{tabular}
+\end{center}
+
+z.\,B.\ \quad $n = 5$, \ $k = 7$,
+\begin{align*}
+A &= 111\ 2\ 44\ 5 & &\leftrightarrow & A' &= 111\,0\,2\,00\,44\,0\,5 & &\leftrightarrow & A'' &= \{4, 6, 7, 10\}\\
+A &= 2\ 44\ 5555 & &\leftrightarrow & A' &= 0\,2\,00\,44\,0\,5555 & &\leftrightarrow & A'' &= \{1, 3, 4, 7\}\\
+A &= 2\ 44\ 4444 & &\leftrightarrow & A' &= 0\,2\,00\,444444\,0 & &\leftrightarrow & A'' &= \{1, 3, 4, 11\}
+\end{align*}
+
+$A''$ ist eine $n-1$-elementige Teilmenge von $N_{n+k-1}$. Auf diese Plätze werden die Nullen geschrieben. Deren Anzahl ist bekanntlich
+\[
+|N| = \binom{n+k-1}{n-1} = \binom{n+k-1}{k} = |M| \qedhere
+\]
+\end{proof}
+
+%------------------------------------------------------------
+\subsection*{2.3 Doppeltes Summieren der Elemente einer Matrix $I$}
+
+$A \subseteq M \times N$, \ $m = |M|$, $n = |N|$. Ordnen die Elemente von $M \times N$ in eine $m\times n$-Matrix $I$, die Inzidenzmatrix von $A$. Setzen
+\[
+I_{ij} = \begin{cases} 1, & \text{falls } (i,j) \in A \\ 0, & \text{falls } (i,j) \notin A \end{cases}.
+\]
+Dann ist $|A|$ die Anzahl der Einsen in $I$ und
+\[
+|A| = \sum_{i=1}^{m} r_i = \sum_{j=1}^{n} c_j
+\]
+wobei $r_i$, $c_j$ Summe von Zeile $i$ und Spalten $j$ ist.
+
+\begin{beispiel}
+Für jeden Graphen $G(V, E)$ mit $m$ Kanten gilt
+\[
+\sum_{v\in V} |E(v)| = 2m.
+\]
+\end{beispiel}
+
+\begin{proof}
+Sei $I$ die Inzidenzmatrix von $G$.
+
+Zeile $v$: \quad $|E(v)| = r_v = \sum_{e\in E} I_{ve}$ = Summe Einsen in Zeile $v$, Valenz von Knoten $v$.
+
+Spalte $e$: \quad $2 = c_e = \sum_{v\in V} I_{ve}$ \quad Jede Kante $e$ ist mit genau 2 Knoten inzident.
+\[
+\Rightarrow \qquad \sum_{v\in V} |E(v)| = \sum_{v\in V} r_v = \sum_{e\in E} c_e = 2m \qedhere
+\]
+\end{proof}
+
+%------------------------------------------------------------
+\subsection*{2.4 Binomischer Lehrsatz}
+
+\begin{satz}[Binomischer Lehrsatz]
+Die $n$-te Potenz eines Binoms kann in eine Summe entwickelt werden:
+\[
+(a+b)^n = \binom{n}{0}a^n + \binom{n}{1}a^{n-1}b + \dots + \binom{n}{k}a^{n-k}b^k + \dots + \binom{n}{n}b^n \qquad n > 0
+\]
+\end{satz}
+
+\begin{proof}
+Auf der linken Seite stehen $n$ Faktoren $(a+b)$. Beim Ausmultiplizieren wird aus jedem Faktor entweder $a$ oder $b$ gewählt. Der Term $a^{n-k}b^k$ entsteht wenn $k$ $b$'s gewählt werden. Das ist auf $\binom{n}{k}$ Arten möglich.
+\end{proof}
+
+\begin{korollar}[Folgerungen]
+Für $n > 0$ gilt
+\begin{enumerate}[label=\alph*)]
+\item $\displaystyle \binom{n}{0} + \binom{n}{1} + \dots + \binom{n}{k} + \dots + \binom{n}{n} = 2^n$
+\item $\displaystyle \binom{n}{0} - \binom{n}{1} + \dots + (-1)^k\binom{n}{k} + \dots + (-1)^n\binom{n}{n} = 0$
+\item $\displaystyle \binom{n}{0}^2 + \binom{n}{1}^2 + \dots + \binom{n}{n}^2 = \binom{2n}{n}$
+\end{enumerate}
+\end{korollar}
+
+\begin{proof}[Beweis von c)]
+Wo kommt der Binomialkoeffizient $\binom{2n}{n}$ vor?
+Als Koeffizient von $x^n$ in der Entwicklung von $(1+x)^{2n}$. Betrachten
+\[
+(1+x)^n (1+x)^n = (1+x)^{2n}
+\]
+Die linke Seite ist das Produkt zweier Faktoren der Form
+\[
+1 + \binom{n}{1}x + \dots + \binom{n}{k}x^k + \dots + x^n.
+\]
+Auf der linken Seite kommt die Potenz $x^n$ zustande, wenn die Terme $\binom{n}{k}x^k$ und $\binom{n}{n-k}x^{n-k}$ multipliziert werden, $0 \le k \le n$, also
+\[
+\binom{2n}{n} = \binom{n}{0}\binom{n}{n} + \dots + \binom{n}{k}\binom{n}{n-k} + \dots + \binom{n}{n}\binom{n}{0} = \binom{n}{0}^2 + \dots + \binom{n}{k}^2 + \dots + \binom{n}{n}^2 \qedhere
+\]
+\end{proof}
+
+%------------------------------------------------------------
+\subsection*{2.5 Prinzip der Inklusion und Exklusion -- Siebmethode}
+
+Oft ist es einfacher die Elemente einer Menge $\Omega$ zu zählen, die gewisse $r$ Eigenschaften besitzen, als diejenigen, die keine dieser $r$ Eigenschaften haben.
+
+Gegeben: \quad $A_i = \{ a \in \Omega \mid a \text{ besitzt Eigenschaft } i \}$, \quad $i = 1, 2, \dots, r$\\
+Gesucht: \quad $|\,\Omega \setminus A_1 \cup \dots \cup A_r\,|$\\
+z.\,B.\ gilt für
+\begin{align*}
+r = 2 &\qquad |\,\Omega \setminus A_1 \cup A_2\,| = |\Omega| - (\,|A_1| + |A_2|\,) + |A_1 \cap A_2| \\
+r = 3 &\qquad |\,\Omega \setminus A_1 \cup A_2 \cup A_3\,| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3
+\end{align*}
+mit
+\begin{align*}
+\alpha_1 &= |A_1| + |A_2| + |A_3| \\
+\alpha_2 &= |A_1 \cap A_2| + |A_1 \cap A_3| + |A_2 \cap A_3| \\
+\alpha_3 &= |A_1 \cap A_2 \cap A_3|
+\end{align*}
+
+\begin{satz}[Allgemein]
+\[
+|\,\Omega \setminus A_1 \cup \dots \cup A_r\,| = |\Omega| - \alpha_1 + \alpha_2 - \dots + (-1)^r \alpha_r
+\]
+\begin{itemize}
+\item[-] $\alpha_k$ ist die Summe der Anzahlen sämtlicher Durchschnitte von $k$ Mengen,
+\item[-] $\alpha_k$ enthält $\binom{r}{k}$ Summanden.
+\end{itemize}
+\end{satz}
+
+\begin{beispiel}
+An einer Musikschule werden 73 Kinder unterrichtet.
+20 lernen Flöte, 25 Geige und 52 Klavier.
+7 lernen Flöte und Geige, 12 Flöte und Klavier, 17 Geige und Klavier
+und genau einer, Fritzchen, lernt alle drei Instrumente.
+Wie viele Schüler erlernen keines dieser drei Instrumente?
+
+\textbf{Lösung:} \quad $|\Omega| = 73$, \ $r = 3$
+\begin{align*}
+|\,\Omega \setminus A_1 \cup A_2 \cup A_3\,| &= |\Omega| - \alpha_1 + \alpha_2 - \alpha_3 \\
+&= 73 - (20 + 25 + 52) + (7 + 12 + 17) - 1 \\
+&= 73 - 97 + 36 - 1 \\
+&= 11
+\end{align*}
+\end{beispiel}
+
+\begin{satz}[Formel für $\varphi(n)$]
+\[
+n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r} = \prod_{p\mid n} p^e, \qquad \Omega = \Z_n
+\]
+\begin{align*}
+\varphi(n) &= |\{ z \in \Z_n \mid \ggT(z, n) = 1 \}| \\
+&= |\,\Z_n^*\,| \\
+&= |\{ z \in \Z_n \mid \text{keines der } p_i \text{ teilt } z \}|
+\end{align*}
+\[
+A_i = \{ z \in \Omega \mid p_i \text{ teilt } z \}
+\]
+Die Elemente aus $A_i$ dürfen nicht mitgezählt werden. Dann ist
+\begin{align*}
+\varphi(n) &= |\,\Omega \setminus A_1 \cup A_2 \cup \dots \cup A_r\,| \\
+&= n - \alpha_1 + \alpha_2 - \alpha_3 + \dots + (-1)^r \alpha_r
+\end{align*}
+In $\Omega$ gibt es
+\begin{align*}
+|A_i| &= \frac{n}{p_i} && \text{Vielfache von } p_i, \\
+|A_i \cap A_j| &= \frac{n}{p_i p_j} && \text{Vielfache von } p_i p_j, \\
+&\dots \\
+|A_1 \cap \dots \cap A_r| &= \frac{n}{p_1 p_2 \cdot \ldots \cdot p_r} && \text{Vielfache von } p_1 p_2 \dots p_r.
+\end{align*}
+\begin{align*}
+\Rightarrow \varphi(n) &= n - \left(\frac{n}{p_1} + \frac{n}{p_2} + \dots + \frac{n}{p_r}\right) + \left(\frac{n}{p_1p_2} + \frac{n}{p_1p_3} + \dots\right) - + \dots + (-1)^r\left(\frac{n}{p_1p_2\cdots p_r}\right) \\
+&= n \left(1 - \frac{1}{p_1}\right)\cdot\left(1 - \frac{1}{p_2}\right)\cdots\left(1 - \frac{1}{p_r}\right) \qquad \square
+\end{align*}
+\end{satz}
+
+\begin{beispiel}
+$n = 60 = 2^2 \cdot 3 \cdot 5$, \qquad $p_1 = 2$, \ $p_2 = 3$, \ $p_3 = 5$
+\[
+\Rightarrow \quad \varphi(60) = 60 \left(1 - \frac{1}{2}\right)\cdot\left(1 - \frac{1}{3}\right)\cdots\left(1 - \frac{1}{5}\right) = 60 \cdot \frac{1}{2}\cdot\frac{2}{3}\cdot\frac{4}{5} = 60 \cdot \frac{4}{15} = 16
+\]
+2. Lösung:
+\[
+\varphi(60) = \varphi(2^2)\,\varphi(3)\,\varphi(5) = (2^2 - 2) \cdot 2 \cdot 4 = 16
+\]
+\end{beispiel}
+
+\begin{beispiel}[Derangement Problem (vertauschte Hüte)]
+$n$ Personen geben an der Garderobe ihren Hut ab. Die Garderobenfrau bringt die Hüte durcheinander.
+\begin{enumerate}[label=\alph*.]
+\item Auf wie viele Arten bringt sie das Kunststück fertig, jeder Person den falschen Hut zu geben?
+\item Wie hoch ist die Wahrscheinlichkeit, dass jeder den falschen Hut bekommt?
+\end{enumerate}
+
+Denken uns die Hüte und die Personen mit $1, \dots, n$ numeriert. Die Zuordnung der Hüte zu den Personen ist dann eine Permutation $\pi$ von $\N_n$.
+$\pi(i) = j$ bedeutet, Person $i$ bekommt Hut $j$.
+Ein Punkt $i$ mit $\pi(i) = i$ heißt \emph{Fixpunkt} der Permutation $\pi$. Ein \emph{Derangement} ist eine fixpunktfreie Permutation. Hier ist
+
+$\Omega = S_n$ \ Menge der Permutationen von $n$ Objekten, \quad $|\Omega| = n!$, \quad $r = n$\\
+$A_k =$ \quad \ ,,\ \quad mit $k$ Fixpunkten, z.\,B.\ an den Stellen $1, 2, \dots, k$.
+\[
+|A_k| = (n-k)!
+\]
+$\alpha_k$ ist die Anzahl der Permutationen mit $k$ Fixpunkten.
+Es gibt $\binom{n}{k}$ Möglichkeiten diese $k$ Elemente auszuwählen, also
+\[
+\alpha_k = \binom{n}{k}\cdot(n-k)! = \frac{n!}{k!}
+\]
+
+a. Die Anzahl der Derangements ist
+\begin{align*}
+d_n &= n! - \alpha_1 + \alpha_2 - \alpha_3 + \dots + (-1)^n \alpha_n. \\
+d_n &= n! \left(1 - \frac{1}{1!} + \frac{1}{2!} - \dots + (-1)^n\frac{1}{n!}\right)
+\end{align*}
+
+b. Die gesuchte Wahrscheinlichkeit bei $n$ Hüten ist
+\[
+P_n = \frac{d_n}{|\Omega|} = 1 - \frac{1}{1!} + \frac{1}{2!} - \dots + (-1)^n\frac{1}{n!}
+\]
+Andererseits ist
+\[
+e^x = 1 + \frac{x}{1!} + \frac{x^2}{2!} + \dots + \frac{x^n}{n!} + \dots \qquad \text{konvergent für alle } x
+\]
+Damit erhalten wir \quad $P_n = 1/e = 0{,}3678\ldots$
+\end{beispiel}
+
+%------------------------------------------------------------
+\subsection*{2.6 Partitionen einer positiven ganzen Zahl}
+
+\begin{definition}[Partition der Zahl $n$]
+Zu einer Partition einer $n$-elementigen Menge
+\[
+X = X_1 \cup X_2 \cup \dots \cup X_k, \qquad\qquad X_i \cap X_j = \emptyset \quad \text{für } i \neq j
+\]
+gibt es eine korrespondierende Gleichung
+\[
+n = n_1 + n_2 + \dots + n_k \qquad \text{mit } n_i = |X_i| > 0 \quad \text{für } i = 1, 2, \dots, k.
+\]
+Diese Gleichung heißt \textbf{Partition der Zahl $n$} in $k$ Teile.
+\end{definition}
+
+\begin{beispiel}
+Partitionen der Zahl 5
+\begin{center}
+\begin{tabular}{ll}
+$5$ & $2+2+1$ \\
+$4+1$ & $2+1+1+1$ \\
+$3+2$ & $1+1+1+1+1$ \\
+$3+1+1$ & \\
+\end{tabular}
+\end{center}
+\end{beispiel}
+
+\textbf{Bezeichnung:}
+\begin{itemize}
+\item[-] $p(n) =$ Anzahl der Partitionen von $n$
+\item[-] $p(\,n \mid \text{Restriktionen}\,)$
+\end{itemize}
+z.\,B.
+\begin{align*}
+&p(5) = 7 \\
+&p(\,5 \mid \text{Teile sind ungerade}\,) = 3 && (\,5,\ 3+1+1,\ 1+1+1+1+1\,) \\
+&p(\,5 \mid \text{Teile sind pw.\ verschieden}\,) = 3 && (\,5,\ 4+1,\ 3+2\,)
+\end{align*}
+
+\paragraph{Darstellung einer Partition als Ferrers-Diagramm}
+
+\begin{beispiel}
+$27 = 8 + 6 + 6 + 3 + 2 + 1 + 1$
+
+% GRAFIK: Ferrers-Diagramm; Zeilen = Teile (Pfeil nach rechts: "Größe der Teile"), Anzahl der Zeilen = Anzahl der Teile (Pfeil nach unten). Zeilenlängen 8, 6, 6, 3, 2, 1, 1 Punkte, linksbündig.
+\begin{center}
+\begin{tabular}{r|l}
+ & Größe der Teile $\rightarrow$ \\
+ & $\bullet\ \bullet\ \bullet\ \bullet\ \bullet\ \bullet\ \bullet\ \bullet$ \\
+ & $\bullet\ \bullet\ \bullet\ \bullet\ \bullet\ \bullet$ \\
+ & $\bullet\ \bullet\ \bullet\ \bullet\ \bullet\ \bullet$ \\
+Anzahl der Teile $\downarrow$ & $\bullet\ \bullet\ \bullet$ \\
+ & $\bullet\ \bullet$ \\
+ & $\bullet$ \\
+ & $\bullet$ \\
+\end{tabular}
+\end{center}
+
+Das Diagramm von oben nach unten gelesen ergibt die Partition
+\[
+27 = 7 + 5 + 4 + 3 + 3 + 3 + 1 + 1
+\]
+Damit hat man eine Bijektion zwischen den Mengen
+\[
+P(\,27 \mid \text{Größe der Teile ist} \le 8\,) \quad \Leftrightarrow \quad P(\,27 \mid \text{Anzahl der Teile ist} \le 8\,)
+\]
+\end{beispiel}
+
+\begin{satz}
+Für $k \le n$ gilt
+\[
+p(n) \mid \text{Größe der Teile ist} \le k \qquad = \qquad p(n) \mid \text{Anzahl der Teile ist} \le k \qquad \square
+\]
+\end{satz}
+
+\begin{satz}[Euler Identität]
+\[
+p(\,n \mid \text{Teile sind pw.\ verschieden}\,) = p(\,n \mid \text{Teile sind ungerade}\,)
+\]
+\end{satz}
+
+\begin{proof}
+$M = P(\,n \mid \text{Teile sind ungerade}\,)$\\
+$M' = P(\,n \mid \text{Teile sind pw.\ verschieden}\,)$\\
+Sei $A \in M$.
+Addieren jeweils zwei gleiche Teile, so lange bis keine gleichen Teile mehr existieren. \quad $\Rightarrow$ \ $A \to A' \in M'$\\
+Sei $A' \in M'$. Halbieren jedes gerade Teil, so lange bis keine geraden Teile mehr existieren. \quad $\Rightarrow$ \ $A' \to A \in M$
+\end{proof}
+
+z.\,B.
+\begin{align*}
+A &= 3 + 1 + 1 & &\leftrightarrow & A' &= 3 + 2 \\
+A &= 1 + 1 + 1 + 1 + 1 & &\leftrightarrow & 2 + 2 + 1 \quad &\leftrightarrow \quad A' = 4 + 1
+\end{align*}
