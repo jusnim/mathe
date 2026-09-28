@@ -8,17 +8,20 @@
 
 \subsection{ISBN10}
 \begin{bemerkung}[Prüfziffer ISBN10, aus Aufgabe 1]
+% KORRIGIERT: stand "c_{10} = \sum ..." ohne Modul; die Gleichheit gilt nur modulo 11
 \[
-c_{10} = \sum_{i=1}^{9} i \cdot c_i
+c_{10} \equiv \sum_{i=1}^{9} i \cdot c_i \pmod{11}, \qquad c_{10} \in \{0, 1, \dots, 10\}
 \]
 \end{bemerkung}
 
 \subsection{Lemma von Bezout, Inverse in $\Zm{m}$}
 \begin{bemerkung}[aus Aufgabe 5]
-Für teilerfremde Zahlen $a$, $m$ besitzt die Diophantische Gleichung
+% KORRIGIERT: stand "Für teilerfremde Zahlen a, m" ohne Angabe, woher a und m stammen
+Für $a \in \Z$ und $m \in \N$, $m \ge 2$, mit $\ggT(a, m) = 1$ besitzt die Diophantische Gleichung
 \[
-a\,x + m\,y = 1
+a \cdot x + m \cdot y = 1
 \]
 nach dem Lemma von Bezout Lösungen $(x, y)$ in ganzen Zahlen.
-Das bedeutet \quad $a\,x \equiv 1 \pmod{m}$, also $x = a^{-1}$ in $\Zm{m}$.
+% KORRIGIERT: stand "x = a^{-1} in Z_m" (x ist eine ganze Zahl, gemeint sind Restklassen)
+Das bedeutet \quad $a \cdot x \equiv 1 \pmod{m}$, also $[x] = [a]^{-1}$ in $\Zm{m}$.
 \end{bemerkung}

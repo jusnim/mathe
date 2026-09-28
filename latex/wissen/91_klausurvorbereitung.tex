@@ -9,6 +9,8 @@
 \subsection{Verfahren und Formeln aus den Lösungen}
 
 \begin{algorithmus}[Euklidischer Algorithmus, aus Aufgabe 3]
+% KORRIGIERT: Voraussetzungen an a, b und die Reste fehlten
+Für $a, b \in \N$ (Division mit Rest, $b > r_1 > r_2 > \dots > r_n > 0$):
 \begin{align*}
 a &= q_0\, b + r_1\\
 b &= q_1\, r_1 + r_2\\
@@ -18,28 +20,38 @@ r_{n-1} &= q_n\, r_n \qquad \Rightarrow \quad r_n = \ggT(a, b)
 \end{algorithmus}
 
 \begin{bemerkung}[Turnierplan, aus Aufgabe 5]
-$x + y = 2m$ für $x \neq y$, andernfalls spielt $x$ gegen $2m$.
+% KORRIGIERT: stand "x + y = 2m für x \neq y" (gilt nur in Runde 1; die Summe ist modulo 2m-1 zu nehmen)
+In Runde $i$ ($i = 1, \dots, 2m-1$) spielt $x$ gegen $y$ ($x, y \in \{1, \dots, 2m-1\}$), wenn
+$x + y \equiv i \pmod{2m-1}$ für $x \neq y$; andernfalls (d.\,h.\ $2x \equiv i \pmod{2m-1}$) spielt $x$ gegen $2m$.
 \end{bemerkung}
 
 \begin{bemerkung}[Siebformel für drei Mengen, aus Aufgabe 6]
+% KORRIGIERT: stand "\Omega \setminus A_1 \cup A_2 \cup A_3" ohne Klammern (mehrdeutig)
 \[
-\left|\Omega \setminus A_1 \cup A_2 \cup A_3\right|
+\left|\Omega \setminus (A_1 \cup A_2 \cup A_3)\right|
 = |\Omega| - \bigl(|A_1| + |A_2| + |A_3|\bigr) + |A_1 \cap A_2| + |A_1 \cap A_3| + |A_2 \cap A_3| - |A_1 \cap A_2 \cap A_3|
 \]
 \end{bemerkung}
 
 \begin{bemerkung}[RSA: Berechnung des privaten Schlüssels $d$, aus Aufgabe 7]
 1.~Lösungsweg (Satz von Euler, Schnelles Potenzieren):
+% KORRIGIERT: stand "d = e^{\varphi(\varphi(m)) - 1} \equiv 1 \pmod{\varphi(m)}" (falsch: d ist nicht \equiv 1); Voraussetzungen ggT ergänzt
 \[
-e\, d \equiv 1 \pmod{\varphi(m)}, \qquad a^{\varphi(m)} \equiv 1 \pmod m
-\quad\Rightarrow\quad d = e^{\varphi(\varphi(m)) - 1} \equiv 1 \pmod{\varphi(m)}
+e \cdot d \equiv 1 \pmod{\varphi(m)}, \qquad a^{\varphi(m)} \equiv 1 \pmod m
+\quad\Rightarrow\quad d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}
 \]
+(Euler gilt für $\ggT(a, m) = 1$; hier angewandt mit Modul $\varphi(m)$ auf $e$, da $\ggT(e, \varphi(m)) = 1$.)
+
 2.~Lösungsweg (Lemma von Bezout, EA):
+% KORRIGIERT: "für ein y \in \Z" und Voraussetzung ggT(e, \varphi(m)) = 1 fehlten
 \[
-e\, d - \varphi(m)\, y = 1 \quad\Leftrightarrow\quad e\, d \equiv 1 \pmod{\varphi(m)}
+e \cdot d - \varphi(m) \cdot y = 1 \ \text{für ein } y \in \Z \quad\Leftrightarrow\quad e \cdot d \equiv 1 \pmod{\varphi(m)} 
 \]
+(lösbar, da $\ggT(e, \varphi(m)) = 1$)
 \end{bemerkung}
 
 \begin{bemerkung}[Simultane Kongruenzen, aus Aufgabe 8]
-$z = m\,x + a = n\,y + b \;\Rightarrow\; m\,x - n\,y = b - a$ \quad Lemma von Bezout
+% KORRIGIERT: Voraussetzungen (z \equiv a mod m, z \equiv b mod n, x, y \in \Z, ggT(m, n) = 1) fehlten
+$z \equiv a \pmod{m}$, $z \equiv b \pmod{n}$:
+$z = m \cdot x + a = n \cdot y + b$ mit $x, y \in \Z$ $\;\Rightarrow\; m \cdot x - n \cdot y = b - a$ \quad Lemma von Bezout (lösbar für $\ggT(m, n) = 1$)
 \end{bemerkung}

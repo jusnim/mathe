@@ -10,9 +10,10 @@
 
 \begin{bemerkung}[Kontrollmatrix von $H_q(m)$, aus Lösung 5\_5]
 Die Spalten einer Kontrollmatrix $H$ des $q$-nären Hamming Codes $H_q(m)$ bestehen aus Repräsentanten der 1-dimensionalen Unterräume des $\mathbf{F}_q^m$.
-1-dim.\ Unterraum des $\mathbf{F}_q^m$ sind die Geraden
+% KORRIGIERT: Voraussetzung h \neq 0 fehlte (für h = 0 ist die Menge {0} kein 1-dim. Unterraum und hat nicht q Elemente)
+1-dim.\ Unterraum des $\mathbf{F}_q^m$ sind die Geraden (mit $\mathbf{h} \in \mathbf{F}_q^m$, $\mathbf{h} \neq \mathbf{0}$)
 \[
-\{\, y\,\mathbf{h} \mid y \in \mathbf{F}_q \,\}, \qquad |\{\, y\,\mathbf{h} \mid y \in \mathbf{F}_q \,\}| = |\mathbf{F}_q| = q .
+\{\, y \cdot \mathbf{h} \mid y \in \mathbf{F}_q \,\}, \qquad |\{\, y \cdot \mathbf{h} \mid y \in \mathbf{F}_q \,\}| = |\mathbf{F}_q| = q .
 \]
 \end{bemerkung}
 
@@ -25,12 +26,16 @@ Die Spalten einer Kontrollmatrix $H$ des $q$-nären Hamming Codes $H_q(m)$ beste
 \end{bemerkung}
 
 \begin{bemerkung}[Hamming Schranke, aus Lösung 5\_6]
+% KORRIGIERT: stand nur "2e+1 = d" ohne Voraussetzungen; das gilt nur für ungerades d, allgemein e = \lfloor (d-1)/2 \rfloor
+Für einen Code $C \subseteq \mathbf{F}_q^n$ mit Minimalabstand $d$ und $e = \lfloor (d-1)/2 \rfloor$ gilt
 \[
-|C| \sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |\mathbf{F}_q^n| = q^n, \qquad 2e+1 = d .
+|C| \cdot \sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |\mathbf{F}_q^n| = q^n, \qquad 2e+1 = d \text{ (für ungerades } d\text{)} .
 \]
 \end{bemerkung}
 
 \begin{bemerkung}[Singleton Schranke, aus Lösung 5\_7]
+% KORRIGIERT: Voraussetzung (linearer [n, k, d]_q-Code) fehlte
+Für einen linearen $[n, k, d]_q$-Code gilt
 \[
 k + d \le n + 1 .
 \]

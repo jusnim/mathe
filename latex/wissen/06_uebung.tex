@@ -7,7 +7,9 @@
 \subsection{Zyklische Codes}
 
 \begin{bemerkung}[Kreisteilungsklassen, aus 6\_1 b) und 6\_5]
-Kreisteilungsklassen: $\{s, sp, sp^2, \dots, sp^{d-1}\}$
+% KORRIGIERT: stand nur "{s, sp, sp^2, ..., sp^{d-1}}" ohne Modul und ohne Angabe, was d ist
+Kreisteilungsklassen: $\{s, sp, sp^2, \dots, sp^{d-1}\}$, Elemente modulo $n$ gerechnet ($\ggT(p, n) = 1$);
+$d \ge 1$ ist die kleinste Zahl mit $s\,p^d \equiv s \pmod{n}$.
 \end{bemerkung}
 
 \begin{bemerkung}[Generatorpolynom, aus 6\_2 und 6\_3]
@@ -39,14 +41,17 @@ $a^{-1}$ & 1 & $-5$ & 4 & 3 & $-2$ & 2 & $-3$ & $-4$ & 5 & $-1$\\
 H = \begin{pmatrix}
 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10
+% KORRIGIERT: Modulangabe (mod 11) beim \equiv fehlte
 \end{pmatrix}
 \equiv
 \begin{pmatrix}
 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
 1 & 2 & 3 & 4 & 5 & -5 & -4 & -3 & -2 & -1
 \end{pmatrix}
+\pmod{11}
 \]
-$\mathbf{e} = \mathbf{r} - \mathbf{c} = (\,0 \dots m \dots 0\,)$, \quad
-$S(\mathbf{r}) = \begin{pmatrix} s_0\\ s_1 \end{pmatrix} = \begin{pmatrix} 1\\ x \end{pmatrix} y$, \quad
+% KORRIGIERT: stand "(0 ... m ... 0)" und "S(r) = ... = (1, x)^T y" (Fehlerwert einmal m, einmal y; Syndrom einmal Syn, einmal S; = statt \equiv)
+$\mathbf{e} = \mathbf{r} - \mathbf{c} = (\,0 \dots y \dots 0\,)$ (Fehlerwert $y$ an Stelle $x$), \quad
+$\operatorname{Syn}(\mathbf{r}) = \begin{pmatrix} s_0\\ s_1 \end{pmatrix} \equiv y \cdot \begin{pmatrix} 1\\ x \end{pmatrix} \pmod{11}$, \quad
 $\mathbf{c} = \mathbf{r} - \mathbf{e}$
 \end{algorithmus}

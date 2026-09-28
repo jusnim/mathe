@@ -5,17 +5,21 @@
 \subsection{Teileranzahl- und Teilersummenfunktion, vollkommene Zahlen}
 
 \begin{definition}[Teileranzahl- und Teilersummenfunktion]
+% KORRIGIERT: stand "\sum_{d \mid n}" (Summationsindex d = Funktionsname d); Index umbenannt in t, Quantor für n ergänzt
+Für $n \in \N$ sei
 \[
-d(n) = \sum_{d \mid n} 1, \qquad \sigma(n) = \sum_{d \mid n} d \qquad\qquad n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r}.
+d(n) = \sum_{t \in \N,\ t \mid n} 1, \qquad \sigma(n) = \sum_{t \in \N,\ t \mid n} t \qquad\qquad n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r}.
 \]
 \end{definition}
 
 \begin{bemerkung}[Hinweis zu Aufgabe 3]
-Für $\ggT(m, n) = 1$ gilt $d(m\,n) = d(m)\,d(n)$ bzw.\ $\sigma(m\,n) = \sigma(m)\,\sigma(n)$.
+% KORRIGIERT: stand "Für ggT(m, n) = 1" ohne m, n \in \N
+Für $m, n \in \N$ mit $\ggT(m, n) = 1$ gilt $d(m \cdot n) = d(m) \cdot d(n)$ bzw.\ $\sigma(m \cdot n) = \sigma(m) \cdot \sigma(n)$.
 \end{bemerkung}
 
 \begin{satz}[Formeln für $d(n)$ und $\sigma(n)$, hergeleitet in Aufgabe 3]
-Für $n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r}$ gilt
+% KORRIGIERT: Voraussetzung an die Primfaktorzerlegung fehlte
+Für $n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r}$ mit paarweise verschiedenen Primzahlen $p_1, \dots, p_r$ und $e_1, \dots, e_r \in \N$ gilt
 \[
 d(n) = (1 + e_1) \cdots (1 + e_r), \qquad
 \sigma(n) = \frac{p_1^{1+e_1} - 1}{p_1 - 1} \cdot \ldots \cdot \frac{p_r^{1+e_r} - 1}{p_r - 1}.
@@ -23,15 +27,18 @@ d(n) = (1 + e_1) \cdots (1 + e_r), \qquad
 \end{satz}
 
 \begin{definition}[Vollkommene Zahl]
-Eine Zahl $n$ mit $\sigma(n) = 2n$ heißt \emph{vollkommen}.
+% KORRIGIERT: stand "Eine Zahl n" ohne n \in \N
+Eine Zahl $n \in \N$ mit $\sigma(n) = 2n$ heißt \emph{vollkommen}.
 \end{definition}
 
 \begin{definition}[Mersenne Primzahl, aus Aufgabe 6]
-Sei $2^k - 1$ eine Primzahl. Eine solche heißt \emph{Mersenne Primzahl}.
+% KORRIGIERT: stand "Sei 2^k - 1" ohne k \in \N
+Sei $k \in \N$ und $2^k - 1$ eine Primzahl. Eine solche heißt \emph{Mersenne Primzahl}.
 \end{definition}
 
 \subsection{Formel für $a^{-1}$ in $\Zm{m}^*$}
 
 \begin{satz}[Formel für $a^{-1}$ in $\Zm{m}^*$]
-Es gilt (Satz von Euler) $a\, a^{\varphi(m)-1} = a^{\varphi(m)} = 1$, also $a^{-1} = a^{\varphi(m)-1}$.
+% KORRIGIERT: stand "a\, a^{\varphi(m)-1} = a^{\varphi(m)} = 1, also a^{-1} = a^{\varphi(m)-1}" ohne Modul und ohne Voraussetzung ggT(a, m) = 1
+Sei $m \ge 2$ und $a \in \Z$ mit $\ggT(a, m) = 1$. Es gilt (Satz von Euler) $a \cdot a^{\varphi(m)-1} = a^{\varphi(m)} \equiv 1 \pmod{m}$, also $a^{-1} \equiv a^{\varphi(m)-1} \pmod{m}$.
 \end{satz}

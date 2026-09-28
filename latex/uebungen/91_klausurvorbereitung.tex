@@ -14,13 +14,15 @@ Ergänzen Sie die folgende Nummer zu einer ISBN-10 Buchnummer.\\
 
 \begin{loesung}
 3-05-501517-$c_{10}$
+% KORRIGIERT: Original mit "." als Malzeichen und "=" statt "\equiv" ohne (mod 11); Begründung für die negativen Gewichte ergänzt.
+Es gilt $c_{10} \equiv \sum_{i=1}^{9} i \cdot c_i \pmod{11}$. Für die Gewichte $6, 7, 8, 9$ rechnen wir mit $-5, -4, -3, -2$ (denn $6 \equiv -5$, \dots, $9 \equiv -2 \pmod{11}$).
 \begin{align*}
-c_{10} &= 1.3 + 2.0 + 3.5 + 4.5 + 5.0 - 5.1 - 4.5 - 3.1 - 2.7\\
-&= 3 + 2.(0-7) + 3.(5-1) + 4.(5-5) + 5.(0-1)\\
-&= 3 - 3 + 1 - 5\\
-&= -4 = 7
+c_{10} &\equiv 1 \cdot 3 + 2 \cdot 0 + 3 \cdot 5 + 4 \cdot 5 + 5 \cdot 0 - 5 \cdot 1 - 4 \cdot 5 - 3 \cdot 1 - 2 \cdot 7\\
+&\equiv 3 + 2 \cdot (0-7) + 3 \cdot (5-1) + 4 \cdot (5-5) + 5 \cdot (0-1)\\
+&\equiv 3 - 3 + 1 - 5\\
+&\equiv -4 \equiv 7 \pmod{11}
 \end{align*}
-% Hinweis: "." steht in der Quelle für die Multiplikation.
+Also ist $c_{10} = 7$.
 \end{loesung}
 
 %------------------------------------------------------------
@@ -36,10 +38,12 @@ Zeigen Sie, dass \textbf{ISBN10} diesen Fehler erkennt, dass also $\mathbf{h}\,\
 \end{aufgabe}
 
 \begin{loesung}
-$\mathbf{e} = \mathbf{r} - \mathbf{c}$
+$\mathbf{e} = \mathbf{r} - \mathbf{c}$ hat an der Stelle $x$ den Eintrag $c_y - c_x$, an der Stelle $y$ den Eintrag $c_x - c_y$ und sonst $0$. Es ist $\mathbf{h} = (1, 2, \dots, 10)$.
+% KORRIGIERT: Begründungen ergänzt (h c^T = 0; warum das Produkt nicht 0 ist).
 \[
-\Rightarrow \mathbf{h}\,\mathbf{r}^T = \mathbf{h}\,\mathbf{e}^T = x\,(c_y - c_x) + y\,(c_x - c_y) = (x - y)\,(c_y - c_x) \neq 0
+\Rightarrow \mathbf{h}\,\mathbf{r}^T = \mathbf{h}\,\mathbf{c}^T + \mathbf{h}\,\mathbf{e}^T = \mathbf{h}\,\mathbf{e}^T = x \cdot (c_y - c_x) + y \cdot (c_x - c_y) = (x - y) \cdot (c_y - c_x) \neq 0 \quad \text{in } \Zm{11}
 \]
+denn $\mathbf{h}\,\mathbf{c}^T = 0$ (Codewort), $x - y \not\equiv 0 \pmod{11}$ wegen $1 \le x < y \le 10$, $c_y - c_x \not\equiv 0 \pmod{11}$ (sonst gäbe es keinen Fehler), und $\Zm{11}$ ist ein Körper ($11$ ist prim), also ist das Produkt zweier Elemente $\neq 0$ wieder $\neq 0$.
 \end{loesung}
 
 %------------------------------------------------------------
@@ -100,20 +104,24 @@ Q &= \begin{pmatrix} 3 & 1\\ 1 & 0\end{pmatrix}
 = \begin{pmatrix} 401 & 103\\ 109 & 28\end{pmatrix}
 \end{align*}
 \begin{align*}
-\operatorname{Det} Q = 401 \cdot 28 - 109 \cdot 103 &= 1 && | \cdot 6\\
+% KORRIGIERT: Begründung für den Übergang zur nächsten Zeile ergänzt.
+\operatorname{Det} Q = 401 \cdot 28 - 109 \cdot 103 &= 1 && | \cdot 6 \quad \text{(es ist } 6 \cdot 401 = 2406,\ 6 \cdot 109 = 654\text{)}\\
 2406 \cdot 28 - 654 \cdot 103 &= 6 && | \cdot 4\\
 2406 \cdot 112 - 654 \cdot 412 &= 24
 \end{align*}
 \end{enumerate}
 
-\textbf{c)} Für alle weiteren Lösungen dieser Gleichung muss gelten
-\[ 2406\,x - 654\,y = 0 \]
+% KORRIGIERT: Original: "Für alle weiteren Lösungen dieser Gleichung muss gelten 2406x - 654y = 0" (gilt nur für die Differenz zweier Lösungen).
+\textbf{c)} Ist $(x, y)$ eine weitere Lösung, so muss für die Differenz zur Lösung $(3, 11)$ gelten
+\[ 2406 \cdot (x - 3) - 654 \cdot (y - 11) = 0 \]
 Es ist
 \[ 2406 \cdot \frac{654}{6} - 654 \cdot \frac{2406}{6} = 0 \]
 also
 \[ 2406 \cdot 109 - 654 \cdot 401 = 0 \]
+% KORRIGIERT: Begründung der Vollständigkeit und "t \in \Z" ergänzt.
+Da $\ggT(401, 109) = 1$ ist, sind dies bis auf ganzzahlige Vielfache alle Lösungen von $2406\,x - 654\,y = 0$.
 Damit erhält man für die allgemeine Lösung von $2406\,x - 654\,y = 24$
-\[ x = 3 + 109\,t, \qquad y = 11 + 401\,t \]
+\[ x = 3 + 109\,t, \qquad y = 11 + 401\,t, \qquad t \in \Z \]
 \end{loesung}
 
 %------------------------------------------------------------
@@ -131,7 +139,8 @@ Damit erhält man für die allgemeine Lösung von $2406\,x - 654\,y = 24$
 \item $360 = 2^3 \cdot 3^2 \cdot 5$
 \item $\varphi(360) = 360 \left(1 - \frac{1}{2}\right)\left(1 - \frac{1}{3}\right)\left(1 - \frac{1}{5}\right) = 360 \cdot \frac{1}{2} \cdot \frac{2}{3} \cdot \frac{4}{5} = 12 \cdot 8 = 96$\\
 oder so\\
-$\varphi(360) = \varphi(8) \cdot \varphi(9) \cdot \varphi(5) = 4 \cdot 6 \cdot 4 = 96$
+% KORRIGIERT: Voraussetzung für die Multiplikativität ergänzt.
+$\varphi(360) = \varphi(8) \cdot \varphi(9) \cdot \varphi(5) = 4 \cdot 6 \cdot 4 = 96$ \quad (da $8$, $9$, $5$ paarweise teilerfremd sind)
 \end{enumerate}
 \end{loesung}
 
@@ -143,7 +152,8 @@ Bestimmen Sie einen Turnierplan für $2m = 8$ Mannschaften an 7 Spieltagen.
 \end{aufgabe}
 
 \begin{loesung}
-$x + y = 2m$ \quad für $x \neq y$, \quad andernfalls spielt $x$ gegen $2m$.
+% KORRIGIERT: Original: "x + y = 2m für x \neq y, andernfalls spielt x gegen 2m" (passt nicht zur Tabelle).
+In Runde $r$ spielt $x$ gegen $y$, wenn $x + y \equiv r \pmod{2m-1}$ und $x \neq y$ ist ($x, y \in \{1, \dots, 2m-1\}$); gilt $2x \equiv r \pmod{2m-1}$, so spielt $x$ gegen $2m$.
 
 \medskip
 \begin{tabular}{ccccccc}
@@ -174,7 +184,8 @@ Wie viele Athleten trainieren eine andere Sportart?
 \end{aufgabe}
 
 \begin{loesung}
-Gesucht: $\left|\Omega \setminus A_1 \cup A_2 \cup A_3\right|$
+% KORRIGIERT: Klammern um die Vereinigung fehlten.
+Gesucht: $\left|\Omega \setminus (A_1 \cup A_2 \cup A_3)\right|$
 \begin{align*}
 &= |\Omega| - \bigl(|A_1| + |A_2| + |A_3|\bigr) + |A_1 \cap A_2| + |A_1 \cap A_3| + |A_2 \cap A_3| - |A_1 \cap A_2 \cap A_3|\\
 &= 55 - (35 + 27 + 12) + 13 + 7 + 5 - 2 = 80 - 76\\
@@ -192,19 +203,22 @@ Berechnen Sie $d$ aus der Vorlesung. In Kapitel 3 waren $m = 101$, $e = 13$.
 
 \begin{loesung}
 \textbf{1. Lösungsweg:} Satz von Euler, Schnelles Potenzieren
+% KORRIGIERT: Original: "d = e^{\varphi(\varphi(m))-1} \equiv 1 (mod \varphi(m))" und "d = e^{39} \equiv 1 (mod 100)" (richtig: e \cdot d \equiv 1 bzw. d \equiv e^{39}); Voraussetzungen ggT = 1 und (mod 100) bei den Potenzen ergänzt.
 \begin{align*}
-& e\,d \equiv 1 \pmod{\varphi(m)}, \quad \varphi(101) = 100, && a^{\varphi(m)} \equiv 1 \pmod m\\
-\Rightarrow\quad & d = e^{\varphi(\varphi(m)) - 1} \equiv 1 \pmod{\varphi(m)} && \varphi(\varphi(m)) = \varphi(100) = 40\\
+& e \cdot d \equiv 1 \pmod{\varphi(m)}, \quad \varphi(101) = 100, && a^{\varphi(m)} \equiv 1 \pmod m \ \text{ für } \ggT(a, m) = 1\\
+\Rightarrow\quad & d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}, \text{ denn } e \cdot d \equiv e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)} && \text{(wegen } \ggT(13, 100) = 1\text{)}\\
+& \varphi(\varphi(m)) = \varphi(100) = 40\\
 \Rightarrow\quad & \varphi(\varphi(m)) - 1 = 39 = 1 + 2 + 4 + 32\\
-& 13,\quad 13^2 \equiv 69,\quad 13^4 \equiv 69^2 \equiv 61,\quad \dots,\quad 13^{32} \equiv 81\\
-\Rightarrow\quad & d = e^{39} \equiv 1 \pmod{100}\\
+& 13,\quad 13^2 \equiv 69,\quad 13^4 \equiv 69^2 \equiv 61,\quad \dots,\quad 13^{32} \equiv 81 \pmod{100}\\
+\Rightarrow\quad & d \equiv e^{39} = 13^{1} \cdot 13^{2} \cdot 13^{4} \cdot 13^{32} \pmod{100}\\
 \Rightarrow\quad & d \equiv 13 \cdot 69 \cdot 61 \cdot 81 \equiv 77 \pmod{100}
 \end{align*}
 % Hinweis: In der Quelle steht "13^2", "13^4", "69^2", "13^32" in Textschreibweise und "*" als Malzeichen.
 
 \textbf{2. Lösungsweg:} Lemma von Bezout, EA
 \[
-e\,d - \varphi(m)\,y = 1 \quad\Leftrightarrow\quad e\,d \equiv 1 \pmod{\varphi(m)}
+% KORRIGIERT: Quantor "für ein y \in \Z" ergänzt.
+e \cdot d - \varphi(m) \cdot y = 1 \ \text{ für ein } y \in \Z \quad\Leftrightarrow\quad e \cdot d \equiv 1 \pmod{\varphi(m)}
 \]
 EA mit $\varphi(m)$ und $e$
 \begin{align*}
@@ -223,7 +237,8 @@ Q = \begin{pmatrix} 7 & 1\\ 1 & 0\end{pmatrix}
 = \begin{pmatrix} 100 & 23\\ 13 & 3\end{pmatrix}
 \]
 $\operatorname{Det} Q = 100 \cdot 3 - 13 \cdot 23 = 1$\\
-$\Rightarrow\quad d = -23 \equiv 77 \pmod{100}$
+% KORRIGIERT: Original "d = -23"; die Determinante liefert 13 \cdot (-23) \equiv 1 (mod 100).
+$\Rightarrow\quad 13 \cdot (-23) \equiv 1 \pmod{100} \quad\Rightarrow\quad d \equiv -23 \equiv 77 \pmod{100}$
 \end{loesung}
 
 %------------------------------------------------------------
@@ -241,9 +256,10 @@ Was ist die kleinste positive Lösung?
 \begin{loesung}
 \begin{align*}
 & z = m\,x + a = n\,y + b\\
-\Rightarrow\quad & m\,x - n\,y = b - a \qquad \text{Lemma von Beout}
+% KORRIGIERT: Original "Beout" (Tippfehler); Bedeutung von m, n, a, b ergänzt.
+\Rightarrow\quad & m\,x - n\,y = b - a \qquad \text{Lemma von Bezout}
 \end{align*}
-% Hinweis: "Beout" wörtlich aus der Quelle (Tippfehler für "Bezout").
+mit $m = 13$, $a = 5$, $n = 15$, $b = 4$ und $x, y \in \Z$.
 
 Euklidischer Algorithmus
 \begin{align*}
@@ -251,8 +267,10 @@ Euklidischer Algorithmus
 & 13 = 6 \cdot 2 + 1\\
 \Rightarrow\quad & 1 = 13 - 6 \cdot 2 = 13 - 6 \cdot (15 - 1 \cdot 13) = 7 \cdot 13 - 6 \cdot 15\\
 \Rightarrow\quad & b - a = 4 - 5 = -1 = 6 \cdot 15 - 7 \cdot 13\\
-\Rightarrow\quad & z = 5 - 13 \cdot 7 = 4 - 6 \cdot 15 = -86 \pmod{195}
+% KORRIGIERT: Original "z = -86 (mod 195)"; richtig ist "\equiv", mit Begründung für den Modul 195.
+\Rightarrow\quad & z = 5 - 13 \cdot 7 = 4 - 6 \cdot 15 = -86\\
+\Rightarrow\quad & z \equiv -86 \pmod{195} \quad \text{(da } \ggT(13, 15) = 1 \text{ ist, ist } 13 \cdot 15 = 195 \text{ der Modul)}
 \end{align*}
-Also ist die kleinste positive Lösung
+Alle Lösungen sind also $z = -86 + 195\,k$ mit $k \in \Z$. Also ist die kleinste positive Lösung
 \[ \Rightarrow\quad z = -86 + 195 = 109 \]
 \end{loesung}
