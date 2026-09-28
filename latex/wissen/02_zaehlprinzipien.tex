@@ -21,9 +21,10 @@ Wahl des $k$-ten Elementes: & $n-k+1$ & $n$ & ,,\\
 \end{center}
 
 \begin{satz}
+% KORRIGIERT: Voraussetzung k <= n fehlte; "(n-2) \dots (n-k+1)" ohne Malpunkt
 Die Anzahl der Möglichkeiten aus einer $n$-elementigen Menge $k$ Elemente geordnet auszuwählen ist
 \[
-n \cdot (n-1) \cdot (n-2) \dots (n-k+1) = \frac{n!}{(n-k)!} \qquad \text{bzw.} \qquad n^k
+n \cdot (n-1) \cdot (n-2) \cdots (n-k+1) = \frac{n!}{(n-k)!} \quad \text{(ohne W., } k \le n\text{)} \qquad \text{bzw.} \qquad n^k \quad \text{(mit W.)}
 \]
 Man nennt erstere Zahl eine \textbf{fallende Faktorielle}.
 \end{satz}
@@ -33,7 +34,8 @@ Eine \textbf{Permutation} ist eine geordnete Auswahl ohne W. von $n$ Elementen, 
 
 Wie viele Permutationen der Menge $M$ gibt es?
 \[
-n! = 1 \cdot 2 \dots n, \qquad 0! = 1
+% KORRIGIERT: "1 \cdot 2 \dots n"
+n! = 1 \cdot 2 \cdots n, \qquad 0! = 1
 \]
 \end{bemerkung}
 
@@ -41,18 +43,21 @@ Wie macht man aus einer geordneten Auswahl eine ungeordnete?
 Die $k$ ausgewählten Element dürfen beliebig permutiert werden, also
 
 \begin{definition}[Kombinationen]
-Ungeordnete Auswahl von $k$ Elementen aus $M$
+% KORRIGIERT: Bereich für k fehlte; Malpunkte ergänzt
+Ungeordnete Auswahl von $k$ Elementen aus $M$, \ $0 \le k \le n$:
 \[
-\binom{n}{k} = \frac{n(n-1)\cdots(n-k+1)}{1\cdot 2\cdots k} = \frac{n!}{k!(n-k)!}, \qquad \binom{n}{0} = 1
+\binom{n}{k} = \frac{n \cdot (n-1)\cdots(n-k+1)}{1\cdot 2\cdots k} = \frac{n!}{k! \cdot (n-k)!}, \qquad \binom{n}{0} = 1
 \]
 $\binom{n}{k}$ heißt \textbf{Binomialkoeffizient}.
+% KORRIGIERT: Bereich für k fehlte (Pascal-Regel für 0 <= k < n)
 \[
-\binom{n}{k} = \binom{n}{n-k}, \qquad\qquad \binom{n+1}{k+1} = \binom{n}{k} + \binom{n}{k+1}.
+\binom{n}{k} = \binom{n}{n-k} \quad (0 \le k \le n), \qquad\qquad \binom{n+1}{k+1} = \binom{n}{k} + \binom{n}{k+1} \quad (0 \le k < n).
 \]
 \end{definition}
 
 \begin{proof}
-Zählen Anzahl $(k+1)$-elementiger Teilmengen von $M \cup \{m\}$ auf zweierlei Weise je nachdem sie das Element $m$ enthalten oder nicht.
+% KORRIGIERT: Voraussetzung m nicht in M fehlte
+Zählen Anzahl $(k+1)$-elementiger Teilmengen von $M \cup \{m\}$ mit $m \notin M$ auf zweierlei Weise je nachdem sie das Element $m$ enthalten oder nicht.
 \[
 \text{enthalten } m: \binom{n}{k}, \qquad\qquad \text{enthalten } m \text{ nicht}: \binom{n}{k+1},
 \]
@@ -78,7 +83,8 @@ $N =$ Menge der Kombinat.\ von $n-1$ Elementen aus $\N_{n+k-1}$ ohne Wiederholun
 $A = \{ m_1, m_2, \dots, m_k \} \in M$.\\
 Ordnen die Elemente von $A$: \quad $m_1 \le m_2 \le \dots \le m_k$.\\
 Fügen in $A$ $n-1$ Nullen ein.\\
-Bijektion $\varphi : M \to N$ ein $A'' = \varphi(A) \in N$.
+% KORRIGIERT: "Bijektion $\varphi : M \to N$ ein $A'' = ...$" (Satzfehler)
+Bijektion $\varphi : M \to N$, \ $A \mapsto A'' = \varphi(A) \in N$.
 \end{satz}
 
 \begin{proof}
@@ -87,7 +93,8 @@ Schreiben
 \begin{center}
 \begin{tabular}{rll}
  & $m_1 - 1$ & Nullen vor die Zahl $m_1$, \\
- & $m_i - m_{i-1}$ & Nullen zwischen $m_{i-1}$ und $m_i$, \\
+% KORRIGIERT: Indexbereich i = 2, ..., k fehlte
+ & $m_i - m_{i-1}$ & Nullen zwischen $m_{i-1}$ und $m_i$ \ ($i = 2, \dots, k$), \\
 $+$ & $n - m_k$ & Nullen hinter die Zahl $m_k$. \\
 \midrule
  & $n - 1$ & insgesamt Nullen in $A'$ \\
@@ -101,7 +108,8 @@ A &= 2\ 44\ 5555 & &\leftrightarrow & A' &= 0\,2\,00\,44\,0\,5555 & &\leftrighta
 A &= 2\ 44\ 4444 & &\leftrightarrow & A' &= 0\,2\,00\,444444\,0 & &\leftrightarrow & A'' &= \{1, 3, 4, 11\}
 \end{align*}
 
-$A''$ ist eine $n-1$-elementige Teilmenge von $N_{n+k-1}$. Auf diese Plätze werden die Nullen geschrieben. Deren Anzahl ist bekanntlich
+% KORRIGIERT: "$n-1$-elementige", "$N_{n+k-1}$" statt $\N_{n+k-1}$
+$A''$ ist eine $(n-1)$-elementige Teilmenge von $\N_{n+k-1}$. Auf diese Plätze werden die Nullen geschrieben. Deren Anzahl ist bekanntlich
 \[
 |N| = \binom{n+k-1}{n-1} = \binom{n+k-1}{k} = |M| \qedhere
 \]
@@ -118,7 +126,7 @@ Dann ist $|A|$ die Anzahl der Einsen in $I$ und
 \[
 |A| = \sum_{i=1}^{m} r_i = \sum_{j=1}^{n} c_j
 \]
-wobei $r_i$, $c_j$ Summe von Zeile $i$ und Spalten $j$ ist.
+wobei $r_i$, $c_j$ die Summe von Zeile $i$ bzw.\ Spalte $j$ ist.
 
 \begin{beispiel}
 Für jeden Graphen $G(V, E)$ mit $m$ Kanten gilt
@@ -183,11 +191,12 @@ Auf der linken Seite kommt die Potenz $x^n$ zustande, wenn die Terme $\binom{n}{
 Oft ist es einfacher die Elemente einer Menge $\Omega$ zu zählen, die gewisse $r$ Eigenschaften besitzen, als diejenigen, die keine dieser $r$ Eigenschaften haben.
 
 Gegeben: \quad $A_i = \{ a \in \Omega \mid a \text{ besitzt Eigenschaft } i \}$, \quad $i = 1, 2, \dots, r$\\
-Gesucht: \quad $|\,\Omega \setminus A_1 \cup \dots \cup A_r\,|$\\
+% KORRIGIERT: überall "\Omega \setminus A_1 \cup ... \cup A_r" ohne Klammern (mehrdeutig)
+Gesucht: \quad $|\,\Omega \setminus (A_1 \cup \dots \cup A_r)\,|$\\
 z.\,B.\ gilt für
 \begin{align*}
-r = 2 &\qquad |\,\Omega \setminus A_1 \cup A_2\,| = |\Omega| - (\,|A_1| + |A_2|\,) + |A_1 \cap A_2| \\
-r = 3 &\qquad |\,\Omega \setminus A_1 \cup A_2 \cup A_3\,| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3
+r = 2 &\qquad |\,\Omega \setminus (A_1 \cup A_2)\,| = |\Omega| - (\,|A_1| + |A_2|\,) + |A_1 \cap A_2| \\
+r = 3 &\qquad |\,\Omega \setminus (A_1 \cup A_2 \cup A_3)\,| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3
 \end{align*}
 mit
 \begin{align*}
@@ -198,7 +207,7 @@ mit
 
 \begin{satz}[Allgemein]
 \[
-|\,\Omega \setminus A_1 \cup \dots \cup A_r\,| = |\Omega| - \alpha_1 + \alpha_2 - \dots + (-1)^r \alpha_r
+|\,\Omega \setminus (A_1 \cup \dots \cup A_r)\,| = |\Omega| - \alpha_1 + \alpha_2 - \dots + (-1)^r \alpha_r
 \]
 \begin{itemize}
 \item[-] $\alpha_k$ ist die Summe der Anzahlen sämtlicher Durchschnitte von $k$ Mengen,
@@ -215,7 +224,7 @@ Wie viele Schüler erlernen keines dieser drei Instrumente?
 
 \textbf{Lösung:} \quad $|\Omega| = 73$, \ $r = 3$
 \begin{align*}
-|\,\Omega \setminus A_1 \cup A_2 \cup A_3\,| &= |\Omega| - \alpha_1 + \alpha_2 - \alpha_3 \\
+|\,\Omega \setminus (A_1 \cup A_2 \cup A_3)\,| &= |\Omega| - \alpha_1 + \alpha_2 - \alpha_3 \\
 &= 73 - (20 + 25 + 52) + (7 + 12 + 17) - 1 \\
 &= 73 - 97 + 36 - 1 \\
 &= 11
@@ -224,7 +233,8 @@ Wie viele Schüler erlernen keines dieser drei Instrumente?
 
 \begin{satz}[Formel für $\varphi(n)$]
 \[
-n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r} = \prod_{p\mid n} p^e, \qquad \Omega = \Z_n
+% KORRIGIERT: "\prod_{p\mid n} p^e" (e undefiniert); Voraussetzungen an p_i, e_i fehlten
+n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r} = \prod_{i=1}^{r} p_i^{e_i}, \qquad p_1, \dots, p_r \text{ paarweise verschiedene Primzahlen}, \ e_i \ge 1, \qquad \Omega = \Z_n
 \]
 \begin{align*}
 \varphi(n) &= |\{ z \in \Z_n \mid \ggT(z, n) = 1 \}| \\
@@ -232,19 +242,20 @@ n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r} = \prod_{p\mid n} p^e, \qquad \Omega = 
 &= |\{ z \in \Z_n \mid \text{keines der } p_i \text{ teilt } z \}|
 \end{align*}
 \[
-A_i = \{ z \in \Omega \mid p_i \text{ teilt } z \}
+A_i = \{ z \in \Omega \mid p_i \text{ teilt } z \}, \qquad i = 1, \dots, r
 \]
 Die Elemente aus $A_i$ dürfen nicht mitgezählt werden. Dann ist
 \begin{align*}
-\varphi(n) &= |\,\Omega \setminus A_1 \cup A_2 \cup \dots \cup A_r\,| \\
+\varphi(n) &= |\,\Omega \setminus (A_1 \cup A_2 \cup \dots \cup A_r)\,| \\
 &= n - \alpha_1 + \alpha_2 - \alpha_3 + \dots + (-1)^r \alpha_r
 \end{align*}
 In $\Omega$ gibt es
 \begin{align*}
 |A_i| &= \frac{n}{p_i} && \text{Vielfache von } p_i, \\
-|A_i \cap A_j| &= \frac{n}{p_i p_j} && \text{Vielfache von } p_i p_j, \\
+|A_i \cap A_j| &= \frac{n}{p_i p_j} && \text{Vielfache von } p_i p_j \ (i \neq j), \\
 &\dots \\
-|A_1 \cap \dots \cap A_r| &= \frac{n}{p_1 p_2 \cdot \ldots \cdot p_r} && \text{Vielfache von } p_1 p_2 \dots p_r.
+% KORRIGIERT: uneinheitlich "p_1 p_2 \cdot \ldots \cdot p_r" bzw. "p_1 p_2 \dots p_r"; "i \neq j" ergänzt
+|A_1 \cap \dots \cap A_r| &= \frac{n}{p_1 p_2 \cdots p_r} && \text{Vielfache von } p_1 p_2 \cdots p_r.
 \end{align*}
 \begin{align*}
 \Rightarrow \varphi(n) &= n - \left(\frac{n}{p_1} + \frac{n}{p_2} + \dots + \frac{n}{p_r}\right) + \left(\frac{n}{p_1p_2} + \frac{n}{p_1p_3} + \dots\right) - + \dots + (-1)^r\left(\frac{n}{p_1p_2\cdots p_r}\right) \\
@@ -255,12 +266,15 @@ In $\Omega$ gibt es
 \begin{beispiel}
 $n = 60 = 2^2 \cdot 3 \cdot 5$, \qquad $p_1 = 2$, \ $p_2 = 3$, \ $p_3 = 5$
 \[
-\Rightarrow \quad \varphi(60) = 60 \left(1 - \frac{1}{2}\right)\cdot\left(1 - \frac{1}{3}\right)\cdots\left(1 - \frac{1}{5}\right) = 60 \cdot \frac{1}{2}\cdot\frac{2}{3}\cdot\frac{4}{5} = 60 \cdot \frac{4}{15} = 16
+\Rightarrow \quad % KORRIGIERT: "\cdots" zwischen dem 2. und 3. Faktor (es gibt nur drei Faktoren)
+\varphi(60) = 60 \cdot \left(1 - \frac{1}{2}\right)\cdot\left(1 - \frac{1}{3}\right)\cdot\left(1 - \frac{1}{5}\right) = 60 \cdot \frac{1}{2}\cdot\frac{2}{3}\cdot\frac{4}{5} = 60 \cdot \frac{4}{15} = 16
 \]
 2. Lösung:
 \[
-\varphi(60) = \varphi(2^2)\,\varphi(3)\,\varphi(5) = (2^2 - 2) \cdot 2 \cdot 4 = 16
+% KORRIGIERT: Begründung der Multiplikativität fehlte
+\varphi(60) = \varphi(2^2) \cdot \varphi(3) \cdot \varphi(5) = (2^2 - 2) \cdot 2 \cdot 4 = 16
 \]
+(da $2^2$, $3$, $5$ paarweise teilerfremd sind und $\varphi$ multiplikativ ist).
 \end{beispiel}
 
 \begin{beispiel}[Derangement Problem (vertauschte Hüte)]
@@ -275,11 +289,13 @@ $\pi(i) = j$ bedeutet, Person $i$ bekommt Hut $j$.
 Ein Punkt $i$ mit $\pi(i) = i$ heißt \emph{Fixpunkt} der Permutation $\pi$. Ein \emph{Derangement} ist eine fixpunktfreie Permutation. Hier ist
 
 $\Omega = S_n$ \ Menge der Permutationen von $n$ Objekten, \quad $|\Omega| = n!$, \quad $r = n$\\
-$A_k =$ \quad \ ,,\ \quad mit $k$ Fixpunkten, z.\,B.\ an den Stellen $1, 2, \dots, k$.
+% KORRIGIERT: "A_k = Permutationen mit k Fixpunkten, |A_k| = (n-k)!" und "alpha_k = Anzahl der Permutationen mit k Fixpunkten" (falsch)
+$A_i = \{ \pi \in S_n \mid \pi(i) = i \}$, \quad $i = 1, \dots, n$ \quad (Eigenschaft $i$: $i$ ist Fixpunkt).\\
+Für $k$ verschiedene Stellen, z.\,B.\ $1, 2, \dots, k$, gilt
 \[
-|A_k| = (n-k)!
+|A_1 \cap A_2 \cap \dots \cap A_k| = (n-k)!
 \]
-$\alpha_k$ ist die Anzahl der Permutationen mit $k$ Fixpunkten.
+$\alpha_k$ ist die Summe dieser Anzahlen über alle $k$-elementigen Mengen von Fixstellen.
 Es gibt $\binom{n}{k}$ Möglichkeiten diese $k$ Elemente auszuwählen, also
 \[
 \alpha_k = \binom{n}{k}\cdot(n-k)! = \frac{n!}{k!}
@@ -287,8 +303,8 @@ Es gibt $\binom{n}{k}$ Möglichkeiten diese $k$ Elemente auszuwählen, also
 
 a. Die Anzahl der Derangements ist
 \begin{align*}
-d_n &= n! - \alpha_1 + \alpha_2 - \alpha_3 + \dots + (-1)^n \alpha_n. \\
-d_n &= n! \left(1 - \frac{1}{1!} + \frac{1}{2!} - \dots + (-1)^n\frac{1}{n!}\right)
+d_n &= n! - \alpha_1 + \alpha_2 - \alpha_3 + \dots + (-1)^n \alpha_n \\
+&= n! \cdot \left(1 - \frac{1}{1!} + \frac{1}{2!} - \dots + (-1)^n\frac{1}{n!}\right)
 \end{align*}
 
 b. Die gesuchte Wahrscheinlichkeit bei $n$ Hüten ist
@@ -299,7 +315,8 @@ Andererseits ist
 \[
 e^x = 1 + \frac{x}{1!} + \frac{x^2}{2!} + \dots + \frac{x^n}{n!} + \dots \qquad \text{konvergent für alle } x
 \]
-Damit erhalten wir \quad $P_n = 1/e = 0{,}3678\ldots$
+% KORRIGIERT: "P_n = 1/e" (gilt nur im Grenzwert n -> unendlich)
+Mit $x = -1$ ist $P_n$ die $n$-te Partialsumme dieser Reihe. Damit erhalten wir \quad $\lim_{n \to \infty} P_n = e^{-1} = 0{,}3678\ldots$, \ also $P_n \approx 1/e$ für große $n$.
 \end{beispiel}
 
 %------------------------------------------------------------
@@ -360,20 +377,22 @@ Anzahl der Teile $\downarrow$ & $\bullet\ \bullet\ \bullet$ \\
 \end{tabular}
 \end{center}
 
-Das Diagramm von oben nach unten gelesen ergibt die Partition
+Das Diagramm spaltenweise von oben nach unten gelesen ergibt die Partition
 \[
 27 = 7 + 5 + 4 + 3 + 3 + 3 + 1 + 1
 \]
 Damit hat man eine Bijektion zwischen den Mengen
 \[
-P(\,27 \mid \text{Größe der Teile ist} \le 8\,) \quad \Leftrightarrow \quad P(\,27 \mid \text{Anzahl der Teile ist} \le 8\,)
+% KORRIGIERT: "\Leftrightarrow" (Äquivalenz) zwischen Mengen statt Bijektion
+P(\,27 \mid \text{Größe der Teile ist} \le 8\,) \quad \longleftrightarrow \quad P(\,27 \mid \text{Anzahl der Teile ist} \le 8\,)
 \]
 \end{beispiel}
 
 \begin{satz}
 Für $k \le n$ gilt
 \[
-p(n) \mid \text{Größe der Teile ist} \le k \qquad = \qquad p(n) \mid \text{Anzahl der Teile ist} \le k \qquad \square
+% KORRIGIERT: "p(n) | Größe ... = p(n) | Anzahl ..." (Klammern falsch gesetzt)
+p(\,n \mid \text{Größe der Teile ist} \le k\,) = p(\,n \mid \text{Anzahl der Teile ist} \le k\,) \qquad \square
 \]
 \end{satz}
 
