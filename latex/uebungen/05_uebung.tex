@@ -1,0 +1,281 @@
+% Quelle: 5. Übung CT Lösungen.pdf
+% Art: Übung mit Lösungen
+% Themen: Lineare Codes, Wiederholungscode, Paritätscode, Erzeugermatrix, Kontrollmatrix, Syndrom, Hamming-Code H_2(m), Hamming-Code H_q(m), Dekodieren, Hamming-Schranke, Singleton-Schranke, perfekte Codes, optimale Codes
+\section{5. Übung „Diskrete Mathematik``}
+% Seite 1: Aufgabenblatt, Seiten 2--5: "Ü5 Lösungen".
+% In den Matrizen der Quelle sind Nulleinträge meist leer gelassen; leere Zellen wurden so übernommen (leer = 0).
+
+\subsection{Wiederholungscode $C \subseteq \mathbf{F}_3^5$}
+
+\begin{aufgabe}[5\_1]
+\begin{enumerate}[label=\alph*)]
+\item Geben Sie eine Erzeugermatrix $G$ und eine Kontrollmatrix $H$ für $C$ an.
+\item Codieren Sie das Wort $a = 2 \in \mathbf{F}_3^1$.
+\item Prüfen Sie, ob $\mathbf{y}_1 = 22120$, $\mathbf{y}_2 = 11022$, $\mathbf{y}_3 = 11111 \in \mathbf{F}_3^5$ Codewörter sind.
+\end{enumerate}
+\end{aufgabe}
+
+\begin{loesung}
+\begin{enumerate}[label=\alph*)]
+\item
+\[
+G = (\,1 \mid 1\;1\;1\;1\,) = (\,E \mid A\,), \qquad
+H = (-A^T \mid E) =
+\begin{pmatrix}
+2 & 1 & & & \\
+2 & & 1 & & \\
+2 & & & 1 & \\
+2 & & & & 1
+\end{pmatrix}
+\]
+\item $a\,G = 2\;2\;2\;2\;2$
+\item
+\begin{align*}
+S(\mathbf{y}_1) &= H\,\mathbf{y}_1^T = (0\;2\;0\;1)^T \ne \mathbf{o}\\
+S(\mathbf{y}_2) &= H\,\mathbf{y}_2^T = (0\;2\;1\;1)^T \ne \mathbf{o}\\
+S(\mathbf{y}_3) &= H\,\mathbf{y}_3^T = (0\;0\;0\;0)^T = \mathbf{o} \;\Rightarrow\; \mathbf{y}_3 \in C
+\end{align*}
+\end{enumerate}
+\end{loesung}
+
+\subsection{Paritätscode $C \subseteq \mathbf{F}_3^5$}
+
+\begin{aufgabe}[5\_2]
+\begin{enumerate}[label=\alph*)]
+\item Geben Sie eine Erzeugermatrix $G$ und eine Kontrollmatrix $H$ für $C$ an.
+\item Codieren Sie das Wort $\mathbf{a} = 2120 \in \mathbf{F}_3^4$.
+\item Prüfen Sie, ob $\mathbf{y}_1 = 22120$, $\mathbf{y}_2 = 11022$, $\mathbf{y}_3 = 11111 \in \mathbf{F}_3^5$ Codewörter sind.
+\end{enumerate}
+\end{aufgabe}
+
+\begin{loesung}
+\begin{enumerate}[label=\alph*)]
+\item
+\[
+G = (\,E \mid A\,) =
+\begin{pmatrix}
+1 & & & & 1\\
+& 1 & & & 1\\
+& & 1 & & 1\\
+& & & 1 & 1
+\end{pmatrix}, \qquad
+H = (-A^T \mid E) = (\,2\;2\;2\;2 \mid 1\,)
+\]
+\item $a\,G = 2\;1\;2\;0\;G = 2\;1\;2\;0\;2$
+\item
+\begin{align*}
+S(\mathbf{y}_1) &= H\,\mathbf{y}_1^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_1^T = 2 \ne \mathbf{o}\\
+S(\mathbf{y}_2) &= H\,\mathbf{y}_2^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_2^T = 1 \ne \mathbf{o}\\
+S(\mathbf{y}_3) &= H\,\mathbf{y}_3^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_3^T = 0 \;\Rightarrow\; \mathbf{y}_3 \in C
+\end{align*}
+\end{enumerate}
+\end{loesung}
+
+\subsection{Hamming Code $H_2(m)$}
+
+\begin{aufgabe}[5\_3]
+\begin{enumerate}[label=\alph*)]
+\item Bestimmen Sie eine Kontrollmatrix $H$ und eine Erzeugermatrix $G$ für den Hamming Code $H(2,2)$.
+\item Bestimmen Sie eine Kontrollmatrix $H$ für den Hamming Code $H_2(4)$.
+\end{enumerate}
+% Auf dem Aufgabenblatt steht in a) "H(2, 2)", in der Lösung "H_2(2)".
+\end{aufgabe}
+
+\begin{loesung}
+Bestimmen Sie eine Kontrollmatrix $H$ und eine Erzeugermatrix $G$ für den
+\begin{enumerate}[label=\alph*)]
+\item Hamming Code $H_2(2)$
+
+Kontrollmatrix
+\[
+H = \begin{pmatrix} 1 & 0 & 1\\ 0 & 1 & 1 \end{pmatrix}, \qquad
+G = (-A^T \mid E) = (\,1\;\;1\;\;1\,)
+\]
+Wiederholungscode $C \subseteq F_2^3$
+\item Hamming Code $H_2(4)$
+\[
+H =
+\begin{pmatrix}
+1 & & & & & & & & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+& 1 & & & & 1 & 1 & 1 & & & & 1 & 1 & 1 & 1\\
+& & 1 & & 1 & & 1 & 1 & & 1 & 1 & & & 1 & 1\\
+& & & 1 & 1 & 1 & & 1 & 1 & 0 & 1 & & 1 & & 1
+\end{pmatrix}
+\]
+% In Zeile 4, Spalte 10 steht in der Quelle explizit eine 0 (sonst sind Nullen leer gelassen).
+\end{enumerate}
+\end{loesung}
+
+\subsection{Dekodieren in $H_2(3)$}
+
+\begin{aufgabe}[5\_4]
+Dekodieren Sie die empfangenen Wörter
+\[
+\mathbf{y}_1 = 1\;1\;0\;1\;1\;0\;0 \qquad
+\mathbf{y}_2 = 1\;1\;1\;1\;1\;1\;1 \qquad
+\mathbf{y}_3 = 1\;1\;1\;1\;0\;0\;0
+\]
+\end{aufgabe}
+
+\begin{loesung}
+\[
+H =
+\begin{pmatrix}
+1 & & & 1 & 1 & 0 & 1\\
+& 1 & & 1 & 0 & 1 & 1\\
+& & 1 & 0 & 1 & 1 & 1
+\end{pmatrix}
+\]
+\begin{align*}
+S(\mathbf{y}_1) &= H\,\mathbf{y}_1^T = (\,1\;0\;1\,)^T = \mathbf{h}_5 && \Rightarrow\; \mathbf{c}_1 = 1\;1\;0\;1\;0\;0\;0\\
+S(\mathbf{y}_2) &= H\,\mathbf{y}_2^T = (\,0\;0\;0\,)^T = \mathbf{o} && \Rightarrow\; \mathbf{c}_2 = \mathbf{y}_2\\
+S(\mathbf{y}_3) &= H\,\mathbf{y}_3^T = (\,0\;0\;1\,)^T = \mathbf{h}_3 && \Rightarrow\; \mathbf{c}_3 = 1\;1\;0\;1\;0\;0\;0
+\end{align*}
+\end{loesung}
+
+\subsection{Hamming Code $H_q(m)$}
+
+\begin{aufgabe}[5\_5]
+Die Spalten einer Kontrollmatrix $H$ des $q$-nären Codes $H_q(m)$ bestehen aus Repräsentanten der 1-dimensionalen Unterräume des $\mathbf{F}_q^m$.
+\begin{enumerate}[label=\alph*)]
+\item Wie viele Vektoren besitzt ein 1-dimensionaler Unterraum des $\mathbf{F}_q^n$?
+\item Wie lauten die Parameter $[n, k, d]$ des Codes $H_q(m)$?
+\item Bestimmen Sie eine Kontrollmatrix $H$ für den Hamming Code $H_3(3)$.
+\item Dekodieren Sie die Wörter
+\begin{align*}
+\mathbf{r}_1 &= 0\,0\,0\,0\,0\,0\,0\,0\,0\,0\,1\,1\,2\\
+\mathbf{r}_2 &= 0\,0\,0\,0\,0\,0\,0\,0\,0\,0\,1\,2\,2
+\end{align*}
+\end{enumerate}
+% Aufgabenblatt: in a) steht "F_q^n", in der Lösung "F_q^m" und "Elemente" statt "Vektoren".
+\end{aufgabe}
+
+\begin{loesung}
+Die Spalten einer Kontrollmatrix $H$ des $q$-nären Hamming Codes $H_q(m)$ bestehen aus Repräsentanten der 1-dimensionalen Unterräume des $\mathbf{F}_q^m$.
+\begin{enumerate}[label=\alph*)]
+\item Wie viele Elemente besitzt ein 1-dimensionaler Unterraum des $\mathbf{F}_q^m$?
+
+1-dim.\ Unterraum des $\mathbf{F}_q^m$ sind die Geraden
+\[
+\{\, y\,\mathbf{h} \mid y \in \mathbf{F}_q \,\}, \qquad |\{\, y\,\mathbf{h} \mid y \in \mathbf{F}_q \,\}| = |\mathbf{F}_q| = q
+\]
+\item Wie lauten die Parameter $[n, k, d]$ des Codes $H_q(m)$?
+\begin{align*}
+& \operatorname{Rang} G + \operatorname{Rang} H = n = (q^m - 1)/(q-1)\\
+& \operatorname{Rang} H = m, \quad \operatorname{Rang} G = k = n - m\\
+\Rightarrow\quad & |C| = q^k
+\end{align*}
+\item Bestimmen Sie eine Kontrollmatrix $H$ für den Hamming Code $H_3(3)$.
+\begin{align*}
+n &= (3^3 - 1)/(3-1) = 26/2 = 13\\
+|H_3(3)| &= 3^{n-m} = 3^{10}
+\end{align*}
+\[
+H =
+\begin{pmatrix}
+1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 1 & 2 & 2 & 2\\
+0 & 0 & 1 & 1 & 2 & 1 & 2 & 0 & 1 & 2 & 0 & 1 & 2
+\end{pmatrix}
+\]
+\item Dekodieren Sie die Wörter
+\begin{align*}
+\mathbf{r}_1 &= 0\,0\,0\,0\,0\,0\,0\,0\,0\,0\,1\,1\,2\\
+\mathbf{r}_2 &= 0\,0\,0\,0\,0\,0\,0\,0\,0\,0\,1\,2\,2
+\end{align*}
+\begin{align*}
+S(\mathbf{r}_1) &= \begin{pmatrix} 1\\ 2\\ 2 \end{pmatrix}
+\;\Rightarrow\; x = 13,\ y = 1 \;\Rightarrow\; \mathbf{c}_1 = 0\,0\,0\,0\,0\,0\,0\,0\,0\,0\,1\,1\,1\\
+S(\mathbf{r}_2) &= \begin{pmatrix} 2\\ 1\\ 0 \end{pmatrix} = 2\begin{pmatrix} 1\\ 2\\ 0 \end{pmatrix}
+\;\Rightarrow\; x = 13,\ y = 2 \;\Rightarrow\; \mathbf{c}_2 = 0\,0\,0\,0\,0\,0\,0\,0\,0\,0\,2\,2\,2
+\end{align*}
+% UNSICHER: Bei r_2 steht in der Quelle x = 13, obwohl (1 2 0)^T die Spalte 11 von H ist;
+% c_2 = r_2 - 2 h_11 = 0...0 2 2 2 passt zu x = 11. Quelle unverändert übernommen.
+\end{enumerate}
+\end{loesung}
+
+\subsection{obere Schranken}
+
+\begin{aufgabe}[5\_6]
+Prüfen Sie die Hamming Schranke für lineare Codes mit den Parametern $[23, 12, 7]_2$, $[11, 6, 5]_3$.
+\end{aufgabe}
+
+\begin{loesung}
+Hamming Schranke: \quad $|C| \displaystyle\sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |F_q^n| = q^n$
+
+$[23, 12, 7]_2$
+\begin{align*}
+& e = 3,\quad C = 2^k = 2^{12} = 4096,\quad
+\sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + 23 + \frac{23\cdot 22}{1\cdot 2} + \frac{23\cdot 22\cdot 21}{1\cdot 2\cdot 3}\\
+&= 24 + 253 + 1771 = 2048 = 2^{11}
+\end{align*}
+Tatsächlich ist
+\[
+|C| \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 2^{12}\cdot 2^{11} = 2^{23} = |\mathbf{F}_2^{23}|
+\]
+
+$[11, 6, 5]_3$
+\begin{align*}
+& e = 2,\quad C = 3^k = 3^6 = 729,\quad
+\sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + 11\cdot 2 + \frac{11\cdot 10}{1\cdot 2}\cdot 2^2\\
+&= 23 + 220 = 243 = 3^5
+\end{align*}
+Tatsächlich ist
+\[
+|C| \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 3^{6}\cdot 3^{5} = 3^{11} = |\mathbf{F}_3^{11}|
+\]
+\end{loesung}
+
+\begin{aufgabe}[5\_7]
+Wie hoch muss die Wortlänge $n$ eines linearen $[n, 5, 5]_2$ Codes mindestens sein?
+\end{aufgabe}
+
+\begin{loesung}
+$[n, 5, 5]_2$
+
+Singleton Schranke: \quad $k + d \le n + 1 \;\Rightarrow\; 5 + 5 \le n + 1 \;\Rightarrow\; 9 \le n$
+
+Hamming Schranke: \quad $|C| \displaystyle\sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |\mathbf{F}_q^n|$, \quad $2e + 1 = d$
+\begin{align*}
+\Rightarrow\quad & 2^k\,(\,1 + n + n\,(n-1)/2\,) \le 2^n, \quad q = 2,\ k = 5\\
+\Rightarrow\quad & 1 + n + n\,(n-1)/2 \le 2^{n-5}
+\end{align*}
+\begin{tabular}{lll}
+$n = 9$ & $\Rightarrow\; 1 + 9 + 36$ & $\le 2^4 = 16$\\
+$n = 10$ & $\Rightarrow\; 1 + 10 + 45$ & $\le 2^5 = 32$\\
+$n = 11$ & $\Rightarrow\; 1 + 11 + 55$ & $\le 2^6 = 64$\\
+$n = 12$ & $\Rightarrow\; 1 + 12 + 66$ & $\le 2^7 = 128$
+\end{tabular}
+% Die Quelle endet hier ohne ausformuliertes Ergebnis (nicht ergänzt).
+\end{loesung}
+
+\begin{aufgabe}[5\_8]
+Prüfen Sie für die linearen Codes mit den Parametern $[10, 8, 3]_{11}$, $[10, 6, 5]_{11}$ sowohl die Hamming als auch die Singleton Schranke. Sind diese Codes perfekt oder optimal?
+\end{aufgabe}
+
+\begin{loesung}
+$[10, 8, 3]_{11}$
+
+Hamming Schranke: \quad $|C| \displaystyle\sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |F_q^n|$
+\begin{align*}
+& e = 1,\quad k = 8,\quad C = 11^8,\quad \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + 10\cdot 10 = 101\\
+& |\mathbf{F}_{11}^{10}| = 11^8\cdot 11^2 = 11^8\cdot 121
+\end{align*}
+d.h.\ es gibt $11^8\cdot 121 - 11^8\cdot 101 = 11^8\cdot 20$ Wörter in $\mathbf{F}_{11}^{10}$, deren Abstand zu einem Codewort mindestens 2 beträgt.
+
+Singleton Schranke \quad $k + d \le n + 1$\\
+$k = 8,\ d = 3,\quad n = 10$\\
+d.h.\ der Code mit den Parametern $[10, 8, 3]_{11}$ ist optimal.
+
+$[10, 6, 5]_{11}$
+\begin{align*}
+& e = 2,\quad k = 6,\quad C = 11^6,\quad \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + 10\cdot 10 + 45\cdot 100 = 4601\\
+& |\mathbf{F}_{11}^{10}| = 11^6\cdot 11^4 = 11^6\cdot 14641
+\end{align*}
+d.h.\ es gibt $11^6\cdot 14641 - 11^6\cdot 4601 = 11^6\cdot 10040$ Wörter in $\mathbf{F}_{11}^{10}$, deren Abstand zu einem Codewort mindestens 3 beträgt.
+
+Singleton Schranke \quad $k + d \le n + 1$\\
+$k = 6,\ d = 5,\quad n = 10$\\
+d.h.\ der Code mit den Parametern $[10, 8, 3]_{11}$ ist optimal.
+% UNSICHER: Im letzten Satz steht in der Quelle erneut [10, 8, 3]_11; gemeint ist vermutlich [10, 6, 5]_11. Unverändert übernommen.
+\end{loesung}

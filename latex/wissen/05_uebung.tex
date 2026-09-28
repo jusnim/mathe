@@ -1,0 +1,37 @@
+% Quelle: 5. Übung CT Lösungen.pdf
+% Art: Übung mit Lösungen
+% Themen: Lineare Codes, Hamming-Code, Hamming-Schranke, Singleton-Schranke, 1-dimensionale Unterräume
+\section{5. Übung „Diskrete Mathematik``}
+% Die Quelle ist ein Übungsblatt mit Lösungen. Eigenständige Definitionen/Sätze enthält sie nicht.
+% Die folgenden Aussagen werden in den Lösungen (Seiten 3--5) wörtlich verwendet und hier nur gesammelt;
+% der vollständige Kontext steht in uebungen/05_uebung.tex.
+
+\subsection{In den Lösungen verwendete Aussagen}
+
+\begin{bemerkung}[Kontrollmatrix von $H_q(m)$, aus Lösung 5\_5]
+Die Spalten einer Kontrollmatrix $H$ des $q$-nären Hamming Codes $H_q(m)$ bestehen aus Repräsentanten der 1-dimensionalen Unterräume des $\mathbf{F}_q^m$.
+1-dim.\ Unterraum des $\mathbf{F}_q^m$ sind die Geraden
+\[
+\{\, y\,\mathbf{h} \mid y \in \mathbf{F}_q \,\}, \qquad |\{\, y\,\mathbf{h} \mid y \in \mathbf{F}_q \,\}| = |\mathbf{F}_q| = q .
+\]
+\end{bemerkung}
+
+\begin{bemerkung}[Parameter von $H_q(m)$, aus Lösung 5\_5b]
+\begin{align*}
+\operatorname{Rang} G + \operatorname{Rang} H &= n = (q^m - 1)/(q-1)\\
+\operatorname{Rang} H = m, \quad \operatorname{Rang} G &= k = n - m\\
+\Rightarrow \quad |C| &= q^k
+\end{align*}
+\end{bemerkung}
+
+\begin{bemerkung}[Hamming Schranke, aus Lösung 5\_6]
+\[
+|C| \sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |\mathbf{F}_q^n| = q^n, \qquad 2e+1 = d .
+\]
+\end{bemerkung}
+
+\begin{bemerkung}[Singleton Schranke, aus Lösung 5\_7]
+\[
+k + d \le n + 1 .
+\]
+\end{bemerkung}
