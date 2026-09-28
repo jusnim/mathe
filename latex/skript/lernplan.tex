@@ -1,0 +1,119 @@
+% Lernplan für die letzten 16 Stunden vor der Klausur.
+\input{skript/kopf}
+\pagestyle{fancy}\fancyhf{}
+\lhead{Lernplan: 16 Stunden bis zur Klausur}\rhead{Seite \thepage}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries Lernplan: 16 Stunden bis zur Klausur}\\[4pt]
+{\large Diskrete Mathematik}
+\end{center}
+
+\section*{Die Lage in drei Sätzen}
+\begin{merke}
+\begin{enumerate}
+\item Die Klausur hat ein \textbf{festes Schema}: RSA -- Siebformel -- Euklid/Diophantik -- Chinesischer Restsatz -- Modulo-11-Code.
+      Das zeigen die echte Klausur und das Gedächtnisprotokoll. Nur die Zahlen ändern sich.
+\item Du darfst \textbf{schriftliche Unterlagen} mitnehmen. Also brauchst du \textbf{keine Formeln auswendig},
+      sondern \textbf{fertige Musterrechnungen}, die du Schritt für Schritt mit neuen Zahlen nachmachst.
+\item Du kennst Vorlesung 1 und 2 schon. Damit sind Euklid, Restsatz, Siebformel und $\varphi$ schon im Kopf.
+      Neu sind nur RSA (Vorlesung 3) und der Modulo-11-Code (Vorlesung 4 und 6).
+\end{enumerate}
+\end{merke}
+
+\section*{Punkte-Rechnung: Wofür lohnt sich die Zeit?}
+\begin{tabular}{@{}p{5.2cm}cp{3.2cm}p{5.6cm}@{}}
+\toprule
+Thema & Wahrsch. & neu für dich? & Entscheidung\\
+\midrule
+RSA (mit schnellem Potenzieren, $\varphi$) & 95\,\% & ja (VL 3) & \textbf{Pflicht}, meiste Zeit\\
+Euklid, ggT, $ax - by = c$ & 95\,\% & nein (VL 1) & \textbf{Pflicht}, nur üben\\
+Modulo-11-Code $[10,8,3]_{11}$ & 90\,\% & ja (VL 4/6) & \textbf{Pflicht}, nur Abschnitt 6.3\\
+Siebformel (Inklusion--Exklusion) & 90\,\% & nein (VL 2) & \textbf{Pflicht}, nur üben\\
+Chinesischer Restsatz & 80\,\% & nein (VL 1) & \textbf{Pflicht}, nur üben\\
+$\varphi(n)$, Primfaktoren, Inverse & 75--85\,\% & nein & steckt in RSA, mitüben\\
+ISBN-10, Turnierplan & 25--35\,\% & nein (VL 1) & kurz, falls Zeit\\
+Hamming-Codes, Schranken & 20--30\,\% & ja & nur Rezept kopieren\\
+Zyklische Codes, Standardarray & 15\,\% & ja & \textbf{weglassen}\\
+\bottomrule
+\end{tabular}
+
+\medskip
+Die fünf Pflichtthemen bringen fast alle Punkte. Mit ihnen allein reicht es sicher für die 4,0 (15 von 29 Punkten)
+und realistisch für eine gute Note.
+
+\section*{Der Plan (16 Stunden)}
+Plane nach jedem Block 10 Minuten Pause. Nach Block 5 eine lange Pause.
+Wenn die Klausur morgen früh ist: Schlaf geht vor Block 9 und 10.
+
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{@{}p{0.7cm}p{1.2cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{10.8cm}@{}}
+\toprule
+Nr. & Zeit & Thema & Was genau (Dateien im Ordner \texttt{pdf/})\\
+\midrule
+\endhead
+1 & 0:30 & Start & \cb \texttt{klausur1\_aufgaben.pdf} durchlesen (Aufgaben kennen).\newline
+\cb \texttt{klausurskript.pdf}, Teil 1 „Formelsammlung“ überfliegen.\\
+2 & 3:00 & \textbf{RSA} & \cb Skript Kapitel RSA lesen (Rezept + Musterrechnung), dazu VL 3 Abschnitt 3.1 und 3.3 in \texttt{wissen\_und\_uebungen.pdf}.\newline
+\cb Schnelles Potenzieren von Hand: $12^{100} \bmod 34$ (VL 3 Beispiel).\newline
+\cb KV Aufgabe 7 ($m = 101$, $e = 13$ $\Rightarrow$ $d = 77$).\newline
+\cb Ü4 Aufgabe 9 ($m = 2803$, $e = 113$, $w = 715$ $\Rightarrow$ $c = 708$, $d = 1463$).\newline
+\cb Klausur Aufgabe 1 selbst rechnen, dann mit \texttt{klausur1\_loesungen.pdf} vergleichen.\\
+3 & 1:30 & \textbf{Euklid, Diophantik} & \cb Skript Kapitel Euklid (EA-Tabelle, rückwärts einsetzen, Matrix $Q$).\newline
+\cb KV Aufgabe 3 ($2406x - 654y = 24$).\newline
+\cb Ü2 Aufgabe 4 ($1001x + 840y = 98$).\newline
+\cb Klausur Aufgabe 3 ($17x - 15y = 1$).\\
+4 & 1:00 & \textbf{Chinesischer Restsatz} & \cb Skript Kapitel Restsatz.\newline
+\cb KV Aufgabe 8 ($z \equiv 5 \bmod 13$, $z \equiv 4 \bmod 15$ $\Rightarrow$ $109$).\newline
+\cb Klausur Aufgabe 4 ($\Rightarrow$ $110 \bmod 255$).\\
+5 & 1:00 & \textbf{Siebformel} & \cb Skript Kapitel Siebformel.\newline
+\cb Ü4 Aufgabe 1 ($\le 1000$, nicht durch 2, 3, 5 $\Rightarrow$ 266).\newline
+\cb KV Aufgabe 6 (55 Athleten $\Rightarrow$ 4).\newline
+\cb Klausur Aufgabe 2 ($\Rightarrow$ 288), Gedächtnisprotokoll Aufgabe 2 ($\le 840$; 2, 3, 5 $\Rightarrow$ 224).\\
+\midrule
+\multicolumn{4}{c}{\textit{Lange Pause (Essen, Bewegung).}}\\
+\midrule
+6 & 3:00 & \textbf{Modulo-11-Code} & \cb Skript Kapitel Modulo-11-Code: Was sind $H$, Codewort, Syndrom? (Minimum aus VL 4.)\newline
+\cb VL 6 Abschnitt 6.3 lesen (nur dieser Abschnitt!).\newline
+\cb Inversen-Tabelle mod 11 auf den Spickzettel.\newline
+\cb Ü6 Aufgabe 6\_9 ($r_1, r_2, r_3$ dekodieren).\newline
+\cb Klausur Aufgabe 5 komplett, dann vergleichen.\newline
+\cb Gedächtnisprotokoll Aufgabe 4 (Achtung: dort fehlt eine Ziffer).\\
+7 & 1:00 & $\varphi$, Inverse, Fermat & \cb KV Aufgabe 4 ($\varphi(360) = 96$).\newline
+\cb Ü3 Aufgabe 2 ($\varphi(1000)=400$, $\varphi(1001)=720$, $\varphi(1002)=332$).\newline
+\cb Ü2 Aufgabe 5 ($6^{-1}$ in $\Z_{11}$ ist 2, in $\Z_{17}$ ist 3; $3^{-1}$ in $\Z_{10}$ ist 7).\newline
+\cb Ü4 Aufgabe 7 ($3^{1000} \bmod 7 = 4$).\\
+8 & 2:00 & \textbf{Übungsklausur} & \cb \texttt{klausurskript.pdf}, Teil „Übungsklausur“: 90 Minuten unter echten Bedingungen, nur mit deinem Spickzettel.\newline
+\cb Danach mit den Lösungen vergleichen. Fehler markieren und im Spickzettel ergänzen.\\
+9 & 1:00 & \textbf{Spickzettel fertig} & \cb Siehe Checkliste unten. Alles in der Reihenfolge der Klausur sortieren.\\
+10 & 1:00 & Puffer / Extra & \cb Schwache Stelle aus Block 8 nochmal.\newline
+\cb Falls Zeit: ISBN-10 (KV Aufgabe 1: Prüfziffer 7) und Turnierplan (KV Aufgabe 5).\\
+\midrule
+ & \textbf{16:00} & & \\
+\bottomrule
+\end{longtable}
+
+\section*{Checkliste: Was in die Unterlagen kommt}
+Sortiere die Unterlagen \textbf{in der Reihenfolge der Klausur}. Dann findest du alles schnell.
+\begin{enumerate}
+\item[\cb] \textbf{RSA}: vollständige Musterrechnung (Klausur 1, Aufgabe 1) mit Quadrattabelle, EA-Tabelle, Matrix $Q$ und Euler-Weg.
+      Die Falle „$p$ oder $q$ ist keine Primzahl“ rot markieren.
+\item[\cb] \textbf{Siebformel}: Schema mit $A_i$, $\alpha_1$, $\alpha_2$, $\alpha_3$ und die kgV-Regel für Schnittmengen.
+\item[\cb] \textbf{Euklid}: EA-Tabelle, Rückwärts-Einsetzen, Matrix $Q$ mit $\det Q = \pm 1$, allgemeine Lösung.
+\item[\cb] \textbf{Restsatz}: Ansatz $z = mx + a = ny + b$, dann $mx - ny = b - a$, alle Lösungen $z_0 + k\,mn$.
+\item[\cb] \textbf{Modulo-11-Code}: $H$, Formeln für $c_9$ und $c_{10}$, Syndrom, $x = s_2/s_1$, Inversen-Tabelle mod 11,
+      die zwei Fälle „nicht dekodierbar“.
+\item[\cb] \textbf{Hilfstabellen}: Zweierpotenzen bis $2^{12} = 4096$, Primzahlen bis 100.
+\item[\cb] \textbf{Ausgedruckt}: \texttt{klausur1\_loesungen.pdf}, \texttt{klausurskript.pdf} (falls gedruckte Unterlagen erlaubt sind).
+\end{enumerate}
+
+\section*{Tipps für die Klausur selbst}
+\begin{itemize}
+\item Mit der Aufgabe anfangen, die du am sichersten kannst. Euklid und Siebformel gehen schnell.
+\item Bei RSA immer zuerst prüfen: \textbf{Sind $p$ und $q$ wirklich Primzahlen?} (In der letzten Klausur war $57 = 3 \cdot 19$.)
+\item Jede Rechnung mit einer Probe abschließen: $e \cdot d \equiv 1$, $H c^T = 0$, $z$ in beide Kongruenzen einsetzen.
+\item Formeln hinschreiben, auch wenn die Rechnung nicht fertig wird. Das gibt Teilpunkte.
+\end{itemize}
+
+\end{document}
