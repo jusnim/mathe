@@ -1,0 +1,138 @@
+% Quelle: 1. Übung Lösungen.pdf
+% Art: Übung mit Lösungen
+% Themen: Teilbarkeitsregeln, Teilbarkeit durch 9, 11 und 7, Rundenturniere, Rundenplan, Blockpläne, BIBD
+\section{1. Übung „Diskrete Mathematik``}
+
+\subsection{Aufgaben}
+
+\subsubsection*{Teilbarkeitsregeln}
+
+\begin{aufgabe}[1]
+Sei $x = 299\,792$. \quad (Geschwindigkeit des Lichtes in [km / s])\\
+Ist $x$ durch 9 oder durch 11 teilbar?
+\end{aufgabe}
+
+\begin{aufgabe}[2]
+Entwickeln Sie eine Regel für die Division durch 7. Beachten Sie dabei
+\[ 1001 = 7 \cdot 11 \cdot 13 \]
+Entscheiden Sie mit Hilfe dieser Regel, ob\\
+$x = 299\,792$ oder $x = 1000\;0000\;0000\;0000\;0001$ durch 7 teilbar sind.
+\end{aufgabe}
+
+\subsubsection*{Rundenturniere}
+
+\begin{aufgabe}[3]
+Stellen Sie einen Rundenplan für $2m = 8$ Mannschaften an 7 Tagen auf.
+\end{aufgabe}
+
+\begin{aufgabe}[4]
+Gegen wen spielt Mannschaft $2m$ an Tag $r$?
+\end{aufgabe}
+
+\subsubsection*{Blockpläne, BIBD}
+
+\begin{aufgabe}[5]
+Beweisen Sie die Gleichungen
+\[ b\,k = v\,r, \qquad\qquad r\,(k-1) = \lambda\,(v-1) \]
+für BIBDs.\\
+Hinweis: Für die zweite Gleichung lohnt es sich die 2-elementigen Teilmengen im BIBD zu zählen, und auf das Resultat die erste Gleichung anzuwenden.
+\end{aufgabe}
+
+\subsection{Ü1 Lösungen}
+
+\subsubsection*{Teilbarkeitsregeln}
+
+\begin{loesung}
+\textbf{1\_1}
+\begin{align*}
+x &= 299\,792\\
+x &\equiv x_n + \dots + x_1 + x_0 \pmod{9}\\
+  &= 2 + 9 + 9 + 7 + 9 + 2\\
+  &\equiv 2 + 7 + 2 \equiv 2 \pmod{9}\\
+\Rightarrow\quad & x = 299\,792 \text{ ist nicht durch 9 teilbar}
+\end{align*}
+\begin{align*}
+x &\equiv (-1)^5\, x_5 + \dots - x_1 + x_0 \pmod{11}\\
+  &= -2 + 9 - 9 + 7 - 9 + 2\\
+  &= -2 \pmod{11}\\
+\Rightarrow\quad & x = 299\,792 \text{ ist nicht durch 11 teilbar}
+\end{align*}
+\end{loesung}
+
+\begin{loesung}
+\textbf{1\_2}
+\begin{align*}
+x &= y_m \cdot 1000^m + \dots + y_1\, 1000 + y_0\\
+  &\equiv (-1)^m\, y_m + \dots - y_1 + y_0 \pmod{7}\\[1ex]
+x &= 299\,792\\
+  &\equiv -299 + 792 = 493 = 7 \cdot 70 + 3\\
+\Rightarrow\quad & x = 299\,792 \text{ ist nicht durch 7 teilbar}\\[1ex]
+x &= 1000\;0000\;0000\;0000\;0001 = 10^{19} + 1 = 10 \cdot (10^3)^6 + 1\\
+  &\equiv 10 \cdot (-1)^6 + 1 \pmod{7}\\
+  &\equiv 11 \pmod{7}\\
+\Rightarrow\quad & x = 1000\;0000\;0000\;0000\;0001 \text{ ist nicht durch 7 teilbar.}
+\end{align*}
+\end{loesung}
+
+\subsubsection*{Rundenturniere}
+
+\begin{loesung}
+\textbf{1\_3} Stellen Sie einen Rundenplan für $2m = 8$ Mannschaften an 7 Runden auf.
+\begin{align*}
+& x + y \equiv r \pmod{2m-1} \quad \text{für } 1 \le x, y \le 2m-1,\\
+& \text{falls } x + x \equiv r \text{ spielt } x \text{ gegen } 2m.
+\end{align*}
+\begin{center}
+\begin{tabular}{ccccccc}
+\toprule
+$r=1$ & $r=2$ & $r=3$ & $r=4$ & $r=5$ & $r=6$ & $r=7$\\
+\midrule
+1\ 7 & 1\ 8 & 1\ 2 & 1\ 3 & 1\ 4 & 1\ 5 & 1\ 6\\
+2\ 6 & 2\ 7 & 3\ 7 & 2\ 8 & 2\ 3 & 2\ 4 & 2\ 5\\
+3\ 5 & 3\ 6 & 4\ 6 & 4\ 7 & 5\ 7 & 3\ 8 & 3\ 4\\
+4\ 8 & 4\ 5 & 5\ 8 & 5\ 6 & 6\ 8 & 6\ 7 & 7\ 8\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{loesung}
+
+\begin{loesung}
+\textbf{1\_4} Gegen wen spielt Mannschaft $2m = 8$ in Runde $r$?
+\begin{align*}
+x + x = 2 \cdot x &\equiv r && \pmod{2m-1}\\
+2m &\equiv 1 && \pmod{2m-1}\\
+\Rightarrow\quad 2^{-1} &\equiv m && \pmod{2m-1}\\
+\Rightarrow\quad x &= r \cdot m && \pmod{2m-1}
+\end{align*}
+z.\,B.
+\begin{center}
+\begin{tabular}{lll}
+$r = 1$ & $x = 1 \cdot 4 = 4$ & \\
+$r = 2$ & $x = 2 \cdot 4 = 8$ & $\equiv 1 \pmod{7}$\\
+$r = 3$ & $x = 3 \cdot 4 = 12$ & $\equiv 5 \pmod{7}$\\
+$r = 4$ & $x = 4 \cdot 4 = 16$ & $\equiv 2 \pmod{7}$\\
+$r = 5$ & $x = 5 \cdot 4 = 20$ & $\equiv 6 \pmod{7}$\\
+$r = 6$ & $x = 6 \cdot 4 = 24$ & $\equiv 3 \pmod{7}$\\
+$r = 7$ & $x = 7 \cdot 4 = 28$ & $\equiv 7 \pmod{7}$
+\end{tabular}
+\end{center}
+\end{loesung}
+
+\subsubsection*{Blockpläne, BIBD}
+
+\begin{loesung}
+\textbf{1\_5} Beweisen Sie die Gleichungen
+\[ b\,k = v\,r, \]
+für BIBDs.\\
+Zählen die Varietäten im BIBD: \quad $b\,k = v\,r$.
+\[ r\,(k-1) = \lambda\,(v-1) \]
+
+\textbf{1. Lösung:}\\
+Zählen die 2-elementigen Teilmengen im BIBD: \quad $b \binom{k}{2} = \lambda \binom{v}{2}$.
+\begin{align*}
+\Rightarrow\quad & \lambda\, v\,(v-1) = b\,k\,(k-1) = v\,r\,(k-1)\\
+\Rightarrow\quad & \lambda\,(v-1) = r\,(k-1)
+\end{align*}
+\textbf{2. Lösung:} Zählen in wie vielen Paaren ein $a \in V$ im BIBD vorkommt.
+\[ r\,(k-1) = \lambda\,(v-1) \]
+\end{loesung}

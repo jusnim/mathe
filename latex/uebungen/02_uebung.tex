@@ -1,0 +1,195 @@
+% Quelle: 2. Übung Lösungen.pdf
+% Art: Übung mit Lösungen
+% Themen: ISBN10 Prüfziffer, Zahlendreher, Restklassenring, Einheitengruppe, Nullteiler, Gruppentafel, Euklidischer Algorithmus, Lemma von Bezout, Diophantische Gleichung, Inverse in Z_m
+\section{2. Übung ,,Diskrete Mathematik``}
+
+\subsection{ISBN10}
+
+\begin{aufgabe}[Aufgabe 1]
+Ergänzen Sie die folgenden Nummern zu Buchnummern
+\[
+\text{3-05-501517-}c_{10},\quad \text{0-471-82819-}\,c_{10},\qquad \text{4-263-79215-}\,c_{10}
+\]
+\end{aufgabe}
+\begin{loesung}
+\[
+c_{10} = \sum_{i=1}^{9} i \cdot c_i
+\]
+3-05-501517-$c_{10}$,
+\begin{align*}
+c_{10} &= 1.3 + 2.0 + 3.5 + 4.5 + 5.0 - 5.1 - 4.5 - 3.1 - 2.7\\
+&= 3 + 2.(0-7) + 3.(5-1) + 4.(5-5) + 5.(0-1)\\
+&= 3 - 3 + 1 - 5\\
+&= -4 = 7
+\end{align*}
+% Hinweis: "." steht in der Quelle für die Multiplikation.
+
+0-471-82819-\,$c_{10}$
+\begin{align*}
+c_{10} &= 2.(4-9) + 3.(7-1) + 4.(1-8) + 5.(8-2)\\
+&= 1 + 7 + 5 - 3\\
+&= 10 = X
+\end{align*}
+
+4-263-79215-\,$c_{10}$
+\begin{align*}
+c_{10} &= 4 + 2.(2-5) + 3.(6-1) + 4.(3-2) + 5.(7-9)\\
+&= 4 - 6 + 4 + 4 + 1\\
+&= 7
+\end{align*}
+\end{loesung}
+
+\begin{aufgabe}[Aufgabe 2]
+Ein Wort $\mathbf{r}$ unterscheide sich von einem Codewort $\mathbf{c}$ in einem Zahlendreher an
+den Fehlerstellen $x1$, $x2$, also
+\begin{align*}
+\mathbf{c} &= \;\dots\, c_x \,\dots\, c_y \,\dots\\
+\mathbf{r} &= \;\dots\, c_y \,\dots\, c_x \,\dots
+\end{align*}
+Zeigen Sie, dass \textbf{ISBN10} diesen Fehler erkennt, dass also $\mathbf{h}\,\mathbf{r}^T \neq 0$ in $\Zm{11}$.
+% Hinweis: Die Quelle schreibt "x1, x2" im Text, verwendet aber die Indizes x, y.
+\end{aufgabe}
+\begin{loesung}
+\[
+\mathbf{e} = \mathbf{r} - \mathbf{c} \;\Rightarrow\; \mathbf{h}\,\mathbf{r}^T = \mathbf{h}\,\mathbf{e}^T = x\,(c_y - c_x) + y\,(c_x - c_y) = (x - y)\,(c_y - c_x) \neq 0
+\]
+\end{loesung}
+
+\subsection{Der Restklassenring $\Zm{m}$}
+
+\begin{aufgabe}[Aufgabe 3]
+Bestimmen Sie die Einheitengruppen $\Zm{12}^*$ und $\Zm{18}^*$ und die jeweiligen
+inversen Elemente, z.\,B. $7 \cdot 13 = 91 \equiv 1 \pmod{18}$.
+
+b) Gruppentafeln
+\end{aufgabe}
+\begin{loesung}
+$\Zm{12}^* = \{\pm 1, \pm 5\}$ \qquad alle anderen sind Nullteiler, z.\,B. $2, 3, 4, 6, \dots$
+\[
+(\pm 1)\cdot(\pm 1) = 1,\quad (\pm 5)\cdot(\pm 5) = 1
+\]
+$\Zm{18}^* = \{\pm 1, \pm 5, \pm 7\}$ \qquad alle anderen sind Nullteiler, z.\,B. $2, 3, 4, 6, \dots$
+\[
+(\pm 1)\cdot(\pm 1) = 1,\quad 5\cdot(-7) = -35 = 1,\quad (-5)\cdot 7 = -35 = 1
+\]
+
+b) Gruppentafeln
+
+\begin{tabular}{l|rrrr}
+\toprule
+$\Zm{12}^*$ & $\mathbf{1}$ & $\mathbf{-1}$ & $\mathbf{5}$ & $\mathbf{-5}$\\
+\midrule
+$\mathbf{1}$  & $1$  & $-1$ & $5$  & $-5$\\
+$\mathbf{-1}$ & $-1$ & $1$  & $-5$ & $5$\\
+$\mathbf{5}$  & $5$  & $-5$ & $1$  & $-1$\\
+$\mathbf{-5}$ & $-5$ & $5$  & $-1$ & $1$\\
+\bottomrule
+\end{tabular}
+
+\medskip
+% Hinweis: Die zweite Tafel ist in der Quelle mit "Z_12*" beschriftet; inhaltlich ist es die Gruppentafel von Z_18*.
+\begin{tabular}{l|rrrrrr}
+\toprule
+$\Zm{12}^*$ & $\mathbf{1}$ & $\mathbf{-1}$ & $\mathbf{5}$ & $\mathbf{-5}$ & $\mathbf{7}$ & $\mathbf{-7}$\\
+\midrule
+$\mathbf{1}$  & $1$  & $-1$ & $5$  & $-5$ & $7$  & $-7$\\
+$\mathbf{-1}$ & $-1$ & $1$  & $-5$ & $5$  & $-7$ & $7$\\
+$\mathbf{5}$  & $5$  & $-5$ & $7$  & $-7$ & $-1$ & $1$\\
+$\mathbf{-5}$ & $-5$ & $5$  & $-7$ & $7$  & $1$  & $-1$\\
+$\mathbf{7}$  & $7$  & $-7$ & $-1$ & $1$  & $-5$ & $5$\\
+$\mathbf{-7}$ & $-7$ & $7$  & $1$  & $-1$ & $5$  & $-5$\\
+\bottomrule
+\end{tabular}
+\end{loesung}
+
+\subsection{Euklidischer Algorithmus / Lemma von Bezout}
+
+\begin{aufgabe}[Aufgabe 4]
+Finde jeweils eine Lösung
+\[
+\text{(i)}\quad 1001\,x + 840\,y = 98 \qquad\qquad \text{(ii)}\quad 1001\,x + 840\,y = 0
+\]
+(iii) Finde alle Lösungen von (i).
+\end{aufgabe}
+\begin{loesung}
+\begin{tabular}{r|rr}
+\toprule
+$i$ & $q_i$ & $r_i$\\
+\midrule
+$-1$ &     & 1001\\
+$0$  & 1   & 840\\
+$1$  & 5   & 161\\
+$2$  & 4   & 35\\
+$3$  & 1   & 21\\
+$4$  & 1   & 14\\
+$5$  & 2   & 7\\
+$6$  &     & 0\\
+\bottomrule
+\end{tabular}
+
+\begin{align*}
+Q &= \begin{pmatrix}1&1\\1&0\end{pmatrix}\begin{pmatrix}5&1\\1&0\end{pmatrix}\begin{pmatrix}4&1\\1&0\end{pmatrix}\begin{pmatrix}1&1\\1&0\end{pmatrix}\begin{pmatrix}1&1\\1&0\end{pmatrix}\begin{pmatrix}2&1\\1&0\end{pmatrix}\\
+&= \quad\begin{pmatrix}6&1\\5&1\end{pmatrix}\qquad\quad\begin{pmatrix}5&4\\1&1\end{pmatrix}\qquad\quad\begin{pmatrix}3&1\\2&1\end{pmatrix} = \begin{pmatrix}6&1\\5&1\end{pmatrix}\begin{pmatrix}23&9\\5&2\end{pmatrix}\\
+&= \begin{pmatrix}143&56\\120&47\end{pmatrix} \qquad\qquad \operatorname{Det} Q = 143\cdot 47 - 120\cdot 56 = 1 \quad |\cdot 7
+\end{align*}
+\begin{enumerate}
+\item[(i)] $1001\cdot 47 - 840\cdot 56 = 7 \quad |\cdot 14$
+\begin{align*}
+&\Rightarrow\; 1001\cdot 47\cdot 14 - 840\cdot 56\cdot 14 = 98\\
+&\Rightarrow\; 1001\cdot 658 - 840\cdot 784 = 98
+\end{align*}
+\item[(ii)] $1001\,x + 840\,y = 0$\\
+Eine Lösung ist
+\begin{align*}
+&1001\cdot(-840) + 840\cdot 1001 = 0 \quad |: r_n\\
+&1001\cdot(-120) + 840\cdot 143 = 0
+\end{align*}
+\item[(iii)] allgemeine Lösung: $\mathbf{x} = \mathbf{p} + \mathbf{x_h} = \begin{pmatrix}658\\-784\end{pmatrix} + \begin{pmatrix}-120\\143\end{pmatrix} t$ \quad z.\,B. $\mathbf{x} = \begin{pmatrix}58\\-69\end{pmatrix}$
+\end{enumerate}
+\end{loesung}
+
+\subsection{Lemma von Bezout, Inverse in $\Zm{m}$}
+
+\begin{aufgabe}[Aufgabe 5]
+Finde die Inverse von
+\begin{enumerate}[label=\alph*)]
+\item $6$ in $\Zm{11}$
+\item $6$ in $\Zm{17}$
+\item $3$ in $\Zm{10}$
+\item $5$ in $\Zm{12}$
+\end{enumerate}
+\end{aufgabe}
+\begin{loesung}
+Für teilerfremde Zahlen $a$, $m$ besitzt die Diophantische Gleichung
+\[
+a\,x + m\,y = 1
+\]
+nach dem Lemma von Bezout Lösungen $(x, y)$ in ganzen Zahlen.\\
+Das bedeutet \quad $a\,x \equiv 1 \pmod{m}$, also $x = a^{-1}$ in $\Zm{m}$.
+
+\begin{enumerate}[label=\alph*)]
+\item $6$ in $\Zm{11}$\\
+EA für 11, 6\\
+$11 = 1\cdot 6 + 5,\quad 6 = 1\cdot 5 + 1,\quad 5 = 5\cdot 1$\\
+EA rückwärts\\
+$1 = 6 - 5 = 6 - (11 - 6) = 6\cdot 2 - 11 = 6\cdot 2$ in $\Zm{11}$ \quad $\Rightarrow$ \quad $6^{-1} = 2$ in $\Zm{11}$
+
+\item $6$ in $\Zm{17}$\\
+EA für 17, 6\\
+$17 = 2\cdot 6 + 5,\quad 6 = 1\cdot 5 + 1,\quad 5 = 5\cdot 1$\\
+EA rückwärts\\
+$1 = 6 - 5 = 6 - (17 - 2\cdot 6) = 6\cdot 3 - 17 = 6\cdot 3$ in $\Zm{17}$ \quad $\Rightarrow$ \quad $6^{-1} = 3$ in $\Zm{17}$
+
+\item $3$ in $\Zm{10}$\\
+EA für 10, 3\\
+$10 = 3\cdot 3 + 1,$\\
+EA rückwärts\\
+$1 = 10 - 3\cdot 3 = 10 + 3\cdot(-3)$ \quad $\Rightarrow$ \quad $3^{-1} = -3 = 7$ in $\Zm{10}$
+
+\item $5$ in $\Zm{12}$\\
+EA für 12, 5\\
+$12 = 2\cdot 5 + 2,\quad 5 = 2\cdot 2 + 1$\\
+EA rückwärts\\
+$1 = 5 - 2\cdot 2 = 5 - 2\,(12 - 2\cdot 5) = 5\cdot 5 - 2\cdot 12 = 5\cdot 5$ in $\Zm{12}$ \quad $\Rightarrow$ \quad $5^{-1} = 5$ in $\Zm{12}$
+\end{enumerate}
+\end{loesung}
