@@ -1,0 +1,281 @@
+% Quelle: 6. Decodierung von linearen Codes.pdf
+% Art: Vorlesung
+% Themen: Standardarray-Decodierung, Nebenklassen (Cosets), Klassenführer, Syndrom, Syndromdecodierung, Syndromdecodierung bei zyklischen Codes, Syndrompolynom, binärer Hamming-Code H2(3), modifizierter ISBN-Code, Fehlerstelle und Fehlergröße
+\section{6. Dekodierung von linearen Codes}
+
+\subsection{6.1 Standardarray Dekodierung, Slepian (1960)}
+
+Sei $C$ ein linearer, $e$ Fehler korrigierender Code $[n,k,d]_p$, $|C| = p^k$, $2e+1 \le d$.
+
+\begin{tabular}{ll}
+Gegeben: & empfangenes Wort $\mathbf{y} \in F_p^{\,n}$.\\
+Gesucht: & Codewort $\mathbf{c} \in C$ mit
+\end{tabular}
+\[
+  d(\mathbf{y},\mathbf{c}) = \min\{\, d(\mathbf{y},\mathbf{w}) \mid \mathbf{w} \in C \,\}
+\]
+
+\begin{satz}
+Falls $\min\{\, d(\mathbf{y},\mathbf{w}) \mid \mathbf{w} \in C \,\} \le e$, dann ist $\mathbf{c}$ eindeutig.
+\end{satz}
+\begin{proof}
+klar
+\end{proof}
+
+\begin{definition}[Nebenklasse (Coset)]
+\[
+  \mathbf{a} + C = \{\, \mathbf{a} + \mathbf{c} \mid \mathbf{c} \in C \,\}
+\]
+\end{definition}
+
+\begin{satz}
+\begin{enumerate}[label=(\arabic*)]
+  \item Jedes Wort $\mathbf{y} \in F_p^{\,n}$ liegt in genau einer Nebenklasse,
+  d.h.\ entweder die Nebenklassen $\mathbf{a}+C$, $\mathbf{y}+C$ stimmen überein oder sind disjunkt, also
+  \[
+    \text{entweder}\quad \mathbf{a}+C = \mathbf{y}+C \quad\text{oder}\quad \mathbf{a}+C \cap \mathbf{y}+C = \emptyset .
+  \]
+  \item $|\mathbf{a}+C| = |C| = p^k$
+  \item Sei $s$ = Anzahl der Nebenklassen\\
+  $\Rightarrow\ s \cdot |C| = p^n \ \Rightarrow\ s = p^{n-k}$
+\end{enumerate}
+\end{satz}
+
+\begin{beispiel}
+$C = \{\, 0000, 1011, 0101, 1110 \,\}$, $p = 2$.\\
+$C$ ist linear, Parameter $[4,2,2]_2$, $d_C = 2$,
+$G = \begin{pmatrix} 1 & 0 & 1 & 1 \\ 0 & 1 & 0 & 1 \end{pmatrix}$, \quad $|F_2^{\,4}| = 2^4 = 16$.
+
+Die Nebenklassen sind
+\begin{align*}
+  0000 + C &= \{\, 0000, 1011, 0101, 1110 \,\}\\
+  1000 + C &= \{\, 1000, 0011, 1101, 0110 \,\}\\
+  0100 + C &= \{\, 0100, 1111, 0001, 1010 \,\}\\
+  0010 + C &= \{\, 0010, 1001, 0111, 1100 \,\}
+\end{align*}
+\end{beispiel}
+
+\begin{definition}[Klassenführer, Standardarray]
+In jeder Nebenklasse gibt es ein Element $\mathbf{a}_i$ mit kleinstem Gewicht.
+$\mathbf{a}_i$ heißt \textbf{Klassenführer}.
+
+Obiges Schema von $F_p^{\,n}$ mit den Klassenführern in der ersten Spalte heißt
+
+\begin{center}
+\begin{tabular}{llllll}
+\multicolumn{4}{l}{\textbf{Standardarray}} & & \textbf{Syndrom}\\
+$\mathbf{o}$ & $\mathbf{c}_2$ & $\dots$ & $\mathbf{c}_t$ & & $\mathbf{o}$\\
+$\mathbf{a}_2$ & $\mathbf{a}_2 + \mathbf{c}_2$ & $\dots$ & $\mathbf{a}_2 + \mathbf{c}_t$ & & $\mathrm{Syn}(\mathbf{a}_2)$\\
+ & $\dots$ & & & & $\dots$\\
+$\mathbf{a}_s$ & $\mathbf{a}_s + \mathbf{c}_2$ & $\dots$ & $\mathbf{a}_s + \mathbf{c}_t$ & & $\mathrm{Syn}(\mathbf{a}_s)$
+\end{tabular}
+\end{center}
+mit $s = p^{n-k}$, $t = p^k$.
+\end{definition}
+
+\begin{algorithmus}[Standardarray Decodierung]
+\begin{enumerate}[label=\arabic*. Schritt:, leftmargin=*]
+  \item Suche das Wort $\mathbf{y} \in F_p^{\,n}$ im Standardarray.
+  \[ \mathbf{y} = \mathbf{a}_i + \mathbf{c}_j \]
+  \item Setze $\quad \mathbf{e} = \mathbf{a}_i,\quad \mathbf{c} = \mathbf{y} - \mathbf{e} = \mathbf{c}_j$
+\end{enumerate}
+Ergebnis: Falls $|\mathbf{a}_i| \le e$, ist $\mathbf{c}$ eindeutig.
+\end{algorithmus}
+
+\begin{beispiel}[Fortsetzung]
+$C = \{\, 0000, 1011, 0101, 1110 \,\}$, $p = 2$.
+
+\begin{center}
+\begin{tabular}{lllll}
+\toprule
+Message & Codewort & empf.\ Wort & decodiertes Wort & decod.\ Message\\
+\midrule
+01 & $\mathbf{c} = 0101$ & $\mathbf{y} = 0001$ & $\mathbf{c}' = 0101$ & 01\\
+01 & $\mathbf{c} = 0101$ & $\mathbf{y} = 0100$ & $\mathbf{c}'' = 0000$ & 00\\
+\bottomrule
+\end{tabular}
+\end{center}
+Solches passiert, wegen $d_C = 2$, also $d(\mathbf{y},\mathbf{c}') = d(\mathbf{y},\mathbf{c}'') = 1$.
+\end{beispiel}
+
+\begin{bemerkung}[Problem]
+Das Standardarray ist sehr groß. $|F_p^{\,n}| = p^n$ Elemente.\\
+Wie kann man den Aufwand für die Bestimmung der Nebenklasse von $\mathbf{y}$ minimieren?
+\end{bemerkung}
+
+\subsection{6.2 Syndromdecodierung}
+
+\begin{definition}[Syndrom von $\mathbf{y}$]
+\[ S(\mathbf{y}) = H\,\mathbf{y}^T \]
+\end{definition}
+
+\begin{satz}
+Jedes Element derselben Nebenklasse besitzt dasselbe Syndrom:
+\begin{enumerate}[label=(\arabic*)]
+  \item $S(\mathbf{y}) = \mathbf{o} \quad\Leftrightarrow\quad \mathbf{y} \in C$
+  \item $S(\mathbf{y}) = S(\mathbf{a}_i) \quad\Leftrightarrow\quad \mathbf{y} + C = \mathbf{a}_i + C$
+\end{enumerate}
+Das Syndrom $S(\mathbf{y})$ sagt uns in welcher Nebenklasse $\mathbf{y}$ zu finden ist.
+Also brauchen wir vom Standardarray nur die 1.\ Spalte und eine zusätzliche letzte Spalte mit den Syndromen.
+\end{satz}
+
+\begin{algorithmus}[Syndromdecodierung]
+\begin{enumerate}[label=\arabic*. Schritt:, leftmargin=*]
+  \item Berechne das Syndrom $S(\mathbf{y})$.
+  \item Suche das Syndrom $S(\mathbf{y}) = S(\mathbf{a}_i)$ in der Syndromspalte.
+  \item Setze $\quad \mathbf{e} = \mathbf{a}_i,\quad \mathbf{c} = \mathbf{y} - \mathbf{e} = \mathbf{c}_j$
+\end{enumerate}
+Ergebnis: Falls $|\mathbf{a}_i| \le e$, ist $\mathbf{c}$ eindeutig.
+\end{algorithmus}
+
+\begin{bemerkung}
+Falls $s = p^{n-k}$ zu groß ist, speichert man nur Nebenklassen mit $|\mathbf{a}_i| \le e$ und fordert ein erneutes Senden von $\mathbf{c}$, falls $\mathbf{y}$ nicht decodiert werden kann.
+\end{bemerkung}
+
+\subsubsection*{Syndromdecodierung bei zyklischen Codes}
+
+\begin{bemerkung}[Syndromdecodierung bei zyklischen Codes]
+Falls $C$ ein zyklischer Code mit Generatorpolynom $g(X)$, $\operatorname{grad} g(X) = r$, ist,
+berechnet man das Syndrom von $y$ nicht über $S(y) = H\,\mathbf{y}^T$,
+sondern man dividiert $y(X)$ mit Rest durch $g(X)$
+\[
+  y(X) = q(X)\,g(X) + s(X) \quad\text{mit}\quad \operatorname{grad} s(X) < r
+\]
+$s(X)$ ist das Syndrompolynom.\\
+Die Bestimmung von $G$, $H$ und $h(X)$ kann entfallen.
+
+Die binären Hamming Codes $H_2(m)$ sind äquivalent zu einem zyklischen Code.
+\end{bemerkung}
+
+\begin{beispiel}
+$C$ = binärer Hammingcode $H_2(3)$ mit Parametern $[7,4,3]_2$, $g(X) = X^3 + X + 1$.\\
+$\omega = X$ ist Nullstelle des primitiven Polynom $X^3 + X + 1 \in F_2[X]$.\\
+Die Vektordarstellung von $X$ und ihren Potenzen liefern einen zyklischen Code
+\[
+  H = (\,1 \ \ X \ \ X^2 \ \ \dots \ \ X^{n-1}\,).
+\]
+\[
+  X = \begin{pmatrix} 0\\1\\0 \end{pmatrix},\
+  X^2 = \begin{pmatrix} 0\\0\\1 \end{pmatrix},\
+  X^3 = X + 1 = \begin{pmatrix} 1\\1\\0 \end{pmatrix},\
+  X^4 = X^2 + X = \begin{pmatrix} 0\\1\\1 \end{pmatrix},\
+  X^5 = \begin{pmatrix} 1\\1\\1 \end{pmatrix},\
+  X^6 = \begin{pmatrix} 1\\0\\1 \end{pmatrix}
+\]
+% Leere Einträge der Matrizen wie im Original (entsprechen 0).
+\[
+  H = \begin{pmatrix}
+    1 &   &   & 1 & 0 & 1 & 1\\
+      & 1 &   & 1 & 1 & 1 & 0\\
+      &   & 1 & 0 & 1 & 1 & 1
+  \end{pmatrix},\qquad
+  G = \begin{pmatrix}
+    1 & 1 &   & 1 &   &   &  \\
+      & 1 & 1 &   & 1 &   &  \\
+      &   & 1 & 1 &   & 1 &  \\
+      &   &   & 1 & 1 &   & 1
+  \end{pmatrix}
+  = \begin{pmatrix} g_1\\ g_2\\ g_3\\ g_4 \end{pmatrix}
+\]
+Dann existieren $s = 2^{7-4} = 8$ Nebenklassen.
+
+\begin{center}
+\begin{tabular}{ll}
+Klassenführer & Syndrom\\
+$0$ & $0$\\
+$1$ & $1$\\
+$X$ & $X$\\
+$X^2$ & $X^2$\\
+$X^3$ & $X + 1$\\
+$X^4$ & $X^2 + X$\\
+$X^5$ & $X^2 + X + 1$\\
+$X^6$ & $X^2 + 1$
+\end{tabular}
+\end{center}
+
+Angenommen $y(X) = X^6 + X + 1$
+\begin{align*}
+  y(X) &= X^6 + X + 1 = (X^3 + X + 1)(X^3 + X + 1) + X^2 + X\\
+  \Rightarrow\ s(X)) &= X^2 + X, \quad \text{Klassenführer } a_i(X) = X^4 % UNSICHER: doppelte Klammer "s(X))" so im Original
+  \\
+  \Rightarrow\ c(X) &= y(X) - a_i(X) = X^6 + X^4 + X + 1
+\end{align*}
+Tatsächlich ist
+\[
+  c(X) = X^6 + X^4 + X + 1 = (X^3 + 1)(X^3 + X + 1) = (X^3 + 1)\,g(X)
+\]
+und damit ein Codepolynom.\\
+Geschrieben als Zeilenvektor
+\begin{align*}
+  \mathbf{y} &= 1\ 1\ 0\ 0\ 0\ 0\ 1\\
+  \mathbf{c} &= 1\ 1\ 0\ 0\ 1\ 0\ 1 \qquad d(\mathbf{y},\mathbf{c}) = 1
+\end{align*}
+\end{beispiel}
+
+\subsection{6.3 Decodierung eines modifizierten ISBN-Codes}
+
+Der ISBN-Code ist ein modulo-11 Code $\subseteq F_{11}^{\,10}$. Seine Kontrollmatrix besteht nur aus der Zeile
+$\mathbf{h} = (1\ 2\ 3\ \dots\ 10)$, die letzte Ziffer $c_{10}$ eines Codewortes $\mathbf{c}$ ist die Prüfziffer.
+Um einen Fehler zu korrigieren, muss die Fehlerstelle $x$, $1 \le x \le 10$, und die Fehlergröße $e_x$ berechnet werden.
+Dazu sind zwei Gleichungen bzw.\ zwei Prüfziffern erforderlich. Setzen
+\[
+  H = \begin{pmatrix} 1 & 1 & 1 & \dots & 1\\ 1 & 2 & 3 & \dots & 10 \end{pmatrix},
+\]
+Formen $H$ in systematische Form $(A \mid E)$ um (Einheitsmatrix rechts), um die Generatormatrix zu bestimmen.
+\[
+  \to\qquad (A \mid E) = \begin{pmatrix}
+    9 & 8 & 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0\\
+    3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 0 & 1
+  \end{pmatrix},
+\]
+% Leere Einträge der Matrix wie im Original (entsprechen 0).
+\[
+  \Rightarrow\qquad G = (E \mid -A^T) = \begin{pmatrix}
+    1 & & & & & & & & 2 & 8\\
+    & 1 & & & & & & & 3 & 7\\
+    & & 1 & & & & & & 4 & 6\\
+    & & & 1 & & & & & 5 & 5\\
+    & & & & 1 & & & & 6 & 4\\
+    & & & & & 1 & & & 7 & 3\\
+    & & & & & & 1 & & 8 & 2\\
+    & & & & & & & 1 & 9 & 1
+  \end{pmatrix}
+\]
+\begin{align*}
+  \Rightarrow\qquad & \mathbf{c} = \mathbf{a}\,G, \quad \text{also } c_i = a_i \text{ für } 1 \le i \le 8.\\
+  & c_9 \equiv \sum_{i=1}^{8} (1+i)\,c_i \pmod{11}, \qquad c_{10} \equiv \sum_{i=1}^{8} (9-i)\,c_i \pmod{11}.
+\end{align*}
+
+Sei $\mathbf{r}$ wie in Abschnitt 1.3 das empfangene Wort. Falls $\mathbf{r} = \mathbf{c}$, dann gilt
+\[
+  \mathbf{s}(\mathbf{r}) = H\,\mathbf{r}^T = H\,\mathbf{c}^T = \mathbf{o}
+\]
+Falls ein Fehler an der Fehlerstelle $x$ mit der Größe $e_x$ auftrat, sieht $\mathbf{r}$ so aus
+\begin{align*}
+  & \mathbf{r} = \mathbf{c} + \mathbf{e} \quad\text{mit}\quad \mathbf{e} = (0\ \dots\ 0\ e_x\ 0\ \dots\ 0)\\
+  \Rightarrow\qquad & H\,\mathbf{r}^T = H\,\mathbf{e}^T = \begin{pmatrix} e_x\\ x e_x \end{pmatrix}
+    = \begin{pmatrix} 1\\ x \end{pmatrix} e_x = \begin{pmatrix} s_1\\ s_2 \end{pmatrix}\\
+  & s_1 = e_x,\quad s_2 = x\,e_x,\quad x = \frac{s_2}{s_1},\quad c_x = r_x - e_x
+\end{align*}
+d.h.\ $s_1$ ist die Fehlergröße und die Fehlerstelle ist $x = s_2 / s_1$.
+
+\begin{beispiel}
+Sei $\mathbf{a} = 0\ 0\ \dots\ 0$, 8 Nullen, dann ist $\mathbf{c} = 0\ 0\ \dots\ 0\ 0\ 0$, 10 Nullen.\\
+Angenommen
+\[ \mathbf{r} = 0\ 0\ \dots\ 0\ 5\ 0. \]
+Dann ist $S(\mathbf{r}) = H\,\mathbf{r}^T = \begin{pmatrix} 5\\ 45 \end{pmatrix} = \begin{pmatrix} 1\\ 9 \end{pmatrix} 5$, also $e_x = 5$, $x = 9$.\\
+Tatsächlich ist $\mathbf{c} = \mathbf{o}$ Codewort in jedem linearen Code.
+\end{beispiel}
+
+\begin{beispiel}
+Sei $\mathbf{r} = 3\ 5\ \dots\ 0\ 0\ 0$.\\
+Dann ist $\mathbf{s} = H\,\mathbf{r}^T = \begin{pmatrix} 8\\ 13 \end{pmatrix} = \begin{pmatrix} 8\\ 2 \end{pmatrix}$, also $e_x = 8$, $x = 2/8 = 1/4 = 3$.\\
+Wegen $3 \cdot 4 = 12 = 1$, also $c_3 = 0 - 8 = 3$
+\[ \mathbf{c} = 3\ 5\ 3\ \dots\ 0\ 0\ 0. \]
+% Im Original als "1.3 + 2.5 + 3.3" (Punkt als Malzeichen) geschrieben.
+Tatsächlich ist $H\,\mathbf{c}^T = \begin{pmatrix} 3+5+3\\ 1\cdot 3 + 2\cdot 5 + 3\cdot 3 \end{pmatrix} = \begin{pmatrix} 11\\ 22 \end{pmatrix} = \begin{pmatrix} 0\\ 0 \end{pmatrix}$, also $\mathbf{c}$ ein Codewort.
+\end{beispiel}
+
+\begin{bemerkung}
+Falls $s_1 = 0$ und $s_2 \neq 0$, enthält $r$ mehr als einen Fehler.
+\end{bemerkung}
