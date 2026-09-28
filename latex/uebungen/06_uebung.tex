@@ -1,0 +1,252 @@
+% Quelle: 6. Übung CT Lösungen.pdf
+% Art: Übung mit Lösungen
+% Themen: irreduzible Polynome über F2, Zerlegung von X^n-1, Kreisteilungsklassen, binäre zyklische Codes, Generatorpolynom, zyklische Generatormatrix, Hammingcode H2(3), Paritätscode, ternärer Hammingcode H3(2), ternäre zyklische Codes, Standardarray-Decodierung, Syndrom, Klassenführer, [10,8,3]_11-Code, Inverse modulo 11
+
+\section{6. Übung „Diskrete Mathematik“ -- Lösungen (Ü6)}
+
+% Seite 1 der Quelle: Aufgabenblatt; Seiten 2--4: Lösungen.
+
+\subsection{Binäre zyklische Codes}
+
+\begin{aufgabe}[6\_1]
+\begin{enumerate}[label=\alph*)]
+  \item Bestimmen Sie sämtliche irreduzible Polynome 3.\ Grades aus $F_2[X]$.
+  \item Zerlegen Sie $X^7 - 1 \in F_2[X]$ in irreduzible Polynome.
+\end{enumerate}
+\end{aufgabe}
+
+\begin{loesung}
+\textbf{a)} Ein solches Polynom hat die Form $X^3 + aX^2 + bX + 1$, $a, b \in F_2$.\\
+Für $a = b = 0$ oder $a = b = 1$ ist $X = 1$ Nullstelle, also $a \neq b$.\\
+$\Rightarrow\ X^3 + X + 1$ oder $X^3 + X^2 + 1$
+
+\medskip
+\textbf{b)} Kreisteilungsklassen: $\{s, sp, sp^2, \dots, sp^{d-1}\}$\\
+$\{0\}$, $\{1, 2, -3\}$, $\{-1, -2, 3\}$\\
+$X^7 - 1 = (X + 1)(X^3 + X + 1)(X^3 + X^2 + 1)$
+\end{loesung}
+
+\begin{aufgabe}[6\_2]
+Bestimmen Sie vom binären Hamming Code $H_2(3)$
+\begin{itemize}
+  \item ein Generatorpolynom $g(X)$,
+  \item eine zyklische Generatormatrix $G$.
+\end{itemize}
+Hinweis: Es gibt zwei verschiedene, aber äquivalente solche Codes.
+\end{aufgabe}
+
+\begin{loesung}
+Der binäre Hamming Code $H_2(3)$ hat die Parameter $[7, 4, 3]_2$,\\
+d.h.\ Wortlänge $n = 7$, $k = \dim C = 4$, $d_C = 3$.
+
+Generatorpolynom $g(X) \mid X^7 - 1$, \quad $\operatorname{grad} g(X) = p = n - k = 3$.\\
+Zwei verschiedene Generatorpolynome führen auf äquivalente zyklische $[7, 4]_2$ Hammingcodes.
+
+\medskip
+1.\ Fall: \quad $g(X) = 1 + X + X^3 \quad\Rightarrow\quad
+G = \begin{pmatrix}
+1 & 1 & 0 & 1 & 0 & 0 & 0\\
+0 & 1 & 1 & 0 & 1 & 0 & 0\\
+0 & 0 & 1 & 1 & 0 & 1 & 0\\
+0 & 0 & 0 & 1 & 1 & 0 & 1
+\end{pmatrix}$
+
+\medskip
+2.\ Fall: \quad $g(X) = 1 + X^2 + X^3 \quad\Rightarrow\quad
+G = \begin{pmatrix}
+1 & 0 & 1 & 1 & 0 & 0 & 0\\
+0 & 1 & 0 & 1 & 1 & 0 & 0\\
+0 & 0 & 1 & 0 & 1 & 1 & 0\\
+0 & 0 & 0 & 1 & 1 & 0 & 1
+\end{pmatrix}$
+% UNSICHER: Letzte Zeile im 2. Fall so in der Quelle ("0 0 0 1 1 0 1"); zur zyklischen Verschiebung von g(X) = 1 + X^2 + X^3 würde "0 0 0 1 0 1 1" passen (vermutlich Tippfehler in der Quelle).
+\end{loesung}
+
+\begin{aufgabe}[6\_3]
+Bestimmen Sie von dem binären $[7, 6, 2]_2$ Paritätscode
+\begin{itemize}
+  \item das Generatorpolynom $g(X)$,
+  \item eine zyklische Generatormatrix $G$.
+\end{itemize}
+\end{aufgabe}
+
+\begin{loesung}
+Der $[7, 6]$ Paritätscode hat Wortlänge $n = 7$ und $k = \dim C = 6$.
+
+Generatorpolynom $g(X) = X + 1 \mid X^7 - 1$. \quad $\operatorname{grad} g(X) = p = n - k = 1$
+\[
+G = \begin{pmatrix}
+1 & 1 & 0 & 0 & 0 & 0 & 0\\
+0 & 1 & 1 & 0 & 0 & 0 & 0\\
+0 & 0 & 1 & 1 & 0 & 0 & 0\\
+0 & 0 & 0 & 1 & 1 & 0 & 0\\
+0 & 0 & 0 & 0 & 1 & 1 & 0\\
+0 & 0 & 0 & 0 & 0 & 1 & 1
+\end{pmatrix}
+\]
+\end{loesung}
+
+\subsection{Ternäre Codes mit den Parametern $[n, k, d]_3 = [4, 2, d]_3$}
+
+\begin{aufgabe}[6\_4]
+Erinnern Sie sich an: die Parameter $[n, k, d]$, eine Generatormatrix $G$ und eine Kontrollmatrix $H$ des ternären Hammingcodes $H_3(2)$.
+\end{aufgabe}
+
+\begin{loesung}
+Ternärer Hammingcode $H_3(2)$\\
+Parameter $[4, 2, 3]_3$
+\[
+H = (\, E \mid A \,) = \begin{pmatrix} 1 & 0 & 1 & 1\\ 0 & 1 & 1 & 2 \end{pmatrix}, \qquad
+G = (-A^T \mid E\,) = \begin{pmatrix} 2 & 2 & 1 & 0\\ 2 & 1 & 0 & 1 \end{pmatrix}
+\]
+\end{loesung}
+
+\begin{aufgabe}[6\_5]
+Zerlegen Sie $X^4 - 1 \in F_3[X]$ in irreduzible Polynome.
+\end{aufgabe}
+
+\begin{loesung}
+Kreisteilungsklassen: $\{s, sp, sp^2, \dots, sp^{d-1}\}$\\
+$\{0\}$, $\{1, -1\}$, $\{2\}$
+\begin{align*}
+X^4 - 1 &= (X - 1)(X^3 + X^2 + X + 1) = (X - 1)\bigl(X^2(X + 1) + (X + 1)\bigr)\\
+        &= (X - 1)(X + 1)(X^2 + 1)
+\end{align*}
+\end{loesung}
+
+\begin{aufgabe}[6\_6]
+Es gibt 2 zyklische ternäre Codes mit den Parametern $n = 4$, $k = 2$, welche?
+Bestimmen Sie dazu $d$, $g(X)$, $G$ dieser Codes.
+% Im Lösungsteil lautet die Aufgabenstellung: "Bestimmen Sie dazu d, g(X), h(X), G, H dieser Codes."
+\end{aufgabe}
+
+\begin{loesung}
+(Aufgabenstellung im Lösungsteil: Bestimmen Sie dazu $d$, $g(X)$, $h(X)$, $G$, $H$ dieser Codes.)
+\begin{enumerate}
+  \item $g(X) = X^2 + 1$, \quad $G = \begin{pmatrix} 1 & 0 & 1 & 0\\ 0 & 1 & 0 & 1 \end{pmatrix}$, \quad $d = 2$, $e = 0$
+  \item $g(X) = X^2 - 1$, \quad $G = \begin{pmatrix} -1 & 0 & 1 & 0\\ 0 & -1 & 0 & 1 \end{pmatrix}$, \quad $d = 2$, $e = 0$
+\end{enumerate}
+\end{loesung}
+
+\begin{aufgabe}[6\_7]
+Gibt es folglich einen zu $H_3(2)$ isomorphen zyklischen Code?
+\end{aufgabe}
+
+\begin{loesung}
+Nein, denn beide zyklischen Codes haben nur $d = 2$, während $H_3(2)$ einen Fehler korrigieren kann, also $d = 3$.
+\end{loesung}
+
+\subsection{Standardarray-Decodierung}
+
+\begin{aufgabe}[6\_8]
+Sei $C = H_3(2)$ der ternäre Hammingcode aus Aufgabe 6\_4. Bestimmen Sie
+\begin{itemize}
+  \item die Klassenführer,
+  \item die Syndrome der Nebenklassen und
+  \item dekodieren Sie $r_1 = 2\,2\,0\,0$, $r_2 = 0\,1\,2\,1$.
+\end{itemize}
+\end{aufgabe}
+
+\begin{loesung}
+Klassenführer, Syndrome der Nebenklassen, $\mathbf{r}_1 = 2\,2\,0\,0$, $\mathbf{r}_2 = 0\,1\,2\,1$
+\[
+H = (\, E \mid A \,) = \begin{pmatrix} 1 & 0 & 1 & 1\\ 0 & 1 & 1 & 2 \end{pmatrix}
+\]
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Klassenführer & Syndrom\\
+\midrule
+0 0 0 0 & 0 0\\
+1 0 0 0 & 1 0\\
+0 1 0 0 & 0 1\\
+0 0 1 0 & 1 1\\
+0 0 0 1 & 1 2\\
+2 0 0 0 & 2 0\\
+0 2 0 0 & 0 2\\
+0 0 2 0 & 2 2\\
+0 0 0 2 & 2 1\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+$\operatorname{Syn}(\mathbf{r}) = H\mathbf{r}^T$
+
+\medskip
+$\mathbf{r}_1 = 2\,2\,0\,0$
+\[
+\operatorname{Syn} \mathbf{r}_1 = H\mathbf{r}_1^T = \begin{pmatrix} 1\\ 0 \end{pmatrix} 2 + \begin{pmatrix} 0\\ 1 \end{pmatrix} 2 = \begin{pmatrix} 2\\ 2 \end{pmatrix}
+\quad\Rightarrow \text{Klassenführer } \mathbf{e}_1 = 0\,0\,2\,0
+\]
+d.h.\ Fehlerstelle $x = 3$, Fehlergröße $e_x = 2$\\
+$\mathbf{c}_1 = \mathbf{r}_1 - \mathbf{e}_1 = 2\,2\,1\,0$
+
+\medskip
+$\mathbf{r}_2 = 0\,1\,2\,1$
+\[
+\operatorname{Syn} \mathbf{r}_2 = H\mathbf{r}_2^T = \begin{pmatrix} 0\\ 1 \end{pmatrix} + \begin{pmatrix} 1\\ 1 \end{pmatrix} 2 + \begin{pmatrix} 1\\ 2 \end{pmatrix} = \begin{pmatrix} 3\\ 5 \end{pmatrix} = \begin{pmatrix} 0\\ 2 \end{pmatrix}
+\quad\Rightarrow \text{Klassenführer } \mathbf{e}_2 = 0\,2\,0\,0
+\]
+d.h.\ Fehlerstelle $x = 2$, Fehlergröße $e_x = 2$\\
+$\mathbf{c}_2 = \mathbf{r}_2 - \mathbf{e}_2 = 0\,2\,2\,1$
+\end{loesung}
+
+\subsection{$[10, 8, 3]_{11}$ Code}
+
+\begin{aufgabe}[6\_9]
+Decodieren Sie die empfangenen Wörter
+\begin{align*}
+r_1 &= 1\,1\,5\,1\,1\,1\,1\,1\,0\,3\\
+r_2 &= 1\,1\,5\,6\,1\,1\,1\,1\,0\,3\\
+r_3 &= 1\,1\,1\,1\,1\,1\,1\,1\,0\,3
+\end{align*}
+\end{aufgabe}
+
+\begin{loesung}
+Inverse Modulo 11
+\begin{center}
+\begin{tabular}{c|rrrrrrrrrr}
+$a$      & 1 & 2  & 3 & 4 & 5  & $-5$ & $-4$ & $-3$ & $-2$ & $-1$\\
+\midrule
+$a^{-1}$ & 1 & $-5$ & 4 & 3 & $-2$ & 2 & $-3$ & $-4$ & 5 & $-1$\\
+\end{tabular}
+\end{center}
+
+\begin{align*}
+\mathbf{r}_1 &= 1\,1\,5\,1\,1\,1\,1\,1\,0\,3\\
+\mathbf{r}_2 &= 1\,1\,5\,6\,1\,1\,1\,1\,0\,3\\
+\mathbf{r}_3 &= 1\,1\,1\,1\,1\,1\,1\,1\,0\,3
+\end{align*}
+
+\[
+H = \begin{pmatrix}
+1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10
+\end{pmatrix}
+\equiv
+\begin{pmatrix}
+1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+1 & 2 & 3 & 4 & 5 & -5 & -4 & -3 & -2 & -1
+\end{pmatrix}
+\]
+
+$\mathbf{e} = \mathbf{r} - \mathbf{c} = (\,0 \dots m \dots 0\,)$, \quad
+$S(\mathbf{r}) = \begin{pmatrix} s_0\\ s_1 \end{pmatrix} = \begin{pmatrix} 1\\ x \end{pmatrix} y$, \quad
+$\mathbf{c} = \mathbf{r} - \mathbf{e}$
+
+\[
+S(\mathbf{r}_1) = \begin{pmatrix} 15\\ 4 \cdot 3 \end{pmatrix} = \begin{pmatrix} 4\\ 4 \cdot 3 \end{pmatrix} = \begin{pmatrix} 1\\ 3 \end{pmatrix} 4
+\qquad\Rightarrow\ x = 3,\ y = 4
+\]
+$\Rightarrow \mathbf{c}_1 = 1\,1\,1\,1\,1\,1\,1\,1\,0\,3 = \mathbf{r}_3$
+
+\[
+S(\mathbf{r}_2) = \begin{pmatrix} 9\\ 1 + 5 \cdot 4 \end{pmatrix} = \begin{pmatrix} -2\\ -1 \end{pmatrix} = \begin{pmatrix} 1\\ 6 \end{pmatrix} (-2)
+\qquad\Rightarrow\ x = 6,\ y = -2
+\]
+$\Rightarrow \mathbf{c}_2 = 1\,1\,5\,6\,1\,3\,1\,1\,0\,3$
+
+\[
+S(\mathbf{r}_3) = \begin{pmatrix} 0\\ 0 \end{pmatrix} \qquad\Rightarrow \mathbf{c}_3 = \mathbf{r}_3
+\]
+\end{loesung}
