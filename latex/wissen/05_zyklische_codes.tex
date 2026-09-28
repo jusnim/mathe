@@ -53,7 +53,8 @@ G = \begin{pmatrix}
 \]
 
 \begin{enumerate}
-\item Isomorphismus \qquad $F^n \to F_n[X]$
+% KORRIGIERT: Original ohne Angabe, welche Struktur erhalten bleibt
+\item Isomorphismus (von $F$-Vektorräumen) \qquad $F^n \to F_n[X]$
 \end{enumerate}
 Wünschenswert ist
 \begin{enumerate}[start=2]
@@ -82,7 +83,8 @@ F_n[X] := F[X]/(X^n - 1)
 \begin{align*}
 010\dots0 * a_0\, a_1 \dots a_{n-1} &\cong X * (a_0 + a_1 X + \dots + a_{n-1} X^{n-1}) \\
 &= a_0 X + a_1 X^2 + \dots + a_{n-2} X^{n-1} + a_{n-1} X^n \\
-&= a_0 X + a_1 X^2 + \dots + a_{n-2} X^{n-1} + a_{n-1}
+% KORRIGIERT: Original "=" statt "\equiv ... (mod X^n - 1)"
+&\equiv a_0 X + a_1 X^2 + \dots + a_{n-2} X^{n-1} + a_{n-1} \pmod{X^n - 1} \quad (\text{da } X^n \equiv 1)
 \end{align*}
 \[
 \Rightarrow\quad 010\dots0 * a_0\, a_1 \dots a_{n-1} = a_{n-1}\, a_0\, a_1 \dots a_{n-2}
@@ -91,7 +93,8 @@ Die Buchstaben von $a$ werden zyklisch eins nach rechts verschoben.
 
 \paragraph{Multiplikation $\mathbf{a} * \mathbf{b}$}
 \begin{align*}
-& \mathbf{a} * \mathbf{b} \cong a(X)\cdot b(X) = q(X)\cdot(X^n - 1) + r(X) \equiv r(X) \quad (\bmod\ X^n - 1) \\
+% KORRIGIERT: Bedingung an den Grad des Rests fehlte
+& \mathbf{a} * \mathbf{b} \cong a(X)\cdot b(X) = q(X)\cdot(X^n - 1) + r(X) \equiv r(X) \quad (\bmod\ X^n - 1), \quad \operatorname{grad} r(X) < n \\
 & \mathbf{a} * \mathbf{b} = \mathbf{r}
 \end{align*}
 
@@ -105,10 +108,12 @@ Die Buchstaben von $a$ werden zyklisch eins nach rechts verschoben.
 
 Sei $\mathbf{v} \in F^n$. $\{\lambda \mathbf{v} \mid \lambda \in F\} \subseteq F^n$ ist ein Unterraum (eine Gerade durch Null).
 
-Von $\mathbf{g}$ erzeugtes \textbf{Ideal}\quad $\{\mathbf{a} * \mathbf{g} \mid \mathbf{a} \in F^k\} \subseteq F^n$ \qquad ($\mathbf{g} \in C$ fest, $k = \operatorname{Dim} C$)
+% KORRIGIERT: Original "{a * g | a in F^k}"; das von g erzeugte Ideal besteht aus allen Vielfachen a * g mit a in F^n
+Von $\mathbf{g}$ erzeugtes \textbf{Ideal}\quad $\{\mathbf{a} * \mathbf{g} \mid \mathbf{a} \in F^n\} \subseteq F^n$ \qquad ($\mathbf{g} \in C$ fest)
 
 \begin{satz}
-Für einen zyklischen Code $C$ gilt
+% KORRIGIERT: k war hier nicht erklärt (stand vorher beim Ideal)
+Für einen zyklischen Code $C$ mit $k = \operatorname{Dim} C$ gilt
 \[
 \mathbf{g} \in C \;\Rightarrow\; \mathbf{a} * \mathbf{g} \in C \quad \text{für alle } \mathbf{a} \in F^k
 \]
@@ -120,12 +125,13 @@ F^k * \mathbf{g} \subseteq C.
 
 \begin{proof}
 \[
-\mathbf{a} = a_0\, 0\dots0 + 0\, a_1\, 0\dots0 + \dots + 0\dots0 a_{k-1}
+\mathbf{a} = a_0\, 0\dots0 + 0\, a_1\, 0\dots0 + \dots + 0\dots0\, a_{k-1}
 \]
-also da $C$ linear ist
+% KORRIGIERT: Original "also da C linear ist"; man braucht auch, dass C zyklisch ist
+also, da $C$ linear und zyklisch ist ($0\dots0\, a_i\, 0\dots0 * \mathbf{g} = a_i \cdot (X^i * \mathbf{g})$, und $X^i * \mathbf{g}$ ist die $i$-fache zyklische Verschiebung von $\mathbf{g}$)
 \begin{align*}
 \mathbf{a} * \mathbf{g} &= a_0\, a_1 \dots a_{k-1} * \mathbf{g} \\
-&= a_0\, 0\dots0 * \mathbf{g} + 0\, a_1\, 0\dots0 * \mathbf{g} + \dots + 0\dots0 a_{k-1} * \mathbf{g} \\
+&= a_0\, 0\dots0 * \mathbf{g} + 0\, a_1\, 0\dots0 * \mathbf{g} + \dots + 0\dots0\, a_{k-1} * \mathbf{g} \\
 &\in C \qedhere
 \end{align*}
 \end{proof}
@@ -134,7 +140,8 @@ also da $C$ linear ist
 
 Sei $G$ eine Generatormatrix von $C$, $k = \operatorname{Dim} C$, also
 \[
-C = \mathbf{a}\, G = \{\, a_0 \mathbf{g}_0 + \dots + a_{k-1} \mathbf{g}_{k-1} \mid (a_0 \dots a_{k-1}) \in F^k \,\}
+% KORRIGIERT: Original "C = a G"; C ist die Menge aller a G
+C = \{\, \mathbf{a}\, G \mid \mathbf{a} \in F^k \,\} = \{\, a_0 \mathbf{g}_0 + \dots + a_{k-1} \mathbf{g}_{k-1} \mid (a_0 \dots a_{k-1}) \in F^k \,\}
 \]
 Gibt es ein Codewort $\mathbf{g} \in C$, so dass $F^k * \mathbf{g} = C$?\\
 Wenn JA: Ersetzen die Generatormatrix $G$ durch das Wort $\mathbf{g} \in C$ bzw.\ das Generatorpolynom $g(X)$.
@@ -166,7 +173,8 @@ Sei $\{\mathbf{o}\} \neq C \subseteq F_n[X]$ ein zyklischer Code. Dann gilt
 g(X) = g_0 + g_1 X + \dots + g_{r-1} X^{r-1} + X^r
 \]
 $g(X)$ ist eindeutig bestimmt.
-\item \[ F^k * \mathbf{g} = C \]
+% KORRIGIERT: k war nicht erklärt
+\item \[ F^k * \mathbf{g} = C, \qquad k = \operatorname{Dim} C \]
 \item $g(X)$ ist ein Teiler von $X^n - 1$.
 \end{enumerate}
 \end{satz}
@@ -176,16 +184,19 @@ $g(X)$ ist eindeutig bestimmt.
 \item Seien $g(X), h(X) \in C$ zwei solche Polynome, $g_r = h_r = 1$.
 \begin{align*}
 \Rightarrow\quad & g(X) - h(X) \in C, \quad \operatorname{grad}(g - h)(X) < r \\
-\Rightarrow\quad & g(X) - h(X) = o(X) \\
+% KORRIGIERT: Begründung ergänzt
+\Rightarrow\quad & g(X) - h(X) = o(X) \quad (\text{sonst ergäbe Normieren ein normiertes Polynom vom Grad} < r \text{ in } C) \\
 \Rightarrow\quad & g(X) = h(X)
 \end{align*}
+% KORRIGIERT: Rest hieß r(X) wie der Grad r; umbenannt in rho(X). Begründungen ergänzt
 \item Sei $c(X) \in C$, $c(X) \neq o(X)$. Dividieren $c(X)$ mit Rest durch $g(X)$.
 \begin{align*}
-& c(X) = q(X)\cdot g(X) + r(X) \quad \text{mit } \operatorname{grad} r(X) < r \\
-\Rightarrow\quad & r(X) \in C, \qquad \text{da } C \text{ linear} \\
-\Rightarrow\quad & r(X) = o(X)
+& c(X) = q(X)\cdot g(X) + \rho(X) \quad \text{mit } \operatorname{grad} \rho(X) < r \\
+\Rightarrow\quad & \rho(X) = c(X) - q(X) * g(X) \in C, \qquad \text{da } q(X) * g(X) \in C \text{ (Satz oben) und } C \text{ linear} \\
+\Rightarrow\quad & \rho(X) = o(X) \qquad (\text{da } r \text{ der kleinste Grad in } C \setminus \{o(X)\} \text{ ist})
 \end{align*}
-\item Das ist auch richtig für $c(X) = X^n - 1 = o(X) \in C$.
+% KORRIGIERT: Original "X^n - 1 = o(X)"; gilt nur modulo X^n - 1
+\item Das ist auch richtig für $c(X) = X^n - 1$, denn $X^n - 1 \equiv o(X) \pmod{X^n - 1}$, also $X^n - 1 \in C$.
 \[
 \Rightarrow\quad X^n - 1 = q(X)\cdot g(X) \qedhere
 \]
@@ -200,7 +211,8 @@ g(X) = g_0 + g_1 X + \dots + g_{r-1} X^{r-1} + X^r
 mit den Eigenschaften (1), (2), (3) heißt \textbf{Generatorpolynom} von $C \subseteq F^n$.
 \end{definition}
 
-Durchlaufen der Teiler von $X^n - 1$ liefert sämtliche zyklischen Codes $C \subseteq F^n$.
+% KORRIGIERT: "normierten" ergänzt (Generatorpolynome sind normiert)
+Durchlaufen der normierten Teiler von $X^n - 1$ liefert sämtliche zyklischen Codes $C \subseteq F^n$.
 
 \begin{beispiel}
 Bestimmen die zyklischen Codes der Länge $n = 4$ in $\mathbf{F}_2$: \quad $X^4 - 1 = (X + 1)^4$
@@ -216,7 +228,8 @@ C_4 &= F_4[X] * 1 \phantom{(1 + X)^2} = F^4 * 1000 = F^4
 \begin{satz}
 Sei $g(X) = g_0 + g_1 X + \dots + g_{r-1} X^{r-1} + X^r$ das \textbf{Generatorpolynom} von $C$.
 
-Dimension von $C$ \qquad $k + r = n$
+% KORRIGIERT: Original nur "k + r = n"
+Dimension von $C$ \qquad $k = \operatorname{Dim} C = n - r$, \quad also $k + r = n$
 
 Generatormatrix
 \[
@@ -258,7 +271,8 @@ Sei $a(X) \in F_k[X]$, $\operatorname{grad} a(X) < k$ \quad $\Rightarrow$ \quad 
 \subsection{5.4 Das Syndrom $s(X)$ eines zyklischen Codes}
 
 \begin{definition}
-Sei $y(X) \in F^n(X)$ und $g(X)$, $\operatorname{grad} g(X) = r$, das Generatorpolynom von $C$.
+% KORRIGIERT: Original "F^n(X)"
+Sei $y(X) \in F_n[X]$ und $g(X)$, $\operatorname{grad} g(X) = r$, das Generatorpolynom von $C$.
 Dividieren $y(X)$ mit Rest durch $g(X)$
 \[
 y(X) = q(X)\cdot g(X) + s(X) \quad \text{mit } \operatorname{grad} s(X) < r.
@@ -271,17 +285,20 @@ In Abschnitt 4.3 über Hamming-Codes haben wir das Syndrom benutzt um zu prüfen
 
 \paragraph{Anwendung auf $X^n - 1 \in \mathbf{F}_p[X]$}
 
-Sei $\{\, x \mid x^n - 1 = 0 \,\}$ ist die Menge der $n$-ten Einheitswurzeln von $X^n - 1$.
+% KORRIGIERT: Original "Sei {x | x^n - 1 = 0} ist die Menge der n-ten Einheitswurzeln von X^n - 1"
+$\{\, x \mid x^n - 1 = 0 \,\}$ (mit $x$ in einem geeigneten Erweiterungskörper von $\mathbf{F}_p$) ist die Menge der $n$-ten Einheitswurzeln, also der Nullstellen von $X^n - 1$.
 
 \begin{satz}
 Falls $n$, $p$ teilerfremd, d.h.\ $\ggT(n, p) = 1$, dann gilt
+% KORRIGIERT: Angabe, wo die Nullstellen liegen, ergänzt
 \[
-X^n - 1 \text{ besitzt } n \text{ verschiedene Nullstellen.}
+X^n - 1 \text{ besitzt } n \text{ verschiedene Nullstellen (in einem geeigneten Erweiterungskörper von } \mathbf{F}_p).
 \]
 \end{satz}
 
 \begin{definition}[Bahn, Kreisteilungsklassen]
-\textbf{Bahn} in $\Zm{n}$ \qquad $B_s = \{\, s,\ s\,p,\ s\,p^2,\ \dots,\ s\,p^{d-1} \,\}$, \quad $s\,p^d = s \quad (\bmod\ n)$
+% KORRIGIERT: Original "s p^d = s (mod n)" ohne Minimalität von d
+\textbf{Bahn} in $\Zm{n}$ \qquad $B_s = \{\, s,\ s\,p,\ s\,p^2,\ \dots,\ s\,p^{d-1} \,\}$, \quad $d \ge 1$ minimal mit $s\,p^d \equiv s \pmod{n}$
 
 $\Zm{n}$ zerfällt in Bahnen, die \textbf{Kreisteilungsklassen.}
 \[
@@ -289,18 +306,22 @@ $\Zm{n}$ zerfällt in Bahnen, die \textbf{Kreisteilungsklassen.}
 \]
 \end{definition}
 
-\begin{satz}\leavevmode
+% KORRIGIERT: Voraussetzung ggT(n, p) = 1, d = |B_s| und Produktbereich ergänzt
+\begin{satz}
+Sei $\ggT(n, p) = 1$.
 \begin{enumerate}[label=\alph*)]
 \item Zu jeder Kreisteilungsklasse $B_s$ existiert ein normiertes, irreduzibles Polynom
 \[
-m_s(X), \quad d = \operatorname{grad} m_s(X), \qquad X^n - 1 = \prod m_s(X)
+m_s(X), \quad d = |B_s| = \operatorname{grad} m_s(X), \qquad X^n - 1 = \prod_{B_s} m_s(X) \quad (\text{Produkt über alle Kreisteilungsklassen})
 \]
 \item Falls $n = q \neq p$ eine Primzahl ist, dann haben alle Kreisteilungsklassen $B_s \neq B_0$ dieselbe Länge $d$. Ihre Anzahl ist $\dfrac{q-1}{d}$.
-\item Im Fall von $q \equiv \pm 1 \pmod 8$ ist ihre Anzahl 2.
+% KORRIGIERT: Original "ist ihre Anzahl 2"; falsch z.B. für q = 31 (6 Klassen) und q = 73 (8 Klassen)
+\item Im Fall $p = 2$ und $q \equiv \pm 1 \pmod 8$ ist ihre Anzahl gerade, also mindestens 2 (genau 2 z.B.\ für $q = 7, 17, 23$).
 \end{enumerate}
 \end{satz}
 
-Anzahl irreduziblen Faktoren von $X^n - 1$ = Anzahl Kreisteilungsklassen.
+% KORRIGIERT: Voraussetzung ggT(n, p) = 1 ergänzt
+Anzahl der irreduziblen Faktoren von $X^n - 1$ = Anzahl der Kreisteilungsklassen (bei $\ggT(n, p) = 1$).
 
 \begin{beispiel}[{$X^n - 1 \in F_2[X]$, $p = 2$}]\leavevmode
 
@@ -314,8 +335,9 @@ $n = 9$
 \begin{align*}
 \Zm{9} &= \{0\} \cup \{1, 2, 4, -1, -2, -4\} \cup \{3, -3\} \\
 X^9 - 1 &= (X^3)^3 - 1 = Y^3 - 1 \quad \text{mit } Y = X^3 \\
-&= (Y + 1)(Y^2 + Y + 1) \\
-&= (X + 1)(X^2 + X + 1)(X^6 + X^3 + 1)
+% KORRIGIERT: Begründungen ergänzt
+&= (Y + 1)(Y^2 + Y + 1) \quad (\text{in } F_2 \text{ gilt } -1 = 1) \\
+&= (X + 1)(X^2 + X + 1)(X^6 + X^3 + 1) \quad (\text{da } X^3 + 1 = (X + 1)(X^2 + X + 1))
 \end{align*}
 
 $n = 15$
@@ -328,11 +350,12 @@ X^2 + X + 1
 \]
 irreduzible Polynome in $F_2[X]$ vom Grad 4
 \[
-X^4 + X + 1, \quad X^4 + X^3 + 1, \quad X^4 + X^3 + X^4 + X + 1
+% KORRIGIERT: Original "X^4 + X^3 + X^4 + X + 1" (zweimal X^4); richtig X^4 + X^3 + X^2 + X + 1 (Produkt nachgerechnet)
+X^4 + X + 1, \quad X^4 + X^3 + 1, \quad X^4 + X^3 + X^2 + X + 1
 \]
-% UNSICHER: Im Original steht "X^4 + X^3 + X^4 + X + 1" (zweimal X^4); gemeint ist vermutlich X^4 + X^3 + X^2 + X + 1. 1:1 übernommen.
+% KORRIGIERT: Original "X^4 + X^3 + X^4 + X + 1" im letzten Faktor
 \[
-\Rightarrow\quad X^{15} - 1 = (X + 1)(X^2 + X + 1)(X^4 + X + 1)(X^4 + X^3 + 1)(X^4 + X^3 + X^4 + X + 1)
+\Rightarrow\quad X^{15} - 1 = (X + 1)(X^2 + X + 1)(X^4 + X + 1)(X^4 + X^3 + 1)(X^4 + X^3 + X^2 + X + 1)
 \]
 \end{beispiel}
 
@@ -344,9 +367,10 @@ g(X)\cdot h(X) &= X^n - 1 & &\Rightarrow\quad h_k = 1 \\
 \operatorname{grad} g(X) + \operatorname{grad} h(X) &= n & &\Rightarrow\quad \operatorname{grad} h(X) = k
 \end{align*}
 
-Sei $c(X) \in F_n[X] * g(X) = C$ ein Codewort, also $c(X) = f(X)\cdot g(X)$.
+% KORRIGIERT: Original "c(X) = f(X) g(X)" und "c(X) h(X) = f(X) g(X) h(X)"; gilt nur modulo X^n - 1
+Sei $c(X) \in F_n[X] * g(X) = C$ ein Codewort, also $c(X) \equiv f(X)\cdot g(X) \pmod{X^n - 1}$.
 \[
-\Rightarrow\quad c(X)\cdot h(X) = f(X)\cdot g(X)\cdot h(X) = f(X)\cdot(X^n - 1) \equiv 0 \quad (\bmod\ X^n - 1)
+\Rightarrow\quad c(X)\cdot h(X) \equiv f(X)\cdot g(X)\cdot h(X) = f(X)\cdot(X^n - 1) \equiv 0 \quad (\bmod\ X^n - 1)
 \]
 
 \begin{definition}
@@ -377,10 +401,11 @@ $C_3 = \{\, 0000,\ 1100, \dots \,\}$, & $g(X) = 1 + X$, & $h(X) = (1 + X)^3$
 
 \textbf{Ziel}: Finden der $r = n - k$ Zeilen von $H$
 \begin{align*}
-0 &\equiv c(X)\cdot h(X) \\
-&= (c_0 + c_1 X + \dots + c_{n-1} X^{n-1})\cdot(h_0 + h_1 X + \dots + X^k),
+% KORRIGIERT: Modul ergänzt; Original "Beim Nullpolynom verschwinden sämtliche Koeffizienten" (c(X) h(X) ist in F[X] nicht das Nullpolynom)
+0 &\equiv c(X)\cdot h(X) \pmod{X^n - 1} \\
+c(X)\cdot h(X) &= (c_0 + c_1 X + \dots + c_{n-1} X^{n-1})\cdot(h_0 + h_1 X + \dots + X^k),
 \end{align*}
-Beim Nullpolynom verschwinden sämtliche Koeffizienten, insbesondere von $X^k$, $X^{k+1}$, \dots, $X^{n-1}$.
+Nach dem Satz ist $c(X) = f(X)\cdot g(X)$ mit $\operatorname{grad} f(X) < k$, also gilt in $F[X]$: $c(X)\cdot h(X) = f(X)\cdot(X^n - 1) = X^n f(X) - f(X)$. Daher verschwinden die Koeffizienten von $X^k$, $X^{k+1}$, \dots, $X^{n-1}$.
 
 Koeffizientenvergleich für $X^k$
 \begin{align*}
@@ -414,7 +439,8 @@ Matrixschreibweise
 \begin{pmatrix}
 c_0 \\ c_1 \\ \vdots \\ c_{n-1}
 \end{pmatrix}
-= H\, c^T \equiv \mathbf{o}
+% KORRIGIERT: Original "H c^T \equiv o"; Vektorgleichung in F^r
+= H\, \mathbf{c}^T = \mathbf{o}
 \]
 
 \begin{definition}[reziprokes Polynom]
@@ -470,7 +496,7 @@ heißt binärer \textbf{Golay Code $G_{23}$}.
 \end{definition}
 
 \begin{tabular}{ll}
-Dim $G_{23}$ & $k = n - \operatorname{grad} g(X) = 12$ \\
+$\operatorname{Dim} G_{23}$ & $k = n - \operatorname{grad} g(X) = 12$ \\
 Anzahl der Codewörter & $|G_{23}| = 2^{12} = 4096$
 \end{tabular}
 
@@ -512,7 +538,8 @@ Koeffizientenvergleich und Lösen des Gleichungssystems liefert
 g_1(X) &= -1 + X^2 - X^3 + X^4 + X^5 \\
 g_2(X) &= -1 - X + X^2 - X^3 + X^5 = -X^5\, g_1(X^{-1}) = -\overleftarrow{g_1}(X)
 \end{align*}
-z.B.\ $X^2$: \qquad $1 = -1 - 1 = -2 = 1$ \quad in $\mathbf{F}_3$
+% KORRIGIERT: Original "1 = -1 - 1 = -2 = 1"; -2 = 1 gilt nur modulo 3
+z.B.\ $X^2$: \qquad $(-1)\cdot 1 + 1\cdot(-1) = -2 \equiv 1 \pmod{3}$, \quad das ist der Koeffizient $1$ von $X^2$ links (in $\mathbf{F}_3$)
 
 \begin{definition}
 Der ternäre zyklische Code mit Wortlänge $n = 11$ und Generatorpolynom
