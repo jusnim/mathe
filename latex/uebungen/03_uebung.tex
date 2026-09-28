@@ -1,0 +1,176 @@
+% Quelle: 3. Übung Lösungen.pdf
+% Art: Übung mit Lösungen
+% Themen: Lemma von Bezout, Chinesischer Restsatz, Euklidischer Algorithmus, Eulersche phi-Funktion, Affine Ebene AG(2,p), Bijektionen, Gitterwege, Binomischer Lehrsatz, Vandermonde-Identität
+\section{3. Übung ,,Diskrete Mathematik``}
+
+\subsection{Lemma von Bezout, Chinesischer Restsatz}
+
+\begin{aufgabe}[Aufgabe 1]
+Lösen Sie diese Systeme simultaner Kongruenzen
+\begin{enumerate}[label=\alph*)]
+\item $z \equiv 3 \pmod{5}$, \quad $z \equiv 4 \pmod{7}$
+\item $z \equiv -1 \pmod{12}$, \quad $z \equiv 2 \pmod{5}$
+\end{enumerate}
+\end{aufgabe}
+
+\begin{loesung}
+a) EA für 7, 5 \qquad $z = 5x + 3 = 7y + 4$
+\begin{align*}
+7 &= 1 \cdot 5 + 2\\
+5 &= 2 \cdot 2 + 1\\
+2 &= 2 \cdot 1 + 0
+\end{align*}
+Der letzte Rest $\neq 0$ ist $r_3 = 1$. Jetzt gibt es zwei Lösingsvarianten.
+
+Variante 1: EA rückwärts
+\begin{align*}
+\Rightarrow\quad 1 &= 5 - 2 \cdot 2\\
+&= 5 - 2 \cdot (7 - 1 \cdot 5)\\
+&= 3 \cdot 5 - 2 \cdot 7 = 4 - 3\\
+\Rightarrow\quad z &= 3 \cdot 5 + 3 = 2 \cdot 7 + 4 = 18 \pmod{35}
+\end{align*}
+Variante 2: mittels der Matrix $Q$
+\[
+\begin{pmatrix} m \\ n \end{pmatrix} = Q \begin{pmatrix} r_3 \\ 0 \end{pmatrix}, \quad
+Q = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}\begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix}\begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix}
+= \begin{pmatrix} 3 & 1 \\ 2 & 1 \end{pmatrix}\begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix}
+= \begin{pmatrix} 7 & 3 \\ 5 & 2 \end{pmatrix}
+\]
+\[
+\operatorname{Det} Q = 7 \cdot 2 - 5 \cdot 3 = -1 = a - b,
+\]
+\[
+\Rightarrow\quad z = 7 \cdot 2 + 4 = 5 \cdot 3 + 3 = 18 \pmod{35}
+\]
+
+b) EA für 12, 5
+\begin{align*}
+12 &= 2 \cdot 5 + 2\\
+5 &= 2 \cdot 2 + 1
+\end{align*}
+EA rückwärts \qquad $b - a = 2 - (-1) = 3$
+\begin{align*}
+\Rightarrow\quad 1 &= 5 - 2 \cdot 2 = 5 - 2 \cdot (12 - 2 \cdot 5)\\
+&= 5 \cdot 5 - 2 \cdot 12\\
+2 - (-1) &= 5 \cdot 5 \cdot 3 - 2 \cdot 12 \cdot 3\\
+\Rightarrow\quad z &= 2 - 5 \cdot 5 \cdot 3 = (-1) - 2 \cdot 12 \cdot 3 = -73 \pmod{60}
+\end{align*}
+\end{loesung}
+
+\subsection{Eulers $\varphi$-Funktion}
+
+\begin{aufgabe}[Aufgabe 2]
+Bestimmen Sie $\varphi(n)$ für
+\[
+n = 1000, \qquad n = 1001, \qquad n = 1002
+\]
+\end{aufgabe}
+
+\begin{loesung}
+\begin{align*}
+n &= 1000 = 2^3 \cdot 5^3\\
+\varphi(1000) &= \varphi(2^3) \cdot \varphi(5^3) = (2^3 - 2^2) \cdot (5^3 - 5^2) = 4 \cdot 100 = 400
+\end{align*}
+\begin{align*}
+n &= 1001 = 7 \cdot 11 \cdot 13\\
+\varphi(1000) &= \varphi(7) \cdot \varphi(11) \cdot \varphi(13) = 6 \cdot 10 \cdot 12 = 720
+\end{align*}
+% UNSICHER: In der Quelle steht hier "phi(1000)", gemeint ist offensichtlich phi(1001); 1:1 übernommen.
+\begin{align*}
+n &= 1002 = 2 \cdot 3 \cdot 167\\
+\varphi(1002) &= \varphi(2) \cdot \varphi(3) \cdot \varphi(167) = 1 \cdot 2 \cdot 166 = 332
+\end{align*}
+\end{loesung}
+
+\subsection{Affine Ebene AG$(2, p)$}
+
+\begin{aufgabe}[Aufgabe 3]
+Die affine Ebene AG$(2,5)$ der Ordnung 5 besteht aus den 25 Punkten
+\[
+\mathrm{AG}(2,5) = \{\, (x, y) \mid x, y \in \Zm{5} \,\}
+\]
+\begin{enumerate}[label=\alph*)]
+\item Welche Punkte bilden die Gerade $y = 3x + 2$?
+\item Berechnen Sie den Schnittpunkt $S$ der Geraden $y = 3x + 2$, \ $y = 4x + 1$?
+\item In AG$(2,5)$ existieren die 25 Geraden $y = mx + b$ \quad ($m, b \in \Zm{5}$).
+Welche 5 Geraden fehlen in dieser Aufzählung?
+\end{enumerate}
+\end{aufgabe}
+
+\begin{loesung}
+\begin{enumerate}[label=\alph*)]
+\item $y = 3x + 2$ : $(0, 2), (1, 0), (2, 3), (3, 1), (4, 4)$
+\item $3x + 2 = 4x + 1 \Rightarrow \quad x - 1 = 0 \Rightarrow \quad S = (1, 0)$
+\item $x = k$ mit den Punkten $(k, 0)$, $(k, 1)$, $(k, 2)$, $(k, 3)$, $(k, 4)$ \quad ($k \in \Zm{5}$)
+\end{enumerate}
+\end{loesung}
+
+\subsection{Bijektionen}
+
+\begin{aufgabe}[Aufgabe 4]
+Betrachten ein $4 \times 4$ Gitter.
+% GRAFIK: Quadratisches Gitter aus 4 x 4 Kästchen (5 x 5 Gitterpunkte). Rot eingezeichnet ist ein Weg von der Ecke links unten zur Ecke rechts oben: r, o, r, o, o, r, r, o (r = eine Einheit nach rechts, o = eine Einheit nach oben).
+
+Wie viele Wege entlang der Gitterlinien gibt es, die die Ecke links unten mit der Ecke rechts oben verbinden? Erlaubt sind nur Teilstrecken von links nach rechts oder von unten nach oben.
+\end{aufgabe}
+
+\begin{loesung}
+Diese Wege setzen sich aus insgesamt 8 Strecken zusammen, wobei jeweils 4 Strecken nach oben ($o$) und nach rechts ($r$) verlaufen.
+
+Der rot eingezeichnete kürzeste Weg kann geschrieben werden als
+\[
+r\ o\ r\ o\ o\ r\ r\ o
+\]
+Man hat also eine Bijektion zwischen den Wegen und der Menge der Kombinationen von 4 Strecken aus 8. (Man wählt die 4 Plätze auf denen $r$ steht.)
+\[
+\Rightarrow\quad \binom{8}{4} = \frac{8 \cdot 7 \cdot 6 \cdot 5}{1 \cdot 2 \cdot 3 \cdot 4} = 7 \cdot 2 \cdot 5 = 70
+\]
+Das sind keine Kombinationen mit Wiederholung, da bei Kombinationen die Anordnung keine Rolle spielt.
+\end{loesung}
+
+\begin{aufgabe}[Aufgabe 5]
+Wie viele solche Wege gibt es für ein $m \times n$ Gitter?
+\end{aufgabe}
+
+\begin{loesung}
+Die Wege setzen sich aus insgesamt $m+n$ Strecken zusammen, wobei jeweils $m$ Strecken nach oben und jeweils $n$ nach rechts verlaufen. Man hat also aus $m + n$ Strecken $m$ nach oben zu wählen.
+\[
+\binom{m+n}{n} = \binom{m+n}{m}
+\]
+\end{loesung}
+
+\subsection{Binomischer Lehrsatz}
+
+\begin{aufgabe}[Aufgabe 6]
+Berechnen Sie für natürliche Zahlen $k$ die Summe $\binom{k}{1} - \binom{k}{2} + \cdots + (-1)^{k-1}\binom{k}{k}$.
+\end{aufgabe}
+
+\begin{loesung}
+Setzen im binomischen Lehrsatz $(a + b)^k = \ldots$ \quad $a = 1$, \ $b = -1$
+\begin{align*}
+\Rightarrow\quad & 1 - \binom{k}{1} + \binom{k}{2} - + \cdots + (-1)^k \binom{k}{k} = 0\\
+\Rightarrow\quad & \binom{k}{1} - \binom{k}{2} + \cdots + (-1)^{k-1} \binom{k}{k} = 1 \qquad \square
+\end{align*}
+\end{loesung}
+
+\begin{aufgabe}[Aufgabe 7]
+Beweisen Sie durch Modifikation der Identität in Folgerung c)
+\[
+\binom{m}{0}\binom{n}{r} + \binom{m}{1}\binom{n}{r-1} + \cdots + \binom{m}{r}\binom{n}{0} = \binom{m+n}{r} \qquad r > 0,\ m \geq r,\ n \geq r
+\]
+\end{aufgabe}
+
+\begin{loesung}
+Betrachten den Koeffizienten von $x^r$ in der Identität
+\[
+(1 + x)^m (1 + x)^n = (1 + x)^{m+n}
+\]
+Die linke Seite ist das Produkt zweier Faktoren der Form
+\[
+1 + \binom{m}{1}x + \cdots + \binom{m}{k}x^k + \cdots + x^m, \quad 1 + \binom{n}{1}x + \cdots + \binom{n}{l}x^l + \cdots + x^n
+\]
+Die Potenz $x^r$ kommt zustande, wenn der Term $\binom{m}{k}x^k$ mit $\binom{n}{r-k}x^{r-k}$ multipliziert wird, $0 \leq k \leq r$, also
+\[
+\binom{m}{0}\binom{n}{r} + \cdots + \binom{m}{k}\binom{n}{r-k} + \cdots + \binom{m}{r}\binom{n}{0} = \binom{m+n}{r}. \qquad \square
+\]
+\end{loesung}
