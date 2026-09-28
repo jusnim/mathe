@@ -1,0 +1,46 @@
+% Quelle: Klausurvorbereitung 1 - 8 Lösungen.pdf
+% Art: Klausur/Klausurvorbereitung
+% Themen: Euklidischer Algorithmus, Turnierplan, Siebformel, RSA privater Schlüssel, Lemma von Bezout
+% Hinweis: Die Quelle ist eine reine Aufgabensammlung mit Lösungen. Hier sind nur die
+% darin allgemein formulierten Verfahren/Formeln wörtlich herausgezogen; der vollständige
+% Text steht in latex/uebungen/91_klausurvorbereitung.tex.
+
+\section{Klausurvorbereitung „Diskrete Mathematik``}
+
+\subsection{Verfahren und Formeln aus den Lösungen}
+
+\begin{algorithmus}[Euklidischer Algorithmus, aus Aufgabe 3]
+\begin{align*}
+a &= q_0\, b + r_1\\
+b &= q_1\, r_1 + r_2\\
+&\cdots\\
+r_{n-1} &= q_n\, r_n \qquad \Rightarrow \quad r_n = \ggT(a, b)
+\end{align*}
+\end{algorithmus}
+
+\begin{bemerkung}[Turnierplan, aus Aufgabe 5]
+$x + y = 2m$ für $x \neq y$, andernfalls spielt $x$ gegen $2m$.
+\end{bemerkung}
+
+\begin{bemerkung}[Siebformel für drei Mengen, aus Aufgabe 6]
+\[
+\left|\Omega \setminus A_1 \cup A_2 \cup A_3\right|
+= |\Omega| - \bigl(|A_1| + |A_2| + |A_3|\bigr) + |A_1 \cap A_2| + |A_1 \cap A_3| + |A_2 \cap A_3| - |A_1 \cap A_2 \cap A_3|
+\]
+\end{bemerkung}
+
+\begin{bemerkung}[RSA: Berechnung des privaten Schlüssels $d$, aus Aufgabe 7]
+1.~Lösungsweg (Satz von Euler, Schnelles Potenzieren):
+\[
+e\, d \equiv 1 \pmod{\varphi(m)}, \qquad a^{\varphi(m)} \equiv 1 \pmod m
+\quad\Rightarrow\quad d = e^{\varphi(\varphi(m)) - 1} \equiv 1 \pmod{\varphi(m)}
+\]
+2.~Lösungsweg (Lemma von Bezout, EA):
+\[
+e\, d - \varphi(m)\, y = 1 \quad\Leftrightarrow\quad e\, d \equiv 1 \pmod{\varphi(m)}
+\]
+\end{bemerkung}
+
+\begin{bemerkung}[Simultane Kongruenzen, aus Aufgabe 8]
+$z = m\,x + a = n\,y + b \;\Rightarrow\; m\,x - n\,y = b - a$ \quad Lemma von Bezout
+\end{bemerkung}
