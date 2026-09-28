@@ -1,4 +1,4 @@
-"""Tests für skripte/mod11_code.py mit Aufgaben aus PRIORISIERUNG.md, Abschnitt 3."""
+"""Tests für skripte/mod11_code.py."""
 
 import pytest
 
@@ -19,15 +19,15 @@ from skripte.mod11_code import (
 
 W = ziffern_lesen
 
-# Klausur A5
+# Beispiel: a = 11500005, r₁ = 1150000511, r₂ = 1150000733
 K_A = W("11500005")
 K_R1 = W("1150000511")
 K_R2 = W("1150000733")
 K_C2 = W("1150020733")
 
 
-def test_inversentabelle_ue6_6_9():
-    # Ü6 6_9 / wissen/06_uebung.tex Z. 28, in Vertretern −5 … 5
+def test_inversentabelle():
+    # Inverse modulo 11, in Vertretern −5 … 5
     erwartet = {1: 1, 2: -5, 3: 4, 4: 3, 5: -2, -5: 2, -4: -3, -3: -4, -2: 5, -1: -1}
     tab = inversentabelle()
     for a, inv in erwartet.items():
@@ -37,7 +37,7 @@ def test_inversentabelle_ue6_6_9():
         inverse_mod(0, 11)
 
 
-def test_kodierung_klausur_a5():
+def test_kodierung_11500005():
     k = kodieren(K_A)
     assert (k.c9_summe, k.c9) == (70, 4)
     assert (k.c10_summe, k.c10) == (50, 6)
@@ -45,14 +45,14 @@ def test_kodierung_klausur_a5():
     assert k.c_ueber_G == k.c  # Weg über G = (E | −Aᵀ) gibt dasselbe
 
 
-def test_systematische_form_vl6():
-    # VL6 Z. 224–229: (A | E)
+def test_systematische_form_rechts():
+    # H = (A | E)
     km = kontrollmatrix("systematisch-rechts")
     assert km.H == [[9, 8, 7, 6, 5, 4, 3, 2, 1, 0], [3, 4, 5, 6, 7, 8, 9, 10, 0, 1]]
     assert [row[8:] for row in km.G] == [[2, 8], [3, 7], [4, 6], [5, 5], [6, 4], [7, 3], [8, 2], [9, 1]]
 
 
-# Syndrome von K r₁ und r₂ je Variante (PRIORISIERUNG.md, Abschnitt 4, Punkt 5)
+# Syndrome von r₁ und r₂ je Variante
 SYNDROME_K = {
     "grundform": ((3, 0), (9, 10)),
     "grundform-getauscht": ((0, 3), (10, 9)),
@@ -62,7 +62,7 @@ SYNDROME_K = {
 
 
 @pytest.mark.parametrize("variante", list(VARIANTEN))
-def test_klausur_a5_decodierung(variante):
+def test_decodierung_beispiel_11500005(variante):
     s1, s2 = SYNDROME_K[variante]
     d1 = decodieren(K_R1, variante)
     assert d1.S == s1
@@ -75,14 +75,14 @@ def test_klausur_a5_decodierung(variante):
     assert all(s % 11 == 0 for s in d2.probe_summen)
 
 
-def test_klausur_r1_hinweis_x_null():
-    # Abschnitt 5.2: S = (3, 0) gibt x = 0. Die VL nennt diesen Fall nicht.
+def test_r1_fehlerstelle_null():
+    # S = (3, 0) gibt x = 0. Das ist keine Stelle: nicht decodierbar.
     d = decodieren(K_R1)
-    assert d.x == 0 and d.hinweis_quelle
+    assert d.x == 0 and d.status == "nicht_decodierbar"
 
 
 @pytest.mark.parametrize("variante", list(VARIANTEN))
-def test_ue6_6_9(variante):
+def test_decodierung_1151111103(variante):
     d1 = decodieren(W("1151111103"), variante)
     assert (d1.x, d1.e) == (3, 4)
     assert d1.c == W("1111111103")
@@ -93,36 +93,35 @@ def test_ue6_6_9(variante):
     assert d3.status == "codewort" and d3.S == (0, 0)
 
 
-def test_ue6_6_9_syndrome_grundform():
+def test_syndrome_grundform_1151111103():
     assert decodieren(W("1151111103")).S == (4, 1)          # (15, 4·3) ≡ (4, 1)
     d2 = decodieren(W("1156111103"))
     assert (rep(d2.S[0], True), rep(d2.S[1], True)) == (-2, -1)
 
 
 @pytest.mark.parametrize("variante", list(VARIANTEN))
-def test_vl6_beispiele(variante):
-    # wissen/06_decodierung.tex Z. 262 und Z. 270
+def test_einzelfehler(variante):
     d = decodieren(W("0000000050"), variante)
     assert (d.x, d.e) == (9, 5) and d.c == [0] * 10
     d = decodieren(W("3500000000"), variante)
     assert (d.x, d.e) == (3, 8) and d.c == W("3530000000")
 
 
-def test_vl6_syndrome_grundform():
+def test_syndrome_grundform_einzelfehler():
     assert decodieren(W("0000000050")).S == (5, 1)   # (5, 45)
     assert decodieren(W("3500000000")).S == (8, 2)   # (8, 13)
 
 
 def test_nicht_decodierbar_s1_null():
-    # VL6 Z. 279: s₁ = 0, s₂ ≠ 0 (zwei Fehler, Summe der Fehler 0)
+    # s₁ = 0, s₂ ≠ 0 (zwei Fehler, Summe der Fehler 0)
     r = W("1500000000")
     r[1] = 10  # r = 1 10 0 … → s₁ = 11 ≡ 0, s₂ = 21 ≡ 10
     d = decodieren(r)
     assert d.S == (0, 10) and d.status == "nicht_decodierbar"
 
 
-def test_gp_a4_fehlende_null():
-    # GP A4: Wörter mit 9 Ziffern (Abschnitt 5.1). Mit ergänzter 0 im Nullblock:
+def test_fehlende_null():
+    # Wörter mit 9 Ziffern. Die 0 wird im Nullblock ergänzt:
     r1 = W("115000711")
     r2 = W("115000733")
     s = stelle_in_nullblock(r1)
@@ -130,8 +129,7 @@ def test_gp_a4_fehlende_null():
     assert null_einfuegen(r2, stelle_in_nullblock(r2)) == K_R2
     d2 = decodieren(null_einfuegen(r2, s))
     assert d2.c == K_C2
-    # Hinweis: Mit dieser Annahme ist auch r₁ decodierbar (x = 1, Fehlergröße 5).
-    # Das Gedächtnisprotokoll ist hier also wohl ungenau erinnert (vgl. K A5: r₁ = …0511).
+    # Mit dieser Annahme ist auch r₁ decodierbar (x = 1, Fehlergröße 5).
     d1 = decodieren(null_einfuegen(r1, s))
     assert (d1.x, d1.e) == (1, 5) and d1.c == W("7150000711")
 
@@ -148,6 +146,8 @@ def test_ausgabe_und_kommandozeile(capsys):
     assert "FEHLER" in capsys.readouterr().out
     assert main(["--r", "12345"]) == 0
     assert "übersprungen" in capsys.readouterr().out
+    assert main(["--r", "1151111103", "--namen", "s0-s1", "--repraesentanten", "symmetrisch"]) == 0
+    assert "s₀ =" in capsys.readouterr().out
 
 
 def test_eingabe_x_fuer_zehn():

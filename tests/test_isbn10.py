@@ -1,4 +1,4 @@
-"""Tests für skripte/isbn10.py mit den Aufgaben aus PRIORISIERUNG.md, Abschnitt 3."""
+"""Tests für skripte/isbn10.py."""
 
 import itertools
 
@@ -9,13 +9,13 @@ from skripte.isbn10 import (
     loese, pruefe_nummer, zahlendreher, zeichen,
 )
 
-# KV A1 und Ü2 A1: Prüfziffern 7, X, 7
+# Bekannte Nummern und ihre Prüfziffern
 FAELLE = [
-    ("3-05-501517", 7),   # KV A1, Ü2 A1
-    ("0-471-82819", 10),  # Ü2 A1 → X
-    ("4-263-79215", 7),   # Ü2 A1
-    ("0-387-98999", 4),   # VL1 Beispiel 0-387-98999-4
-    ("3-528-06580", 10),  # VL1 Beispiel 3-528-06580-X
+    ("3-05-501517", 7),
+    ("0-471-82819", 10),  # → X
+    ("4-263-79215", 7),
+    ("0-387-98999", 4),   # 0-387-98999-4
+    ("3-528-06580", 10),  # 3-528-06580-X
 ]
 
 
@@ -28,8 +28,8 @@ def test_pruefziffer_alle_varianten(nummer, c10, variante):
         assert p.probe_summe % 11 == 0
 
 
-def test_trick_zwischenschritte_kv_a1():
-    # Musterlösung: 3 + 2.(0-7) + 3.(5-1) + 4.(5-5) + 5.(0-1) = 3 - 3 + 1 - 5 = -4 = 7
+def test_trick_zwischenschritte_3055015177():
+    # 3 + 2.(0-7) + 3.(5-1) + 4.(5-5) + 5.(0-1) = 3 - 3 + 1 - 5 = -4 = 7
     p = berechne_pruefziffer(lies_nummer("3-05-501517"))
     assert p.gewichte == [1, 2, 3, 4, 5, -5, -4, -3, -2]
     assert p.paar_werte == [3, -14, 12, 0, -5]
@@ -37,19 +37,19 @@ def test_trick_zwischenschritte_kv_a1():
     assert p.summe_reduziert == -4
 
 
-def test_trick_zwischenschritte_ue2_a1_x():
-    # Musterlösung: 2.(4-9) + 3.(7-1) + 4.(1-8) + 5.(8-2) = 1 + 7 + 5 - 3 = 10 = X
+def test_trick_zwischenschritte_047182819x():
+    # 2.(4-9) + 3.(7-1) + 4.(1-8) + 5.(8-2) = 1 + 7 + 5 - 3 = 10 = X
     p = berechne_pruefziffer(lies_nummer("0-471-82819"))
     assert p.paar_werte == [0, -10, 18, -28, 30]
-    # Die Quelle schreibt 1, 7, 5, −3 (Bereich 0 … 10 bzw. gemischt).
+    # Bereich 0 … 10 ergibt 1, 7, 5, 8.
     # Symmetrisch (−5 … 5) ergibt sich 1, −4, 5, −3; die Summe ist ≡ gleich.
     assert berechne_pruefziffer(lies_nummer("0-471-82819"), rep="standard").paar_reduziert \
         == [0, 1, 7, 5, 8]
     assert p.c10 == 10 and zeichen(p.c10) == "X"
 
 
-def test_trick_ue2_a1_drittes():
-    # Musterlösung: 4 + 2.(2-5) + 3.(6-1) + 4.(3-2) + 5.(7-9) = 4 - 6 + 4 + 4 + 1 = 7
+def test_trick_zwischenschritte_4263792157():
+    # 4 + 2.(2-5) + 3.(6-1) + 4.(3-2) + 5.(7-9) = 4 - 6 + 4 + 4 + 1 = 7
     p = berechne_pruefziffer(lies_nummer("4-263-79215"))
     assert p.paar_werte == [4, -6, 15, 4, -10]
     assert sum(p.paar_werte) % 11 == 7
@@ -76,8 +76,8 @@ def test_dreher_beispiel():
     assert d.erkannt
 
 
-def test_dreher_allgemein_kv_a2():
-    # KV A2 / Ü2 A2: jeder echte Zahlendreher wird erkannt.
+def test_dreher_allgemein():
+    # Jeder echte Zahlendreher wird erkannt.
     for nummer in ["0-387-98999-4", "3-528-06580-X", "4-263-79215-7", "0-471-82819-X"]:
         c = lies_nummer(nummer)
         for x, y in itertools.permutations(range(1, 11), 2):

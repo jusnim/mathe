@@ -1,4 +1,4 @@
-"""Tests für skripte/inklusion_exklusion.py mit den Aufgaben aus PRIORISIERUNG.md."""
+"""Tests für skripte/inklusion_exklusion.py mit Beispielrechnungen."""
 
 from fractions import Fraction
 
@@ -20,8 +20,8 @@ from skripte.inklusion_exklusion import (
 # --- Modus Teiler -----------------------------------------------------------
 
 @pytest.mark.parametrize("variante", ["kgv", "produkt"])
-def test_klausur_a2(variante):
-    # K A2: 720 − 564 + 144 − 12 = 288. 3, 4, 5 sind paarweise teilerfremd,
+def test_teiler_720_3_4_5(variante):
+    # 720 − 564 + 144 − 12 = 288. 3, 4, 5 sind paarweise teilerfremd,
     # deshalb geben beide Varianten dasselbe.
     e = berechne_teiler(720, [3, 4, 5], variante)
     assert e.alphas == [564, 144, 12]
@@ -31,7 +31,7 @@ def test_klausur_a2(variante):
 
 
 @pytest.mark.parametrize("variante", ["kgv", "produkt"])
-def test_gedaechtnisprotokoll_a2(variante):
+def test_teiler_840_2_3_5(variante):
     e = berechne_teiler(840, [2, 3, 5], variante)
     assert e.ergebnis == 224
     assert e.probe == 224
@@ -39,7 +39,7 @@ def test_gedaechtnisprotokoll_a2(variante):
 
 
 @pytest.mark.parametrize("variante", ["kgv", "produkt"])
-def test_uebung4_a1(variante):
+def test_teiler_1000_2_3_5(variante):
     e = berechne_teiler(1000, [2, 3, 5], variante)
     assert [s.anzahl for s in e.stufen[0]] == [500, 333, 200]
     assert [s.anzahl for s in e.stufen[1]] == [166, 100, 66]
@@ -86,7 +86,7 @@ def test_kgv():
 
 # --- Modus Mengen -----------------------------------------------------------
 
-def test_kv_a6_sportverein():
+def test_mengen_sportverein_55():
     e = berechne_mengen(55, [[35, 27, 12], [13, 7, 5], [2]])
     assert e.alphas == [74, 25, 2]
     assert e.ergebnis == 4
@@ -94,7 +94,7 @@ def test_kv_a6_sportverein():
     assert "Ergebnis: 4" in text_mengen(e)
 
 
-def test_vl2_musikschule():
+def test_mengen_musikschule_73():
     e = berechne_mengen(73, [[20, 25, 52], [7, 12, 17], [1]], ["Flöte", "Geige", "Klavier"])
     assert e.alphas == [97, 36, 1]
     assert e.ergebnis == 11
@@ -114,7 +114,7 @@ def test_mengen_fehlende_stufe_wird_null():
 
 # --- Modus Derangement ------------------------------------------------------
 
-def test_uebung4_a2_derangement():
+def test_derangement_4():
     e = berechne_derangement(4)
     assert e.d_n == 9
     assert e.wahrscheinlichkeit == Fraction(3, 8)

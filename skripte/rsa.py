@@ -2,49 +2,48 @@
 
 Zweck
 -----
-Das Skript rechnet RSA-Aufgaben wie in der Klausur (K A1), im Gedächtnisprotokoll (GP A1),
-in der Klausurvorbereitung (KV A7), in Ü4 A9 und in VL3.
+Das Skript rechnet RSA-Aufgaben Schritt für Schritt durch.
 RSA ist ein Verschlüsselungsverfahren mit zwei Schlüsseln:
 - öffentlicher Schlüssel (e, m): Damit verschlüsselt Alice. Formel: c = wᵉ mod m.
 - privater Schlüssel d: Damit entschlüsselt Bob. Formel: w = cᵈ mod m.
 Dabei gilt e·d ≡ 1 (mod φ(m)). φ(m) (Eulersche φ-Funktion) ist die Anzahl
 der Zahlen von 1 bis m, die mit m keinen gemeinsamen Teiler haben.
 
-Die Ausgabe zeigt jeden Schritt wie in den Musterlösungen:
+Die Ausgabe zeigt jeden Schritt:
  a) e binär,  b) c = wᵉ mod m mit schnellem Potenzieren,  c) Formel w = cᵈ mod m,
  d) Primfaktorzerlegung von m und φ(m),
  e) d auf zwei Wegen: Weg 1 mit EA und Matrix Q (Lemma von Bezout),
     Weg 2 mit dem Satz von Euler: d ≡ e^(φ(φ(m)) − 1) mod φ(m),
  dann die Probe cᵈ mod m = w und den Text „Was braucht Oscar?“.
 
-Aufruf (Beispiele aus den Quellen)
-----------------------------------
-    python -m skripte.rsa --p 43 --q 57 --e 221 --w 1511      (Klausur A1: c = 896, d = 821)
-    python -m skripte.rsa --m 2803 --e 113 --a 715            (Ü4 A9: c = 708, d = 1463)
-    python -m skripte.rsa --m 101 --e 13                      (KV A7: d = 77)
-    python -m skripte.rsa --m 2803 --schluessel 113 --w 715 --alle-varianten   (GP A1)
+Aufruf (Beispiele)
+------------------
+    python -m skripte.rsa --p 43 --q 57 --e 221 --w 1511      (57 ist keine Primzahl: c = 896, d = 821)
+    python -m skripte.rsa --m 2803 --e 113 --a 715            (m prim: c = 708, d = 1463)
+    python -m skripte.rsa --m 101 --e 13                      (nur d berechnen: d = 77)
+    python -m skripte.rsa --m 2803 --schluessel 113 --w 715 --alle-varianten   (Schlüssel als e und als d)
     python -m skripte.rsa --m 2803 --d 1463 --c 708           (nur entschlüsseln)
 
 Varianten (--variante)
 ----------------------
 Die Variante sagt, welcher Schlüssel mit --schluessel gegeben ist.
-- oeffentlich (Standard, Ü4 A9): Die Zahl ist e. Das Skript berechnet d.
-- privat (Wortlaut GP A1 „d = 113“): Die Zahl ist d. Das Skript berechnet e.
-  Mit m = 2803, d = 113, w = 715 folgt e = 1463 und c = 265 (statt 708).
+- oeffentlich (Standard): Die Zahl ist e. Das Skript berechnet d.
+- privat: Die Zahl ist d. Das Skript berechnet e.
+  Mit m = 2803, d = 113, w = 715 folgt e = 1463 und c = 265.
 --alle-varianten gibt beide Deutungen nacheinander aus.
 Mit --e oder --d ist die Deutung fest.
 
 Wichtige Prüfungen
 ------------------
 - Das Skript zerlegt m immer vollständig in Primfaktoren.
-  Klausur A1: m = 43·57, aber 57 = 3·19 ist keine Primzahl.
+  Beispiel: m = 43·57, aber 57 = 3·19 ist keine Primzahl.
   Falsch wäre φ = (43 − 1)(57 − 1) = 2352 und d = 149. Richtig ist φ = 1512 und d = 821.
   Das Skript zeigt beide Rechnungen und erklärt den Fehler.
 - ggT(e, φ(m)) ≠ 1: Dann gibt es kein d. Das Skript sagt das deutlich.
 
 Weitere Optionen
 ----------------
-- --ea-weg matrix (Standard, wie Ü4 A9 und KV A7), rueckwaerts oder beide:
+- --ea-weg matrix (Standard), rueckwaerts oder beide:
   Form von Weg 1 (Matrix Q oder „EA rückwärts einsetzen“).
 - --rep standard (Reste 0 … m−1, Standard) oder symmetrisch (Reste −m/2 … m/2)
   für die Quadrattabellen. d wird am Ende immer positiv angegeben (z. B. −1339 ≡ 1463).
@@ -116,7 +115,7 @@ class RSAErgebnis:
     q: int | None
     variante: str                   # "oeffentlich": Schlüssel ist e; "privat": Schlüssel ist d
     schluessel: int
-    klartext_name: str              # "w" (Klausur) oder "a" (Ü4 A9, VL3)
+    klartext_name: str              # Name des Klartexts: "w" oder "a"
     ea_weg: str
     reste: str                      # "normal" oder "symmetrisch" (für schnell_potenzieren)
     phi: PhiErgebnis
@@ -183,7 +182,7 @@ def rsa_berechnen(m: int | None = None, schluessel: int | None = None, w: int | 
                             "Dann gilt φ(m) ≠ (p − 1)(q − 1). Richtig: m vollständig zerlegen (Teil d).")
     if ist_prim(m):
         hinweise.append(f"m = {m} ist eine Primzahl. Dann gilt φ(m) = m − 1 = {m - 1}. "
-                        "Oscar kann d sofort berechnen (VL3, Beispiel Oscar). RSA ist so unsicher.")
+                        "Oscar kann d sofort berechnen. RSA ist so unsicher.")
     elif any(k > 1 for k in zerl.values()):
         hinweise.append(f"m = {zerlegung_text(zerl)} enthält eine Primzahl mehrfach. "
                         "Dann klappt die Entschlüsselung nur sicher für Klartexte mit ggT(w, m) = 1.")
@@ -205,7 +204,7 @@ def rsa_berechnen(m: int | None = None, schluessel: int | None = None, w: int | 
             erg.ea_fehler_text = text_ea(euklid(phi_m, schluessel % phi_m or phi_m))
             hinweise.append(f"ACHTUNG: ggT({schluessel}, φ(m)) = ggT({schluessel}, {phi_m}) = {g} ≠ 1. "
                             f"Dann gibt es kein passendes {'d' if variante == 'oeffentlich' else 'e'}. "
-                            "Der Schlüssel muss in ℤ_φ(m)* liegen (VL3, Definition RSA).")
+                            "Der Schlüssel muss in ℤ_φ(m)* liegen.")
         else:
             wege = ["matrix", "rueckwaerts"] if ea_weg == "beide" else [ea_weg]
             for weg in wege:
@@ -431,7 +430,7 @@ def _teil_oscar(erg: RSAErgebnis) -> list[str]:
     z.append("d ≡ e^(φ(φ(m)) − 1) mod φ(m) (Weg 2). Danach entschlüsselt er: w = cᵈ mod m.")
     z.append("Fall m Primzahl: φ(m) = m − 1. Oscar braucht keine Zerlegung.")
     z.append("Fall m = p·q mit großen Primzahlen p, q: Die Zerlegung ist praktisch unmöglich.")
-    z.append("Nur dann ist RSA sicher (VL3, Fazit).")
+    z.append("Nur dann ist RSA sicher.")
     return z
 
 
@@ -491,11 +490,12 @@ def _parser() -> argparse.ArgumentParser:
         description="RSA: e binär, c = wᵉ mod m, φ(m), d auf zwei Wegen, Probe.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
-            "Beispiele aus den Quellen:\n"
-            "  python -m skripte.rsa --p 43 --q 57 --e 221 --w 1511     (Klausur A1: c = 896, d = 821)\n"
-            "  python -m skripte.rsa --m 2803 --e 113 --a 715           (Ü4 A9: c = 708, d = 1463)\n"
-            "  python -m skripte.rsa --m 101 --e 13                     (KV A7: d = 77)\n"
-            "  python -m skripte.rsa --m 2803 --schluessel 113 --w 715 --alle-varianten   (GP A1)\n"
+            "Beispiele:\n"
+            "  python -m skripte.rsa --p 43 --q 57 --e 221 --w 1511   (57 ist keine Primzahl)\n"
+            "  python -m skripte.rsa --m 2803 --e 113 --a 715   (verschlüsseln und d berechnen)\n"
+            "  python -m skripte.rsa --m 101 --e 13   (nur d berechnen)\n"
+            "  python -m skripte.rsa --m 2803 --schluessel 113 --w 715 --alle-varianten   (Schlüssel als e und als d)\n"
+            "  python -m skripte.rsa --m 2803 --d 1463 --c 708   (nur entschlüsseln)\n"
         ),
     )
     ap.add_argument("--m", type=int, help="Modul m. Alternativ --p und --q angeben.")
@@ -505,10 +505,10 @@ def _parser() -> argparse.ArgumentParser:
     sg.add_argument("--e", type=int, help="Öffentlicher Schlüssel e. Das Skript berechnet d.")
     sg.add_argument("--d", type=int, help="Privater Schlüssel d. Das Skript berechnet e.")
     sg.add_argument("--schluessel", type=int,
-                    help="Schlüssel, dessen Rolle unklar ist (GP A1). Rolle mit --variante wählen.")
+                    help="Schlüssel, dessen Rolle unklar ist. Rolle mit --variante wählen.")
     kg = ap.add_mutually_exclusive_group()
-    kg.add_argument("--w", type=int, help="Klartext w (Name wie in der Klausur).")
-    kg.add_argument("--a", type=int, help="Klartext a (Name wie in Ü4 A9 und VL3).")
+    kg.add_argument("--w", type=int, help="Klartext w.")
+    kg.add_argument("--a", type=int, help="Klartext a (gleiche Rolle wie --w, nur anderer Name).")
     ap.add_argument("--c", type=int, help="Codewort c. Ohne Klartext wird c entschlüsselt.")
     ap.add_argument("--variante", choices=VARIANTEN, default=None,
                     help="Rolle von --schluessel: oeffentlich (= e, Standard) oder privat (= d).")

@@ -1,4 +1,4 @@
-"""Tests für skripte/linearer_code.py mit Aufgaben aus VL4, VL6, Ü5 und Ü6."""
+"""Tests für skripte/linearer_code.py mit Beispielen zu linearen Codes."""
 
 import pytest
 
@@ -35,9 +35,9 @@ def dec(code, r):
     return decodiere(code, W(r, code.q), mindestabstand(code), tab)
 
 
-# --- Ü5 5_1: Wiederholungscode in F_3^5 (Variante B) -----------------------
+# --- Wiederholungscode in F_3^5 (Variante B) -------------------------------
 
-def test_ue5_1_wiederholung():
+def test_wiederholung_f3_5():
     code = baue_code(3, G=wiederholung_G(3, 5), variante="B")
     assert code.H == M("21000;20100;20010;20001", 3)
     assert codiere(code, [2]).c == [2, 2, 2, 2, 2]
@@ -47,9 +47,9 @@ def test_ue5_1_wiederholung():
     assert mindestabstand(code).d == 5
 
 
-# --- Ü5 5_2: Paritätscode in F_3^5 (Variante B) -----------------------------
+# --- Paritätscode in F_3^5 (Variante B) ------------------------------------
 
-def test_ue5_2_paritaet():
+def test_paritaet_f3_5():
     code = baue_code(3, G=paritaet_G(3, 5, "B"), variante="B")
     assert code.G == M("10001;01001;00101;00011", 3)
     assert code.H == [[2, 2, 2, 2, 1]]
@@ -60,25 +60,25 @@ def test_ue5_2_paritaet():
     assert mindestabstand(code).d == 2
 
 
-# --- Ü5 5_3: H_2(2) und H_2(4) ----------------------------------------------
+# --- H_2(2) und H_2(4) -----------------------------------------------------
 
-def test_ue5_3_hamming_2_2():
+def test_hamming_2_2():
     code = baue_code(2, H=hamming_H(2, 2), variante="A")
     assert code.H == M("101;011")
     assert code.G == [[1, 1, 1]]
 
 
-def test_ue5_3_hamming_2_4():
-    quelle = M("100000001111111;"
+def test_hamming_2_4():
+    erwartet = M("100000001111111;"
                "010001110001111;"
                "001010110110011;"
                "000111011010101")
-    assert hamming_H(2, 4) == quelle
+    assert hamming_H(2, 4) == erwartet
 
 
-# --- Ü5 5_4: Decodieren in H_2(3) mit dem H der Aufgabe --------------------
+# --- Decodieren in H_2(3) mit eigenem H ------------------------------------
 
-def test_ue5_4_decodieren():
+def test_hamming_2_3_decodieren():
     code = baue_code(2, H=M("1001101;0101011;0010111"))
     d1, d2, d3 = dec(code, "1101100"), dec(code, "1111111"), dec(code, "1111000")
     assert d1.syn.s == [1, 0, 1] and d1.c == W("1101000")
@@ -88,12 +88,12 @@ def test_ue5_4_decodieren():
     assert d3.e == W("0010000")               # x = 3
 
 
-# --- Ü5 5_5: H_3(3) ---------------------------------------------------------
+# --- H_3(3) ----------------------------------------------------------------
 
-def test_ue5_5_hamming_3_3():
-    quelle = M("1000011111111;0101100111222;0011212012012", 3)
-    assert hamming_H(3, 3) == quelle
-    code = baue_code(3, H=quelle)
+def test_hamming_3_3():
+    h = M("1000011111111;0101100111222;0011212012012", 3)
+    assert hamming_H(3, 3) == h
+    code = baue_code(3, H=h)
     assert (code.n, code.k, mindestabstand(code).d) == (13, 10, 3)
     d1 = dec(code, "0000000000112")
     assert d1.syn.s == [1, 2, 2]
@@ -101,24 +101,23 @@ def test_ue5_5_hamming_3_3():
     assert d1.c == W("0000000000111", 3)
     d2 = dec(code, "0000000000122")
     assert d2.syn.s == [2, 1, 0]
-    # Die Quelle schreibt x = 13. Richtig ist x = 11, denn (1 2 0)ᵀ ist die
-    # 11. Spalte von H (PRIORISIERUNG.md, Abschnitt 5). c₂ stimmt mit der Quelle.
+    # (1 2 0)ᵀ ist die 11. Spalte von H, also x = 11.
     assert d2.e == [0] * 10 + [2, 0, 0]       # x = 11, y = 2
     assert d2.c == W("0000000000222", 3)
-    text = loesungsweg(Auftrag(q=3, H=quelle, woerter=[W("0000000000122", 3)]))
-    assert "x = 11" in text and "x = 13" in text   # Hinweis auf den Quellenfehler
+    text = loesungsweg(Auftrag(q=3, H=h, woerter=[W("0000000000122", 3)]))
+    assert "x = 11" in text and "x = 13" not in text
 
 
-# --- Ü6 6_4 und VL4: H_3(2) -------------------------------------------------
+# --- H_3(2) ----------------------------------------------------------------
 
-def test_ue6_4_hamming_3_2():
+def test_hamming_3_2():
     code = baue_code(3, H=hamming_H(3, 2), variante="A")
     assert code.H == M("1011;0112", 3)
     assert code.G == M("2210;2101", 3)
     assert (code.n, code.k, mindestabstand(code).d) == (4, 2, 3)
 
 
-def test_vl4_hamming_3_2_decodieren():
+def test_hamming_3_2_decodieren():
     code = baue_code(3, H=M("1011;0112", 3))
     d1 = dec(code, "1111")
     assert d1.syn.s == [0, 1] and d1.e == W("0100", 3) and d1.c == W("1011", 3)
@@ -126,16 +125,16 @@ def test_vl4_hamming_3_2_decodieren():
     assert d2.syn.s == [2, 0] and d2.e == W("2000", 3) and d2.c == W("1011", 3)
 
 
-def test_vl4_hamming_2_3_G():
+def test_hamming_2_3_G():
     code = baue_code(2, H=M("1001011;0101110;0010111"), variante="A")
     assert code.G == M("1101000;0110100;1110010;1010001")
     abst = mindestabstand(code)
     assert abst.d == 3 and abst.min_zeilengewicht == 3
 
 
-# --- Ü6 6_8: Klassenführer und Decodieren -----------------------------------
+# --- Klassenführer und Decodieren ------------------------------------------
 
-def test_ue6_8_klassenfuehrer():
+def test_hamming_3_2_klassenfuehrer():
     code = baue_code(3, H=M("1011;0112", 3))
     tab = klassenfuehrer(code)
     erwartet = [("0000", "00"), ("1000", "10"), ("0100", "01"), ("0010", "11"),
@@ -149,9 +148,9 @@ def test_ue6_8_klassenfuehrer():
     assert d2.e == W("0200", 3) and d2.c == W("0221", 3)
 
 
-# --- VL6: Nebenklassen des [4,2,2]_2-Codes ---------------------------------
+# --- Nebenklassen des [4,2,2]_2-Codes --------------------------------------
 
-def test_vl6_nebenklassen():
+def test_nebenklassen_4_2_2():
     code = baue_code(2, G=M("1011;0101"))
     assert mindestabstand(code).d == 2
     tab = klassenfuehrer(code, "erste")
@@ -161,18 +160,18 @@ def test_vl6_nebenklassen():
     assert arr[1] == [W("1000"), W("0011"), W("1101"), W("0110")]
     assert arr[2] == [W("0100"), W("1111"), W("0001"), W("1010")]
     assert arr[3] == [W("0010"), W("1001"), W("0111"), W("1100")]
-    # Decodier-Tabelle VL6: y = 0001 → 0101 (Nachricht 01), y = 0100 → 0000 (00)
+    # Decodier-Tabelle: y = 0001 → 0101 (Nachricht 01), y = 0100 → 0000 (00)
     assert dec(code, "0001").c == W("0101") and dec(code, "0001").a == [0, 1]
     assert dec(code, "0100").c == W("0000") and dec(code, "0100").a == [0, 0]
 
 
-def test_vl6_fuehrer_letzte():
+def test_nebenklassen_fuehrer_letzte():
     code = baue_code(2, G=M("1011;0101"))
     tab = klassenfuehrer(code, "letzte")
     assert W("0001") in [f.e for f in tab]      # statt 0100
 
 
-# --- Varianten A, B, C (mod-11-Code aus VL6, Klausur A5) --------------------
+# --- Varianten A, B, C (mod-11-Code) --------------------------------------
 
 H11 = "1111111111;1 2 3 4 5 6 7 8 9 10"
 
@@ -186,7 +185,7 @@ def test_variante_C_mod11():
 
 
 @pytest.mark.parametrize("variante", ["A", "B", "C"])
-def test_klausur_a5_alle_varianten(variante):
+def test_mod11_alle_varianten(variante):
     code = baue_code(11, H=M(H11, 11), variante=variante)
     assert all(v == 0 for g in code.G for v in syndrom(code, g).s)
     r1 = W("1 1 5 0 0 0 0 5 1 1", 11)

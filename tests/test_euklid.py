@@ -1,4 +1,4 @@
-"""Tests für skripte/euklid.py mit den Aufgaben aus den Quellen (PRIORISIERUNG.md, Abschnitt 3)."""
+"""Tests für skripte/euklid.py mit festen Rechenbeispielen."""
 
 import pytest
 
@@ -11,24 +11,24 @@ from skripte.euklid import (
 
 # --- EA und ggT -----------------------------------------------------------
 
-def test_vl1_1965_225_ea():
+def test_ea_1965_225():
     ea = euklid(1965, 225)
     assert [(z.dividend, z.q, z.divisor, z.rest) for z in ea.zeilen] == [
         (1965, 8, 225, 165), (225, 1, 165, 60), (165, 2, 60, 45), (60, 1, 45, 15), (45, 3, 15, 0)]
     assert ea.ggt == 15
 
 
-def test_kv_a3_ggt():
+def test_ggt_2406_654():
     ea = euklid(2406, 654)
     assert ea.quotienten == [3, 1, 2, 8, 1, 3]
     assert ea.ggt == 6
 
 
-def test_klausur_a3_ggt():
+def test_ggt_17_15():
     assert ggt(17, 15) == 1
 
 
-def test_ue2_a4_tabelle():
+def test_erweiterter_ea_tabelle_1001_840():
     ea, tab = erweiterter_ea(1001, 840)
     assert [t.q for t in tab] == [None, 1, 5, 4, 1, 1, 2, None]
     assert [t.r for t in tab] == [1001, 840, 161, 35, 21, 14, 7, 0]
@@ -52,21 +52,21 @@ def test_kgv():
 
 # --- Bezout ---------------------------------------------------------------
 
-def test_vl1_matrix_q():
+def test_matrix_q_1965_225():
     mx = ea_matrix(1965, 225)
     assert mx.Q == ((131, 35), (15, 4))
     assert mx.det == -1
-    # VL1 Z. 501: 1965·(−4) + 225·35 = 15
+    # 1965·(−4) + 225·35 = 15
     assert bezout(1965, 225, "matrix") == (15, -4, 35)
 
 
-def test_kv_a3_matrix_q():
+def test_matrix_q_2406_654():
     mx = ea_matrix(2406, 654)
     assert mx.Q == ((401, 103), (109, 28))
     assert mx.det == 1
 
 
-def test_kv_a7_matrix_q():
+def test_matrix_q_100_13():
     mx = ea_matrix(100, 13)
     assert mx.Q == ((100, 23), (13, 3))
     assert mx.det == 1
@@ -80,36 +80,36 @@ def test_bezout_gleichung(a, b, weg):
     assert "Ergebnis:" in bezout_mit_weg(a, b, weg).text
 
 
-def test_ue3_a1_rueckwaerts():
-    # Ü3 A1 a): 1 = 5 − 2·2 = 5 − 2·(7 − 1·5) = 3·5 − 2·7
+def test_rueckwaerts_7_5():
+    # 1 = 5 − 2·2 = 5 − 2·(7 − 1·5) = 3·5 − 2·7
     rw = ea_rueckwaerts(7, 5)
     assert (rw.koef_gross, rw.koef_klein) == (-2, 3)
 
 
 # --- Diophantische Gleichungen --------------------------------------------
 
-def test_kv_a3_rueckwaerts():
+def test_diophantisch_2406_654_rueckwaerts():
     e = loese_diophantisch(2406, 654, 24, "-", "rueckwaerts")
     assert (e.x, e.y) == (3, 11)
-    assert (e.dx, e.dy) == (109, 401)   # KV A3 c): x = 3 + 109t, y = 11 + 401t
+    assert (e.dx, e.dy) == (109, 401)   # x = 3 + 109t, y = 11 + 401t
     assert "24 = 3·2406 − 11·654" in e.text
 
 
-def test_kv_a3_matrix():
+def test_diophantisch_2406_654_matrix():
     e = loese_diophantisch(2406, 654, 24, "-", "matrix")
     assert (e.x, e.y) == (112, 412)
     assert (e.dx, e.dy) == (109, 401)
     assert "2406·112 − 654·412 = 24" in e.text
 
 
-def test_ue2_a4_i_und_iii():
+def test_diophantisch_1001_840_plus():
     e = loese_diophantisch(1001, 840, 98, "+", "matrix")
     assert (e.x, e.y) == (658, -784)
     assert (e.dx, e.dy) == (-120, 143)
-    assert (e.x_klein, e.y_klein) == (58, -69)   # „z. B. x = (58, −69)“
+    assert (e.x_klein, e.y_klein) == (58, -69)   # kleinstes x > 0
 
 
-def test_ue2_a4_ii_homogen():
+def test_diophantisch_1001_840_homogen():
     e = loese_diophantisch(1001, 840, 0, "+", "matrix")
     assert 1001 * e.x + 840 * e.y == 0
     assert 1001 * e.dx + 840 * e.dy == 0
@@ -117,7 +117,7 @@ def test_ue2_a4_ii_homogen():
 
 
 @pytest.mark.parametrize("weg", ["rueckwaerts", "matrix"])
-def test_klausur_a3(weg):
+def test_diophantisch_17_15(weg):
     e = loese_diophantisch(17, 15, 1, "-", weg)
     assert 17 * e.x - 15 * e.y == 1
     assert (e.x, e.y) == (-7, -8)
@@ -126,8 +126,8 @@ def test_klausur_a3(weg):
 
 @pytest.mark.parametrize("weg", ["rueckwaerts", "matrix"])
 @pytest.mark.parametrize("a,b", [(84, 54), (78, 48), (18, 12)])
-def test_gp_a3_form_rechte_seite_30(a, b, weg):
-    # GP A3: a·x − b·y = 30. Die Werte sind nicht überliefert. Wir wählen selbst.
+def test_diophantisch_rechte_seite_30(a, b, weg):
+    # a·x − b·y = 30 für verschiedene a, b.
     e = loese_diophantisch(a, b, 30, "-", weg)
     assert e.loesbar
     assert a * e.x - b * e.y == 30
@@ -145,25 +145,25 @@ def test_nicht_loesbar():
 
 @pytest.mark.parametrize("a,m,erwartet", [(6, 11, 2), (6, 17, 3), (3, 10, 7), (5, 12, 5)])
 @pytest.mark.parametrize("weg", ["rueckwaerts", "matrix"])
-def test_ue2_a5_inverse(a, m, erwartet, weg):
+def test_inverse_standard(a, m, erwartet, weg):
     assert inverse_mit_weg(a, m, "standard", weg).inverse == erwartet
 
 
-def test_ue2_a5_c_symmetrisch():
-    # Ü2 A5 c): 3⁻¹ = −3 = 7 in ℤ_10
+def test_inverse_symmetrisch_3_mod_10():
+    # 3⁻¹ = −3 = 7 in ℤ_10
     e = inverse_mit_weg(3, 10, "symmetrisch")
     assert e.roh == -3 and e.inverse == -3
     assert inverse(3, 10) == 7
 
 
-def test_kv_a7_d():
-    # KV A7: d = −23 ≡ 77 (mod 100)
+def test_inverse_13_mod_100_matrix():
+    # d = −23 ≡ 77 (mod 100)
     e = inverse_mit_weg(13, 100, "standard", "matrix")
     assert e.roh == -23 and e.inverse == 77
 
 
-def test_ue6_inversentabelle_mod_11_symmetrisch():
-    # Ü6 6_9: Inverse mod 11 mit Repräsentanten −5 … 5
+def test_inversentabelle_mod_11_symmetrisch():
+    # Inverse mod 11 mit Repräsentanten −5 … 5
     for a in range(1, 11):
         inv = inverse(a, 11, "symmetrisch")
         assert -5 <= inv <= 5
@@ -179,7 +179,7 @@ def test_inverse_fehler():
 
 
 def test_repraesentant():
-    assert repraesentant(-1339, 2802) == 1463   # Ü4 A9: d = −1339 ≡ 1463
+    assert repraesentant(-1339, 2802) == 1463   # −1339 ≡ 1463 (mod 2802)
     assert repraesentant(7, 10, "symmetrisch") == -3
 
 

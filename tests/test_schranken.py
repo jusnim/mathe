@@ -1,4 +1,4 @@
-"""Tests für skripte/schranken.py (Quellen: Ü5 5_6, 5_7, 5_8; VL4 Z. 394; VL5 Golay)."""
+"""Tests für skripte/schranken.py (Hamming- und Singleton-Schranke)."""
 
 import pytest
 
@@ -14,7 +14,7 @@ from skripte.schranken import (
 )
 
 
-# Ü5 5_6 und VL5 (Golay-Codes sind perfekt)
+# Golay-Codes sind perfekt
 @pytest.mark.parametrize(
     "n,k,d,q,e,kugel,rest",
     [
@@ -35,7 +35,7 @@ def test_golay_summanden_23():
     assert [s.wert for s in hamming(23, 12, 7, 2).summanden] == [1, 23, 253, 1771]
 
 
-# VL4 Z. 394: H_2(m) ist ein [2^m − 1, 2^m − 1 − m, 3]_2-Code und perfekt
+# H_2(m) ist ein [2^m − 1, 2^m − 1 − m, 3]_2-Code und perfekt
 @pytest.mark.parametrize("m", [2, 3, 4, 5])
 def test_hamming_code_perfekt(m):
     n = 2**m - 1
@@ -44,7 +44,7 @@ def test_hamming_code_perfekt(m):
     assert h.perfekt
 
 
-# Ü5 5_8
+# [10, 8, 3]_11: Hamming erfüllt, MDS
 def test_10_8_3_11():
     h = hamming(10, 8, 3, 11)
     assert (h.e, h.kugel, h.rest) == (1, 101, 121)
@@ -59,15 +59,13 @@ def test_10_6_5_11():
     assert (h.e, h.kugel, h.rest) == (2, 4601, 14641)
     assert h.rest - h.kugel == 10040
     assert h.erfuellt and not h.perfekt
-    # Die Quelle schreibt im letzten Satz [10, 8, 3]_11 (Tippfehler, PRIORISIERUNG
-    # Abschnitt 5). Richtig ist: [10, 6, 5]_11 ist optimal, denn 6 + 5 = 10 + 1.
+    # [10, 6, 5]_11 ist optimal, denn 6 + 5 = 10 + 1.
     s = singleton(10, 6, 5)
     assert s.mds
     assert "[10, 6, 5]_11 ist optimal" in text_code(10, 6, 5, 11)
 
 
-# Ü5 5_7: Die Quelle endet ohne Ergebnis. Die Tabelle dort zeigt:
-# n = 11: 67 > 64, n = 12: 79 ≤ 128. Also n ≥ 12.
+# Tabelle: n = 11: 67 > 64, n = 12: 79 ≤ 128. Also n ≥ 12.
 def test_kleinstes_n_5_5_2():
     r = kleinstes_n(5, 5, 2)
     assert r.n_singleton == 9
@@ -103,3 +101,11 @@ def test_ausgabe_ergebnis(capsys):
     assert main(["--n", "23", "--k", "12", "--d", "7", "--q", "2"]) == 0
     out = capsys.readouterr().out
     assert "Ergebnis:" in out and "perfekt: ja" in out
+
+
+def test_epilog_beispiele(capsys):
+    with pytest.raises(SystemExit):
+        main(["--help"])
+    out = capsys.readouterr().out
+    assert "Beispiele:" in out
+    assert "python -m skripte.schranken --k 5 --d 5 --q 2  (kleinstes n bestimmen)" in out

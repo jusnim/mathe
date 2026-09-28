@@ -2,8 +2,7 @@
 
 Zweck
 -----
-Das Skript zeigt den Lösungsweg wie in der Vorlesung (VL1, Abschnitt
-„Der ISBN Code“) und in den Musterlösungen (Ü2 A1, Ü2 A2, KV A1, KV A2).
+Das Skript zeigt den Rechenweg Schritt für Schritt.
 Eine ISBN-10 ist ein Wort c = c₁ c₂ … c₁₀ mit Buchstaben aus ℤ₁₁.
 Die Prüfziffer c₁₀ erfüllt die Prüfsumme
 
@@ -19,15 +18,15 @@ Nummer prüfen (10 Zeichen):
     python -m skripte.isbn10 --nummer 3-528-06580-X
 Zahlendreher an den Stellen 3 und 7 zeigen:
     python -m skripte.isbn10 --nummer 0-387-98999-4 --dreher 3 7
-Allgemeiner Beweis „ISBN-10 erkennt Zahlendreher“ (KV A2, Ü2 A2):
+Allgemeiner Beweis „ISBN-10 erkennt Zahlendreher“:
     python -m skripte.isbn10 --dreher-beweis
 
 Varianten (--variante)
 ----------------------
 trick   (Standard) Gewichte 6 … 10 werden als −5 … −1 geschrieben.
-        Dann fasst man Paare zusammen: 2·(c₂ − c₉) usw. So rechnet die
-        Musterlösung von Ü2 A1 und KV A1.
-direkt  Summe 1·c₁ + 2·c₂ + … + 9·c₉ ohne Trick (VL1).
+        Dann fasst man Paare zusammen: 2·(c₂ − c₉) usw. Das spart
+        Rechenarbeit.
+direkt  Summe 1·c₁ + 2·c₂ + … + 9·c₉ ohne Trick.
 praxis  Gewichte 10, 9, …, 1 wie auf echten Büchern. Die Prüfziffer ist
         gleich, die Zwischensummen sind anders.
 Mit --alle-varianten zeigt das Skript alle drei Wege nacheinander.
@@ -46,8 +45,8 @@ M = 11
 VARIANTEN = ("trick", "direkt", "praxis")
 VARIANTEN_TEXT = {
     "trick": "Gewichte 1 … 10, dabei 6 … 10 als −5 … −1 geschrieben "
-             "(Rechentrick der Musterlösung Ü2 A1 / KV A1)",
-    "direkt": "Gewichte 1 … 10, Summe Σ i·cᵢ direkt (VL1)",
+             "(Rechentrick mit Paaren)",
+    "direkt": "Gewichte 1 … 10, Summe Σ i·cᵢ direkt",
     "praxis": "Gewichte 10, 9, …, 1 (Praxis). Gleiche Prüfziffer, "
               "andere Zwischensummen",
 }
@@ -108,7 +107,7 @@ def formatiere(c: list[int], vorlage: str = "") -> str:
 
     Die Gruppen sind bei jeder ISBN verschieden lang. Deshalb übernimmt
     das Skript die Bindestriche aus der Eingabe (vorlage). Ohne Vorlage
-    nutzt es die Form c₁-c₂c₃c₄-c₅…c₉-c₁₀ aus VL1.
+    nutzt es die Form c₁-c₂c₃c₄-c₅…c₉-c₁₀.
     """
     s = "".join(zeichen(x) for x in c)
     gruppen = [len(g) for g in vorlage.replace(" ", "-").split("-") if g]
@@ -264,7 +263,7 @@ def zahlendreher(c: list[int], x: int, y: int) -> Dreher:
 # ---------------------------------------------------------------------------
 
 def _p(v: int, erstes: bool = False) -> str:
-    """Schreibt ein Vorzeichen wie in der Quelle: + a bzw. − a."""
+    """Schreibt ein Vorzeichen mit Leerzeichen: + a bzw. − a."""
     if erstes:
         return str(v) if v >= 0 else f"−{-v}"
     return f"+ {v}" if v >= 0 else f"− {-v}"
@@ -301,7 +300,7 @@ def text_pruefziffer(p: Pruefziffer, vorlage: str = "") -> str:
                  f"Σ ≡ {p.summe % M} (mod 11)")
         z.append(f"c₁₀ ≡ −{p.summe % M} ≡ {p.c10} (mod 11)")
     else:
-        z.append("Prüfsumme (VL1): Σ_{i=1}^{10} i·cᵢ ≡ 0 (mod 11)")
+        z.append("Prüfsumme: Σ_{i=1}^{10} i·cᵢ ≡ 0 (mod 11)")
         z.append("Wegen 10 ≡ −1 gilt: Σ_{i=1}^{9} i·cᵢ − c₁₀ ≡ 0")
         z.append("  →  c₁₀ ≡ Σ_{i=1}^{9} i·cᵢ (mod 11)")
         z.append("")
@@ -402,7 +401,7 @@ def text_dreher(d: Dreher) -> str:
 
 def text_dreher_beweis() -> str:
     return "\n".join([
-        "Behauptung: ISBN-10 erkennt jeden Zahlendreher (KV A2, Ü2 A2).",
+        "Behauptung: ISBN-10 erkennt jeden Zahlendreher.",
         "",
         "c = … c_x … c_y …   (Codewort, h·cᵀ ≡ 0)",
         "r = … c_y … c_x …   (Stellen x und y vertauscht, c_x ≠ c_y)",
@@ -431,12 +430,12 @@ def text_dreher_beweis() -> str:
 # Kommandozeile
 # ---------------------------------------------------------------------------
 
-BEISPIEL = """Beispiele aus den Quellen:
-  python -m skripte.isbn10 --nummer 3-05-501517          (KV A1, Ü2 A1: c₁₀ = 7)
-  python -m skripte.isbn10 --nummer 0-471-82819          (Ü2 A1: c₁₀ = X)
-  python -m skripte.isbn10 --nummer 3-528-06580-X        (VL1: gültig?)
-  python -m skripte.isbn10 --nummer 0-387-98999-4 --dreher 3 7
-  python -m skripte.isbn10 --dreher-beweis               (KV A2, Ü2 A2)
+BEISPIEL = """Beispiele:
+  python -m skripte.isbn10 --nummer 3-05-501517  (Prüfziffer berechnen: c₁₀ = 7)
+  python -m skripte.isbn10 --nummer 0-471-82819  (Prüfziffer berechnen: c₁₀ = X)
+  python -m skripte.isbn10 --nummer 3-528-06580-X  (Nummer prüfen)
+  python -m skripte.isbn10 --nummer 0-387-98999-4 --dreher 3 7  (Zahlendreher an Stelle 3 und 7)
+  python -m skripte.isbn10 --dreher-beweis  (allgemeiner Beweis für Zahlendreher)
 """
 
 
@@ -458,7 +457,7 @@ def baue_parser() -> argparse.ArgumentParser:
                     help="Zeigt den allgemeinen Beweis, dass ISBN-10 jeden "
                          "Zahlendreher erkennt.")
     ap.add_argument("--variante", choices=VARIANTEN, default="trick",
-                    help="Rechenweg: trick (Standard, Musterlösung: Gewichte 6 … 9 "
+                    help="Rechenweg: trick (Standard, Gewichte 6 … 9 "
                          "als −5 … −2), direkt (Σ i·cᵢ), praxis (Gewichte 10 … 1).")
     ap.add_argument("--alle-varianten", action="store_true",
                     help="Zeigt alle Rechenwege nacheinander.")

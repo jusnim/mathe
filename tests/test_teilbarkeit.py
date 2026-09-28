@@ -1,4 +1,4 @@
-"""Tests für skripte/teilbarkeit.py mit Aufgaben aus Ü1 und Ü4."""
+"""Tests für skripte/teilbarkeit.py mit Teilbarkeitsregeln, d(n), σ(n) und Mersenne-Zahlen."""
 
 import pytest
 
@@ -16,33 +16,33 @@ from skripte.teilbarkeit import (
     zahl_lesen,
 )
 
-X_LICHT = 299792          # Ü1 A1, A2
-X_GROSS = 10**19 + 1      # Ü1 A2
+X_LICHT = 299792
+X_GROSS = 10**19 + 1
 
 
-# --- Ü1 A1: Regel für 9 -----------------------------------------------------
+# --- Regel für 9 ---------------------------------------------------------------
 
-def test_ue1_a1_neun():
+def test_neun_299792():
     r = regel_9(X_LICHT)
     assert r.ziffern == [2, 9, 9, 7, 9, 2]
     assert r.quersumme == 38
-    assert r.rest == 2          # Quelle: ≡ 2 + 7 + 2 ≡ 2 (mod 9)
+    assert r.rest == 2          # ≡ 2 + 7 + 2 ≡ 2 (mod 9)
     assert r.ohne_neunen == [2, 7, 2]
     assert not r.teilbar
 
 
-# --- Ü1 A1: Regel für 11, beide Varianten ------------------------------------
+# --- Regel für 11, beide Varianten ---------------------------------------------
 
-def test_ue1_a1_elf_standard():
+def test_elf_299792_standard():
     r = regel_11(X_LICHT)
     assert r.variante == "einer"
-    assert r.terme == [-2, 9, -9, 7, -9, 2]   # Quelle: −2 + 9 − 9 + 7 − 9 + 2
+    assert r.terme == [-2, 9, -9, 7, -9, 2]   # −2 + 9 − 9 + 7 − 9 + 2
     assert r.summe == -2
     assert r.reste_x[11] == 9
     assert not r.teilbar[11]
 
 
-def test_ue1_a1_elf_links():
+def test_elf_299792_links():
     r = regel_11(X_LICHT, "links")
     assert r.terme == [2, -9, 9, -7, 9, -2]
     assert r.summe == 2
@@ -64,27 +64,27 @@ def test_elf_und_1001_alle_varianten(x, variante):
         assert r7.reste_x[p] == x % p
 
 
-# --- Ü1 A2: Regel für 7 mit 1001 ---------------------------------------------
+# --- Regel für 7 mit 1001 ------------------------------------------------------
 
-def test_ue1_a2_sieben_299792():
+def test_sieben_299792():
     r = regel_1001(X_LICHT)
     assert r.teile == [299, 792]
-    assert r.terme == [-299, 792]              # Quelle: −299 + 792
-    assert r.summe == 493                      # Quelle: 493 = 7 · 70 + 3
+    assert r.terme == [-299, 792]              # −299 + 792
+    assert r.summe == 493                      # 493 = 7 · 70 + 3
     assert r.reste_summe[7] == 3
     assert not r.teilbar[7]
 
 
-def test_ue1_a2_sieben_10hoch19_plus_1():
+def test_sieben_10hoch19_plus_1():
     r = regel_1001(X_GROSS)
     assert r.teile == [10, 0, 0, 0, 0, 0, 1]
-    assert r.summe == 11                       # Quelle: ≡ 11 (mod 7)
+    assert r.summe == 11                       # ≡ 11 (mod 7)
     assert r.reste_x[7] == 4
     assert not r.teilbar[7]
 
 
 @pytest.mark.parametrize("variante", list(VARIANTEN))
-def test_ue1_a2_varianten(variante):
+def test_sieben_varianten(variante):
     r = regel_1001(X_LICHT, variante)
     assert abs(r.summe) == 493
     assert r.reste_x[7] == 3
@@ -98,18 +98,18 @@ def test_bloecke():
     assert bloecke(5) == [5]
 
 
-# --- Ü4 A3: d(n) und σ(n) ----------------------------------------------------
+# --- d(n) und σ(n) -------------------------------------------------------------
 
 @pytest.mark.parametrize("n, d, sigma", [
     (1, 1, 1), (6, 4, 12), (28, 6, 56), (496, 10, 992), (12, 6, 28), (60, 12, 168), (13, 2, 14),
 ])
-def test_ue4_a3_teilerfunktionen(n, d, sigma):
+def test_teilerfunktionen(n, d, sigma):
     t = teiler_daten(n)
     assert t.d == d
     assert t.sigma == sigma
 
 
-def test_ue4_a3_formel_28():
+def test_teiler_formel_28():
     t = teiler_daten(28)
     assert t.faktoren == {2: 2, 7: 1}
     assert t.d_formel_faktoren == [3, 2]
@@ -117,10 +117,10 @@ def test_ue4_a3_formel_28():
     assert t.teiler == [1, 2, 4, 7, 14, 28]
 
 
-# --- Ü4 A4, A6 b: vollkommene Zahlen -----------------------------------------
+# --- Vollkommene Zahlen --------------------------------------------------------
 
 @pytest.mark.parametrize("n", [6, 28, 496, 8128])
-def test_ue4_a4_vollkommen(n):
+def test_vollkommen(n):
     assert teiler_daten(n).art == "vollkommen"
 
 
@@ -129,24 +129,24 @@ def test_nicht_vollkommen(n, art):
     assert teiler_daten(n).art == art
 
 
-# --- Ü4 A5, A6: Mersenne -----------------------------------------------------
+# --- Mersenne-Zahlen ----------------------------------------------------------
 
 @pytest.mark.parametrize("k, m, vollkommen", [(2, 3, 6), (3, 7, 28), (5, 31, 496), (7, 127, 8128)])
-def test_ue4_a5_a6_mersenne_prim(k, m, vollkommen):
+def test_mersenne_prim(k, m, vollkommen):
     md = mersenne_daten(k)
     assert md.m == m and md.ist_prim
     assert md.vollkommen == vollkommen
     assert teiler_daten(vollkommen).sigma == 2 * vollkommen
 
 
-def test_ue4_a5_2hoch11():
+def test_mersenne_2hoch11():
     md = mersenne_daten(11)
     assert md.m == 2047
     assert not md.ist_prim
-    assert md.faktoren == {23: 1, 89: 1}      # Quelle: 2047 = 23 · 89
+    assert md.faktoren == {23: 1, 89: 1}      # 2047 = 23 · 89
 
 
-def test_ue4_a6c_k_zusammengesetzt():
+def test_mersenne_k_zusammengesetzt():
     md = mersenne_daten(6)
     assert md.k_zerlegung == (2, 3)
     assert md.m % (2**2 - 1) == 0

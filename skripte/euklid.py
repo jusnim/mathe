@@ -3,8 +3,8 @@
 Zweck
 -----
 Das Skript rechnet Aufgaben zum Euklidischen Algorithmus.
-Es zeigt jeden Rechenschritt wie in den Musterlösungen.
-Sie können den Lösungsweg direkt auf Papier abschreiben.
+Es zeigt jeden Rechenschritt.
+Sie können den Lösungsweg direkt übernehmen.
 
 Begriffe
 --------
@@ -15,27 +15,27 @@ Begriffe
 - Diophantische Gleichung: Gleichung, deren Lösungen ganze Zahlen sein müssen.
 - Matrix Q: Produkt der Matrizen Q_i = (q_i 1; 1 0) aus dem EA.
 
-Aufruf (Beispiele aus den Quellen)
-----------------------------------
-    python -m skripte.euklid --a 2406 --b 654 --c 24 --form -     (KV A3)
-    python -m skripte.euklid --a 1001 --b 840 --c 98 --form +     (Ü2 A4)
-    python -m skripte.euklid --a 17 --b 15 --c 1 --form -         (Klausur A3)
-    python -m skripte.euklid --a 1965 --b 225                     (VL1, nur ggT und Bezout)
-    python -m skripte.euklid --a 3 --mod 10 --rep symmetrisch     (Ü2 A5 c, Inverse)
+Aufruf (Beispiele)
+------------------
+    python -m skripte.euklid --a 2406 --b 654 --c 24 --form -     (Gleichung a·x − b·y = c)
+    python -m skripte.euklid --a 1001 --b 840 --c 98 --form +     (Gleichung a·x + b·y = c)
+    python -m skripte.euklid --a 17 --b 15 --c 1 --form -         (Gleichung mit c = 1)
+    python -m skripte.euklid --a 1965 --b 225                     (nur ggT und Bezout)
+    python -m skripte.euklid --a 3 --mod 10 --rep symmetrisch     (Inverse, symmetrisch)
     python -m skripte.euklid --a 12 --b 18 --kgv                  (kgV)
 
 Varianten (--variante)
 ----------------------
-- beide (Standard): EA rückwärts und Matrix Q, wie in KV A3 b).
+- beide (Standard): EA rückwärts und Matrix Q.
 - rueckwaerts: nur „EA rückwärts“ (Einsetzen von unten nach oben).
-- matrix: nur Matrix Q (wie VL1, Ü2 A4, KV A7).
+- matrix: nur Matrix Q = Q_0·…·Q_n.
 Beide Wege sind richtig. Sie können aber verschiedene spezielle Lösungen geben.
-Beispiel KV A3: EA rückwärts gibt (3, 11), Matrix Q gibt (112, 412).
+Beispiel 2406·x − 654·y = 24: EA rückwärts gibt (3, 11), Matrix Q gibt (112, 412).
 --alle-varianten gibt beide Wege nacheinander aus.
 
 Weitere Optionen
 ----------------
-- --form + oder -: Gleichung a·x + b·y = c oder a·x − b·y = c. Standard: − (Klausurform).
+- --form + oder -: Gleichung a·x + b·y = c oder a·x − b·y = c. Standard: −.
 - --rep standard oder symmetrisch: Repräsentant der Inversen (0 … m−1 oder −m/2 … m/2).
 
 Nutzung als Modul (für andere Skripte)
@@ -70,9 +70,9 @@ __all__ = [
 
 VARIANTEN = ("beide", "rueckwaerts", "matrix")
 VARIANTEN_TEXT = {
-    "beide": "EA rückwärts und Matrix Q (wie KV A3 b)",
+    "beide": "EA rückwärts und Matrix Q",
     "rueckwaerts": "EA rückwärts (Einsetzen von unten nach oben)",
-    "matrix": "Matrix Q = Q_0·…·Q_n (wie VL1, Ü2 A4, KV A7)",
+    "matrix": "Matrix Q = Q_0·…·Q_n",
 }
 
 
@@ -139,7 +139,7 @@ class EAErgebnis:
     """Ergebnis des EA für zwei Zahlen.
 
     Der EA rechnet mit den Beträgen und mit der größeren Zahl zuerst.
-    r_(−1) = groß, r_0 = klein. In der Quelle heißt das r_(−1) = a, r_0 = b.
+    r_(−1) = groß, r_0 = klein.
     """
     a: int                      # Eingabe 1 (wie übergeben)
     b: int                      # Eingabe 2 (wie übergeben)
@@ -246,7 +246,7 @@ def erweiterter_ea(a: int, b: int) -> tuple[EAErgebnis, list[ErwEAZeile]]:
 
 def text_ea_tabelle(ea: EAErgebnis, tabelle: list[ErwEAZeile] | None = None,
                     erweitert: bool = False) -> str:
-    """EA als Tabelle wie in Ü2 A4: Spalten i | q_i | r_i (optional x_i, y_i)."""
+    """EA als Tabelle: Spalten i | q_i | r_i (optional x_i, y_i)."""
     if tabelle is None:
         _, tabelle = erweiterter_ea(ea.a, ea.b)
     kopf = ["i", "q_i", "r_i"] + (["x_i", "y_i"] if erweitert else [])
@@ -334,7 +334,7 @@ def ea_rueckwaerts(a: int, b: int, ziel: int | None = None) -> RueckwaertsErgebn
     """EA rückwärts: stellt einen Rest r_k als Kombination von a und b dar.
 
     Ohne „ziel“ startet das Einsetzen beim ggT r_n.
-    Ist „ziel“ selbst ein Rest r_k (k ≥ 1) im EA, startet es dort (wie KV A3 b).
+    Ist „ziel“ selbst ein Rest r_k (k ≥ 1) im EA, startet es dort.
     Rückgabe: Koeffizienten für die größere und die kleinere Zahl (Beträge).
     """
     ea = euklid(a, b)
@@ -428,7 +428,7 @@ class MatrixErgebnis:
 
 
 def ea_matrix(a: int, b: int) -> MatrixErgebnis:
-    """Bezout-Koeffizienten mit der Matrix Q aus VL1 (Beweis des Lemmas von Bezout)."""
+    """Bezout-Koeffizienten mit der Matrix Q (Beweis des Lemmas von Bezout)."""
     ea = euklid(a, b)
     if ea.klein == 0:
         raise ValueError("Mit einer 0 gibt es keinen EA-Schritt und keine Matrix Q.")
@@ -689,7 +689,7 @@ def loese_diophantisch(a: int, b: int, c: int, form: str = "-", weg: str = "ruec
     erg.x_start, erg.y_start = ka, kB
     erg.x, erg.y = ka * erg.faktor, kB * erg.faktor
     # Homogene Lösung: a·(−B/g) + B·(a/g) = 0.
-    # Form "−": (b/g, a/g) wie KV A3 c). Form "+": (−b/g, a/g) wie Ü2 A4 (iii).
+    # Form "−": (b/g, a/g). Form "+": (−b/g, a/g).
     erg.dx, erg.dy = -B // g, a // g
     if erg.dx < 0 and form == "-":
         erg.dx, erg.dy = -erg.dx, -erg.dy
@@ -769,15 +769,14 @@ def text_diophantisch(erg: DiophantErgebnis) -> str:
 # Kommandozeile
 # ---------------------------------------------------------------------------
 
-BEISPIELE = """Beispiele aus den Quellen:
-  KV A3:   python -m skripte.euklid --a 2406 --b 654 --c 24 --form -
-           (EA rückwärts: x = 3, y = 11; Matrix Q: x = 112, y = 412)
-  Ü2 A4:   python -m skripte.euklid --a 1001 --b 840 --c 98 --form + --variante matrix
-           (x = 658, y = −784)
-  K A3:    python -m skripte.euklid --a 17 --b 15 --c 1 --form -
-  VL1:     python -m skripte.euklid --a 1965 --b 225 --variante matrix
-  Ü2 A5:   python -m skripte.euklid --a 6 --mod 11      (Ergebnis 2)
-  KV A7:   python -m skripte.euklid --a 13 --mod 100 --variante matrix   (d = 77)
+BEISPIELE = """Beispiele:
+  python -m skripte.euklid --a 2406 --b 654 --c 24 --form -   (Gleichung a·x − b·y = c, beide Wege)
+  python -m skripte.euklid --a 1001 --b 840 --c 98 --form + --variante matrix   (Gleichung a·x + b·y = c mit Matrix Q)
+  python -m skripte.euklid --a 17 --b 15 --c 1 --form -   (Gleichung mit c = 1)
+  python -m skripte.euklid --a 1965 --b 225 --variante matrix   (ggT und Bezout mit Matrix Q)
+  python -m skripte.euklid --a 6 --mod 11   (Inverse modulo 11)
+  python -m skripte.euklid --a 13 --mod 100 --variante matrix   (Inverse modulo 100 mit Matrix Q)
+  python -m skripte.euklid --a 12 --b 18 --kgv   (ggT und kgV)
 """
 
 
@@ -792,7 +791,7 @@ def _parser() -> argparse.ArgumentParser:
     p.add_argument("--c", type=int, help="Rechte Seite c der Gleichung a·x ± b·y = c.")
     p.add_argument("--form", default="-",
                    help="Form der Gleichung: + für a·x + b·y = c, - für a·x − b·y = c. "
-                        "Standard: - (Form der Klausur).")
+                        "Standard: -.")
     p.add_argument("--mod", type=int, help="Modul m. Das Skript berechnet dann a⁻¹ in ℤ_m.")
     p.add_argument("--variante", choices=VARIANTEN, default="beide",
                    help="Lösungsweg: beide (Standard), rueckwaerts (EA rückwärts) oder matrix (Matrix Q).")

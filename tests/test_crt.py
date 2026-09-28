@@ -1,4 +1,4 @@
-"""Tests für skripte/crt.py mit den Aufgaben aus den Quellen (PRIORISIERUNG.md, Abschnitt 3)."""
+"""Tests für skripte/crt.py mit festen Beispielen und Zufallssystemen."""
 
 import itertools
 import random
@@ -19,28 +19,28 @@ def _pruefe(erg, kongruenzen, modul, kp):
     assert "Ergebnis:" in erg.text
 
 
-# --- K A4: z ≡ 8 mod 17, z ≡ 5 mod 15 → 110 mod 255 -----------------------
+# --- z ≡ 8 mod 17, z ≡ 5 mod 15 → 110 mod 255 -----------------------
 
 @pytest.mark.parametrize("variante,weg", ALLE)
-def test_klausur_a4_alle_varianten(variante, weg):
+def test_crt_17_15_alle_varianten(variante, weg):
     k = [(8, 17), (5, 15)]
     _pruefe(loese_system(k, variante, weg), k, 255, 110)
 
 
-def test_klausur_a4_standard_z0():
+def test_crt_17_15_standard_z0():
     # EA rückwärts: 1 = 8·15 − 7·17, also 17·(−7) − 15·(−8) = 1; ·(−3) ⇒ x = 21, z = 365.
     erg = loese_system([(8, 17), (5, 15)])
     assert erg.z0 == 365
     assert (erg.schritte[0].x, erg.schritte[0].y) == (21, 24)
 
 
-def test_klausur_a4_mit_vorgabe_aus_a3():
-    # K A4 a: „mit Hilfe des Ergebnisses aus Aufgabe 3“: 17·8 − 15·9 = 1.
+def test_crt_17_15_mit_vorgabe():
+    # Bekannte Bezout-Lösung: 17·8 − 15·9 = 1.
     erg = loese_system([(8, 17), (5, 15)], vorgabe=(8, 9))
     assert erg.schritte[0].weg == "vorgabe"
     assert erg.z0 == -400
     assert erg.kleinste_positive == 110
-    # Die andere Lösung aus K A3: 17·(−7) − 15·(−8) = 1 ⇒ z = 365.
+    # Andere Bezout-Lösung: 17·(−7) − 15·(−8) = 1 ⇒ z = 365.
     assert loese_system([(8, 17), (5, 15)], vorgabe=(-7, -8)).z0 == 365
 
 
@@ -51,26 +51,26 @@ def test_falsche_vorgabe_faellt_auf_ea_zurueck():
     assert erg.kleinste_positive == 110
 
 
-# --- KV A8: z ≡ 5 mod 13, z ≡ 4 mod 15 → −86 ≡ 109 mod 195 -----------------
+# --- z ≡ 5 mod 13, z ≡ 4 mod 15 → −86 ≡ 109 mod 195 -----------------
 
 @pytest.mark.parametrize("variante,weg", ALLE)
-def test_kv_a8_alle_varianten(variante, weg):
+def test_crt_13_15_alle_varianten(variante, weg):
     k = [(5, 13), (4, 15)]
     erg = loese_system(k, variante, weg)
     _pruefe(erg, k, 195, 109)
     assert erg.z0 == -86
 
 
-# --- Ü3 A1 a: z ≡ 3 mod 5, z ≡ 4 mod 7 → 18 mod 35 ------------------------
+# --- z ≡ 3 mod 5, z ≡ 4 mod 7 → 18 mod 35 ------------------------
 
 @pytest.mark.parametrize("variante,weg", ALLE)
-def test_ue3_a1a(variante, weg):
+def test_crt_5_7(variante, weg):
     k = [(3, 5), (4, 7)]
     erg = loese_system(k, variante, weg)
     _pruefe(erg, k, 35, 18)
 
 
-def test_ue3_a1a_wie_quelle():
+def test_crt_5_7_zwischenwerte():
     # Variante 1: 1 = 3·5 − 2·7 ⇒ z = 3·5 + 3 = 2·7 + 4 = 18.
     p = loese_system([(3, 5), (4, 7)]).schritte[0]
     assert (p.x, p.y, p.z0) == (3, 2, 18)
@@ -80,32 +80,29 @@ def test_ue3_a1a_wie_quelle():
     assert p.z0 == 18
 
 
-# --- Ü3 A1 b: z ≡ −1 mod 12, z ≡ 2 mod 5 → −73 ≡ 47 mod 60 -----------------
-# Quelle nennt nur −73 mod 60 (PRIORISIERUNG.md 5.2); die kleinste positive Lösung ist 47.
+# --- z ≡ −1 mod 12, z ≡ 2 mod 5 → −73 ≡ 47 mod 60 -----------------------
 
 @pytest.mark.parametrize("variante,weg", ALLE)
-def test_ue3_a1b(variante, weg):
+def test_crt_12_5_negativer_rest(variante, weg):
     k = [(-1, 12), (2, 5)]
     _pruefe(loese_system(k, variante, weg), k, 60, 47)
 
 
-def test_ue3_a1b_z0_wie_quelle():
+def test_crt_12_5_z0():
     p = loese_system([(-1, 12), (2, 5)]).schritte[0]
     assert p.d == 3
     assert p.z0 == -73
 
 
-# --- VL1 Beispiel mit drei Kongruenzen → −74 ≡ 1246 mod 1320 --------------
-# Die Quelle schreibt im 2. Schritt „b = 6“ (VL1 Z. 620). Gemeint ist b = 1;
-# die Rechnung dort nutzt d = 1 − 14 = −13. Der Test nutzt b = 1.
+# --- Drei Kongruenzen → −74 ≡ 1246 mod 1320 ------------------------------
 
 @pytest.mark.parametrize("variante,weg", ALLE)
-def test_vl1_drei_kongruenzen(variante, weg):
+def test_drei_kongruenzen(variante, weg):
     k = [(3, 11), (6, 8), (1, 15)]
     _pruefe(loese_system(k, variante, weg), k, 1320, 1246)
 
 
-def test_vl1_zwischenschritte_wie_quelle():
+def test_drei_kongruenzen_zwischenschritte():
     erg = loese_system([(3, 11), (6, 8), (1, 15)])
     s1, s2 = erg.schritte
     assert (s1.x, s1.y, s1.z0, s1.modul) == (1, 1, 14, 88)     # 11 = 1·8 + 3

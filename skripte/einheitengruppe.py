@@ -2,8 +2,7 @@
 
 Zweck
 -----
-Das Skript löst Aufgaben zur Einheitengruppe ℤ_m* wie in Ü2 A3, Ü4 A8 und Ü6 6_9.
-Es zeigt jeden Schritt so, dass Sie ihn auf Papier abschreiben können.
+Das Skript berechnet die Einheitengruppe ℤ_m* und zeigt jeden Rechenschritt.
 
 Begriffe
 --------
@@ -14,14 +13,14 @@ Begriffe
 - Ordnung ord(a): die kleinste Zahl k > 0 mit a^k ≡ 1.
 - primitiv: a ist primitiv, wenn ord(a) = φ(m) ist. Dann erzeugt a die ganze Gruppe.
 
-Aufruf (Beispiele aus den Quellen)
-----------------------------------
-    python -m skripte.einheitengruppe --m 12                          (Ü2 A3: alles zu ℤ_12*)
-    python -m skripte.einheitengruppe --m 18 --modus tafel            (Ü2 A3 b)
-    python -m skripte.einheitengruppe --m 17 --modus ordnungen --elemente 2 3 4 5   (Ü4 A8)
-    python -m skripte.einheitengruppe --m 11 --modus inverse --reihenfolge zahlen   (Ü6 6_9)
-    python -m skripte.einheitengruppe --m 6 --modus tafel --mit-nullteilern --variante standard  (VL1)
-    python -m skripte.einheitengruppe --m 7 --modus ordnungen --variante standard   (VL3 ℤ_7*)
+Aufruf (Beispiele)
+------------------
+    python -m skripte.einheitengruppe --m 12                          (alles zu ℤ_12*)
+    python -m skripte.einheitengruppe --m 18 --modus tafel            (Gruppentafel von ℤ_18*)
+    python -m skripte.einheitengruppe --m 17 --modus ordnungen --elemente 2 3 4 5   (Ordnungen in ℤ_17*)
+    python -m skripte.einheitengruppe --m 11 --modus inverse --reihenfolge zahlen   (Inverse mod 11)
+    python -m skripte.einheitengruppe --m 6 --modus tafel --mit-nullteilern --variante standard  (Tafel von ℤ_6)
+    python -m skripte.einheitengruppe --m 7 --modus ordnungen --variante standard   (Ordnungen in ℤ_7*)
     python -m skripte.einheitengruppe --m 18 --modus inverse --inverse-weg 7        (Inverse mit EA)
 
 Modi (--modus)
@@ -31,16 +30,14 @@ einheiten, inverse, tafel, ordnungen oder alles (Standard).
 Varianten (--variante)
 ----------------------
 - symmetrisch (Standard): Repräsentanten −m/2 … m/2, zum Beispiel ℤ_12* = {±1, ±5}.
-  So rechnen Ü2 A3, Ü6 6_9 und die Potenzlisten in Ü4 A8.
 - standard: Repräsentanten 0 … m−1, zum Beispiel ℤ_12* = {1, 5, 7, 11}.
-  So rechnen VL1 (ℤ_6), VL3 (ℤ_7*) und die Probe in Ü4 A8 (2·9 ≡ 1).
 Beide Varianten sind richtig. Sie beschreiben dieselben Restklassen.
 --alle-varianten gibt beide Varianten nacheinander aus.
 
 Reihenfolge (--reihenfolge)
 ---------------------------
-- paare (Standard): 1, −1, 5, −5, … wie in den Gruppentafeln von Ü2 A3.
-- zahlen: 1, 2, 3, …, m−1 wie in der Tabelle von Ü6 6_9.
+- paare (Standard): 1, −1, 5, −5, …
+- zahlen: 1, 2, 3, …, m−1
 """
 
 from __future__ import annotations
@@ -58,15 +55,9 @@ REIHENFOLGEN = ("paare", "zahlen")
 MODI = ("einheiten", "inverse", "tafel", "ordnungen", "alles")
 MAX_TAFEL = 40   # größere Tafeln passen nicht auf Papier
 
-# Bekannte Fehler in den Quellen (PRIORISIERUNG.md, Abschnitt 5).
-QUELLEN_HINWEISE = {
-    18: "Hinweis zur Quelle: In Ü2 A3 ist die zweite Tafel mit „ℤ_12*“ beschriftet. "
-        "Inhaltlich ist es die Tafel von ℤ_18* (6 Elemente ±1, ±5, ±7). Die Werte oben stimmen damit überein.",
-}
-
 ANNAHME = {
-    "symmetrisch": "Repräsentanten symmetrisch (−m/2 … m/2), wie Ü2 A3 und Ü6 6_9.",
-    "standard": "Repräsentanten 0 … m−1, wie VL1 (ℤ_6) und VL3 (ℤ_7*).",
+    "symmetrisch": "Repräsentanten symmetrisch (−m/2 … m/2).",
+    "standard": "Repräsentanten 0 … m−1.",
 }
 
 
@@ -182,7 +173,7 @@ class Tafel:
 
 def gruppentafel(m: int, variante: str = "symmetrisch", reihenfolge: str = "paare",
                  mit_nullteilern: bool = False) -> Tafel:
-    """Gruppentafel von ℤ_m* (oder von ℤ_m ∖ {0} wie VL1, wenn mit_nullteilern)."""
+    """Gruppentafel von ℤ_m* (oder von ℤ_m ∖ {0}, wenn mit_nullteilern)."""
     pruefe_modul(m)
     reste = list(range(1, m)) if mit_nullteilern else einheiten(m).einheiten
     el = ordne(reste, m, variante, reihenfolge)
@@ -234,7 +225,7 @@ def text_einheiten(e: EinheitenErgebnis, variante: str = "symmetrisch",
                    reihenfolge: str = "paare") -> str:
     m = e.m
     z_ = [f"Einheiten von ℤ_{m}",
-          f"Regel (VL1): k ist Einheit ⇔ ggT(k, {m}) = 1. Sonst ist k ≠ 0 ein Nullteiler.",
+          f"Regel: k ist Einheit ⇔ ggT(k, {m}) = 1. Sonst ist k ≠ 0 ein Nullteiler.",
           "Nullteiler: Es gibt b ≠ 0 mit k·b ≡ 0. Wähle b = m / ggT(k, m).",
           "",
           f"{'k':>4} | ggT(k, {m}) | Ergebnis"]
@@ -291,7 +282,7 @@ def text_tafel(t: Tafel) -> str:
     b = max(max(len(z(x)) for x in t.elemente), 3)
     kopf_b = max(len(name), b)
     z_ = [f"Gruppentafel von ({name}, ·)" if not t.mit_nullteilern
-          else f"Multiplikationstafel von ({name}, ·), wie VL1",
+          else f"Multiplikationstafel von ({name}, ·)",
           f"Eintrag in Zeile a, Spalte b: a·b mod {m}.", ""]
     z_.append(f"{name:<{kopf_b}} | " + " ".join(f"{z(x):>{b}}" for x in t.elemente))
     z_.append("-" * (kopf_b + 3 + (b + 1) * len(t.elemente)))
@@ -384,8 +375,6 @@ def loesungsweg(m: int, modus: str = "alles", variante: str = "symmetrisch",
                           f"Das ist zu groß für Papier. Die Tafel wird nicht ausgegeben."]
         else:
             teile += ["", text_tafel(t)]
-            if m in QUELLEN_HINWEISE and not mit_nullteilern:
-                teile.append(QUELLEN_HINWEISE[m])
     if modus in ("ordnungen", "alles"):
         teile += ["", text_ordnungen(ordnungen(m, variante, reihenfolge, einheits_el), variante)]
     return "\n".join(teile)
@@ -400,13 +389,14 @@ def _parser() -> argparse.ArgumentParser:
         prog="python -m skripte.einheitengruppe",
         description="Einheitengruppe ℤ_m*: Einheiten, Nullteiler, Inverse, Gruppentafel, "
                     "Ordnungen und primitive Elemente mit Lösungsweg.",
-        epilog="Beispiele aus den Quellen:\n"
-               "  --m 12                                   Ü2 A3: ℤ_12* = {±1, ±5}\n"
-               "  --m 18 --modus tafel                     Ü2 A3 b: Gruppentafel ℤ_18*\n"
-               "  --m 17 --modus ordnungen --elemente 2 3 4 5   Ü4 A8: ord = 8, 16, 4, 16\n"
-               "  --m 11 --modus inverse --reihenfolge zahlen   Ü6 6_9: Inverse mod 11\n"
-               "  --m 6 --modus tafel --mit-nullteilern --variante standard   VL1: ℤ_6\n"
-               "  --m 7 --modus ordnungen --variante standard   VL3: ord(2) = 3, ord(3) = 6",
+        epilog="Beispiele:\n"
+               "  python -m skripte.einheitengruppe --m 12  (alles zu ℤ_12*)\n"
+               "  python -m skripte.einheitengruppe --m 18 --modus tafel  (Gruppentafel von ℤ_18*)\n"
+               "  python -m skripte.einheitengruppe --m 17 --modus ordnungen --elemente 2 3 4 5  (Ordnungen in ℤ_17*)\n"
+               "  python -m skripte.einheitengruppe --m 11 --modus inverse --reihenfolge zahlen  (Inverse mod 11)\n"
+               "  python -m skripte.einheitengruppe --m 6 --modus tafel --mit-nullteilern --variante standard  (Tafel von ℤ_6 mit Nullteilern)\n"
+               "  python -m skripte.einheitengruppe --m 7 --modus ordnungen --variante standard  (Ordnungen in ℤ_7*)\n"
+               "  python -m skripte.einheitengruppe --m 18 --modus inverse --inverse-weg 7  (Inverse mit dem EA)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     p.add_argument("--m", type=int, required=True, help="Modul m (ganze Zahl ≥ 2).")
@@ -414,17 +404,17 @@ def _parser() -> argparse.ArgumentParser:
                    help="Was soll berechnet werden? einheiten, inverse, tafel, ordnungen "
                         "oder alles (Standard).")
     p.add_argument("--variante", choices=VARIANTEN, default="symmetrisch",
-                   help="symmetrisch: Repräsentanten −m/2 … m/2 wie Ü2 A3 (Standard). "
-                        "standard: Repräsentanten 0 … m−1 wie VL1 und VL3.")
+                   help="symmetrisch: Repräsentanten −m/2 … m/2 (Standard). "
+                        "standard: Repräsentanten 0 … m−1.")
     p.add_argument("--alle-varianten", action="store_true",
                    help="Beide Varianten nacheinander ausgeben.")
     p.add_argument("--reihenfolge", choices=REIHENFOLGEN, default="paare",
-                   help="paare: 1, −1, 5, −5, … wie Ü2 A3 (Standard). "
-                        "zahlen: 1, 2, …, m−1 wie Ü6 6_9.")
+                   help="paare: 1, −1, 5, −5, … (Standard). "
+                        "zahlen: 1, 2, …, m−1.")
     p.add_argument("--elemente", type=int, nargs="+",
-                   help="Nur diese Elemente bei Inversen und Ordnungen, zum Beispiel 2 3 4 5 (Ü4 A8).")
+                   help="Nur diese Elemente bei Inversen und Ordnungen, zum Beispiel 2 3 4 5.")
     p.add_argument("--mit-nullteilern", action="store_true",
-                   help="Tafel für ℤ_m ∖ {0} mit allen Elementen, auch den Nullteilern (wie VL1 ℤ_6).")
+                   help="Tafel für ℤ_m ∖ {0} mit allen Elementen, auch den Nullteilern.")
     p.add_argument("--inverse-weg", type=int, nargs="+", metavar="A",
                    help="Zusätzlich a⁻¹ mit dem Euklidischen Algorithmus (EA rückwärts) zeigen.")
     return p

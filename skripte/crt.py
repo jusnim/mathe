@@ -5,11 +5,11 @@ Zweck
 Das Skript löst Systeme simultaner Kongruenzen.
 Simultan heißt: Eine Zahl z soll alle Kongruenzen gleichzeitig erfüllen.
 Beispiel: z ≡ 8 (mod 17) und z ≡ 5 (mod 15).
-Das Skript zeigt jeden Rechenschritt wie in den Musterlösungen.
-Sie können den Lösungsweg direkt auf Papier abschreiben.
+Das Skript zeigt jeden Rechenschritt.
+Sie können den Lösungsweg direkt übernehmen.
 
-Lösungsweg (VL1, Beweis „Bestimmung von f⁻¹“)
----------------------------------------------
+Lösungsweg
+----------
 Aus z ≡ a (mod m) und z ≡ b (mod n) folgt der Ansatz
     z = m·x + a = n·y + b   ⇒   m·x − n·y = b − a   (Lemma von Bezout).
 Der Euklidische Algorithmus (EA) liefert x und y.
@@ -17,27 +17,26 @@ Die Gleichung ist genau dann lösbar, wenn ggT(m, n) die Zahl b − a teilt.
 Alle Lösungen sind z = z₀ + k·kgV(m, n) mit k ∈ ℤ.
 Bei teilerfremden Moduln ist kgV(m, n) = m·n.
 Bei mehr als zwei Kongruenzen fasst das Skript schrittweise zusammen:
-erst die ersten beiden, dann das Ergebnis mit der dritten, und so weiter (wie VL1).
+erst die ersten beiden, dann das Ergebnis mit der dritten, und so weiter.
 
-Aufruf (Beispiele aus den Quellen)
-----------------------------------
-    python -m skripte.crt -k 5 13 -k 4 15                      (KV A8: −86 ≡ 109 mod 195)
-    python -m skripte.crt -k 8 17 -k 5 15 --vorgabe 8 9        (K A4 mit Ergebnis aus K A3)
-    python -m skripte.crt -k 3 5 -k 4 7                        (Ü3 A1 a: 18 mod 35)
-    python -m skripte.crt -k -1 12 -k 2 5                      (Ü3 A1 b: −73 ≡ 47 mod 60)
-    python -m skripte.crt -k 3 11 -k 6 8 -k 1 15               (VL1: −74 ≡ 1246 mod 1320)
+Aufruf (Beispiele)
+------------------
+    python -m skripte.crt -k 5 13 -k 4 15                      (−86 ≡ 109 mod 195)
+    python -m skripte.crt -k 8 17 -k 5 15 --vorgabe 8 9        (mit bekannter Bezout-Lösung)
+    python -m skripte.crt -k 3 5 -k 4 7                        (18 mod 35)
+    python -m skripte.crt -k -1 12 -k 2 5                      (−73 ≡ 47 mod 60)
+    python -m skripte.crt -k 3 11 -k 6 8 -k 1 15               (−74 ≡ 1246 mod 1320)
 Dabei bedeutet „-k A M“ die Kongruenz z ≡ A (mod M).
 
 Varianten
 ---------
 --variante (welche Kongruenz ist „m, a“):
-- erste (Standard): m, a kommen aus der ersten Kongruenz (VL1 Z. 595, KV A8, Ü3 A1).
+- erste (Standard): m, a kommen aus der ersten Kongruenz.
 - zweite: m, a kommen aus der zweiten Kongruenz.
 --weg (wie der EA die Bezout-Lösung liefert):
-- rueckwaerts (Standard): EA rückwärts einsetzen (KV A8, Ü3 A1 Variante 1).
-- matrix: Matrix Q (Ü3 A1 Variante 2).
---vorgabe X Y: Eine Lösung von m·x − n·y = ggT(m, n) ist schon bekannt
-  (K A4: „mit Hilfe des Ergebnisses aus Aufgabe 3“).
+- rueckwaerts (Standard): EA rückwärts einsetzen.
+- matrix: Matrix Q.
+--vorgabe X Y: Eine Lösung von m·x − n·y = ggT(m, n) ist schon bekannt.
 --alle-varianten gibt alle Kombinationen nacheinander aus.
 Alle Varianten sind richtig. Sie geben oft ein anderes z₀.
 Alle z₀ sind aber kongruent modulo kgV. Die kleinste positive Lösung ist gleich.
@@ -69,7 +68,7 @@ __all__ = [
 
 VARIANTEN = ("erste", "zweite")
 VARIANTEN_TEXT = {
-    "erste": "m, a aus der ersten Kongruenz (wie VL1 Z. 595, KV A8, Ü3 A1)",
+    "erste": "m, a aus der ersten Kongruenz",
     "zweite": "m, a aus der zweiten Kongruenz (Reihenfolge getauscht)",
 }
 WEGE = ("rueckwaerts", "matrix")
@@ -182,7 +181,7 @@ def loese_paar(a: int, m: int, b: int, n: int, weg: str = "rueckwaerts",
             cm, cn = _auf_m_n(ea, mx.koef_gross, mx.koef_klein)
             erg.start = g
         else:
-            # Ist |b − a| selbst ein Rest im EA, startet das Einsetzen dort (wie VL1).
+            # Ist |b − a| selbst ein Rest im EA, startet das Einsetzen dort.
             rw = ea_rueckwaerts(m, n, ziel=abs(d) if d != 0 else None)
             erg.rueckwaerts = rw
             cm, cn = _auf_m_n(ea, rw.koef_gross, rw.koef_klein)
@@ -231,7 +230,7 @@ def text_paar(erg: PaarErgebnis, nr: int | None = None) -> str:
     if d == 0:
         z.append("  b − a = 0. Also passt x = 0, y = 0.")
     elif erg.weg == "vorgabe":
-        z.append(f"Bezout-Lösung aus der Vorgabe (vorherige Aufgabe):")
+        z.append("Bezout-Lösung aus der Vorgabe:")
         z.append(f"  {_mx_ny(m, erg.x_s, n, erg.y_s)} = {m * erg.x_s} − {_k(n * erg.y_s)} = {g}")
     elif erg.weg == "matrix":
         mx = erg.matrix
@@ -380,14 +379,13 @@ def text_system(erg: CRTErgebnis) -> str:
 # Kommandozeile
 # ---------------------------------------------------------------------------
 
-BEISPIELE = """Beispiele aus den Quellen („-k A M“ heißt z ≡ A (mod M)):
-  KV A8:   python -m skripte.crt -k 5 13 -k 4 15               (−86 ≡ 109 mod 195)
-  K A4:    python -m skripte.crt -k 8 17 -k 5 15 --vorgabe 8 9 (−400 ≡ 110 mod 255)
-           (Vorgabe aus K A3: 17·8 − 15·9 = 1)
-  Ü3 A1 a: python -m skripte.crt -k 3 5 -k 4 7 --weg matrix    (18 mod 35)
-  Ü3 A1 b: python -m skripte.crt -k -1 12 -k 2 5               (−73 ≡ 47 mod 60)
-  VL1:     python -m skripte.crt -k 3 11 -k 6 8 -k 1 15        (−74 ≡ 1246 mod 1320)
-  Nicht teilerfremd: python -m skripte.crt -k 2 4 -k 4 6      (10 mod 12)
+BEISPIELE = """Beispiele:
+  python -m skripte.crt -k 5 13 -k 4 15   (zwei Kongruenzen: −86 ≡ 109 mod 195)
+  python -m skripte.crt -k 8 17 -k 5 15 --vorgabe 8 9   (bekannte Bezout-Lösung 17·8 − 15·9 = 1)
+  python -m skripte.crt -k 3 5 -k 4 7 --weg matrix   (Weg über Matrix Q: 18 mod 35)
+  python -m skripte.crt -k -1 12 -k 2 5   (negativer Rest: −73 ≡ 47 mod 60)
+  python -m skripte.crt -k 3 11 -k 6 8 -k 1 15   (drei Kongruenzen: −74 ≡ 1246 mod 1320)
+  python -m skripte.crt -k 2 4 -k 4 6   (nicht teilerfremde Moduln: 10 mod 12)
 """
 
 
@@ -402,14 +400,14 @@ def _parser() -> argparse.ArgumentParser:
                    help="Eine Kongruenz z ≡ A (mod M). Mehrmals angeben, "
                         "zum Beispiel -k 5 13 -k 4 15.")
     p.add_argument("--variante", choices=VARIANTEN, default="erste",
-                   help="Welche Kongruenz ist „m, a“? erste (Standard, wie VL1 und KV A8) "
+                   help="Welche Kongruenz ist „m, a“? erste (Standard) "
                         "oder zweite.")
     p.add_argument("--weg", choices=WEGE, default="rueckwaerts",
                    help="Wie der EA die Bezout-Lösung liefert: rueckwaerts (Standard, EA rückwärts) "
                         "oder matrix (Matrix Q).")
     p.add_argument("--vorgabe", nargs=2, type=int, metavar=("X", "Y"),
                    help="Bekannte Lösung von m·x − n·y = ggT(m, n) für den ersten Schritt, "
-                        "zum Beispiel aus einer vorherigen Aufgabe (K A4: --vorgabe 8 9).")
+                        "zum Beispiel --vorgabe 8 9.")
     p.add_argument("--alle-varianten", action="store_true",
                    help="Gibt alle Varianten (Reihenfolge und Weg) nacheinander aus.")
     p.add_argument("--rep", choices=("standard", "symmetrisch"), default="standard",

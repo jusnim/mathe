@@ -2,7 +2,7 @@
 
 Zweck
 -----
-Das Skript rechnet die Aufgaben zu zyklischen Codes aus VL5, VL6 und Übung 6.
+Das Skript rechnet mit zyklischen Codes.
 Ein zyklischer Code ist ein linearer Code. Jede zyklische Verschiebung eines
 Codeworts ist wieder ein Codewort.
 
@@ -14,22 +14,22 @@ Das Skript zeigt:
   reziprokes Polynom, Kontrollmatrix H, Mindestabstand d,
 - Codieren c(X) = a(X)·g(X),
 - Syndrom s(X) = Rest von y(X) : g(X) und Decodieren mit Klassenführern,
-- alle irreduziblen Polynome vom Grad d (Ü6 6_1 a),
-- das Produkt a * b in F_p[X]/(X^n − 1) (VL5, Beispiel F_5).
+- alle irreduziblen Polynome vom Grad d,
+- das Produkt a * b in F_p[X]/(X^n − 1).
 
 Jede Polynomdivision steht Schritt für Schritt in der Ausgabe.
 
 Aufruf
 ------
-    python -m skripte.zyklischer_code --p 2 --n 7                  (Ü6 6_1 b)
-    python -m skripte.zyklischer_code --p 2 --irreduzibel 3        (Ü6 6_1 a)
-    python -m skripte.zyklischer_code --p 2 --n 7 --k 4            (Ü6 6_2)
-    python -m skripte.zyklischer_code --p 3 --n 4 --k 2 --d 3      (Ü6 6_6, 6_7)
-    python -m skripte.zyklischer_code --p 2 --n 7 --g "X^3+X+1" --y "X^6+X+1"   (VL6)
-    python -m skripte.zyklischer_code --p 5 --n 4 --produkt 0012 2314           (VL5)
+    python -m skripte.zyklischer_code --p 2 --n 7                  (X^7 - 1 zerlegen)
+    python -m skripte.zyklischer_code --p 2 --irreduzibel 3        (irreduzible Polynome vom Grad 3)
+    python -m skripte.zyklischer_code --p 2 --n 7 --k 4            (alle [7, 4]-Codes)
+    python -m skripte.zyklischer_code --p 3 --n 4 --k 2 --d 3      (gibt es einen [4, 2, 3]-Code?)
+    python -m skripte.zyklischer_code --p 2 --n 7 --g "X^3+X+1" --y "X^6+X+1"   (Syndrom und Decodieren)
+    python -m skripte.zyklischer_code --p 5 --n 4 --produkt 0012 2314           (Produkt modulo X^4 - 1)
 
-Konventionen (wie VL5)
-----------------------
+Konventionen
+------------
 - Stellen zählen ab 0: c_0 c_1 … c_{n−1}.
 - Wort a_0 a_1 … a_{n−1} gehört zu a_0 + a_1·X + … + a_{n−1}·X^{n−1}.
   Der niedrigste Grad steht links. Beispiel: g = 1 + X + X³ ↔ 1101000.
@@ -38,7 +38,7 @@ Konventionen (wie VL5)
 Varianten (--variante)
 ----------------------
 - symmetrisch (Standard): Elemente von F_p als −(p−1)/2 … (p−1)/2.
-  In F_3 steht also −1 statt 2. So schreiben VL5 (Golay G_11) und Ü6 6_6.
+  In F_3 steht also −1 statt 2.
 - standard: Elemente von F_p als 0 … p−1. In F_3 steht 2 statt −1.
 Die Varianten ändern nur die Schreibweise. Die Codes sind gleich.
 --alle-varianten gibt beide Versionen nacheinander aus.
@@ -56,7 +56,7 @@ from dataclasses import dataclass, field
 import sympy
 
 VARIANTEN = {
-    "symmetrisch": "Elemente von F_p als -(p-1)/2 … (p-1)/2 (in F_3: -1 statt 2), wie VL5 und Ü6 6_6; Kreisteilungsklassen mit ±, wie Ü6 6_1",
+    "symmetrisch": "Elemente von F_p als -(p-1)/2 … (p-1)/2 (in F_3: -1 statt 2); Kreisteilungsklassen mit ±",
     "standard": "Elemente von F_p als 0 … p-1 (in F_3: 2 statt -1); Kreisteilungsklassen mit 0 … n-1",
 }
 STANDARD_VARIANTE = "symmetrisch"
@@ -493,7 +493,7 @@ def syndrom_von(e: list[int], g: list[int], p: int) -> tuple[int, ...]:
 
 
 def fehlermuster(n: int, p: int, w: int):
-    """Alle Fehlermuster vom Gewicht w. Erst nach Fehlergröße, dann nach Stelle (wie Ü6 6_8)."""
+    """Alle Fehlermuster vom Gewicht w. Erst nach Fehlergröße, dann nach Stelle."""
     for werte in itertools.product(range(1, p), repeat=w):
         for stellen in itertools.combinations(range(n), w):
             e = [0] * n
@@ -617,7 +617,7 @@ def loese(p: int, n: int | None = None, g: str | None = None, k: int | None = No
     if math.gcd(n, p) != 1:
         los.hinweise.append(
             f"ggT(n, p) = ggT({n}, {p}) = {math.gcd(n, p)} ≠ 1. Dann hat X^n − 1 mehrfache Nullstellen. "
-            "Die Kreisteilungsklassen gelten nur für ggT(n, p) = 1 (VL5, Abschnitt 5.5). "
+            "Die Kreisteilungsklassen gelten nur für ggT(n, p) = 1. "
             "Die Zerlegung klappt trotzdem durch Probedivision.")
     los.klassen = kreisteilungsklassen(n, p)
     los.zerlegung = zerlege(n, p)
@@ -625,25 +625,25 @@ def loese(p: int, n: int | None = None, g: str | None = None, k: int | None = No
 
     gewaehlt: list[list[int]] = []
     if g is not None:
-        gp = lies_polynom(g, p) if re.search(r"[xX]", g) else wort_zu_poly(lies_wort(g, p), p)
-        if not gp:
+        g_poly = lies_polynom(g, p) if re.search(r"[xX]", g) else wort_zu_poly(lies_wort(g, p), p)
+        if not g_poly:
             raise EingabeFehler("g(X) ist das Nullpolynom. Das ist kein Generatorpolynom.")
-        if gp[-1] != 1:
-            inv = pow(gp[-1], -1, p)
+        if g_poly[-1] != 1:
+            inv = pow(g_poly[-1], -1, p)
             los.hinweise.append(
-                f"g(X) ist nicht normiert (höchster Koeffizient {gp[-1]}). "
+                f"g(X) ist nicht normiert (höchster Koeffizient {g_poly[-1]}). "
                 f"Das Skript multipliziert g(X) mit {inv} (Inverses mod {p}).")
-            gp = norm([c * inv for c in gp], p)
-        los.g_eingabe = gp
-        los.g_pruefung = p_divmod(x_hoch_n_minus_1(n, p), gp, p)
+            g_poly = norm([c * inv for c in g_poly], p)
+        los.g_eingabe = g_poly
+        los.g_pruefung = p_divmod(x_hoch_n_minus_1(n, p), g_poly, p)
         if los.g_pruefung.rest:
             los.hinweise.append(
                 "g(X) teilt X^n − 1 nicht (Rest ≠ 0). Also ist g(X) kein Generatorpolynom "
                 f"eines zyklischen Codes der Länge {n}.")
         else:
-            gewaehlt = [gp]
-            if k is not None and n - grad(gp) != k:
-                los.hinweise.append(f"Achtung: grad g = {grad(gp)}, also k = n − r = {n - grad(gp)} und nicht {k}.")
+            gewaehlt = [g_poly]
+            if k is not None and n - grad(g_poly) != k:
+                los.hinweise.append(f"Achtung: grad g = {grad(g_poly)}, also k = n − r = {n - grad(g_poly)} und nicht {k}.")
     elif k is not None:
         gewaehlt = [gen.g for gen in los.generatoren if gen.k == k]
         if not gewaehlt:
@@ -653,18 +653,18 @@ def loese(p: int, n: int | None = None, g: str | None = None, k: int | None = No
         if len(gewaehlt) > 1:
             los.hinweise.append(
                 "Für Codieren/Decodieren gibt es mehrere passende g(X). "
-                "Das Skript rechnet es für jeden Fall. Wähle g(X) mit --g, wenn die Aufgabe g vorgibt.")
+                "Das Skript rechnet es für jeden Fall. Wähle g(X) mit --g, wenn g fest ist.")
         else:
             los.hinweise.append("Für Codieren/Decodieren fehlt ein gültiges g(X). Bitte --g oder --k angeben.")
 
-    for gp in gewaehlt:
-        fall = Fall(code_daten(gp, n, p))
+    for g_poly in gewaehlt:
+        fall = Fall(code_daten(g_poly, n, p))
         if a is not None:
             ap, art = lies_poly_oder_wort(a, p)
             if art == "wort" and len(lies_wort(a, p)) != fall.code.k:
                 los.hinweise.append(f"Achtung: Das Klartextwort hat {len(lies_wort(a, p))} Stellen, k ist {fall.code.k}.")
             try:
-                fall.kodierung = codieren(ap, gp, n, p)
+                fall.kodierung = codieren(ap, g_poly, n, p)
             except EingabeFehler as fehler:
                 los.hinweise.append(str(fehler))
         if y is not None:
@@ -673,7 +673,7 @@ def loese(p: int, n: int | None = None, g: str | None = None, k: int | None = No
                 los.hinweise.append(f"Achtung: Das empfangene Wort hat {len(lies_wort(y, p))} Stellen, n ist {n}.")
             if grad(yp) >= n:
                 los.hinweise.append(f"Achtung: grad y(X) = {grad(yp)} ≥ n = {n}. Das ist kein Wort der Länge n.")
-            fall.decodierung = decodieren(yp, gp, n, p)
+            fall.decodierung = decodieren(yp, g_poly, n, p)
         los.faelle.append(fall)
     return los
 
@@ -758,7 +758,7 @@ def text_division(div: Division, p: int, variante: str, name_a: str = "", name_b
 
 def text_irreduzibel(ir: IrreduzibelErgebnis, variante: str) -> list[str]:
     p, d = ir.p, ir.d
-    z = [f"Irreduzible normierte Polynome vom Grad {d} in F_{p}[X] (Ü6 6_1 a)", ""]
+    z = [f"Irreduzible normierte Polynome vom Grad {d} in F_{p}[X] ", ""]
     z.append("Irreduzibel heißt: Das Polynom ist kein Produkt von zwei Polynomen kleineren Grades.")
     if d == 1:
         z.append("Jedes Polynom vom Grad 1 ist irreduzibel.")
@@ -789,7 +789,7 @@ def text_irreduzibel(ir: IrreduzibelErgebnis, variante: str) -> list[str]:
 
 
 def text_produkt(pr: ProduktModulo, n: int, p: int, variante: str) -> list[str]:
-    z = [f"Produkt a * b in F_{p}[X]/(X^{n} - 1) (VL5, Abschnitt 5.2)", ""]
+    z = [f"Produkt a * b in F_{p}[X]/(X^{n} - 1)", ""]
     z.append(f"  a = {fmt_wort(poly_zu_wort(pr.a, n), p, variante)} ≅ a(X) = {fmt_poly(pr.a, p, variante, True)}")
     z.append(f"  b = {fmt_wort(poly_zu_wort(pr.b, n), p, variante)} ≅ b(X) = {fmt_poly(pr.b, p, variante, True)}")
     for i, ai in enumerate(pr.a):
@@ -854,14 +854,12 @@ def text_zerlegung(los: Loesung, variante: str) -> list[str]:
         grade = sorted(grad(f) for f, m in zerl.faktoren for _ in range(m))
         if grade == sorted(len(b) for b in los.klassen):
             z.append("   Die Grade passen zu den Längen der Kreisteilungsklassen ✓")
-    if p == 2 and n == 15:
-        z.append("   Quellenhinweis: VL5 (Z. 334) schreibt X^4 + X^3 + X^4 + X + 1. Richtig ist X^4 + X^3 + X^2 + X + 1.")
     return z
 
 
 def text_generatoren(los: Loesung, variante: str) -> list[str]:
     n, p = los.n, los.p
-    z = [f"3) Alle Generatorpolynome (normierte Teiler g(X) von X^{n} - 1, VL5 Abschnitt 5.3)",
+    z = [f"3) Alle Generatorpolynome (normierte Teiler g(X) von X^{n} - 1)",
          "   r = grad g(X), k = n - r (Dimension), d = Mindestabstand (durch Aufzählen aller Codewörter)"]
     namen = [klammer(f, p, variante) for f, _ in los.zerlegung.faktoren]
     for nr, gen in enumerate(los.generatoren, 1):
@@ -889,11 +887,8 @@ def text_fall(fall: Fall, nr: int, anzahl: int, variante: str) -> list[str]:
         z.append(f"  Das ist {name}.")
     z.append("  Zyklische Generatormatrix G: Zeilen g, X*g, …, X^(k-1)*g (jede Zeile eine Stelle nach rechts)")
     z += fmt_matrix(c.G, p, variante)
-    if p == 2 and n == 7 and c.g == [1, 0, 1, 1]:
-        z.append("  Quellenhinweis: Ü6 6_2 (2. Fall) hat als letzte Zeile 0001101. Das ist ein Tippfehler.")
-        z.append("  Richtig ist X^3 * g = X^3 + X^5 + X^6 → 0001011.")
     z.append("")
-    z.append("  Kontrollpolynom h(X) = (X^n - 1) : g(X)  (VL5 Abschnitt 5.5*)")
+    z.append("  Kontrollpolynom h(X) = (X^n - 1) : g(X)")
     z += text_division(c.h_division, p, variante, einrueckung="  ")
     z.append(f"  h(X) = {fmt_poly(c.h, p, variante, True)}   (grad h = k = {c.k})")
     z.append(f"  Reziprokes Polynom: h←(X) = X^k·h(1/X) = {fmt_poly(c.h_rez, p, variante, True)}"
@@ -920,16 +915,16 @@ def text_fall(fall: Fall, nr: int, anzahl: int, variante: str) -> list[str]:
 
 
 BEKANNTE_CODES = {
-    (2, 23, (1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1)): "der binäre Golay-Code G_23 aus VL5 (Abschnitt 5.6*)",
-    (3, 11, (2, 0, 1, 2, 1, 1)): "der ternäre Golay-Code G_11 aus VL5 (Abschnitt 5.7*)",
-    (2, 7, (1, 1, 0, 1)): "der Hamming-Code H_2(3) mit g aus VL6 und Ü6 6_2 (1. Fall)",
-    (2, 7, (1, 0, 1, 1)): "ein zu H_2(3) äquivalenter Code (Ü6 6_2, 2. Fall)",
+    (2, 23, (1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1)): "der binäre Golay-Code G_23",
+    (3, 11, (2, 0, 1, 2, 1, 1)): "der ternäre Golay-Code G_11",
+    (2, 7, (1, 1, 0, 1)): "der Hamming-Code H_2(3)",
+    (2, 7, (1, 0, 1, 1)): "ein zu H_2(3) äquivalenter Code",
 }
 
 
 def text_kodierung(ko: Kodierung, c: CodeDaten, variante: str) -> list[str]:
     n, p = c.n, c.p
-    z = ["  Codieren: c(X) = a(X)·g(X)  (VL5, Algorithmus Kodieren)"]
+    z = ["  Codieren: c(X) = a(X)·g(X)"]
     z.append(f"    a = {fmt_wort(poly_zu_wort(ko.a, c.k), p, variante)} ≅ a(X) = {fmt_poly(ko.a, p, variante, True)}")
     for i, s in ko.summanden:
         z.append(f"    {fmt_poly(monom(ko.a[i], i, p), p, variante)}·g(X) = {fmt_poly(s, p, variante, True)}")
@@ -940,7 +935,7 @@ def text_kodierung(ko: Kodierung, c: CodeDaten, variante: str) -> list[str]:
 
 def text_decodierung(de: Decodierung, c: CodeDaten, variante: str) -> list[str]:
     n, p = c.n, c.p
-    z = ["  Syndrom: y(X) mit Rest durch g(X) teilen (VL6, Syndromdecodierung bei zyklischen Codes)"]
+    z = ["  Syndrom: y(X) mit Rest durch g(X) teilen (Syndromdecodierung)"]
     z.append(f"    y = {fmt_wort(poly_zu_wort(de.y, n), p, variante)} ≅ y(X) = {fmt_poly(de.y, p, variante)}")
     z += text_division(de.division, p, variante, name_a="y(X)", einrueckung="    ")
     z.append(f"    ⇒ s(X) = {fmt_poly(de.s, p, variante)}")
@@ -980,7 +975,7 @@ def loesungsweg(los: Loesung, variante: str = STANDARD_VARIANTE) -> str:
     z = [f"Zyklische Codes über F_{p}" + (f", Wortlänge n = {n}" if n else ""),
          f"Variante '{variante}': {VARIANTEN[variante]}"]
     if n:
-        z.append("Annahmen (VL5): Stellen ab 0; Wort a_0 a_1 … ↔ a_0 + a_1·X + … (niedrigster Grad links);"
+        z.append("Annahmen: Stellen ab 0; Wort a_0 a_1 … ↔ a_0 + a_1·X + … (niedrigster Grad links);"
                  " X * a(X) verschiebt nach rechts.")
     if p == 2:
         z.append("In F_2 gilt -1 = +1. Minus und Plus sind gleich.")
@@ -1041,7 +1036,7 @@ def loesungsweg(los: Loesung, variante: str = STANDARD_VARIANTE) -> str:
         else:
             antwort = (f"Nein. Die zyklischen [{n}, {los.k}]_{p}-Codes haben d = {ds}. "
                        f"Keiner erreicht d = {los.d_soll}.")
-        z.append(f"5) Gibt es einen zyklischen Code mit n = {n}, k = {los.k}, d ≥ {los.d_soll}? (vgl. Ü6 6_7)")
+        z.append(f"5) Gibt es einen zyklischen Code mit n = {n}, k = {los.k}, d ≥ {los.d_soll}?")
         z.append(f"   {antwort}")
         z.append("")
         ergebnis.append(antwort)
@@ -1055,19 +1050,13 @@ def loesungsweg(los: Loesung, variante: str = STANDARD_VARIANTE) -> str:
 # Kommandozeile
 # ---------------------------------------------------------------------------
 
-BEISPIELE = """Beispiele aus den Quellen:
-  X^7 - 1 über F_2 zerlegen (Ü6 6_1 b):
-    python -m skripte.zyklischer_code --p 2 --n 7
-  Irreduzible Polynome vom Grad 3 (Ü6 6_1 a):
-    python -m skripte.zyklischer_code --p 2 --irreduzibel 3
-  Hamming-Code H_2(3) als zyklischer Code, beide g (Ü6 6_2):
-    python -m skripte.zyklischer_code --p 2 --n 7 --k 4
-  Ternäre [4,2]-Codes und Frage nach d = 3 (Ü6 6_6, 6_7):
-    python -m skripte.zyklischer_code --p 3 --n 4 --k 2 --d 3
-  Syndrom und Decodieren (VL6, y(X) = X^6 + X + 1):
-    python -m skripte.zyklischer_code --p 2 --n 7 --g "X^3+X+1" --y "X^6+X+1"
-  Produkt in F_5[X]/(X^4 - 1) (VL5: 0012 * 2314 = 2102):
-    python -m skripte.zyklischer_code --p 5 --n 4 --produkt 0012 2314 --variante standard
+BEISPIELE = """Beispiele:
+  python -m skripte.zyklischer_code --p 2 --n 7   (X^7 - 1 über F_2 zerlegen)
+  python -m skripte.zyklischer_code --p 2 --irreduzibel 3   (irreduzible Polynome vom Grad 3)
+  python -m skripte.zyklischer_code --p 2 --n 7 --k 4   (Hamming-Code H_2(3), beide g)
+  python -m skripte.zyklischer_code --p 3 --n 4 --k 2 --d 3   (ternäre [4, 2]-Codes, gibt es d = 3?)
+  python -m skripte.zyklischer_code --p 2 --n 7 --g "X^3+X+1" --y "X^6+X+1"   (Syndrom und Decodieren)
+  python -m skripte.zyklischer_code --p 5 --n 4 --produkt 0012 2314 --variante standard   (Produkt modulo X^4 - 1 über F_5)
 """
 
 
@@ -1088,13 +1077,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--a", help='Klartextwort zum Codieren (k Stellen), zum Beispiel "1001" oder "1+X^3".')
     parser.add_argument("--y", help='Empfangenes Wort zum Decodieren, zum Beispiel "1100001" oder "X^6+X+1".')
     parser.add_argument("--d", type=int,
-                        help="Gewünschter Mindestabstand. Frage: Gibt es einen zyklischen [n, k, d]-Code? (Ü6 6_7)")
+                        help="Gewünschter Mindestabstand. Frage: Gibt es einen zyklischen [n, k, d]-Code?")
     parser.add_argument("--irreduzibel", type=int, metavar="GRAD",
-                        help="Alle irreduziblen normierten Polynome von diesem Grad auflisten (Ü6 6_1 a).")
+                        help="Alle irreduziblen normierten Polynome von diesem Grad auflisten.")
     parser.add_argument("--produkt", nargs=2, metavar=("A", "B"),
-                        help="Produkt a * b zweier Wörter in F_p[X]/(X^n - 1) berechnen (VL5).")
+                        help="Produkt a * b zweier Wörter in F_p[X]/(X^n - 1) berechnen.")
     parser.add_argument("--variante", choices=sorted(VARIANTEN), default=STANDARD_VARIANTE,
-                        help="Schreibweise der Elemente von F_p: symmetrisch (-1 statt 2, Standard, wie VL5/Ü6 6_6) "
+                        help="Schreibweise der Elemente von F_p: symmetrisch (-1 statt 2, Standard) "
                              "oder standard (0 … p-1).")
     parser.add_argument("--alle-varianten", action="store_true",
                         help="Den Lösungsweg in allen Varianten nacheinander ausgeben.")

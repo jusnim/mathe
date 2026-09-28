@@ -1,82 +1,89 @@
-# mathe – Diskrete Mathematik (HTW Berlin)
+# Rechenwerkzeuge
 
-Dieses Repository hilft bei der Klausur.
-Es hat drei Teile.
+Rechenwerkzeuge für Zahlentheorie, Kryptographie, Codierungstheorie und Kombinatorik.
+Jedes Werkzeug zeigt den ganzen Lösungsweg Schritt für Schritt.
+Die Bedienung läuft über eine Seite im Browser.
 
-## 1. Wissen und Übungen als LaTeX (`latex/`)
+## Starten
 
-- `latex/wissen/` enthält Definitionen, Sätze, Beweise und Verfahren.
-- `latex/uebungen/` enthält Aufgaben mit Lösungen.
-- `latex/main.tex` bindet alle Dateien ein.
-- Die Texte sind 1:1 aus den Originalen übertragen.
-- Fehler im Original sind mit `% UNSICHER` markiert.
+Du brauchst nur Python 3.12 (3.11 geht auch).
 
-## 2. Priorisierung (`PRIORISIERUNG.md`)
-
-Die Datei sortiert Themen und Aufgaben.
-Oben steht, was am wahrscheinlichsten in der Klausur vorkommt.
-
-## 3. Python-Skripte (`skripte/`)
-
-Jedes Skript gibt den Lösungsweg Schritt für Schritt aus.
-Man schreibt ihn in der Klausur auf Papier ab.
-
-### Einrichten (einmal, vor der Klausur)
+**Linux / macOS**
 
 ```bash
-python3.12 -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-python -m pytest -q              # alle Tests müssen bestehen
+./start.sh
 ```
 
-### Benutzen im Browser (empfohlen)
+**Windows**
+
+Doppelklick auf `start.bat`.
+
+Beim ersten Start richtet das Skript eine eigene Python-Umgebung ein (Ordner `.venv`).
+Danach öffnet sich der Browser unter http://localhost:8000.
+Die Seite braucht kein Internet. Beenden mit Strg + C im Terminalfenster.
+
+Weitere Optionen:
 
 ```bash
-python -m skripte.web
+./start.sh --port 8080           # anderer Port
+./start.sh --host 0.0.0.0        # im lokalen Netz für das Team freigeben
+./start.sh --kein-browser        # Browser nicht automatisch öffnen
 ```
 
-Der Browser öffnet sich unter http://localhost:8000.
-Die Seite braucht kein Internet.
+Bei `--host 0.0.0.0` erreichen andere die Seite unter `http://<Name-des-Rechners>:8000`.
+Gib die Seite nur in vertrauenswürdigen Netzen frei.
 
-- Links steht die Liste der Skripte. Die Reihenfolge ist die Priorität für die Klausur.
-- Für jedes Skript gibt es ein Formular. Ausfüllen und „Rechnen“ klicken (oder Strg + Enter).
-- Unter „Beispiele aus den Quellen“ startet ein Klick eine Aufgabe aus Übung oder Klausur.
-- Die Ausgabe ist gegliedert: Abschnitte, grüne Ergebnis-Kästen, gelbe Warnungen.
-- Oben steht „Alle Ergebnisse auf einen Blick“.
-- Mit A− und A+ ändert man die Schriftgröße. ◐ wechselt zwischen hell und dunkel.
-- Der Reiter „Priorisierung“ zeigt `PRIORISIERUNG.md` als Seite.
+## Bedienung
 
-Beenden mit Strg + C im Terminal.
+1. Links ein Werkzeug wählen. Die Suche hilft beim Finden.
+2. Zahlen in die Felder eingeben. Pflichtfelder haben einen roten Stern.
+3. „Rechnen“ klicken oder Strg + Enter drücken.
+4. Der Lösungsweg erscheint darunter.
 
-### Benutzen im Terminal
+Weitere Funktionen:
 
-Jedes Skript hat eine Hilfe mit Beispiel: `python -m skripte.<name> --help`.
-Führen Konventionen zu verschiedenen Ergebnissen, dann gibt es `--variante`.
-`--alle-varianten` zeigt alle Versionen nacheinander.
+- **Beispiele:** Ein Klick füllt die Felder mit einem Beispiel und rechnet sofort.
+- **Varianten und Optionen:** Einige Aufgaben haben je nach Konvention verschiedene Lösungen,
+  zum Beispiel die Form der Kontrollmatrix. Dieser Bereich ist aufklappbar.
+  „Alle Varianten“ zeigt alle Versionen nacheinander.
+- **Klappbare Abschnitte:** Jeder Abschnitt des Lösungswegs lässt sich auf- und zuklappen.
+  Zugeklappt zeigt die Kopfzeile das Ergebnis des Abschnitts.
+- **Ergebnisse auf einen Blick:** oben im Lösungsweg.
+- **Farben:** grün = Ergebnis, gelb = Warnung (z. B. „57 ist keine Primzahl“), grau = Annahme.
+- **A− / A+** ändert die Schriftgröße, **◐** wechselt zwischen hell und dunkel.
+- **Text kopieren** und **Drucken** für den ganzen Lösungsweg.
 
-Die Reihenfolge entspricht der Priorität für die Klausur:
+Die Seite merkt sich die letzten Eingaben in diesem Browser.
 
-| Nr. | Skript | Thema | Beispiel |
-|---:|---|---|---|
-| 1 | `euklid` | Euklidischer Algorithmus, ggT, Bezout, ax+by=c, Inverse | `python -m skripte.euklid --a 2406 --b 654 --c 24` |
-| 2 | `primfaktor_phi` | Primfaktoren, φ(n) | `python -m skripte.primfaktor_phi --n 2451` |
-| 3 | `schnell_potenzieren` | aᵏ mod m, Ordnung, primitive Elemente | `python -m skripte.schnell_potenzieren --a 12 --k 100 --m 34` |
-| 4 | `rsa` | RSA: verschlüsseln, d berechnen, Probe | `python -m skripte.rsa --p 43 --q 57 --e 221 --w 1511` |
-| 5 | `mod11_code` | [10,8,3]₁₁-Code: codieren, Syndrom, decodieren | `python -m skripte.mod11_code --a 11500005 --r 1150000511` |
-| 6 | `inklusion_exklusion` | Siebformel, Derangements | `python -m skripte.inklusion_exklusion --n 720 --teiler 3 4 5` |
-| 7 | `crt` | Chinesischer Restsatz | `python -m skripte.crt -k 5 13 -k 4 15` |
-| 8 | `isbn10` | ISBN-10-Prüfziffer, Zahlendreher | `python -m skripte.isbn10 --nummer 3-05-501517` |
-| 9 | `linearer_code` | G, H, Hamming-Codes, Syndromdecodierung | `python -m skripte.linearer_code --q 3 --typ hamming --m 2 --r 2200` |
-| 10 | `schranken` | Hamming- und Singleton-Schranke | `python -m skripte.schranken --n 10 --k 8 --d 3 --q 11` |
-| 11 | `turnierplan` | Rundenturnier | `python -m skripte.turnierplan --mannschaften 8 --gegner` |
-| 12 | `einheitengruppe` | ℤₘ*, Inverse, Gruppentafel | `python -m skripte.einheitengruppe --m 17 --modus alles` |
-| 13 | `zyklischer_code` | Kreisteilungsklassen, g(X), h(X), Syndrom | `python -m skripte.zyklischer_code --p 2 --n 7 --g "X^3+X+1" --y "X^6+X+1"` |
-| 14 | `kombinatorik` | Binomialkoeffizient, Gitterwege, Partitionen | `python -m skripte.kombinatorik gitter 4 4` |
-| 15 | `teilbarkeit` | Regeln für 9, 11, 7; d(n), σ(n) | `python -m skripte.teilbarkeit regeln 299792` |
+## Werkzeuge
 
-### Wichtig
+| Bereich | Werkzeug | Was es rechnet |
+|---|---|---|
+| Zahlentheorie | Euklidischer Algorithmus | ggT, kgV, Bezout, ax + by = c, Inverse mod m |
+| | Primfaktoren und φ(n) | Primfaktorzerlegung, Eulersche φ-Funktion |
+| | Modulares Potenzieren | aᵏ mod m, Ordnung, primitive Elemente |
+| | Chinesischer Restsatz | simultane Kongruenzen |
+| | Einheitengruppe ℤₘ* | Einheiten, Inverse, Gruppentafel, Ordnungen |
+| | Teilbarkeit | Regeln für 9, 11, 7; Teileranzahl, Teilersumme, vollkommene Zahlen |
+| Kryptographie und Prüfziffern | RSA | Schlüssel, Verschlüsseln, Entschlüsseln, Probe |
+| | ISBN-10 | Prüfziffer, Prüfung, Zahlendreher |
+| Codierungstheorie | Lineare Codes | Erzeuger- und Kontrollmatrix, Hamming-Codes, Syndromdecodierung |
+| | Modulo-11-Code | Codieren, Syndrom, Fehlerkorrektur |
+| | Zyklische Codes | Kreisteilungsklassen, Generator- und Kontrollpolynom |
+| | Schranken für Codes | Hamming- und Singleton-Schranke |
+| Kombinatorik | Zählen und Anordnen | Binomialkoeffizient, Gitterwege, Derangements, Partitionen |
+| | Inklusion–Exklusion | Siebformel |
+| | Turnierplan | Rundenturnier |
 
-- Das Skript prüft die Eingaben. Ein Beispiel: Ist p keine Primzahl, erscheint eine Warnung.
-- Lies immer die Zeile „Annahme: …“. Sie sagt, welche Konvention gilt.
-- Vergleiche die Konvention mit der Aufgabenstellung. Wähle sonst eine andere `--variante`.
+## Für Entwickler
+
+- Die Werkzeuge liegen in `skripte/`. Jedes Werkzeug ist ein Python-Modul mit argparse.
+- Die Seite (`skripte/web.py`, `skripte/web_static/index.html`) liest die Optionen aus dem Parser.
+  Eine neue Option erscheint deshalb ohne Änderung an der Seite.
+- Ein neues Werkzeug trägst du in `GRUPPEN` in `skripte/web.py` ein.
+- Die Werkzeuge laufen auch ohne Seite: `python -m skripte.<name> --help`.
+- Tests: `python -m pytest -q` (in der Umgebung `.venv`).
+- Abhängigkeiten: `requirements.txt` (sympy, pytest).
+
+Die Ordner `latex/` und die Datei `PRIORISIERUNG.md` sind Lernmaterial.
+Die Werkzeuge brauchen sie nicht.

@@ -2,8 +2,8 @@
 
 Zweck
 -----
-Das Skript rechnet Aufgaben zu linearen Codes wie in VL4 (lineare Codes,
-Hamming-Codes), VL6 (Nebenklassen, Syndromdecodierung) und Übung 5/6.
+Das Skript rechnet mit linearen Codes: lineare Codes, Hamming-Codes,
+Nebenklassen und Syndromdecodierung.
 q ist eine Primzahl. Alle Rechnungen laufen modulo q.
 
 Begriffe:
@@ -28,33 +28,33 @@ Zeilen trennt man mit ";". Für q ≤ 10 darf jede Ziffer ein Eintrag sein:
 Bei q > 10 (oder wenn man will) trennt man Einträge mit Leerzeichen/Komma:
     --H "1 1 1 1 1 1 1 1 1 1; 1 2 3 4 5 6 7 8 9 10"   --r "1,1,5,0,0,0,0,7,3,3"
 
-Aufruf (Beispiele aus den Quellen)
-----------------------------------
-Ü6 6_8 (H₃(2), Klassenführer, Decodieren):
+Aufruf (Beispiele)
+------------------
+H₃(2), Klassenführer, Decodieren:
     python -m skripte.linearer_code --q 3 --typ hamming --m 2 --tabelle --r 2200 --r 0121
-Ü5 5_4 (H₂(3) mit dem H der Aufgabe):
+H₂(3) mit eigenem H:
     python -m skripte.linearer_code --q 2 --H "1001101;0101011;0010111" --r 1101100 --r 1111111 --r 1111000
-Ü5 5_2 (Paritätscode F₃⁵):
+Paritätscode F₃⁵:
     python -m skripte.linearer_code --q 3 --typ paritaet --n 5 --a 2120 --r 22120 --r 11022 --r 11111
-VL6 (Nebenklassen des [4,2,2]₂-Codes):
+Nebenklassen des [4,2,2]₂-Codes:
     python -m skripte.linearer_code --q 2 --G "1011;0101" --nebenklassen
 
 Varianten (--variante, --alle-varianten)
 ----------------------------------------
 Die systematische Form legt fest, wie man G und H ineinander umrechnet:
-- A: H = (E | A), G = (−Aᵀ | E). Vorlesung VL4, Ü6 6_4, Ü6 6_8.
+- A: H = (E | A), G = (−Aᵀ | E).
      Die Nachricht steht in den letzten k Stellen von c.
-- B: G = (E | A), H = (−Aᵀ | E). Ü5 5_1, Ü5 5_2.
+- B: G = (E | A), H = (−Aᵀ | E).
      Die Nachricht steht in den ersten k Stellen von c.
-- C: H = (A | E), G = (E | −Aᵀ). VL6 (Abschnitt 6.3).
+- C: H = (A | E), G = (E | −Aᵀ).
      Die Nachricht steht in den ersten k Stellen von c.
-Standard: A. Nur bei --typ wiederholung/paritaet ist B Standard (wie Ü5).
+Standard: A. Nur bei --typ wiederholung/paritaet ist B Standard.
 Ist H oder G fest vorgegeben, dann rechnet das Skript immer mit dieser
 Matrix. Die Variante ändert dann nur die berechnete zweite Matrix.
 
 Weitere Wahl: --fuehrer erste|letzte. Das legt fest, welcher Vektor
 Klassenführer wird, wenn mehrere das kleinste Gewicht haben
-(VL6 wählt den ersten: 1000, 0100, 0010).
+(Standard ist der erste: 1000, 0100, 0010).
 """
 
 from __future__ import annotations
@@ -70,12 +70,12 @@ Matrix = list[list[int]]
 Vektor = list[int]
 
 VARIANTEN = {
-    "A": "H = (E | A), G = (−Aᵀ | E)  (VL4, Ü6 6_4, Ü6 6_8)",
-    "B": "G = (E | A), H = (−Aᵀ | E)  (Ü5 5_1, Ü5 5_2)",
-    "C": "H = (A | E), G = (E | −Aᵀ)  (VL6, Abschnitt 6.3)",
+    "A": "H = (E | A), G = (−Aᵀ | E)",
+    "B": "G = (E | A), H = (−Aᵀ | E)",
+    "C": "H = (A | E), G = (E | −Aᵀ)",
 }
 
-# Grenzen, damit das Skript in der Klausur nicht hängen bleibt.
+# Grenzen, damit das Skript nicht zu lange rechnet.
 MAX_TEILMENGEN = 2_000_000
 MAX_SYNDROME = 100_000
 MAX_STANDARDARRAY = 3**7
@@ -245,8 +245,7 @@ def hamming_spalten(q: int, m: int) -> list[Vektor]:
 def hamming_H(q: int, m: int, variante: str = "A") -> Matrix:
     """Kontrollmatrix von H_q(m). Variante A: E vorne, sonst E hinten.
 
-    Die übrigen Spalten sind die Klassenführer in lexikografischer Reihenfolge
-    (wie Ü5 5_3, Ü5 5_5, Ü6 6_4).
+    Die übrigen Spalten sind die Klassenführer in lexikografischer Reihenfolge.
     """
     einheit = [[int(i == j) for i in range(m)] for j in range(m)]
     rest = [v for v in hamming_spalten(q, m) if v not in einheit]
@@ -473,7 +472,7 @@ def klassenfuehrer(code: Code, regel: str = "erste") -> list[Fuehrer] | None:
         for s, liste in kandidaten.items():
             wahl = liste[0] if regel == "erste" else liste[-1]
             gefunden[s] = Fuehrer(wahl, list(s), len(liste) == 1)
-        # Reihenfolge wie Ü6 6_8: nach Position des Führers in der Aufzählung
+        # Reihenfolge: nach Position des Führers in der Aufzählung
         ordnung = []
         for werte in itertools.product(range(1, q), repeat=w):
             for stellen in itertools.combinations(range(n), w):
@@ -551,7 +550,7 @@ def decodiere(code: Code, r: Vektor, abstand: Abstand,
 
 
 def codewoerter(code: Code) -> list[Vektor]:
-    """Alle a·G, a₁ läuft am schnellsten (wie VL6: 0000, 1011, 0101, 1110)."""
+    """Alle a·G, a₁ läuft am schnellsten (z. B. 0000, 1011, 0101, 1110)."""
     res = []
     for a in itertools.product(range(code.q), repeat=code.k):
         a = list(reversed(a))
@@ -562,16 +561,6 @@ def codewoerter(code: Code) -> list[Vektor]:
 def standardarray(code: Code, tabelle: list[Fuehrer]) -> list[list[Vektor]]:
     cw = codewoerter(code)
     return [[[(e + c) % code.q for e, c in zip(f.e, cv)] for cv in cw] for f in tabelle]
-
-
-# Bekannte Fehler in den Quellen (PRIORISIERUNG.md, Abschnitt 5).
-def quellen_hinweis(code: Code, r: Vektor, dec: Decodierung) -> str | None:
-    if (code.q == 3 and code.H == hamming_H(3, 3, "A")
-            and r == [0] * 10 + [1, 2, 2]):
-        return ("Achtung Quelle: Ü5 5_5 d) schreibt für r₂ die Stelle x = 13. "
-                "Richtig ist x = 11, denn (1 2 0)ᵀ ist die 11. Spalte von H. "
-                "Das Ergebnis c₂ = 0…0 2 2 2 in der Quelle stimmt.")
-    return None
 
 
 # ---------------------------------------------------------------------------
@@ -730,7 +719,7 @@ def text_syndrom(code: Code, syn: Syndrom) -> list[str]:
     return L
 
 
-def text_decodierung(code: Code, dec: Decodierung, nr: int, quelle: str | None) -> list[str]:
+def text_decodierung(code: Code, dec: Decodierung, nr: int, zusatz: str | None = None) -> list[str]:
     q = code.q
     r = dec.syn.r
     L = [f"Decodieren r{nr} = {wort(r)}:"]
@@ -772,8 +761,8 @@ def text_decodierung(code: Code, dec: Decodierung, nr: int, quelle: str | None) 
     L.append(f"  Probe: H·cᵀ = {spalte_txt(dec.probe or [])} {'= o ✓' if ok else '≠ o ✗'}")
     if dec.a is not None:
         L.append(f"  Nachricht: a = {wort(dec.a)}")
-    if quelle:
-        L.append(f"  {quelle}")
+    if zusatz:
+        L.append(f"  {zusatz}")
     if dec.sicher:
         L.append(f"Ergebnis: r{nr} = {wort(r)} wird zu c = {wort(dec.c)} decodiert.")
     else:
@@ -877,7 +866,7 @@ def loesungsweg(auftrag: Auftrag, variante: str | None = None) -> str:
         L += text_codierung(code, codiere(code, a))
     for i, r in enumerate(auftrag.woerter, 1):
         dec = decodiere(code, r, abstand, tab)
-        L += text_decodierung(code, dec, i, quellen_hinweis(code, r, dec))
+        L += text_decodierung(code, dec, i)
     if not auftrag.nachrichten and not auftrag.woerter:
         L.append(f"Ergebnis: [{code.n}, {code.k}, {abstand.d}]_{code.q}-Code (G und H siehe oben).")
     return "\n".join(L)
@@ -888,11 +877,16 @@ def main(argv: list[str] | None = None) -> int:
         prog="python -m skripte.linearer_code",
         description="Lineare Codes über F_q: G ↔ H, [n, k, d], Codieren, Syndrom, Decodieren.",
         epilog=(
-            "Beispiele aus den Quellen:\n"
-            "  Ü6 6_8:  --q 3 --typ hamming --m 2 --tabelle --r 2200 --r 0121\n"
-            "  Ü5 5_4:  --q 2 --H \"1001101;0101011;0010111\" --r 1101100 --r 1111111 --r 1111000\n"
-            "  Ü5 5_1:  --q 3 --typ wiederholung --n 5 --a 2 --r 22120 --r 11022 --r 11111\n"
-            "  VL6:     --q 2 --G \"1011;0101\" --nebenklassen\n"
+            "Beispiele:\n"
+            "  python -m skripte.linearer_code --q 3 --typ hamming --m 2 --tabelle --r 2200 --r 0121"
+            "  (Hamming-Code H_3(2), Tabelle, Decodieren)\n"
+            "  python -m skripte.linearer_code --q 2 --H \"1001101;0101011;0010111\" --r 1101100 --r 1111111 --r 1111000"
+            "  (eigene Kontrollmatrix H, Decodieren)\n"
+            "  python -m skripte.linearer_code --q 3 --typ wiederholung --n 5 --a 2 --r 22120 --r 11022 --r 11111"
+            "  (Wiederholungscode, Codieren und Decodieren)\n"
+            "  python -m skripte.linearer_code --q 2 --G \"1011;0101\" --nebenklassen"
+            "  (Nebenklassen eines [4,2,2]-Codes)\n"
+            "\n"
             "Matrizen: Zeilen mit ';' trennen. Bei q > 10 Einträge mit Leerzeichen oder Komma trennen."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -913,7 +907,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--nebenklassen", action="store_true",
                         help="Alle Nebenklassen (Standardarray) ausgeben. Nur für kleine Codes.")
     parser.add_argument("--fuehrer", choices=["erste", "letzte"], default="erste",
-                        help="Wahl des Klassenführers bei gleichem Gewicht (Standard: erste, wie VL6).")
+                        help="Wahl des Klassenführers bei gleichem Gewicht (Standard: erste).")
     parser.add_argument("--variante", choices=list(VARIANTEN),
                         help="Systematische Form: A = H(E|A), G(−Aᵀ|E) (Standard); "
                              "B = G(E|A), H(−Aᵀ|E) (Standard bei wiederholung/paritaet); "

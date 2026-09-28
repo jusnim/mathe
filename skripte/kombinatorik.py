@@ -2,9 +2,9 @@
 
 Zweck
 -----
-Das Skript rechnet Zählaufgaben aus Vorlesung 2 (Zählprinzipien),
-Übung 3 (A4 bis A7) und Übung 4 (A2). Es zeigt jeden Schritt so,
-wie er in den Musterlösungen steht. Am Ende steht "Ergebnis: ...".
+Das Skript löst Zählaufgaben: Auswahlen, Permutationen, Gitterwege,
+Derangements, Partitionen und Summen mit Binomialkoeffizienten.
+Es zeigt jeden Rechenschritt. Am Ende steht "Ergebnis: ...".
 Danach folgt meist eine Probe.
 
 Unterbefehle
@@ -13,22 +13,22 @@ Unterbefehle
   geordnet     geordnete Auswahl von k aus n (ohne oder mit Wiederholung)
   permutation  Anzahl der Permutationen n!
   kombination  ungeordnete Auswahl von k aus n (ohne oder mit Wiederholung)
-  gitter       Gitterwege im m×n-Gitter (Ü3 A4, A5)
-  derangement  fixpunktfreie Permutationen dₙ (Ü4 A2)
+  gitter       kürzeste Gitterwege im m×n-Gitter
+  derangement  fixpunktfreie Permutationen dₙ
   partition    Partitionen p(n) einer Zahl, auch mit Einschränkung
   ferrers      Ferrers-Diagramm und konjugierte Partition
   lehrsatz     binomischer Lehrsatz (a + b)ⁿ
-  summe        Summen mit Binomialkoeffizienten (Folgerungen, Ü3 A6, A7)
+  summe        Summen mit Binomialkoeffizienten
   pascal       Pascalsches Dreieck
 
-Aufruf (Beispiele aus den Quellen)
-----------------------------------
-  python -m skripte.kombinatorik gitter 4 4              # Ü3 A4: 70
-  python -m skripte.kombinatorik gitter 3 5              # Ü3 A5 allgemein
-  python -m skripte.kombinatorik derangement 4 --liste   # Ü4 A2: 9
-  python -m skripte.kombinatorik partition 5 --liste     # VL2: p(5) = 7
-  python -m skripte.kombinatorik summe alternierend 6    # Ü3 A6: 1
-  python -m skripte.kombinatorik summe vandermonde 3 4 2 # Ü3 A7
+Aufruf (Beispiele)
+------------------
+  python -m skripte.kombinatorik gitter 4 4              # 4×4-Gitter: 70
+  python -m skripte.kombinatorik gitter 3 5              # 3×5-Gitter
+  python -m skripte.kombinatorik derangement 4 --liste   # d₄ = 9
+  python -m skripte.kombinatorik partition 5             # p(5) = 7
+  python -m skripte.kombinatorik summe alternierend 6    # Ergebnis 1
+  python -m skripte.kombinatorik summe vandermonde 3 4 --r 2
   python -m skripte.kombinatorik kombination 5 7 --wiederholung --auswahl 1 1 1 2 4 4 5
 
 Varianten
@@ -36,7 +36,7 @@ Varianten
 Nur der Unterbefehl "gitter" hat Varianten. Sie betreffen die Frage:
 Was bedeutet "m×n-Gitter"?
   kaestchen (Standard): m×n Kästchen, also (m+1)×(n+1) Gitterpunkte.
-                        So ist es in Ü3 A4 (4×4 Kästchen, 8 Strecken).
+                        Ein 4×4-Gitter hat dann Wege aus 8 Strecken.
   punkte:               m×n Gitterpunkte, also (m−1)×(n−1) Kästchen.
 Mit --alle-varianten gibt das Skript beide Rechnungen aus.
 Alle anderen Formeln haben keine abweichenden Konventionen.
@@ -265,7 +265,7 @@ class KombinationDaten:
 
 
 def bijektion_wiederholung(n: int, auswahl: list[int]) -> dict:
-    """Bijektion aus VL2 2.2: A → A' (mit n−1 Nullen) → A'' (Plätze der Nullen).
+    """Bijektion A → A' (mit n−1 Nullen) → A'' (Plätze der Nullen).
 
     Vor m₁ stehen m₁−1 Nullen, zwischen mᵢ₋₁ und mᵢ stehen mᵢ−mᵢ₋₁ Nullen,
     hinter m_k stehen n−m_k Nullen.
@@ -283,7 +283,7 @@ def bijektion_wiederholung(n: int, auswahl: list[int]) -> dict:
 
 
 def wort_text(wort: list[int]) -> str:
-    """Gruppiert gleiche Nachbarn wie in der Vorlesung: 111 0 2 00 44 0 5."""
+    """Gruppiert gleiche Nachbarn, z. B. 111 0 2 00 44 0 5."""
     gruppen = ["".join(str(x) for x in g) for _, g in itertools.groupby(wort)]
     return " ".join(gruppen)
 
@@ -322,7 +322,7 @@ def text_kombination(d: KombinationDaten) -> str:
         return "\n".join(z)
     n, k = d.n, d.k
     z = [f"Kombinationen von k = {k} aus n = {n} Elementen mit Wiederholung.",
-         "Idee (VL2, 2.2 Bijektionen): Man ordnet die Auswahl m₁ ≤ m₂ ≤ … ≤ m_k",
+         "Idee (Bijektion): Man ordnet die Auswahl m₁ ≤ m₂ ≤ … ≤ m_k",
          "und fügt n−1 Nullen ein. Die Plätze der Nullen bilden eine",
          f"(n−1)-elementige Teilmenge von N_(n+k−1) = N_{n + k - 1}."]
     for h in d.hinweise:
@@ -343,12 +343,11 @@ def text_kombination(d: KombinationDaten) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Gitterwege (Ü3 A4, A5)
+# Gitterwege
 # ---------------------------------------------------------------------------
 
 GITTER_VARIANTEN = {
-    "kaestchen": "m×n bedeutet m×n Kästchen, also (m+1)×(n+1) Gitterpunkte "
-                 "(wie in Ü3 A4).",
+    "kaestchen": "m×n bedeutet m×n Kästchen, also (m+1)×(n+1) Gitterpunkte.",
     "punkte": "m×n bedeutet m×n Gitterpunkte, also (m−1)×(n−1) Kästchen.",
 }
 
@@ -438,7 +437,7 @@ def text_gitter(d: GitterDaten) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Derangements (Ü4 A2, VL2 Beispiel vertauschte Hüte)
+# Derangements (Beispiel: vertauschte Hüte)
 # ---------------------------------------------------------------------------
 
 
@@ -538,7 +537,7 @@ def text_derangement(d: DerangementDaten) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Partitionen (VL2 2.6)
+# Partitionen
 # ---------------------------------------------------------------------------
 
 EINSCHRAENKUNGEN = {
@@ -552,7 +551,7 @@ EINSCHRAENKUNGEN = {
 
 
 def partitionen(n: int, max_teil: int | None = None) -> list[tuple[int, ...]]:
-    """Alle Partitionen von n, absteigend sortiert wie in VL2 (5, 4+1, 3+2, …)."""
+    """Alle Partitionen von n, absteigend sortiert (5, 4+1, 3+2, …)."""
     if max_teil is None:
         max_teil = n
     if n == 0:
@@ -766,11 +765,11 @@ def text_lehrsatz(d: LehrsatzDaten) -> str:
 
 
 SUMMEN_ARTEN = {
-    "alle": "C(n,0) + C(n,1) + … + C(n,n) = 2ⁿ  (Folgerung a)",
-    "wechselnd": "C(n,0) − C(n,1) + … + (−1)ⁿC(n,n) = 0  (Folgerung b)",
-    "alternierend": "C(k,1) − C(k,2) + … + (−1)^(k−1)C(k,k) = 1  (Ü3 A6)",
-    "quadrate": "C(n,0)² + C(n,1)² + … + C(n,n)² = C(2n,n)  (Folgerung c)",
-    "vandermonde": "C(m,0)C(n,r) + C(m,1)C(n,r−1) + … + C(m,r)C(n,0) = C(m+n,r)  (Ü3 A7)",
+    "alle": "C(n,0) + C(n,1) + … + C(n,n) = 2ⁿ",
+    "wechselnd": "C(n,0) − C(n,1) + … + (−1)ⁿC(n,n) = 0",
+    "alternierend": "C(k,1) − C(k,2) + … + (−1)^(k−1)C(k,k) = 1",
+    "quadrate": "C(n,0)² + C(n,1)² + … + C(n,n)² = C(2n,n)",
+    "vandermonde": "C(m,0)C(n,r) + C(m,1)C(n,r−1) + … + C(m,r)C(n,0) = C(m+n,r)  (Vandermonde)",
 }
 
 
@@ -787,8 +786,8 @@ class SummeDaten:
 def berechne_summe(art: str, n: int, m: int | None = None, r: int | None = None) -> SummeDaten:
     """Rechnet eine Summe aus Binomialkoeffizienten Glied für Glied aus.
 
-    Bei 'vandermonde' ist m, n, r wie in Ü3 A7.
-    Bei 'alternierend' ist n das k aus Ü3 A6.
+    Bei 'vandermonde' sind m, n, r die Zahlen aus C(m+n, r).
+    Bei 'alternierend' ist n das k aus C(k,1) − C(k,2) + … .
     """
     hinweise = pruefe_nichtnegativ(n=n, m=m or 0, r=r or 0)
     if hinweise:
@@ -802,13 +801,13 @@ def berechne_summe(art: str, n: int, m: int | None = None, r: int | None = None)
         formel = 0 if n > 0 else 1
         par = {"n": n}
         if n == 0:
-            hinweise.append("Hinweis: Die Folgerung gilt nur für n > 0. Für n = 0 ist die Summe 1.")
+            hinweise.append("Hinweis: Die Formel gilt nur für n > 0. Für n = 0 ist die Summe 1.")
     elif art == "alternierend":
         s = [(-1) ** (j - 1) * math.comb(n, j) for j in range(1, n + 1)]
         formel = 1 if n > 0 else 0
         par = {"k": n}
         if n == 0:
-            hinweise.append("Hinweis: Ü3 A6 setzt k ≥ 1 voraus. Für k = 0 ist die Summe leer (0).")
+            hinweise.append("Hinweis: Die Formel setzt k ≥ 1 voraus. Für k = 0 ist die Summe leer (0).")
     elif art == "quadrate":
         s = [math.comb(n, k) ** 2 for k in range(n + 1)]
         formel = math.comb(2 * n, n)
@@ -817,7 +816,7 @@ def berechne_summe(art: str, n: int, m: int | None = None, r: int | None = None)
         if m is None or r is None:
             raise ValueError("vandermonde braucht m, n und r")
         if not (m >= r and n >= r):
-            hinweise.append(f"Hinweis: Ü3 A7 setzt m ≥ r und n ≥ r voraus. "
+            hinweise.append(f"Hinweis: Die Formel setzt meist m ≥ r und n ≥ r voraus. "
                             "Die Formel gilt trotzdem, wenn man C(a,b) = 0 für b > a setzt.")
         s = [binom(m, k) * binom(n, r - k) for k in range(r + 1)]
         formel = binom(m + n, r)
@@ -908,23 +907,23 @@ def text_pascal(d: PascalDaten) -> str:
 # ---------------------------------------------------------------------------
 
 BEISPIELE = """\
-Beispiele aus den Quellen:
-  python -m skripte.kombinatorik gitter 4 4 --beispielweg rorooorr   # Ü3 A4: 70
-  python -m skripte.kombinatorik gitter 4 4 --alle-varianten
-  python -m skripte.kombinatorik derangement 4 --liste                # Ü4 A2: 9
-  python -m skripte.kombinatorik partition 5                          # VL2: p(5) = 7
-  python -m skripte.kombinatorik partition 5 --einschraenkung ungerade
-  python -m skripte.kombinatorik ferrers 8 6 6 3 2 1 1                # VL2 2.6
-  python -m skripte.kombinatorik summe alternierend 6                 # Ü3 A6
-  python -m skripte.kombinatorik summe vandermonde 3 4 --r 2          # Ü3 A7
-  python -m skripte.kombinatorik kombination 5 7 --wiederholung --auswahl 1 1 1 2 4 4 5
+Beispiele:
+  python -m skripte.kombinatorik gitter 4 4 --beispielweg rorooorr   (4×4-Gitter mit Beispielweg)
+  python -m skripte.kombinatorik gitter 4 4 --alle-varianten   (beide Gitter-Varianten)
+  python -m skripte.kombinatorik derangement 4 --liste   (Derangements von 4 Elementen)
+  python -m skripte.kombinatorik partition 5   (alle Partitionen von 5)
+  python -m skripte.kombinatorik partition 5 --einschraenkung ungerade   (nur ungerade Teile)
+  python -m skripte.kombinatorik ferrers 8 6 6 3 2 1 1   (Ferrers-Diagramm)
+  python -m skripte.kombinatorik summe alternierend 6   (alternierende Summe)
+  python -m skripte.kombinatorik summe vandermonde 3 4 --r 2   (Vandermonde-Identität)
+  python -m skripte.kombinatorik kombination 5 7 --wiederholung --auswahl 1 1 1 2 4 4 5   (Auswahl mit Wiederholung)
 """
 
 
 def baue_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m skripte.kombinatorik",
-        description="Zählformeln mit Lösungsweg (Kombinatorik, VL2, Ü3, Ü4). "
+        description="Zählformeln mit Lösungsweg (Kombinatorik). "
                     "Wählen Sie einen Unterbefehl. Hilfe zu einem Unterbefehl: "
                     "python -m skripte.kombinatorik UNTERBEFEHL --help",
         epilog=BEISPIELE, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -936,24 +935,24 @@ def baue_parser() -> argparse.ArgumentParser:
                               formatter_class=argparse.RawDescriptionHelpFormatter)
 
     p = neu("binom", "Binomialkoeffizient C(n,k) berechnen.",
-            "python -m skripte.kombinatorik binom 8 4   # Ü3 A4: 70")
+            "python -m skripte.kombinatorik binom 8 4   (C(8,4) = 70)")
     p.add_argument("n", type=int, help="Größe der Menge n")
     p.add_argument("k", type=int, help="Anzahl der ausgewählten Elemente k")
 
     p = neu("geordnet", "Geordnete Auswahl von k aus n Elementen zählen.",
-            "python -m skripte.kombinatorik geordnet 5 3")
+            "python -m skripte.kombinatorik geordnet 5 3   (3 aus 5 geordnet)")
     p.add_argument("n", type=int, help="Größe der Menge n")
     p.add_argument("k", type=int, help="Anzahl der ausgewählten Elemente k")
     p.add_argument("--wiederholung", action="store_true",
                    help="Elemente dürfen mehrfach gewählt werden (dann n^k)")
 
     p = neu("permutation", "Anzahl der Permutationen n! berechnen.",
-            "python -m skripte.kombinatorik permutation 4   # |S₄| = 24")
+            "python -m skripte.kombinatorik permutation 4   (4! = 24)")
     p.add_argument("n", type=int, help="Anzahl der Elemente n")
 
     p = neu("kombination", "Ungeordnete Auswahl von k aus n Elementen zählen.",
             "python -m skripte.kombinatorik kombination 5 7 --wiederholung "
-            "--auswahl 1 1 1 2 4 4 5   # VL2 2.2")
+            "--auswahl 1 1 1 2 4 4 5   (Auswahl mit Wiederholung)")
     p.add_argument("n", type=int, help="Größe der Menge n")
     p.add_argument("k", type=int, help="Anzahl der ausgewählten Elemente k")
     p.add_argument("--wiederholung", action="store_true",
@@ -962,11 +961,11 @@ def baue_parser() -> argparse.ArgumentParser:
                    help="eine Auswahl m₁ … m_k aus 1 … n; zeigt die Bijektion A → A' → A''")
 
     p = neu("gitter", "Kürzeste Gitterwege von links unten nach rechts oben zählen.",
-            "python -m skripte.kombinatorik gitter 4 4   # Ü3 A4: 70")
+            "python -m skripte.kombinatorik gitter 4 4   (4×4-Gitter: 70 Wege)")
     p.add_argument("m", type=int, help="Höhe m des Gitters (Schritte nach oben)")
     p.add_argument("n", type=int, help="Breite n des Gitters (Schritte nach rechts)")
     p.add_argument("--variante", choices=list(GITTER_VARIANTEN), default="kaestchen",
-                   help="Bedeutung von m×n: 'kaestchen' (Standard, wie Ü3 A4) "
+                   help="Bedeutung von m×n: 'kaestchen' (Standard, m×n Kästchen) "
                         "oder 'punkte' (m×n Gitterpunkte)")
     p.add_argument("--alle-varianten", action="store_true",
                    help="beide Varianten nacheinander ausgeben")
@@ -976,13 +975,13 @@ def baue_parser() -> argparse.ArgumentParser:
                    help="einen Weg als Wort aus r und o zeigen, z. B. rorooorr")
 
     p = neu("derangement", "Fixpunktfreie Permutationen dₙ zählen (vertauschte Hüte).",
-            "python -m skripte.kombinatorik derangement 4 --liste   # Ü4 A2: 9")
+            "python -m skripte.kombinatorik derangement 4 --liste   (d₄ = 9)")
     p.add_argument("n", type=int, help="Anzahl der Elemente n")
     p.add_argument("--liste", action="store_true",
                    help="alle Derangements auflisten (bis n = 8)")
 
     p = neu("partition", "Partitionen p(n) einer Zahl zählen und auflisten.",
-            "python -m skripte.kombinatorik partition 5   # VL2: p(5) = 7")
+            "python -m skripte.kombinatorik partition 5   (p(5) = 7)")
     p.add_argument("n", type=int, help="die Zahl n")
     p.add_argument("--einschraenkung", choices=list(EINSCHRAENKUNGEN), default="keine",
                    help="Einschränkung: ungerade Teile, verschiedene Teile, "
@@ -992,26 +991,26 @@ def baue_parser() -> argparse.ArgumentParser:
                    help="nur die Anzahl ausgeben, ohne Liste")
 
     p = neu("ferrers", "Ferrers-Diagramm zeichnen und die konjugierte Partition ablesen.",
-            "python -m skripte.kombinatorik ferrers 8 6 6 3 2 1 1   # VL2 2.6")
+            "python -m skripte.kombinatorik ferrers 8 6 6 3 2 1 1   (konjugierte Partition)")
     p.add_argument("teile", type=int, nargs="+", help="die Teile der Partition")
 
     p = neu("lehrsatz", "Binomischer Lehrsatz: (a+b)ⁿ ausmultiplizieren.",
-            "python -m skripte.kombinatorik lehrsatz 4 --a 2 --b -1")
+            "python -m skripte.kombinatorik lehrsatz 4 --a 2 --b -1   (a = 2, b = −1)")
     p.add_argument("n", type=int, help="Exponent n")
     p.add_argument("--a", type=int, help="Zahl für a (optional)")
     p.add_argument("--b", type=int, help="Zahl für b (optional)")
 
     p = neu("summe", "Summen mit Binomialkoeffizienten Glied für Glied ausrechnen.",
-            "python -m skripte.kombinatorik summe alternierend 6   # Ü3 A6: 1\n"
-            "  python -m skripte.kombinatorik summe vandermonde 3 4 --r 2   # Ü3 A7")
+            "python -m skripte.kombinatorik summe alternierend 6   (Ergebnis 1)\n"
+            "  python -m skripte.kombinatorik summe vandermonde 3 4 --r 2   (Vandermonde-Identität)")
     p.add_argument("art", choices=list(SUMMEN_ARTEN),
                    help="welche Summe: " + "; ".join(f"{k}: {v}" for k, v in SUMMEN_ARTEN.items()))
     p.add_argument("zahlen", type=int, nargs="+",
-                   help="n (bei 'alternierend' das k aus Ü3 A6); bei 'vandermonde' m und n")
+                   help="n (bei 'alternierend' das k); bei 'vandermonde' m und n")
     p.add_argument("--r", type=int, help="r bei 'vandermonde'")
 
     p = neu("pascal", "Pascalsches Dreieck bis Zeile n ausgeben.",
-            "python -m skripte.kombinatorik pascal 6")
+            "python -m skripte.kombinatorik pascal 6   (Zeilen 0 bis 6)")
     p.add_argument("n", type=int, help="letzte Zeile n")
     return parser
 

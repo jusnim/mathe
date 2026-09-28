@@ -5,7 +5,7 @@ Zweck
 Das Skript zerlegt eine Zahl n in Primfaktoren. Eine Primzahl ist eine Zahl > 1,
 die nur durch 1 und sich selbst teilbar ist. Danach berechnet das Skript φ(n).
 φ(n) (Eulersche φ-Funktion) ist die Anzahl der Zahlen a von 1 bis n mit ggT(a, n) = 1.
-Die Ausgabe zeigt jeden Schritt. Sie können den Lösungsweg abschreiben.
+Die Ausgabe zeigt jeden Schritt.
 
 Aufruf
 ------
@@ -16,15 +16,15 @@ Aufruf
 
 Varianten (--variante)
 ----------------------
-- produktformel (Standard, VL2 Z. 256, KV A4):
+- produktformel (Standard):
   φ(n) = n · (1 − 1/p₁) · … · (1 − 1/pᵣ)
-- multiplikativ (VL1 Z. 643, Ü3 A2, KV A4 „oder so“):
+- multiplikativ:
   φ(n) = φ(p₁^k₁) · … · φ(pᵣ^kᵣ) mit φ(pᵏ) = pᵏ − p^(k−1)
 Mit --alle-varianten erscheinen beide Wege nacheinander.
 
 Angabe „m = p · q“
 ------------------
-Das Skript zerlegt immer vollständig. Beispiel K A1: m = 43 · 57, aber 57 = 3 · 19.
+Das Skript zerlegt immer vollständig. Beispiel: m = 43 · 57, aber 57 = 3 · 19.
 Dann gilt φ(m) ≠ (43 − 1)(57 − 1). Mit --faktoren warnt das Skript davor.
 
 Nutzung als Modul
@@ -187,7 +187,7 @@ def phi_mit_weg(n: int, faktoren: list[int] | None = None,
                 phi_phi: bool = False) -> PhiErgebnis:
     """Berechnet Zerlegung und φ(n) und sammelt alle Zwischenwerte.
 
-    faktoren: vorgegebene Faktoren aus der Aufgabe (werden geprüft).
+    faktoren: vorgegebene Faktoren (werden geprüft).
     phi_phi: True berechnet zusätzlich φ(φ(n)) (für RSA, Weg über Euler).
     """
     z = probedivision(n)
@@ -240,7 +240,7 @@ def _weg_produktformel(e: PhiErgebnis) -> list[str]:
     zeilen.append(f"       = {n} · {brueche}")
     if len(ps) > 1:
         zeilen.append(f"       = {n} · {_bruch(e.bruchprodukt)}")
-    # Wie in KV A4: erst n durch den Nenner teilen, dann mit dem Zähler malen.
+    # Erst n durch den Nenner teilen, dann mit dem Zähler malen.
     nenner = e.bruchprodukt.denominator
     zaehler = e.bruchprodukt.numerator
     if nenner > 1 and zaehler > 1:
@@ -351,19 +351,16 @@ def _parser() -> argparse.ArgumentParser:
         description="Zerlegt n in Primfaktoren und berechnet φ(n) mit Lösungsweg.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=(
-            "Beispiele aus den Quellen:\n"
-            "  KV A4:  python -m skripte.primfaktor_phi --n 360 --alle-varianten\n"
-            "          (360 = 2³ · 3² · 5, φ(360) = 96)\n"
-            "  K A1 d: python -m skripte.primfaktor_phi --n 2451 --faktoren 43 57\n"
-            "          (57 = 3 · 19 ist keine Primzahl, φ(2451) = 1512)\n"
-            "  Ü4 A9:  python -m skripte.primfaktor_phi --n 2803 --phi-phi\n"
-            "          (φ(2803) = 2802, φ(2802) = 932)"
+            "Beispiele:\n"
+            "  python -m skripte.primfaktor_phi --n 360 --alle-varianten   (beide Rechenwege)\n"
+            "  python -m skripte.primfaktor_phi --n 2451 --faktoren 43 57   (Faktoren prüfen)\n"
+            "  python -m skripte.primfaktor_phi --n 2803 --phi-phi   (zusätzlich φ(φ(n)))"
         ),
     )
     p.add_argument("--n", type=int, required=True,
                    help="Die Zahl n, die zerlegt wird (natürliche Zahl ≥ 1).")
     p.add_argument("--faktoren", type=int, nargs="+", metavar="F",
-                   help="Faktoren aus der Aufgabe, z. B. 43 57 bei m = 43 · 57. "
+                   help="Vorgegebene Faktoren, z. B. 43 57 bei m = 43 · 57. "
                         "Das Skript prüft, ob sie Primzahlen sind.")
     p.add_argument("--phi-phi", action="store_true",
                    help="Berechnet zusätzlich φ(φ(n)). Das braucht man bei RSA für d über Euler.")
@@ -388,7 +385,7 @@ def main(argv: list[str] | None = None) -> int:
     e = phi_mit_weg(args.n, args.faktoren, args.phi_phi)
     print("Annahme: n wird immer vollständig in Primfaktoren zerlegt.")
     print("Rechenweg: " + ", ".join(varianten)
-          + (" (Standard der Vorlesung)" if varianten == [STANDARD_VARIANTE] else ""))
+          + (" (Standard)" if varianten == [STANDARD_VARIANTE] else ""))
     print()
     print(loesungsweg(e, varianten))
     return 0

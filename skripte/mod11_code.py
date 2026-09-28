@@ -2,9 +2,8 @@
 
 Zweck
 -----
-Das Skript rechnet Aufgaben zum [10, 8, 3]₁₁-Code wie in VL6 (Abschnitt 6.3),
-Übung 6_9 und Klausur A5. Es gibt jeden Rechenschritt als Text aus.
-Den Text kann man auf Papier abschreiben.
+Das Skript rechnet mit dem [10, 8, 3]₁₁-Code. Es kodiert Klartextwörter und
+decodiert empfangene Wörter. Es gibt jeden Rechenschritt als Text aus.
 
 Begriffe:
 - Klartextwort a: 8 Ziffern aus ℤ₁₁ = {0, …, 10}.
@@ -16,20 +15,20 @@ Aufruf
 ------
     python -m skripte.mod11_code --a 11500005 --r 1150000511 1150000733
 
-Das ist Klausur A5: H, c₉, c₁₀, c, Syndrome, Decodierung und Probe.
+Das Skript gibt H, c₉, c₁₀, c, die Syndrome, die Decodierung und die Probe aus.
 Die Ziffer 10 schreibt man als X (oder man trennt alle Ziffern mit Kommas).
 
 Varianten (--variante)
 ----------------------
-- grundform (Standard, VL6 und Ü6 6_9): H = (1 1 … 1 ; 1 2 … 10).
+- grundform (Standard): H = (1 1 … 1 ; 1 2 … 10).
 - grundform-getauscht: Zeile 1 2 … 10 oben, Einsenzeile unten.
-- systematisch-rechts: H = (A | E), Einheitsmatrix rechts (VL6 Z. 224).
-- systematisch-links: H = (E | A), Einheitsmatrix links (VL4, Ü6 6_4).
+- systematisch-rechts: H = (A | E), Einheitsmatrix rechts.
+- systematisch-links: H = (E | A), Einheitsmatrix links.
 Alle vier Matrizen beschreiben denselben Code. Die Syndrome sind aber
 verschieden. --alle-varianten gibt alle vier Rechenwege aus.
 
 Weitere Optionen: --repraesentanten (0 … 10 oder −5 … 5) und
---namen (s₁, s₂, eₓ wie VL6 oder s₀, s₁, y wie Ü6).
+--namen (s1-s2: s₁, s₂, eₓ oder s0-s1: s₀, s₁, y).
 """
 
 from __future__ import annotations
@@ -43,16 +42,16 @@ N = 10
 K = 8
 
 VARIANTEN = {
-    "grundform": "H in Grundform, Einsenzeile oben (VL6, Ü6 6_9). Standard.",
+    "grundform": "H in Grundform, Einsenzeile oben. Standard.",
     "grundform-getauscht": "H in Grundform, Zeile 1 2 … 10 oben, Einsenzeile unten.",
-    "systematisch-rechts": "H = (A | E) mit Einheitsmatrix rechts (VL6 Z. 224).",
-    "systematisch-links": "H = (E | A) mit Einheitsmatrix links (VL4, Ü6 6_4).",
+    "systematisch-rechts": "H = (A | E) mit Einheitsmatrix rechts.",
+    "systematisch-links": "H = (E | A) mit Einheitsmatrix links.",
 }
 
 NAMEN = {
     # Name: (erstes Syndrom, zweites Syndrom, Fehlergröße)
-    "vl": ("s₁", "s₂", "eₓ"),
-    "uebung": ("s₀", "s₁", "y"),
+    "s1-s2": ("s₁", "s₂", "eₓ"),
+    "s0-s1": ("s₀", "s₁", "y"),
 }
 
 _TIEF = str.maketrans("0123456789", "₀₁₂₃₄₅₆₇₈₉")
@@ -183,7 +182,7 @@ class Kodierung:
 
 
 def kodieren(a: list[int]) -> Kodierung:
-    """Berechnet c₉, c₁₀ und c = a·G (VL6 Z. 246: c₉ ≡ Σ(1+i)cᵢ, c₁₀ ≡ Σ(9−i)cᵢ)."""
+    """Berechnet c₉, c₁₀ und c = a·G (c₉ ≡ Σ(1+i)cᵢ, c₁₀ ≡ Σ(9−i)cᵢ)."""
     if len(a) != K:
         raise ValueError(f"Das Klartextwort a braucht {K} Ziffern, es hat {len(a)}.")
     t9 = [(1 + i, a[i - 1]) for i in range(1, K + 1)]
@@ -214,7 +213,6 @@ class Decodierung:
     e: int | None = None         # Fehlergröße
     c: list[int] | None = None
     probe_summen: list[int] | None = None
-    hinweis_quelle: str = ""
 
 
 def syndrom(r: list[int], H: Matrix) -> tuple[list[list[tuple[int, int]]], list[int], tuple[int, int]]:
@@ -254,7 +252,7 @@ def decodieren(r: list[int], variante: str = "grundform") -> Decodierung:
             d.status = "nicht_decodierbar"
             d.grund = ("Die Fehlergröße wäre 0, aber S ≠ 0. "
                        "Ein einzelner Fehler hat Fehlergröße ≠ 0. "
-                       "Also hat r mehr als einen Fehler (VL6 Z. 279).")
+                       "Also hat r mehr als einen Fehler.")
         else:
             x = (xe * inverse_mod(e)) % P
             if x == 0:
@@ -262,10 +260,6 @@ def decodieren(r: list[int], variante: str = "grundform") -> Decodierung:
                 d.grund = (f"Die Fehlerstelle wäre x = {xe}/{e} ≡ 0. "
                            "Die Stellen sind aber 1 … 10. x = 0 ist keine Stelle. "
                            "Also hat r mindestens 2 Fehler.")
-                d.hinweis_quelle = ("Die Vorlesung (VL6 Z. 279) nennt nur den Fall "
-                                    "„Fehlergröße = 0, zweiter Eintrag ≠ 0“. Hier liegt der andere "
-                                    "Fall vor: zweiter Eintrag = 0, Fehlergröße ≠ 0. "
-                                    "Auch er bedeutet: nicht decodierbar. Das muss man selbst begründen.")
                 d.x, d.e = 0, e
             else:
                 d.status = "ein_fehler"
@@ -337,7 +331,7 @@ def stelle_in_nullblock(r: list[int]) -> int:
 # ---------------------------------------------------------------------------
 
 def wort(v: list[int], sym: bool = False) -> str:
-    """Schreibt ein Wort. Die Ziffern bleiben immer 0 … 10 (wie in den Aufgaben)."""
+    """Schreibt ein Wort. Die Ziffern bleiben immer 0 … 10 (auch bei −5 … 5)."""
     return " ".join(str(z) for z in v)
 
 
@@ -416,7 +410,7 @@ def text_kontrollmatrix(km: Kontrollmatrix, sym: bool) -> str:
 def text_kodierung(k: Kodierung, sym: bool) -> str:
     z = ["Kodierung", ""]
     z.append(f"a = {wort(k.a, sym)}.  Es gilt cᵢ = aᵢ für i = 1 … 8.")
-    z.append("Formeln (VL6): c₉ ≡ Σ (1+i)·cᵢ,  c₁₀ ≡ Σ (9−i)·cᵢ  (i = 1 … 8, mod 11)")
+    z.append("Formeln: c₉ ≡ Σ (1+i)·cᵢ,  c₁₀ ≡ Σ (9−i)·cᵢ  (i = 1 … 8, mod 11)")
     for name, terme, summe, wert in (("c₉", k.c9_terme, k.c9_summe, k.c9),
                                      ("c₁₀", k.c10_terme, k.c10_summe, k.c10)):
         ausgeschrieben = " + ".join(f"{w}·{rep(zf, sym)}" for w, zf in terme)
@@ -476,8 +470,6 @@ def text_decodierung(d: Decodierung, name: str, namen: str, sym: bool) -> str:
             z.append(f"Spalte h{tief(d.x)} = ({rep(h[0], sym)}, {rep(h[1], sym)})ᵀ,"
                      f"  {rep(d.e, sym)}·h{tief(d.x)} = ({rep(d.e * h[0], sym)}, {rep(d.e * h[1], sym)})ᵀ = S")
             z.append(f"=> Fehlerstelle x = {d.x}, Fehlergröße {ne} = {rep(d.e, sym)}.")
-    if d.hinweis_quelle:
-        z.append(f"Hinweis zur Quelle: {d.hinweis_quelle}")
 
     if d.status == "ein_fehler":
         x = d.x
@@ -498,11 +490,11 @@ def text_decodierung(d: Decodierung, name: str, namen: str, sym: bool) -> str:
 
 
 def loesungsweg(a: list[int] | None, woerter: list[tuple[str, list[int]]], variante: str,
-                namen: str = "vl", sym: bool = False) -> str:
+                namen: str = "s1-s2", sym: bool = False) -> str:
     """Erzeugt den ganzen Lösungsweg als Text für eine Variante."""
     teile = [f"=== Variante: {variante} ===",
              f"Annahme: {VARIANTEN[variante]}",
-             "Stellen werden ab 1 gezählt (c₁ … c₁₀), wie in VL6, Ü6 6_9 und der Klausur.",
+             "Stellen werden ab 1 gezählt (c₁ … c₁₀).",
              f"Vertreter der Restklassen: {'−5 … 5' if sym else '0 … 10'}.",
              ""]
     km = kontrollmatrix(variante)
@@ -534,7 +526,7 @@ def loesungsweg(a: list[int] | None, woerter: list[tuple[str, list[int]]], varia
 def text_luecke(name: str, r9: list[int], stelle: int) -> str:
     """Hinweis bei 9 Ziffern: welche 0 ergänzt wird und was andere Stellen ergeben."""
     z = [f"WARNUNG: {name} = {''.join(map(str, r9))} hat nur 9 Ziffern. Der Code hat Länge 10.",
-         "Wahrscheinlich fehlt eine 0 (GP A4, vergleiche Klausur A5).",
+         "Wahrscheinlich fehlt eine 0.",
          f"Annahme: Die 0 steht an Stelle {stelle} (im längsten Block aus Nullen).",
          "Andere mögliche Stellen für die 0 (Grundform von H):"]
     gruppen: dict[tuple[int, ...], list[int]] = {}
@@ -565,25 +557,26 @@ def main(argv: list[str] | None = None) -> int:
         description="[10, 8, 3]₁₁-Code: H aufstellen, c₉ und c₁₀ berechnen, "
                     "Syndrome berechnen, decodieren, Probe.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="Beispiel (Klausur A5):\n"
-               "  python -m skripte.mod11_code --a 11500005 --r 1150000511 1150000733\n"
-               "Beispiel (Ü6 6_9, Schreibweise der Übung):\n"
+        epilog="Beispiele:\n"
+               "  python -m skripte.mod11_code --a 11500005 --r 1150000511 1150000733"
+               "  (kodieren und zwei Wörter decodieren)\n"
                "  python -m skripte.mod11_code --r 1151111103 1156111103 1111111103 "
-               "--namen uebung --repraesentanten symmetrisch\n\n"
+               "--namen s0-s1 --repraesentanten symmetrisch"
+               "  (drei Wörter, Namen s₀, s₁, y, Vertreter −5 … 5)\n\n"
                "Varianten:\n" + "\n".join(f"  {k}: {v}" for k, v in VARIANTEN.items()))
     parser.add_argument("--a", help="Klartextwort mit 8 Ziffern, z. B. 11500005. "
                                     "Die Ziffer 10 als X schreiben.")
     parser.add_argument("--r", nargs="+", action="extend", default=[],
                         help="Ein oder mehrere empfangene Wörter mit 10 Ziffern, z. B. 1150000511.")
     parser.add_argument("--variante", choices=list(VARIANTEN), default="grundform",
-                        help="Form der Kontrollmatrix H. Standard: grundform (wie VL6 und Ü6).")
+                        help="Form der Kontrollmatrix H. Standard: grundform.")
     parser.add_argument("--alle-varianten", action="store_true",
                         help="Gibt den Lösungsweg für alle Formen von H nacheinander aus.")
     parser.add_argument("--repraesentanten", choices=["0-10", "symmetrisch"], default="0-10",
-                        help="Vertreter der Restklassen: 0 … 10 (Standard) oder −5 … 5 (wie Ü6 6_9).")
-    parser.add_argument("--namen", choices=list(NAMEN), default="vl",
-                        help="Namen im Syndrom: vl = s₁, s₂, eₓ (VL6, Standard); "
-                             "uebung = s₀, s₁, y (Ü6 6_9).")
+                        help="Vertreter der Restklassen: 0 … 10 (Standard) oder −5 … 5.")
+    parser.add_argument("--namen", choices=list(NAMEN), default="s1-s2",
+                        help="Namen im Syndrom: s1-s2 = s₁, s₂, eₓ (Standard); "
+                             "s0-s1 = s₀, s₁, y.")
     parser.add_argument("--luecke", type=int, metavar="STELLE",
                         help="Nur bei Wörtern mit 9 Ziffern: Stelle (1 … 10), an der die fehlende 0 "
                              "ergänzt wird. Ohne Angabe: im längsten Block aus Nullen.")

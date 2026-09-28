@@ -1,25 +1,27 @@
-"""Lokale Web-Oberfläche für alle Skripte.
+"""Web-Oberfläche für alle Rechenwerkzeuge.
 
 Zweck
 -----
-Die Skripte geben lange Lösungswege aus. Im Terminal ist das schwer zu lesen.
-Diese Seite zeigt ein Formular für jedes Skript. Das Ergebnis erscheint
-formatiert im Browser: mit Abschnitten, hervorgehobenem Ergebnis und Warnungen.
+Die Werkzeuge rechnen Aufgaben aus Zahlentheorie, Kryptographie,
+Codierungstheorie und Kombinatorik. Sie zeigen jeden Rechenschritt.
+Diese Seite ist die Bedienoberfläche: Zahlen eingeben, rechnen,
+den Lösungsweg lesen. Abschnitte lassen sich auf- und zuklappen.
 
-Die Seite läuft nur auf dem eigenen Rechner (localhost). Sie braucht kein Internet.
+Die Seite läuft auf dem eigenen Rechner. Sie braucht kein Internet.
 
 Aufruf
 ------
-    python -m skripte.web              # öffnet http://localhost:8000
-    python -m skripte.web --port 8080  # anderer Port
+    python -m skripte.web                   # öffnet http://localhost:8000
+    python -m skripte.web --port 8080       # anderer Port
+    python -m skripte.web --host 0.0.0.0    # im lokalen Netz freigeben (für das Team)
     python -m skripte.web --kein-browser
 
 Wie es funktioniert
 -------------------
-- Der Server liest die Optionen jedes Skripts aus dessen argparse-Parser.
+- Der Server liest die Optionen jedes Werkzeugs aus dessen argparse-Parser.
   Daraus baut die Seite die Formulare. Neue Optionen erscheinen also von selbst.
-- Beim Klick auf „Rechnen“ startet der Server das Skript als eigenen Prozess:
-  `python -m skripte.<name> <optionen>`. Die Ausgabe ist genau dieselbe wie im Terminal.
+- Beim Klick auf „Rechnen“ startet der Server das Werkzeug als eigenen Prozess.
+  Es sind nur die Werkzeuge aus der Liste erlaubt. Es gibt keine Shell.
 """
 
 from __future__ import annotations
@@ -39,29 +41,39 @@ from pathlib import Path
 WURZEL = Path(__file__).resolve().parent.parent
 STATISCH = Path(__file__).resolve().parent / "web_static"
 
-# Reihenfolge = Priorität für die Klausur (siehe PRIORISIERUNG.md).
-SKRIPTE: list[tuple[str, str]] = [
-    ("rsa", "RSA"),
-    ("euklid", "Euklidischer Algorithmus"),
-    ("primfaktor_phi", "Primfaktoren und φ(n)"),
-    ("schnell_potenzieren", "Schnelles Potenzieren"),
-    ("mod11_code", "Modulo-11-Code"),
-    ("inklusion_exklusion", "Inklusion–Exklusion"),
-    ("crt", "Chinesischer Restsatz"),
-    ("isbn10", "ISBN-10"),
-    ("linearer_code", "Lineare Codes"),
-    ("schranken", "Schranken für Codes"),
-    ("turnierplan", "Turnierplan"),
-    ("einheitengruppe", "Einheitengruppe ℤₘ*"),
-    ("zyklischer_code", "Zyklische Codes"),
-    ("kombinatorik", "Kombinatorik"),
-    ("teilbarkeit", "Teilbarkeit"),
+# Gruppen und Reihenfolge in der Seitenleiste.
+GRUPPEN: list[tuple[str, list[tuple[str, str]]]] = [
+    ("Zahlentheorie", [
+        ("euklid", "Euklidischer Algorithmus"),
+        ("primfaktor_phi", "Primfaktoren und φ(n)"),
+        ("schnell_potenzieren", "Modulares Potenzieren"),
+        ("crt", "Chinesischer Restsatz"),
+        ("einheitengruppe", "Einheitengruppe ℤₘ*"),
+        ("teilbarkeit", "Teilbarkeit"),
+    ]),
+    ("Kryptographie und Prüfziffern", [
+        ("rsa", "RSA"),
+        ("isbn10", "ISBN-10"),
+    ]),
+    ("Codierungstheorie", [
+        ("linearer_code", "Lineare Codes"),
+        ("mod11_code", "Modulo-11-Code"),
+        ("zyklischer_code", "Zyklische Codes"),
+        ("schranken", "Schranken für Codes"),
+    ]),
+    ("Kombinatorik", [
+        ("kombinatorik", "Zählen und Anordnen"),
+        ("inklusion_exklusion", "Inklusion–Exklusion"),
+        ("turnierplan", "Turnierplan"),
+    ]),
 ]
+SKRIPTE: list[tuple[str, str]] = [s for _, liste in GRUPPEN for s in liste]
+GRUPPE_VON = {name: gruppe for gruppe, liste in GRUPPEN for name, _ in liste}
 ERLAUBT = {name for name, _ in SKRIPTE}
 
 
 # ---------------------------------------------------------------------------
-# Parser der Skripte auslesen
+# Parser der Werkzeuge auslesen
 # ---------------------------------------------------------------------------
 
 class _ParserGefunden(Exception):
@@ -148,26 +160,26 @@ def alle_schemata() -> list[dict]:
     ergebnis = []
     for name, titel in SKRIPTE:
         try:
-            ergebnis.append({"name": name, "titel": titel, **schema(parser_von(name))})
+            ergebnis.append({"name": name, "titel": titel, "gruppe": GRUPPE_VON[name], **schema(parser_von(name))})
         except Exception as fehler:  # ein kaputtes Skript soll die Seite nicht blockieren
-            ergebnis.append({"name": name, "titel": titel, "fehler": str(fehler),
+            ergebnis.append({"name": name, "titel": titel, "gruppe": GRUPPE_VON[name], "fehler": str(fehler),
                              "beschreibung": "", "epilog": "", "felder": [], "unterbefehle": None})
     return ergebnis
 
 
 # ---------------------------------------------------------------------------
-# Skript ausführen
+# Werkzeug ausführen
 # ---------------------------------------------------------------------------
 
 def ausfuehren(name: str, argv: list[str]) -> dict:
-    """Startet ein Skript als eigenen Prozess und gibt die Ausgabe zurück."""
+    """Startet ein Werkzeug als eigenen Prozess und gibt die Ausgabe zurück."""
     if name not in ERLAUBT:
-        return {"code": 2, "stdout": "", "stderr": f"Unbekanntes Skript: {name}", "befehl": ""}
+        return {"code": 2, "stdout": "", "stderr": f"Unbekanntes Werkzeug: {name}", "befehl": ""}
     befehl = [sys.executable, "-m", f"skripte.{name}", *argv]
     try:
         lauf = subprocess.run(befehl, cwd=WURZEL, capture_output=True, text=True, timeout=60)
     except subprocess.TimeoutExpired:
-        return {"code": -1, "stdout": "", "stderr": "Abbruch: Das Skript lief länger als 60 Sekunden.",
+        return {"code": -1, "stdout": "", "stderr": "Abbruch: Die Rechnung lief länger als 60 Sekunden.",
                 "befehl": ""}
     anzeige = "python -m skripte." + name + ("" if not argv else " " + shlex.join(argv))
     return {"code": lauf.returncode, "stdout": lauf.stdout, "stderr": lauf.stderr, "befehl": anzeige}
@@ -200,10 +212,6 @@ class Handler(BaseHTTPRequestHandler):
             self._senden(200, (STATISCH / "index.html").read_bytes(), "text/html; charset=utf-8")
         elif pfad == "/api/skripte":
             self._senden(200, self.schemata_json, "application/json; charset=utf-8")
-        elif pfad == "/api/priorisierung":
-            datei = WURZEL / "PRIORISIERUNG.md"
-            text = datei.read_text(encoding="utf-8") if datei.exists() else "PRIORISIERUNG.md fehlt."
-            self._senden(200, text.encode(), "text/plain; charset=utf-8")
         else:
             self._senden(HTTPStatus.NOT_FOUND, b"Nicht gefunden", "text/plain; charset=utf-8")
 
@@ -215,10 +223,7 @@ class Handler(BaseHTTPRequestHandler):
         try:
             daten = json.loads(self.rfile.read(laenge) or b"{}")
             name = str(daten["skript"])
-            if "zeile" in daten:  # freie Eingabe wie im Terminal
-                argv = shlex.split(str(daten["zeile"]))
-            else:
-                argv = [str(x) for x in daten.get("argv", [])]
+            argv = [str(x) for x in daten.get("argv", [])]
         except (ValueError, KeyError) as fehler:
             self._json({"code": 2, "stdout": "", "stderr": f"Ungültige Anfrage: {fehler}", "befehl": ""}, 400)
             return
@@ -227,15 +232,20 @@ class Handler(BaseHTTPRequestHandler):
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="python -m skripte.web",
-                                 description="Startet die lokale Web-Oberfläche für alle Skripte.")
+                                 description="Startet die Web-Oberfläche für alle Rechenwerkzeuge.")
     ap.add_argument("--port", type=int, default=8000, help="Port (Standard: 8000)")
+    ap.add_argument("--host", default="127.0.0.1",
+                    help="Adresse (Standard: 127.0.0.1, nur dieser Rechner). "
+                         "0.0.0.0 gibt die Seite im lokalen Netz frei.")
     ap.add_argument("--kein-browser", action="store_true", help="Browser nicht automatisch öffnen")
     args = ap.parse_args(argv)
 
     Handler.schemata_json = json.dumps(alle_schemata(), ensure_ascii=False).encode()
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+    server = ThreadingHTTPServer((args.host, args.port), Handler)
     adresse = f"http://localhost:{args.port}"
-    print(f"Web-Oberfläche läuft: {adresse}")
+    print(f"Rechenwerkzeuge laufen: {adresse}")
+    if args.host not in ("127.0.0.1", "localhost"):
+        print(f"Im Netz erreichbar unter http://<Name-dieses-Rechners>:{args.port}")
     print("Beenden mit Strg+C.")
     if not args.kein_browser:
         threading.Timer(0.5, webbrowser.open, args=(adresse,)).start()

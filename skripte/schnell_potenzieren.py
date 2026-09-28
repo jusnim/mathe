@@ -2,7 +2,7 @@
 
 Zweck
 -----
-Das Skript rechnet a^k mod m wie in der Vorlesung (VL3, Abschnitt 3.1).
+Das Skript rechnet a^k mod m mit Square-and-Multiply.
 Es zeigt jeden Schritt:
 1. den Exponenten k binär (höchstes Bit links) und als Summe von Zweierpotenzen,
 2. die Quadrattabelle a, a^2, a^4, a^8, ... mod m,
@@ -14,20 +14,20 @@ Zusätzlich kann das Skript die Ordnung von Elementen in Z_m* bestimmen.
 Die Ordnung von a ist die kleinste Zahl k > 0 mit a^k = 1.
 Ein Element heißt primitiv, wenn seine Ordnung gleich phi(m) = |Z_m*| ist.
 
-Aufruf (Beispiele aus den Quellen)
-----------------------------------
-  python -m skripte.schnell_potenzieren --a 12 --k 100 --m 34          (VL3: 30)
-  python -m skripte.schnell_potenzieren --a 3 --k 1000 --m 7 --variante euler   (Ü4 A7: 4)
-  python -m skripte.schnell_potenzieren --ordnung --a 2 3 4 5 --m 17   (Ü4 A8)
-  python -m skripte.schnell_potenzieren --primitiv --m 17
+Aufruf (Beispiele)
+------------------
+  python -m skripte.schnell_potenzieren --a 12 --k 100 --m 34   (Ergebnis 30)
+  python -m skripte.schnell_potenzieren --a 3 --k 1000 --m 7 --variante euler   (Ergebnis 4)
+  python -m skripte.schnell_potenzieren --ordnung --a 2 3 4 5 --m 17   (Ordnungen in Z_17*)
+  python -m skripte.schnell_potenzieren --primitiv --m 17   (primitive Elemente)
 
 Varianten
 ---------
---variante binaer  (Standard, VL3 Beispiel 12^100): nur schnelles Potenzieren.
---variante euler   (VL3 Bemerkung, Ü4 A7): zuerst k mod phi(m) rechnen.
-                   Das geht nur bei ggT(a, m) = 1. Sonst warnt das Skript.
---reste normal       Reste 0 ... m-1 (Ü4 A9). Standard beim Potenzieren.
---reste symmetrisch  Reste zwischen -m/2 und m/2 (VL3: -4, -16; Ü4 A8).
+--variante binaer    Standard. Nur schnelles Potenzieren.
+--variante euler     Zuerst k mod phi(m) rechnen.
+                     Das geht nur bei ggT(a, m) = 1. Sonst warnt das Skript.
+--reste normal       Reste 0 ... m-1. Standard beim Potenzieren.
+--reste symmetrisch  Reste zwischen -m/2 und m/2 (zum Beispiel -4, -16).
                      Standard bei --ordnung.
 --alle-varianten     gibt alle Kombinationen nacheinander aus.
 
@@ -52,12 +52,6 @@ from sympy import factorint, isprime
 
 VARIANTEN = ("binaer", "euler")
 RESTE = ("normal", "symmetrisch")
-
-# Bekannte Schreibfehler in den Musterlösungen: (a, m, 2^i) -> Hinweis.
-QUELLEN_HINWEISE = {
-    (715, 2803, 16): "Ü4 A9 schreibt 715¹⁶ ≡ 163. Richtig ist 1653 (eine Ziffer fehlt). "
-                     "Mit 163 käme nicht c = 708 heraus.",
-}
 
 HOCH = str.maketrans("0123456789-", "⁰¹²³⁴⁵⁶⁷⁸⁹⁻")
 
@@ -252,7 +246,7 @@ def primitive_elemente(m: int) -> list[int]:
 # ---------------------------------------------------------------------------
 
 def binaer_text(k: int) -> str:
-    """Zeile wie in den Quellen: k binär und als Summe von Zweierpotenzen."""
+    """Zeile mit k binär und als Summe von Zweierpotenzen."""
     b = binaer_zerlegung(k)
     if k == 0:
         return "0 = 0₂ (keine Zweierpotenz)"
@@ -277,14 +271,14 @@ def _zerlegt(x: int, m: int, r: int) -> str:
 
 
 def potenz_text(erg: PotenzErgebnis, name: str | None = None) -> str:
-    """Lösungsweg für a^k mod m als Text (Stil VL3 und Ü4 A9)."""
+    """Lösungsweg für a^k mod m als Text."""
     a, k, m = erg.a, erg.k, erg.m
     basis = zk(a)
     zeilen = [f"Gesucht: {basis}{hoch(k)} mod {m}"]
     if erg.reste == "symmetrisch":
-        zeilen.append("Annahme: symmetrische Reste (Betrag ≤ m/2), wie VL3 (−4, −16).")
+        zeilen.append("Annahme: symmetrische Reste (Betrag ≤ m/2).")
     else:
-        zeilen.append("Annahme: Reste 0 … m−1, wie Ü4 A9.")
+        zeilen.append("Annahme: Reste 0 … m−1.")
     if k == 0:
         zeilen.append(f"k = 0, also {basis}⁰ = 1.")
         zeilen.append(f"Ergebnis: {basis}⁰ ≡ {erg.ergebnis} (mod {m})")
@@ -314,11 +308,6 @@ def potenz_text(erg: PotenzErgebnis, name: str | None = None) -> str:
                 zeile += f" ≡ {z(wert)}"
             zeilen.append(zeile + markiert)
         vorher = wert
-
-    for e, _, _ in erg.tabelle:
-        hinweis = QUELLEN_HINWEISE.get((a, m, e))
-        if hinweis:
-            zeilen.append(f"HINWEIS zur Quelle: {hinweis}")
 
     zeilen.append("")
     zeilen.append("3. Potenzen mit Bit 1 auswählen")
@@ -366,17 +355,17 @@ def phi_text(m: int) -> str:
 
 
 def reduktion_text(erg: ReduktionErgebnis) -> str:
-    """Lösungsweg für den Weg über Fermat/Euler (Stil Ü4 A7)."""
+    """Lösungsweg für den Weg über Fermat/Euler."""
     a, k, m = erg.a, erg.k, erg.m
     basis = zk(a)
     zeilen = [f"Gesucht: {basis}{hoch(k)} mod {m}",
-              "Annahme: zuerst den Exponenten mod φ(m) verkleinern (VL3 Bemerkung, Ü4 A7)."]
+              "Annahme: zuerst den Exponenten mod φ(m) verkleinern."]
     zeilen.append(phi_text(m))
     if not erg.moeglich:
         zeilen.append(f"HINWEIS: ggT({a}, {m}) = {erg.ggt} ≠ 1.")
         zeilen.append("Der Satz von Euler gilt nur für ggT(a, m) = 1.")
         zeilen.append(f"Man darf {k} also NICHT durch {k} mod {erg.phi_m} ersetzen.")
-        zeilen.append("(Warnbeispiel VL3: 12¹⁶ ≡ −16 ≢ 1 mod 34, denn ggT(12, 34) = 2.)")
+        zeilen.append("(Beispiel: 12¹⁶ ≡ −16 ≢ 1 mod 34, denn ggT(12, 34) = 2.)")
         zeilen.append("Das Skript rechnet deshalb nur mit schnellem Potenzieren.")
         zeilen.append("")
         zeilen.append(potenz_text(erg.potenz))
@@ -400,7 +389,7 @@ def reduktion_text(erg: ReduktionErgebnis) -> str:
 
 
 def ordnung_text(erg: OrdnungErgebnis) -> str:
-    """Lösungsweg für die Ordnung (Stil Ü4 A8)."""
+    """Lösungsweg für die Ordnung von a in Z_m*."""
     a, m = erg.a, erg.m
     if not erg.einheit:
         return (f"HINWEIS: ggT({a}, {m}) = {math.gcd(a, m)} ≠ 1. {a} ist keine Einheit in ℤ_{m}*.\n"
@@ -455,13 +444,13 @@ def _parser() -> argparse.ArgumentParser:
         prog="python -m skripte.schnell_potenzieren",
         description="Schnelles Potenzieren a^k mod m mit Lösungsweg. "
                     "Außerdem: Ordnung und primitive Elemente in Z_m*.",
-        epilog="Beispiele aus den Quellen:\n"
-               "  --a 12 --k 100 --m 34                 VL3: 12^100 ≡ 30 (mod 34)\n"
-               "  --a 12 --k 100 --m 34 --reste symmetrisch   wie VL3 mit −4, −16\n"
-               "  --a 3 --k 1000 --m 7 --variante euler  Ü4 A7: 3^1000 ≡ 4 (mod 7)\n"
-               "  --a 715 --k 113 --m 2803              Ü4 A9: c = 708\n"
-               "  --ordnung --a 2 3 4 5 --m 17          Ü4 A8: Ordnungen 8, 16, 4, 16\n"
-               "  --primitiv --m 17                     alle primitiven Elemente von Z_17*",
+        epilog="Beispiele:\n"
+               "  python -m skripte.schnell_potenzieren --a 12 --k 100 --m 34   (12^100 ≡ 30 mod 34)\n"
+               "  python -m skripte.schnell_potenzieren --a 12 --k 100 --m 34 --reste symmetrisch   (mit Resten −4, −16)\n"
+               "  python -m skripte.schnell_potenzieren --a 3 --k 1000 --m 7 --variante euler   (3^1000 ≡ 4 mod 7)\n"
+               "  python -m skripte.schnell_potenzieren --a 715 --k 113 --m 2803   (großer Modul, Ergebnis 708)\n"
+               "  python -m skripte.schnell_potenzieren --ordnung --a 2 3 4 5 --m 17   (Ordnungen 8, 16, 4, 16)\n"
+               "  python -m skripte.schnell_potenzieren --primitiv --m 17   (alle primitiven Elemente von Z_17*)",
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     p.add_argument("--a", type=int, nargs="+", help="Basis a (bei --ordnung auch mehrere Zahlen).")

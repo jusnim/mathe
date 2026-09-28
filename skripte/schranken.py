@@ -2,8 +2,8 @@
 
 Zweck
 -----
-Das Skript prüft für einen linearen Code die zwei oberen Schranken aus der
-Vorlesung (VL4, Abschnitt 4.5, und Übung 5, Aufgaben 5_6 bis 5_8).
+Das Skript prüft für einen linearen Code zwei obere Schranken:
+die Hamming-Schranke und die Singleton-Schranke.
 
 Ein [n, k, d]_q-Code hat Wortlänge n, Dimension k und Mindestabstand d.
 Die Buchstaben kommen aus dem Körper F_q mit q Elementen.
@@ -11,23 +11,23 @@ Die Buchstaben kommen aus dem Körper F_q mit q Elementen.
 - Hamming-Schranke: |C| · Σ_{i=0}^{e} C(n, i)·(q − 1)^i ≤ q^n.
   Gilt "=", dann heißt der Code perfekt.
 - Singleton-Schranke: k + d ≤ n + 1.
-  Gilt "=", dann heißt der Code MDS-Code. Die Übung 5_8 nennt ihn "optimal".
+  Gilt "=", dann heißt der Code MDS-Code. Man nennt ihn auch "optimal".
 
 Aufruf
 ------
-Einen Code prüfen (Ü5 5_8):
+Einen Code prüfen:
     python -m skripte.schranken --n 10 --k 8 --d 3 --q 11
 
-Kleinstes n bestimmen (Ü5 5_7), dazu --n weglassen:
+Kleinstes n bestimmen, dazu --n weglassen:
     python -m skripte.schranken --k 5 --d 5 --q 2
 
 Varianten
 ---------
 Es gibt keine Konvention, die zu anderen Zahlen führt. Deshalb gibt es keine
 Option --variante. Die Ausgabe nennt trotzdem die Annahmen:
-- e kommt aus 2e + 1 = d (Vorlesung). Bei geradem d hat diese Gleichung
+- e kommt aus 2e + 1 = d. Bei geradem d hat diese Gleichung
   keine ganze Lösung. Dann gilt e = ⌊(d − 1)/2⌋.
-- "optimal" heißt hier: Singleton-Schranke mit "=" (MDS), wie in Ü5 5_8.
+- "optimal" heißt hier: Singleton-Schranke mit "=" (MDS).
 """
 
 from __future__ import annotations
@@ -203,7 +203,7 @@ def _potenz(x: int, q: int) -> str | None:
 
 
 def _summand_formel(s: Summand, n: int, q: int) -> str:
-    """Summand wie in Ü5 5_6: 23·22/(1·2) bzw. 11·10/(1·2)·2^2."""
+    """Summand als Formel, z. B. 23·22/(1·2) oder 11·10/(1·2)·2^2."""
     if s.i == 0:
         return "1"
     oben = "·".join(str(n - j) for j in range(s.i))
@@ -220,7 +220,7 @@ def _summand_formel(s: Summand, n: int, q: int) -> str:
 
 
 def _summand_zahl(s: Summand, q: int) -> str:
-    """Summand wie in Ü5 5_8: C(n, i)·(q − 1)^i als Zahlen, z. B. 45·100."""
+    """Summand C(n, i)·(q − 1)^i als Zahlen, z. B. 45·100."""
     if s.i == 0:
         return "1"
     if q == 2:
@@ -315,19 +315,13 @@ def text_code(n: int, k: int, d: int, q: int) -> str:
     s = singleton(n, k, d)
     teile = [
         f"[{n}, {k}, {d}]_{q}",
-        "Annahme: \"optimal\" heißt Singleton-Schranke mit \"=\" (MDS), wie in Ü5 5_8.",
+        "Annahme: \"optimal\" heißt Singleton-Schranke mit \"=\" (MDS).",
         "",
         text_hamming(h),
         "",
         text_singleton(s, q),
         "",
     ]
-    if (n, k, d, q) == (10, 6, 5, 11):
-        teile.append(
-            "Hinweis zur Quelle Ü5 5_8: Im letzten Satz steht dort [10, 8, 3]_11."
-            " Gemeint ist [10, 6, 5]_11. Die Rechnung oben zeigt: 6 + 5 = 10 + 1."
-        )
-        teile.append("")
     if h.erfuellt and s.erfuellt:
         teile.append(
             f"Ergebnis: [{n}, {k}, {d}]_{q} erfüllt beide Schranken; "
@@ -352,7 +346,7 @@ def text_kleinstes_n(r: KleinstesNErgebnis) -> str:
     z.append("")
     z.append("Hamming-Schranke:  |C| · Σ_{i=0}^{e} C(n, i)·(q − 1)^i ≤ |F_q^n|,  2e + 1 = d")
     z += text_e(d, e)
-    # Allgemeine Form der Summe mit n als Variable, wie in Ü5 5_7.
+    # Allgemeine Form der Summe mit n als Variable.
     teile = []
     for i in range(e + 1):
         if i == 0:
@@ -400,7 +394,6 @@ def text_kleinstes_n(r: KleinstesNErgebnis) -> str:
         f" n < {r.n_min} unmöglich ist. Ob ein Code mit n = {r.n_min} wirklich"
         " existiert, sagen sie nicht."
     )
-    z.append("(Die Musterlösung Ü5 5_7 endet mit der Tabelle ohne Ergebnis.)")
     return "\n".join(z)
 
 
@@ -417,10 +410,10 @@ def main(argv: list[str] | None = None) -> int:
             "Ohne --n bestimmt das Skript das kleinste mögliche n."
         ),
         epilog=(
-            "Beispiele aus Übung 5:\n"
-            "  5_8: python -m skripte.schranken --n 10 --k 8 --d 3 --q 11\n"
-            "  5_6: python -m skripte.schranken --n 23 --k 12 --d 7 --q 2\n"
-            "  5_7: python -m skripte.schranken --k 5 --d 5 --q 2"
+            "Beispiele:\n"
+            "  python -m skripte.schranken --n 10 --k 8 --d 3 --q 11  (MDS-Code prüfen)\n"
+            "  python -m skripte.schranken --n 23 --k 12 --d 7 --q 2  (perfekter Golay-Code)\n"
+            "  python -m skripte.schranken --k 5 --d 5 --q 2  (kleinstes n bestimmen)"
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )

@@ -1,4 +1,4 @@
-"""Tests für skripte/zyklischer_code.py (Aufgaben aus VL5, VL6 und Ü6)."""
+"""Tests für skripte/zyklischer_code.py."""
 
 import pytest
 
@@ -32,45 +32,42 @@ def P(text, p):
     return tuple(lies_polynom(text, p))
 
 
-# --- Ü6 6_1 -----------------------------------------------------------------
+# --- Irreduzible Polynome und Zerlegung ----------------------------------------
 
-def test_ue6_6_1a_irreduzibel_grad_3():
+def test_irreduzibel_grad_3_ueber_f2():
     erg = irreduzible_polynome(3, 2)
     assert sorted(map(tuple, erg.irreduzibel)) == sorted([P("X^3+X+1", 2), P("X^3+X^2+1", 2)])
 
 
-def test_vl5_irreduzibel_grad_2_und_4():
+def test_irreduzibel_grad_2_und_4_ueber_f2():
     assert [tuple(f) for f in irreduzible_polynome(2, 2).irreduzibel] == [P("X^2+X+1", 2)]
-    # VL5 Z. 332 schreibt "X^4 + X^3 + X^4 + X + 1" (Tippfehler, siehe PRIORISIERUNG 5.1).
-    # Richtig ist X^4 + X^3 + X^2 + X + 1.
     assert sorted(map(tuple, irreduzible_polynome(4, 2).irreduzibel)) == sorted(
         [P("X^4+X+1", 2), P("X^4+X^3+1", 2), P("X^4+X^3+X^2+X+1", 2)])
 
 
-def test_ue6_6_1b_zerlegung_x7():
+def test_zerlegung_x7_ueber_f2():
     assert faktoren(7, 2) == sorted([(P("X+1", 2), 1), (P("X^3+X+1", 2), 1), (P("X^3+X^2+1", 2), 1)])
     klassen = kreisteilungsklassen(7, 2)
     assert sorted(map(frozenset, klassen), key=min) == [frozenset({0}), frozenset({1, 2, 4}), frozenset({3, 5, 6})]
-    # Schreibweise wie Ü6: {1, 2, -3}
+    # Symmetrische Schreibweise: {1, 2, -3}
     assert fmt_menge([1, 2, 4], 7, "symmetrisch") == "{1, 2, -3}"
 
 
-# --- Ü6 6_2 und 6_3 ------------------------------------------------------------
+# --- Hamming- und Paritätscode -----------------------------------------------
 
-def test_ue6_6_2_hamming_zwei_generatoren():
+def test_hamming_7_4_zwei_generatoren():
     los = loese(2, n=7, k=4)
     gs = [tuple(f.code.g) for f in los.faelle]
     assert gs == [P("1+X+X^3", 2), P("1+X^2+X^3", 2)]
     G1 = los.faelle[0].code.G
     assert G1 == [[1, 1, 0, 1, 0, 0, 0], [0, 1, 1, 0, 1, 0, 0], [0, 0, 1, 1, 0, 1, 0], [0, 0, 0, 1, 1, 0, 1]]
     G2 = los.faelle[1].code.G
-    # Die Quelle (Ü6 6_2, Z. 60) hat als letzte Zeile 0001101. Das ist ein Tippfehler
-    # (PRIORISIERUNG 5.1). X^3 * g mit g = 1 + X^2 + X^3 ist 0001011.
+    # X^3 * g mit g = 1 + X^2 + X^3 ist 0001011.
     assert G2 == [[1, 0, 1, 1, 0, 0, 0], [0, 1, 0, 1, 1, 0, 0], [0, 0, 1, 0, 1, 1, 0], [0, 0, 0, 1, 0, 1, 1]]
     assert all(f.code.d == 3 for f in los.faelle)
 
 
-def test_ue6_6_3_paritaetscode():
+def test_paritaetscode_7_6():
     los = loese(2, n=7, k=6)
     assert len(los.faelle) == 1
     c = los.faelle[0].code
@@ -79,27 +76,27 @@ def test_ue6_6_3_paritaetscode():
     assert c.d == 2
 
 
-# --- Ü6 6_5, 6_6, 6_7 -------------------------------------------------------
+# --- Ternäre Codes der Länge 4 ----------------------------------------------
 
-def test_ue6_6_5_zerlegung_x4_ueber_f3():
+def test_zerlegung_x4_ueber_f3():
     assert faktoren(4, 3) == sorted([(P("X-1", 3), 1), (P("X+1", 3), 1), (P("X^2+1", 3), 1)])
     klassen = kreisteilungsklassen(4, 3)
     assert sorted(map(frozenset, klassen), key=min) == [frozenset({0}), frozenset({1, 3}), frozenset({2})]
 
 
-def test_ue6_6_6_ternaere_4_2_codes():
+def test_ternaere_4_2_codes():
     los = loese(3, n=4, k=2)
     assert [tuple(f.code.g) for f in los.faelle] == [P("X^2+1", 3), P("X^2-1", 3)]
     assert los.faelle[0].code.G == [[1, 0, 1, 0], [0, 1, 0, 1]]
     assert los.faelle[1].code.G == [[2, 0, 1, 0], [0, 2, 0, 1]]      # -1 = 2 in F_3
     assert [f.code.d for f in los.faelle] == [2, 2]
-    # h(X) und H (Aufgabenstellung im Lösungsteil)
+    # Kontrollpolynome h(X)
     assert tuple(los.faelle[0].code.h) == P("X^2-1", 3)
     assert tuple(los.faelle[1].code.h) == P("X^2+1", 3)
 
 
 @pytest.mark.parametrize("variante", list(VARIANTEN))
-def test_ue6_6_6_varianten_schreibweise(variante):
+def test_ternaere_4_2_codes_varianten_schreibweise(variante):
     los = loese(3, n=4, k=2)
     text = loesungsweg(los, variante)
     if variante == "symmetrisch":
@@ -111,16 +108,16 @@ def test_ue6_6_6_varianten_schreibweise(variante):
     assert f"Variante '{variante}'" in text
 
 
-def test_ue6_6_7_kein_zyklischer_hamming_h3_2():
+def test_kein_zyklischer_4_2_3_code_ueber_f3():
     los = loese(3, n=4, k=2, d=3)
     text = loesungsweg(los)
     assert "Nein." in text
     assert not any(f.code.d >= 3 for f in los.faelle)
 
 
-# --- VL5 Beispiele --------------------------------------------------------------
+# --- Weitere Zerlegungen, Golay-Codes, Produkt --------------------------------
 
-def test_vl5_n4_ueber_f2():
+def test_n4_ueber_f2():
     assert faktoren(4, 2) == [(P("X+1", 2), 4)]
     assert kreisteilungsklassen(4, 2) is None      # ggT(4, 2) ≠ 1
     los = loese(2, n=4)
@@ -130,7 +127,7 @@ def test_vl5_n4_ueber_f2():
     assert c2.G == c2.H == [[1, 0, 1, 0], [0, 1, 0, 1]]
 
 
-def test_vl5_n5_n9_n15():
+def test_n5_n9_n15_ueber_f2():
     assert faktoren(5, 2) == sorted([(P("X+1", 2), 1), (P("X^4+X^3+X^2+X+1", 2), 1)])
     assert faktoren(9, 2) == sorted([(P("X+1", 2), 1), (P("X^2+X+1", 2), 1), (P("X^6+X^3+1", 2), 1)])
     assert faktoren(15, 2) == sorted([(P(t, 2), 1) for t in
@@ -138,7 +135,7 @@ def test_vl5_n5_n9_n15():
     assert sorted(len(b) for b in kreisteilungsklassen(15, 2)) == [1, 2, 4, 4, 4]
 
 
-def test_vl5_golay_g23():
+def test_golay_g23():
     g1 = P("1+X^2+X^4+X^5+X^6+X^10+X^11", 2)
     g2 = P("1+X+X^5+X^6+X^7+X^9+X^11", 2)
     assert faktoren(23, 2) == sorted([(P("X+1", 2), 1), (g1, 1), (g2, 1)])
@@ -146,7 +143,7 @@ def test_vl5_golay_g23():
     assert (c.k, c.d) == (12, 7)
 
 
-def test_vl5_golay_g11():
+def test_golay_g11():
     g1 = P("-1+X^2-X^3+X^4+X^5", 3)
     g2 = P("-1-X+X^2-X^3+X^5", 3)
     assert faktoren(11, 3) == sorted([(P("X-1", 3), 1), (g1, 1), (g2, 1)])
@@ -154,21 +151,21 @@ def test_vl5_golay_g11():
     assert (c.k, c.d) == (6, 5)
 
 
-def test_vl5_produkt_f5():
+def test_produkt_f5():
     # 0012 * 2314 = 2102 in F_5[X]/(X^4 - 1)
     pr = produkt_modulo([0, 0, 1, 2], [2, 3, 1, 4], 4, 5)
     assert pr.ergebnis + [0] * (4 - len(pr.ergebnis)) == [2, 1, 0, 2]
 
 
-def test_vl5_paritaetscode_c3_kontrollmatrix():
+def test_paritaetscode_n4_kontrollmatrix():
     c = code_daten([1, 1], 4, 2)
     assert c.G == [[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 1]]
     assert c.H == [[1, 1, 1, 1]]
 
 
-# --- VL6 Syndromdecodierung ---------------------------------------------------
+# --- Syndromdecodierung ------------------------------------------------------
 
-def test_vl6_syndrom_und_decodierung():
+def test_syndrom_und_decodierung_hamming():
     g = lies_polynom("X^3+X+1", 2)
     de = decodieren(lies_polynom("X^6+X+1", 2), g, 7, 2)
     assert tuple(de.division.quotient) == P("X^3+X+1", 2)

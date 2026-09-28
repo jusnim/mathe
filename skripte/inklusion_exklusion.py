@@ -2,8 +2,8 @@
 
 Zweck
 -----
-Das Skript rechnet Aufgaben zur Siebformel aus der Vorlesung (VL2, Abschnitt 2.5).
-Es gibt jeden Schritt so aus, wie er in den Musterlösungen steht.
+Das Skript rechnet Aufgaben zur Siebformel.
+Es gibt jeden Rechenschritt aus.
 Die Siebformel lautet:
 
     |Ω \\ A₁ ∪ … ∪ A_r| = |Ω| − α₁ + α₂ − … + (−1)^r·α_r
@@ -27,8 +27,8 @@ Varianten (nur Modus Teiler)
 --variante produkt  |A_a ∩ A_b| = ⌊N / (a·b)⌋. Nur richtig bei teilerfremden Teilern.
 --alle-varianten    gibt beide Varianten nacheinander aus.
 
-Schreibweise der Indizes: --indizes teiler (A₂, A₃, A₅ wie Ü4 A1)
-oder --indizes nummer (A₁, A₂, A₃ wie VL2 und KV A6).
+Schreibweise der Indizes: --indizes teiler (A₂, A₃, A₅)
+oder --indizes nummer (A₁, A₂, A₃).
 """
 
 from __future__ import annotations
@@ -161,7 +161,7 @@ def pruefe_teiler(n: int, teiler: list[int]) -> tuple[list[int], list[str]]:
     for t in bereinigt:
         if t > 1 and sum(faktorisiere(t).values()) > 1:
             hinweise.append(f"Hinweis: {t} = {zerlegung_text(t)} ist keine Primzahl. "
-                            f"Das ist erlaubt (K A2 hat den Teiler 4).")
+                            f"Das ist erlaubt.")
     return bereinigt, hinweise
 
 
@@ -252,8 +252,6 @@ def text_teiler(e: TeilerErgebnis, indizes: str = "teiler") -> str:
     else:
         for t in e.teiler:
             z.append(f"Sei {a(t)} = {{k ∈ Ω | {t} ist Teiler von k}}.")
-    z.append("(Achtung: Ü4 A1 schreibt „i ist Teiler von 1000“. Das ist ein Fehler der Quelle.")
-    z.append(" Richtig ist „i teilt k“, also die Zahlen in Ω, die durch i teilbar sind.)")
     z.append("")
     z.append("Die gesuchte Anzahl ist dann")
     z.append(f"|Ω \\ {vereinigung}| = {_alpha_formel(r)}")
@@ -317,7 +315,6 @@ def text_teiler(e: TeilerErgebnis, indizes: str = "teiler") -> str:
     else:
         z.append(f"    Die Formel gilt hier nur näherungsweise: {e.n} ist nicht durch "
                  f"{'·'.join(map(str, e.teiler))} = {math.prod(e.teiler)} teilbar.")
-        z.append("    (So steht es auch in Ü4 A1: 266,66 statt 266.)")
     z.append("")
     if e.probe is not None:
         status = "stimmt" if e.probe == e.richtiges_ergebnis else "WEICHT AB"
@@ -400,7 +397,7 @@ def berechne_mengen(omega: int, stufen: list[list[int]], namen: list[str] | None
 
 
 def text_mengen(e: MengenErgebnis) -> str:
-    """Erzeugt den Lösungsweg im Modus Mengen (wie VL2 Musikschule und KV A6)."""
+    """Erzeugt den Lösungsweg im Modus Mengen ."""
     z: list[str] = []
     z.append("Annahme: Die Anzahlen der Mengen und Schnitte sind direkt gegeben.")
     z.append("")
@@ -433,7 +430,7 @@ def text_mengen(e: MengenErgebnis) -> str:
         else:
             z.append(f"⇒ α{tief(k + 1)} = " + " + ".join(map(str, e.stufen[k])) + f" = {e.alphas[k]}")
     z.append("")
-    # Zeile wie in VL2: 73 − (20 + 25 + 52) + (7 + 12 + 17) − 1
+    # Zeile der Form: 73 − (20 + 25 + 52) + (7 + 12 + 17) − 1
     teile = [str(e.omega)]
     for k in range(e.r):
         klammer = " + ".join(map(str, e.stufen[k]))
@@ -481,7 +478,7 @@ class DerangementErgebnis:
 
 
 def berechne_derangement(n: int, liste_bis: int = 6) -> DerangementErgebnis:
-    """Anzahl der fixpunktfreien Permutationen d_n (VL2, Derangement-Problem)."""
+    """Anzahl der fixpunktfreien Permutationen d_n (Derangement-Problem)."""
     if n < 1:
         raise ValueError(f"n = {n} ist zu klein. Man braucht n ≥ 1.")
     fak = math.factorial(n)
@@ -515,7 +512,7 @@ def text_derangement(e: DerangementErgebnis) -> str:
         ("1" if k == 0 else f"{'−' if k % 2 else '+'} 1/{k}!") for k in range(n + 1)
     )
     summe = sum(e.reihe)
-    z.append("Mit der Formel aus VL2:")
+    z.append("Mit der Reihenformel:")
     z.append(f"d{tief(n)} = {n}!·({reihe_text}) = {n}!·{_bruch_text(summe)} = {e.d_n}")
     z.append("")
     z.append(f"P({n}) = d{tief(n)}/{n}! = {e.d_n}/{math.factorial(n)} = {_bruch_text(e.wahrscheinlichkeit)}"
@@ -536,16 +533,11 @@ def text_derangement(e: DerangementErgebnis) -> str:
 # Kommandozeile
 # ---------------------------------------------------------------------------
 
-BEISPIELE = """Beispiele aus den Quellen:
-  Klausur A2 (Zahlen ≤ 720, weder durch 3, 4 noch 5 teilbar):
-    python -m skripte.inklusion_exklusion --n 720 --teiler 3 4 5
-  Ü4 A1 (1 … 1000, weder durch 2, 3 noch 5 teilbar; Ergebnis 266):
-    python -m skripte.inklusion_exklusion --n 1000 --teiler 2 3 5
-  KV A6 (Sportverein, 55 Athleten; Ergebnis 4):
-    python -m skripte.inklusion_exklusion --omega 55 --stufe 35 27 12 --stufe 13 7 5 --stufe 2 \\
-        --namen Fußball Leichtathletik Judo
-  Ü4 A2 (fixpunktfreie Permutationen in S₄; Ergebnis 9):
-    python -m skripte.inklusion_exklusion --derangement 4
+BEISPIELE = """Beispiele:
+  python -m skripte.inklusion_exklusion --n 720 --teiler 3 4 5   (Zahlen bis 720, nicht durch 3, 4 oder 5 teilbar)
+  python -m skripte.inklusion_exklusion --n 1000 --teiler 2 3 5   (Zahlen bis 1000, nicht durch 2, 3 oder 5 teilbar)
+  python -m skripte.inklusion_exklusion --omega 55 --stufe 35 27 12 --stufe 13 7 5 --stufe 2 --namen Fußball Leichtathletik Judo   (drei Mengen mit Namen)
+  python -m skripte.inklusion_exklusion --derangement 4   (fixpunktfreie Permutationen in S₄)
 """
 
 
@@ -563,7 +555,7 @@ def baue_parser() -> argparse.ArgumentParser:
                    help="Wie man Schnitte zählt: kgv (Standard, immer richtig) oder produkt (nur bei teilerfremden Teilern richtig).")
     g.add_argument("--alle-varianten", action="store_true", help="Gibt alle Varianten nacheinander aus.")
     g.add_argument("--indizes", choices=("teiler", "nummer"), default="teiler",
-                   help="Namen der Mengen: teiler (A₂, A₃, A₅ wie Ü4 A1, Standard) oder nummer (A₁, A₂, A₃ wie VL2).")
+                   help="Namen der Mengen: teiler (A₂, A₃, A₅, Standard) oder nummer (A₁, A₂, A₃).")
     g.add_argument("--liste", action="store_true", help="Gibt zusätzlich alle gezählten Zahlen aus.")
     g2 = p.add_argument_group("Modus Mengen")
     g2.add_argument("--omega", type=int, help="Größe der Grundmenge |Ω|, zum Beispiel 55.")

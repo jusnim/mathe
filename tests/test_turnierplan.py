@@ -1,4 +1,4 @@
-"""Tests für skripte/turnierplan.py mit den Aufgaben aus PRIORISIERUNG.md, Abschnitt 3."""
+"""Tests für skripte/turnierplan.py."""
 
 import pytest
 
@@ -6,7 +6,7 @@ from skripte.turnierplan import (
     VARIANTEN, gegner_von_2m, loesung, main, paare, probe, turnierplan,
 )
 
-# KV A5 und Ü1 A3: dieselbe Tabelle (Spalten = Runden 1 … 7).
+# Plan für 8 Mannschaften (Spalten = Runden 1 … 7).
 PLAN_8 = {
     1: [(1, 7), (2, 6), (3, 5), (4, 8)],
     2: [(1, 8), (2, 7), (3, 6), (4, 5)],
@@ -17,10 +17,10 @@ PLAN_8 = {
     7: [(1, 6), (2, 5), (3, 4), (7, 8)],
 }
 
-# VL1 Beispiel 2m = 4 (Z. 146)
+# Beispiel 2m = 4
 PLAN_4 = {1: [(1, 3), (2, 4)], 2: [(1, 4), (2, 3)], 3: [(1, 2), (3, 4)]}
 
-# VL1 Beispiel 2m = 6 (Z. 163)
+# Beispiel 2m = 6
 PLAN_6 = {
     1: [(1, 5), (2, 4), (3, 6)],
     2: [(1, 6), (2, 5), (3, 4)],
@@ -31,15 +31,14 @@ PLAN_6 = {
 
 
 @pytest.mark.parametrize("n, erwartet", [(8, PLAN_8), (4, PLAN_4), (6, PLAN_6)])
-def test_plan_vorlesung(n, erwartet):
+def test_plan_standard(n, erwartet):
     assert paare(turnierplan(n)) == erwartet
 
 
-def test_plan_kv_a5():
-    # KV A5 nennt die Regel „x + y = 2m“. Diese Regel ist ungenau (Abschnitt 5).
-    # Die Tabelle der Musterlösung ist aber richtig und gleich Ü1 A3.
-    assert paare(turnierplan(8, "kv-a5")) == PLAN_8
-    assert "nur Runde r = 1" in loesung(8, "kv-a5", False, None)
+def test_plan_summe_2m():
+    # Die Regel „x + y = 2m“ ist ungenau. Der Plan ist trotzdem der Standard-Plan.
+    assert paare(turnierplan(8, "summe-2m")) == PLAN_8
+    assert "nur Runde r = 1" in loesung(8, "summe-2m", False, None)
 
 
 def test_plan_rest_null():
@@ -50,7 +49,7 @@ def test_plan_rest_null():
     assert list(p) == [0, 1, 2, 3, 4, 5, 6]
 
 
-# Ü1 A4: Gegner von Mannschaft 8 in Runde r = 1 … 7: 4, 1, 5, 2, 6, 3, 7.
+# Gegner von Mannschaft 8 in Runde r = 1 … 7: 4, 1, 5, 2, 6, 3, 7.
 GEGNER_8 = {1: 4, 2: 1, 3: 5, 4: 2, 5: 6, 6: 3, 7: 7}
 
 
@@ -61,7 +60,7 @@ def test_gegner_von_8(variante, r, x):
 
 
 def test_gegner_repraesentant():
-    # Ü1 A4: „28 ≡ 7 (mod 7)“ in der Vorlesung, 28 ≡ 0 bei rest-null.
+    # 28 ≡ 7 (mod 7) bei standard, 28 ≡ 0 bei rest-null.
     assert gegner_von_2m(8, 7).x == 7
     assert gegner_von_2m(8, 7, "rest-null").x == 0
     assert gegner_von_2m(8, 0, "rest-null").mannschaft == 7
@@ -76,7 +75,7 @@ def test_probe_allgemein(n, variante):
 def test_ungerade_anzahl():
     plan = turnierplan(7)
     assert plan.n == 8 and plan.n_eingabe == 7
-    assert "ungerade" in loesung(7, "vorlesung", False, None)
+    assert "ungerade" in loesung(7, "standard", False, None)
 
 
 def test_ausgabe_cli(capsys):

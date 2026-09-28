@@ -4,13 +4,13 @@ Zweck
 -----
 Ein Rundenturnier ist ein Turnier, in dem jede Mannschaft gegen jede andere
 genau einmal spielt. Bei 2m Mannschaften braucht man 2m − 1 Runden
-(Spieltage). Das Skript stellt den Plan nach der Regel aus der Vorlesung auf
-(VL1, Algorithmus Rundenturnier):
+(Spieltage). Das Skript stellt den Plan nach dieser Regel auf
+(Algorithmus Rundenturnier):
 
     Runde r: x spielt gegen y, wenn x + y ≡ r (mod 2m − 1), 1 ≤ x, y ≤ 2m − 1.
     Falls x + x ≡ r (mod 2m − 1), spielt x gegen 2m.
 
-Es berechnet auch den Gegner von Mannschaft 2m in Runde r (Ü1 A4):
+Es berechnet auch den Gegner von Mannschaft 2m in Runde r:
 
     2x ≡ r (mod 2m − 1) und 2⁻¹ ≡ m  ⇒  x ≡ r · m (mod 2m − 1).
 
@@ -23,15 +23,14 @@ Aufruf
 
 Varianten (--variante)
 ----------------------
-vorlesung  (Standard) Regel x + y ≡ r (mod 2m − 1). Die Restklasse 0 wird
+standard   (Standard) Regel x + y ≡ r (mod 2m − 1). Die Restklasse 0 wird
            durch 2m − 1 dargestellt. Die Runden heißen 1 … 2m − 1.
-           So steht es in VL1 und in der Lösung zu Ü1 A3/A4.
 rest-null  Gleiche Regel. Die Restklasse 0 wird durch 0 dargestellt.
            Die Runden heißen 0 … 2m − 2. Runde 0 ist Runde 2m − 1 der
-           Vorlesung. Der Rest 0 steht für Mannschaft 2m − 1.
-kv-a5      Die Regel „x + y = 2m“ aus der Lösung zu KV A5. Sie ist ungenau.
-           Wörtlich genommen liefert sie nur Runde 1. Das Skript zeigt das
-           und stellt dann den richtigen Plan auf.
+           Standard-Variante. Der Rest 0 steht für Mannschaft 2m − 1.
+summe-2m   Die Regel „x + y = 2m“. Sie ist ungenau. Wörtlich genommen
+           liefert sie nur Runde 1. Das Skript zeigt das und stellt dann
+           den richtigen Plan auf.
 """
 
 from __future__ import annotations
@@ -39,7 +38,7 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass, field
 
-VARIANTEN = ("vorlesung", "rest-null", "kv-a5")
+VARIANTEN = ("standard", "rest-null", "summe-2m")
 
 
 # ---------------------------------------------------------------------------
@@ -47,10 +46,10 @@ VARIANTEN = ("vorlesung", "rest-null", "kv-a5")
 # ---------------------------------------------------------------------------
 
 
-def rest(a: int, modul: int, variante: str = "vorlesung") -> int:
+def rest(a: int, modul: int, variante: str = "standard") -> int:
     """Gibt den Repräsentanten von a mod modul zurück.
 
-    vorlesung/kv-a5: Werte 1 … modul (0 wird zu modul).
+    standard/summe-2m: Werte 1 … modul (0 wird zu modul).
     rest-null: Werte 0 … modul − 1.
     """
     r = a % modul
@@ -72,7 +71,7 @@ class Spiel:
 @dataclass
 class Runde:
     nummer: int  # Name der Runde in der gewählten Variante
-    r: int  # Wert von r in 1 … 2m − 1 (Vorlesung)
+    r: int  # Wert von r in 1 … 2m − 1 (Standard)
     spiele: list[Spiel] = field(default_factory=list)
 
 
@@ -86,7 +85,7 @@ class Plan:
     n_eingabe: int  # ursprüngliche Eingabe (kann ungerade sein)
 
 
-def runde_berechnen(n: int, r: int, variante: str = "vorlesung") -> Runde:
+def runde_berechnen(n: int, r: int, variante: str = "standard") -> Runde:
     """Berechnet die Spiele von Runde r (r in 1 … n − 1) bei n Mannschaften."""
     modul = n - 1
     spiele: list[Spiel] = []
@@ -101,7 +100,7 @@ def runde_berechnen(n: int, r: int, variante: str = "vorlesung") -> Runde:
     return Runde(nummer, r, spiele)
 
 
-def turnierplan(n: int, variante: str = "vorlesung") -> Plan:
+def turnierplan(n: int, variante: str = "standard") -> Plan:
     """Stellt den ganzen Plan für n Mannschaften auf.
 
     Ist n ungerade, kommt eine Mannschaft n + 1 dazu ("spielfrei").
@@ -127,13 +126,13 @@ def paare(plan: Plan) -> dict[int, list[tuple[int, int]]]:
 
 @dataclass
 class GegnerSchritt:
-    r: int  # Runde (Vorlesung, 1 … 2m − 1)
+    r: int  # Runde (Standard, 1 … 2m − 1)
     produkt: int  # r · m
     x: int  # Repräsentant in der gewählten Variante
     mannschaft: int  # tatsächliche Mannschaftsnummer (1 … 2m − 1)
 
 
-def gegner_von_2m(n: int, r: int, variante: str = "vorlesung") -> GegnerSchritt:
+def gegner_von_2m(n: int, r: int, variante: str = "standard") -> GegnerSchritt:
     """Gegner von Mannschaft n = 2m in Runde r: x ≡ r · m (mod 2m − 1)."""
     if n % 2 or n < 2:
         raise ValueError("Die Anzahl der Mannschaften muss gerade und ≥ 2 sein.")
@@ -174,12 +173,12 @@ def probe(plan: Plan) -> list[str]:
 def _annahme(variante: str, modul: int) -> str:
     if variante == "rest-null":
         return (f"Annahme (Variante rest-null): Reste liegen in 0 … {modul - 1}. "
-                f"Runde 0 entspricht Runde {modul} der Vorlesung. "
+                f"Runde 0 entspricht Runde {modul} der Standard-Variante. "
                 f"Rest 0 steht für Mannschaft {modul}.")
-    if variante == "kv-a5":
-        return ("Annahme (Variante kv-a5): Regel „x + y = 2m“ aus der Lösung zu KV A5. "
+    if variante == "summe-2m":
+        return ("Annahme (Variante summe-2m): Regel „x + y = 2m“. "
                 "Diese Regel ist ungenau. Unten steht der richtige Weg.")
-    return (f"Annahme (Variante vorlesung, Standard): Reste liegen in 1 … {modul}. "
+    return (f"Annahme (Variante standard): Reste liegen in 1 … {modul}. "
             f"Der Rest 0 wird als {modul} geschrieben.")
 
 
@@ -205,16 +204,16 @@ def text_plan(plan: Plan) -> str:
                  f"Wer gegen {n} spielt, hat in dieser Runde spielfrei.")
     z.append("")
 
-    if v == "kv-a5":
-        z.append("Regel aus KV A5 wörtlich: x + y = 2m = %d für x ≠ y, sonst x gegen 2m." % n)
+    if v == "summe-2m":
+        z.append("Regel „x + y = 2m“ wörtlich: x + y = 2m = %d für x ≠ y, sonst x gegen 2m." % n)
         erste = [f"{x} {n - x}" for x in range(1, m) ] + [f"{m} {n}"]
         z.append("  Das ergibt nur eine Runde: " + ", ".join(erste))
         z.append(f"  Grund: 2m = {n} ≡ 1 (mod {modul}). Die Regel ist also nur Runde r = 1.")
-        z.append("  Die Tabelle in KV A5 hat aber alle Runden. Sie folgt aus der Regel der Vorlesung:")
-        z.append("  x + y ≡ r (mod 2m − 1). Diese Regel nutze ich jetzt (wie Ü1 A3).")
+        z.append("  Ein Plan braucht aber alle Runden. Sie folgen aus der Regel")
+        z.append("  x + y ≡ r (mod 2m − 1). Diese Regel nutze ich jetzt.")
         z.append("")
 
-    z.append("Regel (VL1, Algorithmus Rundenturnier):")
+    z.append("Regel (Algorithmus Rundenturnier):")
     z.append(f"  Runde r: x spielt gegen y, wenn x + y ≡ r (mod {modul}) für 1 ≤ x, y ≤ {modul}.")
     z.append(f"  Falls x + x ≡ r (mod {modul}), spielt x gegen 2m = {n}.")
     z.append("")
@@ -245,13 +244,13 @@ def text_plan(plan: Plan) -> str:
     return "\n".join(z)
 
 
-def text_gegner(n: int, runden: list[int], variante: str = "vorlesung") -> str:
+def text_gegner(n: int, runden: list[int], variante: str = "standard") -> str:
     m = n // 2
     modul = n - 1
     z: list[str] = []
     z.append(f"Gegner von Mannschaft 2m = {n} in Runde r")
     z.append("=" * len(z[-1]))
-    z.append(_annahme("vorlesung" if variante == "kv-a5" else variante, modul))
+    z.append(_annahme("standard" if variante == "summe-2m" else variante, modul))
     z.append(f"  x + x = 2 · x ≡ r        (mod {modul})")
     z.append(f"  2m = {n} ≡ 1              (mod {modul})")
     z.append(f"  ⇒ 2⁻¹ ≡ m = {m}           (mod {modul})")
@@ -297,19 +296,24 @@ def main(argv: list[str] | None = None) -> None:
         prog="python -m skripte.turnierplan",
         description="Stellt einen Turnierplan (Rundenturnier) für 2m Mannschaften auf. "
                     "Zeigt auch den Gegner von Mannschaft 2m in Runde r.",
-        epilog="Beispiel (KV A5, Ü1 A3, Ü1 A4): "
-               "python -m skripte.turnierplan --mannschaften 8 --gegner",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="Beispiele:\n"
+               "  python -m skripte.turnierplan --mannschaften 8   (Plan für 8 Mannschaften)\n"
+               "  python -m skripte.turnierplan --mannschaften 8 --gegner   (mit Gegner von Mannschaft 8)\n"
+               "  python -m skripte.turnierplan --mannschaften 8 --runde 3   (Gegner von Mannschaft 8 in Runde 3)\n"
+               "  python -m skripte.turnierplan --mannschaften 7   (ungerade Anzahl, mit spielfrei)\n"
+               "  python -m skripte.turnierplan --mannschaften 8 --alle-varianten   (alle Varianten)",
     )
     parser.add_argument("--mannschaften", "-n", type=int, required=True,
                         help="Anzahl 2m der Mannschaften, zum Beispiel 8.")
     parser.add_argument("--gegner", action="store_true",
-                        help="Zeigt für jede Runde den Gegner von Mannschaft 2m (Ü1 A4).")
+                        help="Zeigt für jede Runde den Gegner von Mannschaft 2m.")
     parser.add_argument("--runde", "-r", type=int,
                         help="Zeigt den Gegner von Mannschaft 2m nur in dieser Runde r.")
-    parser.add_argument("--variante", choices=VARIANTEN, default="vorlesung",
-                        help="Konvention: vorlesung (Standard, Reste 1 … 2m − 1), "
+    parser.add_argument("--variante", choices=VARIANTEN, default="standard",
+                        help="Konvention: standard (Standard, Reste 1 … 2m − 1), "
                              "rest-null (Reste 0 … 2m − 2), "
-                             "kv-a5 (Regel „x + y = 2m“ aus KV A5, mit Korrektur).")
+                             "summe-2m (Regel „x + y = 2m“, mit Korrektur).")
     parser.add_argument("--alle-varianten", action="store_true",
                         help="Gibt den Lösungsweg für alle Varianten nacheinander aus.")
     args = parser.parse_args(argv)

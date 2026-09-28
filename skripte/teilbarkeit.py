@@ -2,22 +2,22 @@
 
 Zweck
 -----
-Das Skript zeigt den Lösungsweg für diese Aufgabentypen:
+Das Skript zeigt den Rechenweg für diese Fälle:
 
 * Regel für 9: Die Quersumme ist die Summe aller Ziffern.
-  x ist durch 9 teilbar, wenn die Quersumme durch 9 teilbar ist (VL1, Z. 119).
+  x ist durch 9 teilbar, wenn die Quersumme durch 9 teilbar ist.
 * Regel für 11: Die alternierende Quersumme wechselt das Vorzeichen
-  von Ziffer zu Ziffer: x₀ − x₁ + x₂ − … (VL1, Z. 119; Ü1 A1).
+  von Ziffer zu Ziffer: x₀ − x₁ + x₂ − …
 * Regel für 7 (auch 11 und 13): Man teilt x von rechts in Dreierblöcke.
   Wegen 1000 ≡ −1 mod 1001 und 1001 = 7 · 11 · 13 gilt
-  x ≡ y₀ − y₁ + y₂ − … (Ü1 A2).
-* Teileranzahl d(n) und Teilersumme σ(n) mit Formel (Ü4 A3).
-* Vollkommene Zahlen: σ(n) = 2n (Ü4 A4, A6).
-* Mersenne-Zahlen 2ᵏ − 1 und die vollkommene Zahl 2ᵏ⁻¹(2ᵏ − 1) (Ü4 A5, A6).
+  x ≡ y₀ − y₁ + y₂ − …
+* Teileranzahl d(n) und Teilersumme σ(n) mit Formel.
+* Vollkommene Zahlen: σ(n) = 2n.
+* Mersenne-Zahlen 2ᵏ − 1 und die vollkommene Zahl 2ᵏ⁻¹(2ᵏ − 1).
 
 Aufruf (Unterbefehle)
 ---------------------
-    python -m skripte.teilbarkeit regeln 299792          # 9, 11 und 7 (Ü1 A1, A2)
+    python -m skripte.teilbarkeit regeln 299792          # 9, 11 und 7
     python -m skripte.teilbarkeit neun 299792
     python -m skripte.teilbarkeit elf 299792
     python -m skripte.teilbarkeit sieben "10^19 + 1"
@@ -32,7 +32,7 @@ Varianten (nur bei elf, sieben, regeln)
 ---------------------------------------
 Die Vorzeichen der alternierenden Summe kann man von zwei Seiten her setzen.
 
-* ``einer`` (Standard, Vorlesung und Ü1): Die Einerstelle (bzw. der rechte
+* ``einer`` (Standard): Die Einerstelle (bzw. der rechte
   Dreierblock) bekommt „+“. Die Summe ist dann ≡ x.
 * ``links``: Die erste Ziffer links (bzw. der linke Block) bekommt „+“.
   Die Summe ist dann ≡ (−1)ⁿ · x. Die Teilbarkeit ist gleich,
@@ -52,7 +52,7 @@ from sympy import factorint, isprime
 
 VARIANTEN = {
     "einer": "Vorzeichen beginnt rechts (Einerstelle bzw. rechter Block) mit +. "
-             "Das ist die Konvention der Vorlesung (VL1 Z. 119) und von Ü1.",
+             "Die Summe ist dann ≡ x. Das ist der Standard.",
     "links": "Vorzeichen beginnt links (erste Ziffer bzw. linker Block) mit +. "
              "Die Summe ist dann ≡ (−1)ⁿ · x. Teilbar ja/nein bleibt gleich.",
 }
@@ -249,7 +249,7 @@ class TeilerDaten:
 
 
 def teiler_daten(n: int) -> TeilerDaten:
-    """Berechnet Teiler, d(n) und σ(n) direkt und mit der Formel (Ü4 A3)."""
+    """Berechnet Teiler, d(n) und σ(n) direkt und mit der Formel."""
     if n < 1:
         raise ValueError("n muss mindestens 1 sein.")
     faktoren = dict(sorted(factorint(n).items()))
@@ -289,7 +289,7 @@ class MersenneDaten:
 
 
 def mersenne_daten(k: int) -> MersenneDaten:
-    """Prüft 2ᵏ − 1 auf Primzahl und bildet die vollkommene Zahl (Ü4 A5, A6)."""
+    """Prüft 2ᵏ − 1 auf Primzahl und bildet die vollkommene Zahl."""
     if k < 1:
         raise ValueError("k muss mindestens 1 sein.")
     m = 2 ** k - 1
@@ -325,7 +325,7 @@ def _rest_text(summe: int, p: int) -> str:
 def text_9(r: Regel9) -> str:
     z = r.ziffern
     zeilen = [
-        "Regel für 9 (VL1, Satz Teilbarkeitsregeln a):",
+        "Regel für 9:",
         "Wegen 10ʳ ≡ 1 (mod 9) gilt x ≡ Quersumme (mod 9).",
         "Die Quersumme ist die Summe aller Ziffern.",
         "",
@@ -356,7 +356,7 @@ def _annahme_text(variante: str) -> str:
 def text_11(r: AlternierendeSumme) -> str:
     n = len(r.teile) - 1
     zeilen = [
-        "Regel für 11 (VL1, Satz Teilbarkeitsregeln b):",
+        "Regel für 11:",
         "Wegen 10 ≡ −1 (mod 11) gilt 10ʳ ≡ (−1)ʳ (mod 11).",
         "Die alternierende Quersumme wechselt das Vorzeichen von Ziffer zu Ziffer.",
         _annahme_text(r.variante),
@@ -387,7 +387,7 @@ def text_1001(r: AlternierendeSumme) -> str:
     m = len(r.teile) - 1
     blocktext = " ".join(f"{b:03d}" if i > 0 else str(b) for i, b in enumerate(r.teile))
     zeilen = [
-        "Regel für 7 mit 1001 (Ü1 A2):",
+        "Regel für 7 mit 1001:",
         "Es gilt 1001 = 7 · 11 · 13, also 1000 ≡ −1 (mod 7), (mod 11) und (mod 13).",
         "Man teilt x von rechts in Dreierblöcke y₀, y₁, …, y_m.",
         "x = yₘ · 1000ᵐ + … + y₁ · 1000 + y₀",
@@ -421,7 +421,7 @@ def text_1001(r: AlternierendeSumme) -> str:
 
 def text_teiler(t: TeilerDaten) -> str:
     zeilen = [
-        "Teileranzahl d(n) = Σ_{d|n} 1 und Teilersumme σ(n) = Σ_{d|n} d (Ü4 A3).",
+        "Teileranzahl d(n) = Σ_{d|n} 1 und Teilersumme σ(n) = Σ_{d|n} d.",
         "",
         f"n = {t.n} = {zerlegung_text(t.faktoren)}" if t.n > 1 else "n = 1 (keine Primfaktoren)",
         f"Teiler von {t.n}: {', '.join(map(str, t.teiler))}",
@@ -448,7 +448,7 @@ def text_teiler(t: TeilerDaten) -> str:
 
 def text_vollkommen(t: TeilerDaten) -> str:
     zeilen = [
-        "Eine Zahl n heißt vollkommen, wenn σ(n) = 2n gilt (Ü4 A4).",
+        "Eine Zahl n heißt vollkommen, wenn σ(n) = 2n gilt.",
         f"n = {t.n} = {zerlegung_text(t.faktoren)}",
         f"σ({t.n}) = {' + '.join(map(str, t.teiler))} = {t.sigma}",
         f"2 · {t.n} = {2 * t.n}",
@@ -473,7 +473,7 @@ def text_mersenne(md: MersenneDaten) -> str:
     if md.k_zerlegung:
         a, b = md.k_zerlegung
         q = 2 ** a
-        zeilen.append(f"  k = {a} · {b} ist keine Primzahl. Nach Ü4 A6 c) mit q = 2{hoch(a)} = {q}:")
+        zeilen.append(f"  k = {a} · {b} ist keine Primzahl. Setze q = 2{hoch(a)} = {q}:")
         zeilen.append(f"  q{hoch(b)} − 1 = (q − 1)(1 + q + … + q{hoch(b - 1)}), "
                       f"also teilt {q - 1} die Zahl {md.m}.")
     if md.ist_prim:
@@ -495,12 +495,12 @@ def text_mersenne(md: MersenneDaten) -> str:
 # Kommandozeile
 # ---------------------------------------------------------------------------
 
-BEISPIELE = """Beispiele aus den Quellen:
-  python -m skripte.teilbarkeit regeln 299792        (Ü1 A1 und A2)
-  python -m skripte.teilbarkeit sieben "10^19 + 1"   (Ü1 A2)
-  python -m skripte.teilbarkeit teiler 28            (Ü4 A3)
-  python -m skripte.teilbarkeit vollkommen 6 28 496  (Ü4 A4, A6 b)
-  python -m skripte.teilbarkeit mersenne 2 3 5 11    (Ü4 A5)
+BEISPIELE = """Beispiele:
+  python -m skripte.teilbarkeit regeln 299792  (Regeln für 9, 11 und 7)
+  python -m skripte.teilbarkeit sieben "10^19 + 1"  (Regel für 7 mit Ausdruck)
+  python -m skripte.teilbarkeit teiler 28  (Teileranzahl und Teilersumme)
+  python -m skripte.teilbarkeit vollkommen 6 28 496  (drei vollkommene Zahlen)
+  python -m skripte.teilbarkeit mersenne 2 3 5 11  (vier Mersenne-Zahlen)
 """
 
 
@@ -582,39 +582,46 @@ def parser_bauen() -> argparse.ArgumentParser:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     unter = parser.add_subparsers(dest="befehl", required=True, metavar="BEFEHL",
-                                  help="Aufgabentyp. Hilfe zu einem Befehl: BEFEHL --help")
+                                  help="Art der Rechnung. Hilfe zu einem Befehl: BEFEHL --help")
 
     def varianten_optionen(p: argparse.ArgumentParser) -> None:
         p.add_argument("--variante", choices=list(VARIANTEN), default=STANDARD_VARIANTE,
                        help="Wo beginnt das Vorzeichen „+“? einer = rechts bei der "
-                            "Einerstelle (Standard, Vorlesung). links = bei der ersten Ziffer links.")
+                            "Einerstelle (Standard). links = bei der ersten Ziffer links.")
         p.add_argument("--alle-varianten", action="store_true",
                        help="Gibt die Rechnung für alle Varianten nacheinander aus.")
 
     hilfe_x = "Die Zahl x. Auch als Ausdruck möglich, z. B. \"10^19 + 1\"."
     p = unter.add_parser("neun", help="Regel für 9 mit der Quersumme.",
-                         epilog="Beispiel (Ü1 A1): python -m skripte.teilbarkeit neun 299792")
+                         epilog="Beispiele:\n  python -m skripte.teilbarkeit neun 299792  (Quersumme)",
+                         formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("x", help=hilfe_x)
     p = unter.add_parser("elf", help="Regel für 11 mit der alternierenden Quersumme.",
-                         epilog="Beispiel (Ü1 A1): python -m skripte.teilbarkeit elf 299792")
+                         epilog="Beispiele:\n  python -m skripte.teilbarkeit elf 299792  (alternierende Quersumme)",
+                         formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("x", help=hilfe_x)
     varianten_optionen(p)
     p = unter.add_parser("sieben", help="Regel für 7 (und 11, 13) mit Dreierblöcken und 1001.",
-                         epilog="Beispiel (Ü1 A2): python -m skripte.teilbarkeit sieben \"10^19 + 1\"")
+                         epilog="Beispiele:\n  python -m skripte.teilbarkeit sieben \"10^19 + 1\"  (Dreierblöcke)",
+                         formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("x", help=hilfe_x)
     varianten_optionen(p)
     p = unter.add_parser("regeln", help="Alle drei Regeln (9, 11, 7) für eine Zahl.",
-                         epilog="Beispiel (Ü1 A1, A2): python -m skripte.teilbarkeit regeln 299792")
+                         epilog="Beispiele:\n  python -m skripte.teilbarkeit regeln 299792  (alle drei Regeln)",
+                         formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("x", help=hilfe_x)
     varianten_optionen(p)
     p = unter.add_parser("teiler", help="Teileranzahl d(n) und Teilersumme σ(n) mit Formel.",
-                         epilog="Beispiel (Ü4 A3): python -m skripte.teilbarkeit teiler 28")
+                         epilog="Beispiele:\n  python -m skripte.teilbarkeit teiler 28  (d(28) und σ(28))",
+                         formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("n", nargs="+", help="Eine oder mehrere Zahlen n ≥ 1.")
     p = unter.add_parser("vollkommen", help="Prüft σ(n) = 2n (vollkommene Zahl).",
-                         epilog="Beispiel (Ü4 A4): python -m skripte.teilbarkeit vollkommen 6 28 496")
+                         epilog="Beispiele:\n  python -m skripte.teilbarkeit vollkommen 6 28 496  (drei Zahlen prüfen)",
+                         formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("n", nargs="+", help="Eine oder mehrere Zahlen n ≥ 1.")
     p = unter.add_parser("mersenne", help="Prüft, ob 2ᵏ − 1 prim ist, und bildet 2ᵏ⁻¹(2ᵏ − 1).",
-                         epilog="Beispiel (Ü4 A5): python -m skripte.teilbarkeit mersenne 2 3 5 11")
+                         epilog="Beispiele:\n  python -m skripte.teilbarkeit mersenne 2 3 5 11  (vier Exponenten)",
+                         formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("k", nargs="*", help="Ein oder mehrere Exponenten k ≥ 1.")
     p.add_argument("--bis", type=int, metavar="K",
                    help="Prüft alle k von 1 bis K.")

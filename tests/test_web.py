@@ -18,4 +18,9 @@ def test_ausfuehren_crt():
 def test_unbekanntes_skript_wird_abgelehnt():
     r = web.ausfuehren("../../etc", [])
     assert r["code"] != 0
-    assert "Unbekanntes Skript" in r["stderr"]
+    assert "Unbekanntes Werkzeug" in r["stderr"]
+
+
+def test_jedes_werkzeug_hat_eine_gruppe():
+    for s in web.alle_schemata():
+        assert s["gruppe"], s["name"]

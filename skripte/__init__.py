@@ -1,1 +1,1 @@
-"""Skripte für die Klausur Diskrete Mathematik. Jedes Skript zeigt den Lösungsweg."""
+"""Rechenwerkzeuge mit Lösungsweg. Bedienung über die Web-Oberfläche: python -m skripte.web"""
