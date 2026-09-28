@@ -1,0 +1,45 @@
+\begin{rezept}{Rezept RSA}
+\begin{enumerate}
+\item \textbf{Prüfen}: Sind $p$ und $q$ Primzahlen? Probedivision bis $\sqrt{p}$. Wenn nein: $m$ ganz zerlegen.
+\item \textbf{$e$ binär}: größte Zweierpotenz abziehen, wiederholen. Beispiel $221 = 128 + 64 + 16 + 8 + 4 + 1 = 11011101_2$.
+\item \textbf{Verschlüsseln} $c \equiv w^e \pmod m$ mit schnellem Potenzieren:
+  Quadrattabelle $w^1, w^2, w^4, \dots$ (jede Zeile = Quadrat der vorigen, mod $m$), dann die Zeilen mit Bit 1 multiplizieren,
+  nach jedem Produkt mod $m$ reduzieren.
+\item \textbf{Formel Entschlüsseln}: $w \equiv c^d \pmod m$, weil $ed \equiv 1 \pmod{\varphi(m)}$ und Euler.
+\item \textbf{$\varphi(m)$} aus der Primfaktorzerlegung.
+\item \textbf{$d$ (Oscar)}: Weg 1: EA mit $\varphi(m)$ und $e$, rückwärts einsetzen oder Matrix $Q$; $d = e^{-1} \bmod \varphi(m)$.
+      Weg 2: $\varphi(\varphi(m))$ berechnen, $d \equiv e^{\varphi(\varphi(m))-1} \pmod{\varphi(m)}$ mit schnellem Potenzieren.
+\item \textbf{Probe}: $e \cdot d \bmod \varphi(m) = 1$ und (wenn Zeit) $c^d \bmod m = w$.
+\end{enumerate}
+\end{rezept}
+
+\subsection*{Musterrechnung (Klausur 29.07.2026)}
+$w = 1511$, $m = 43 \cdot 57 = 2451$, $e = 221$.
+
+\teil{a} $e = 221 = 11011101_2$.
+
+\teil{b} $c \equiv 1511^{221} \pmod{2451}$. Quadrattabelle (Pfeil = Bit 1):
+\[
+\begin{array}{llll}
+1511^{1} \equiv 1511 \leftarrow & 1511^{2} \equiv 1240 & 1511^{4} \equiv 823 \leftarrow & 1511^{8} \equiv 853 \leftarrow\\
+1511^{16} \equiv 2113 \leftarrow & 1511^{32} \equiv 1498 & 1511^{64} \equiv 1339 \leftarrow & 1511^{128} \equiv 1240 \leftarrow
+\end{array}
+\]
+Produkt: $1511 \cdot 823 \equiv 896$, $\cdot 853 \equiv 2027$, $\cdot 2113 \equiv 1154$, $\cdot 1339 \equiv 1076$, $\cdot 1240 \equiv 896$.
+\begin{ergebnis} $c = 896$ \end{ergebnis}
+
+\teil{c} $w \equiv c^d \pmod m$.
+
+\teil{d} $57 = 3 \cdot 19$! Also $m = 3 \cdot 19 \cdot 43$ und $\varphi(m) = 2 \cdot 18 \cdot 42 = 1512$.
+
+\teil{e} EA $1512 = 6 \cdot 221 + 186$, $221 = 1 \cdot 186 + 35$, $186 = 5 \cdot 35 + 11$, $35 = 3 \cdot 11 + 2$, $11 = 5 \cdot 2 + 1$.
+$Q = \begin{pmatrix}1512 & 691\\ 221 & 101\end{pmatrix}$, $\det Q = 1$ $\Rightarrow$ $221 \cdot (-691) \equiv 1$ $\Rightarrow$ $d = -691 + 1512 = 821$.
+Weg 2: $\varphi(1512) = \varphi(2^3 3^3 7) = 4 \cdot 18 \cdot 6 = 432$, $d \equiv 221^{431} \equiv 821 \pmod{1512}$.
+\begin{ergebnis} $\varphi(m) = 1512$, $d = 821$ (Probe: $221 \cdot 821 = 120 \cdot 1512 + 1$) \end{ergebnis}
+
+\begin{achtung}
+\textbf{Fallen.} (1) $p$ oder $q$ keine Primzahl $\Rightarrow$ nicht $(p-1)(q-1)$ rechnen. Hier wäre $2352$ und $d = 149$ falsch.
+(2) Nach \emph{jedem} Produkt mod $m$ reduzieren, sonst werden die Zahlen riesig.
+(3) Negative Ergebnisse ($-691$) am Ende $+\varphi(m)$ rechnen.
+(4) Im Gedächtnisprotokoll hieß der Schlüssel „$d = 113$“: Lies genau, ob $e$ oder $d$ gegeben ist.
+\end{achtung}

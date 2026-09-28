@@ -1,0 +1,101 @@
+\textbf{Lösung zu Klausur 29.07.2026, Aufgabe 1}
+
+Gegeben: $w = 1511$, $m = 43 \cdot 57 = 2451$, $e = 221$.
+
+\teil{a} \textbf{$e$ im Binärsystem.}
+\[
+221 = 128 + 64 + 16 + 8 + 4 + 1 = 2^7 + 2^6 + 2^4 + 2^3 + 2^2 + 2^0
+\quad\Rightarrow\quad e = 11011101_2 .
+\]
+
+\teil{b} \textbf{Verschlüsseln.} Formel (Alice): $c \equiv w^e \pmod m$, also $c \equiv 1511^{221} \pmod{2451}$.
+
+Schnelles Potenzieren: $1511^{221} = 1511^{1} \cdot 1511^{4} \cdot 1511^{8} \cdot 1511^{16} \cdot 1511^{64} \cdot 1511^{128}$.
+
+Quadrattabelle (mod 2451):
+\[
+\begin{array}{r@{\;\equiv\;}l@{\qquad}l}
+1511^{1}   & 1511 & \leftarrow\\
+1511^{2}   & 1511^2 = 2283121 = 931 \cdot 2451 + 1240 \equiv 1240 & \\
+1511^{4}   & 1240^2 = 1537600 = 627 \cdot 2451 + 823 \equiv 823 & \leftarrow\\
+1511^{8}   & 823^2 = 677329 = 276 \cdot 2451 + 853 \equiv 853 & \leftarrow\\
+1511^{16}  & 853^2 = 727609 = 296 \cdot 2451 + 2113 \equiv 2113 & \leftarrow\\
+1511^{32}  & 2113^2 = 4464769 = 1821 \cdot 2451 + 1498 \equiv 1498 & \\
+1511^{64}  & 1498^2 = 2244004 = 915 \cdot 2451 + 1339 \equiv 1339 & \leftarrow\\
+1511^{128} & 1339^2 = 1792921 = 731 \cdot 2451 + 1240 \equiv 1240 & \leftarrow
+\end{array}
+\]
+Produkt Schritt für Schritt (mod 2451):
+\begin{align*}
+1511 \cdot 823 &= 1243553 \equiv 896\\
+896 \cdot 853 &= 764288 \equiv 2027\\
+2027 \cdot 2113 &= 4283051 \equiv 1154\\
+1154 \cdot 1339 &= 1545206 \equiv 1076\\
+1076 \cdot 1240 &= 1334240 \equiv 896
+\end{align*}
+\begin{ergebnis} $c = 1511^{221} \bmod 2451 = 896$ \end{ergebnis}
+
+\teil{c} \textbf{Entschlüsseln.} Formel (Bob): $w \equiv c^d \pmod m$.
+Das funktioniert, weil $e \cdot d \equiv 1 \pmod{\varphi(m)}$ und nach Euler
+$c^d \equiv (w^e)^d = w^{ed} \equiv w \pmod m$.
+
+\teil{d} \textbf{$\varphi(m)$.} Achtung: $57 = 3 \cdot 19$ ist keine Primzahl. Vollständige Zerlegung:
+\[
+2451 = 3 \cdot 19 \cdot 43 .
+\]
+Da $\varphi$ multiplikativ ist und $\varphi(p) = p - 1$ für Primzahlen:
+\[
+\varphi(2451) = \varphi(3)\,\varphi(19)\,\varphi(43) = 2 \cdot 18 \cdot 42 = 1512 .
+\]
+\begin{ergebnis} $\varphi(m) = 1512$ \end{ergebnis}
+\begin{achtung}
+\textbf{Falle:} Wer $\varphi(m) = (p-1)(q-1) = 42 \cdot 56 = 2352$ rechnet, erhält $d = 221^{-1} \bmod 2352 = 149$.
+Das ist falsch: $896^{149} \bmod 2451 = 737 \neq 1511$. Die Formel $(p-1)(q-1)$ gilt nur für Primzahlen $p \neq q$.
+\end{achtung}
+
+\teil{e} \textbf{Privater Schlüssel $d$.}
+Oscar zerlegt $m$ in Primfaktoren, berechnet $\varphi(m)$ und löst
+\[
+e \cdot d \equiv 1 \pmod{\varphi(m)}, \quad\text{also}\quad 221 \cdot d \equiv 1 \pmod{1512}.
+\]
+
+\emph{Weg 1: Euklidischer Algorithmus (Lemma von Bezout).}
+\[
+\begin{array}{r@{\;=\;}l}
+1512 & 6 \cdot 221 + 186\\
+221 & 1 \cdot 186 + 35\\
+186 & 5 \cdot 35 + 11\\
+35 & 3 \cdot 11 + 2\\
+11 & 5 \cdot 2 + 1\\
+2 & 2 \cdot 1 + 0
+\end{array}
+\qquad\Rightarrow\quad \ggT(1512, 221) = 1 .
+\]
+Matrix $Q = \prod \begin{pmatrix} q_i & 1\\ 1 & 0\end{pmatrix}$ mit $q = 6,1,5,3,5,2$:
+\[
+Q = \begin{pmatrix} 1512 & 691\\ 221 & 101 \end{pmatrix}, \qquad
+\det Q = 1512 \cdot 101 - 221 \cdot 691 = 1 .
+\]
+Also $221 \cdot (-691) \equiv 1 \pmod{1512}$ und $d = -691 \equiv 821 \pmod{1512}$.
+
+\emph{Weg 2: Satz von Euler.} Aus $e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)}$ folgt
+$d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}$.
+Mit $1512 = 2^3 \cdot 3^3 \cdot 7$ ist $\varphi(1512) = 4 \cdot 18 \cdot 6 = 432$, also
+\[
+d \equiv 221^{431} \pmod{1512}.
+\]
+$431 = 110101111_2 = 256 + 128 + 32 + 8 + 4 + 2 + 1$. Quadrattabelle (mod 1512):
+$221^{1} = 221$, $221^{2} \equiv 457$, $221^{4} \equiv 193$, $221^{8} \equiv 961$, $221^{16} \equiv 1201$,
+$221^{32} \equiv 1465$, $221^{64} \equiv 697$, $221^{128} \equiv 457$, $221^{256} \equiv 193$.
+\begin{align*}
+221 \cdot 457 &\equiv 1205, & 1205 \cdot 193 &\equiv 1229, & 1229 \cdot 961 &\equiv 197,\\
+197 \cdot 1465 &\equiv 1325, & 1325 \cdot 457 &\equiv 725, & 725 \cdot 193 &\equiv 821 .
+\end{align*}
+Kontrolle: $221 \cdot 821 = 181441 = 120 \cdot 1512 + 1 \equiv 1 \pmod{1512}$.
+\begin{ergebnis} $d = 821$ \end{ergebnis}
+
+\emph{Probe:} $896^{821} \bmod 2451$ mit $821 = 1100110101_2$:
+Quadrate $896^{1} = 896$, $896^{4} \equiv 1240$, $896^{16} \equiv 853$, $896^{32} \equiv 2113$, $896^{256} \equiv 1240$, $896^{512} \equiv 823$;
+Produkt $896 \cdot 1240 \equiv 737$, $\cdot 853 \equiv 1205$, $\cdot 2113 \equiv 2027$, $\cdot 1240 \equiv 1205$, $\cdot 823 \equiv 1511 = w$. \checkmark
+
+% ---------------------------------------------------------------------------

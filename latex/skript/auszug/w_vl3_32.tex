@@ -1,0 +1,107 @@
+\subsubsection*{3.2 Die Einheitengruppe $\Zm{m}^*$ von $\Zm{m}$}
+
+
+\begin{bemerkung}
+Die Einheiten sind genau die Elemente $k \in \Zm{m}$ mit $\ggT(k, m) = 1$.\\
+$(\Zm{m}^*, \cdot\,)$ ist eine abelsche Gruppe,
+\[
+  \operatorname{ord}(G) = |G|, \qquad\qquad \operatorname{ord}(\Zm{m}^*) = \varphi(m).
+\]
+\end{bemerkung}
+
+\begin{bemerkung}[Kürzungsregel]
+Für Einheiten $a \in \Zm{m}^*$ gilt
+\[
+  a \cdot x = a \cdot y \quad \Rightarrow \quad x = y \qquad\qquad \text{Kürzungsregel}
+\]
+\end{bemerkung}
+
+Sei $p$ eine Primzahl. Dann ist
+\begin{align*}
+  \Rightarrow\quad & \Zm{p}^* = \{1, 2, 3, \ldots, p - 1\} = \{a1, a2, a3, \ldots, a(p - 1)\} \\
+  \intertext{Dann stimmen auch die Produkte überein}
+  \Rightarrow\quad & 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) = a^{p-1} \cdot 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) \\
+  \Rightarrow\quad & 1 = a^{p-1}
+\end{align*}
+
+\begin{beispiel}
+$p = 7$, $a = 3$ $\Rightarrow$ $\{a1, a2, a3, \ldots, a6\} = \{3, 6, 2, 5, 1, 4\}$
+\end{beispiel}
+
+\begin{satz}[Fermat]
+Sei $p$ eine Primzahl und $a \in \Zm{p}^*$, dann gilt \hfill $a^{\operatorname{ord} G} = 1$.
+\begin{align*}
+  & a^{p-1} \equiv 1 \pmod{p} \\
+  \text{bzw.}\quad & a^{p-1} = 1 \quad (\text{in } \Zm{p}). \qquad \square
+\end{align*}
+\end{satz}
+
+Im Beweis haben wir genutzt, dass $\Zm{p}^*$ abelsch ist.
+
+\begin{definition}[Bezeichnung]
+Die kleinste Zahl $k > 0$ mit $a^k = 1$ heißt \textbf{Ordnung von $a$} in $G$. Die Menge
+\[
+  \langle a \rangle := \{\, a, a^2, a^3, \ldots, a^k = 1 \,\} \subseteq G
+\]
+ist eine zyklische Gruppe der Ordnung $k$.
+
+Ein Element $g \in G$ mit $\operatorname{ord}(g) = |G|$ heißt erzeugendes Element (oder \textbf{primitiv}) von $G$. Für solches $g$ gilt
+\[
+  G = \{\, g, g^2, \ldots, g^k = 1 \} = \langle g \rangle
+\]
+Besitzt $G$ ein primitives Element, so heißt $G$ zyklisch. Zyklische Gruppen sind abelsch.
+\end{definition}
+
+\begin{beispiel}
+$\Zm{7}^* = \{1, 2, \ldots, 6\}$
+\begin{align*}
+  & 2, 2^2, 2^3, \ldots, 2^6 = 2, 4, 1, 2, 4, 1 && \Rightarrow\ \operatorname{ord}(2) = 3 \\
+  & 3, 3^2, 3^3, \ldots, 3^6 = 3, 2, -1, -3, -2, 1 && \operatorname{ord}(3) = 6 \\
+  \Rightarrow\quad & 3 \text{ ist primitives Element von } \Zm{7}^*.
+\end{align*}
+\end{beispiel}
+
+\begin{bemerkung}
+Fermat war begeistert von seinem Satz. Er zeige, dass die Griechen noch nicht alles wußten.
+
+Euler hat den Satz von Fermat etwa 100 Jahre später auf $\Zm{m}^*$ übertragen.\\
+$\operatorname{ord} \Zm{m}^* = \boldsymbol{\varphi}(m)$.
+\end{bemerkung}
+
+\begin{satz}[Euler]
+Formulierung in $\Zm{m}$
+\[
+  a^{\varphi(m)} = 1 \qquad\qquad \text{für } a \in \Zm{m}^*
+\]
+Formulierung in $\Z$
+\[
+  a^{\varphi(m)} \equiv 1 \pmod{m} \qquad \text{für } \ggT(a, m) = 1
+\]
+\end{satz}
+
+\begin{beispiel}
+Fortsetzung: $\varphi(34) = \varphi(2 \cdot 17) = \varphi(2) \cdot \varphi(17) = 1 \cdot 16$
+\[
+  \Rightarrow \quad 12^{16} = -16 \neq 1 \pmod{34}
+\]
+Kein Wunder: $\ggT(12, 34) = 2$ teilt jede Potenz von 12 mod 34.
+\end{beispiel}
+
+\begin{bemerkung}
+Falls $\ggT(a, m) = 1$, geht das Potenzieren schneller:
+\begin{align*}
+  & k = q \cdot \varphi(m) + r \equiv r && (\bmod\ \varphi(m)) \\
+  \Rightarrow\quad & a^k = (a^{\varphi(m)})^q \cdot a^r \equiv 1^q \cdot a^r = a^r && (\bmod\ m) \qquad \square
+\end{align*}
+\end{bemerkung}
+
+\begin{beispiel}
+Gesucht: $11^{16} \pmod{34}$
+\begin{align*}
+  & 11 \\
+  & 11^2 = 121 = 3 \cdot 34 + 19 \\
+  & 11^4 \equiv 19^2 = 361 = 10 \cdot 34 + 21 \pmod{34} \\
+  & 11^8 \equiv 21^2 = 441 = 13 \cdot 34 - 1 \pmod{34} \\
+  & 11^{16} \equiv (-1)^2 = 1 \pmod{34}
+\end{align*}
+\end{beispiel}

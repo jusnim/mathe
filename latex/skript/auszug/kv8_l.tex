@@ -1,0 +1,20 @@
+\textbf{Lösung zu Klausurvorbereitung 8}
+
+\begin{loesung}
+\begin{align*}
+& z = m\,x + a = n\,y + b\\
+\Rightarrow\quad & m\,x - n\,y = b - a \qquad \text{Lemma von Beout}
+\end{align*}
+% Hinweis: "Beout" wörtlich aus der Quelle (Tippfehler für "Bezout").
+
+Euklidischer Algorithmus
+\begin{align*}
+& 15 = 1 \cdot 13 + 2\\
+& 13 = 6 \cdot 2 + 1\\
+\Rightarrow\quad & 1 = 13 - 6 \cdot 2 = 13 - 6 \cdot (15 - 1 \cdot 13) = 7 \cdot 13 - 6 \cdot 15\\
+\Rightarrow\quad & b - a = 4 - 5 = -1 = 6 \cdot 15 - 7 \cdot 13\\
+\Rightarrow\quad & z = 5 - 13 \cdot 7 = 4 - 6 \cdot 15 = -86 \pmod{195}
+\end{align*}
+Also ist die kleinste positive Lösung
+\[ \Rightarrow\quad z = -86 + 195 = 109 \]
+\end{loesung}

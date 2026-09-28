@@ -1,0 +1,18 @@
+\begin{rezept}{Rezept $ax - by = c$}
+\begin{enumerate}
+\item EA-Tabelle: $a = q_0 b + r_1$, $b = q_1 r_1 + r_2$, \dots bis Rest 0. $g = \ggT$ = letzter Rest $\ne 0$.
+\item Lösbar genau dann, wenn $g \mid c$.
+\item \textbf{Rückwärts einsetzen}: vorletzte Zeile nach $g$ umstellen, Reste von unten nach oben ersetzen, bis nur $a$ und $b$ übrig sind:
+      $g = a x' + b y'$.
+\item \textbf{Oder Matrix $Q$}: $Q = \prod \begin{pmatrix} q_i & 1\\ 1 & 0\end{pmatrix} = \begin{pmatrix} s & u\\ t & v\end{pmatrix}$,
+      $sv - tu = \pm 1$ liefert $x', y'$ direkt.
+\item Mit $c/g$ multiplizieren und an die Form $ax - by$ anpassen (Vorzeichen von $y$!).
+\item Alle Lösungen: $x = x_0 + \frac{b}{g} t$, $y = y_0 + \frac{a}{g} t$. \quad Probe durch Einsetzen.
+\end{enumerate}
+\end{rezept}
+
+\subsection*{Musterrechnung ($17x - 15y = 1$)}
+$17 = 1 \cdot 15 + 2$, \ $15 = 7 \cdot 2 + 1$, \ $2 = 2 \cdot 1$ $\Rightarrow$ $\ggT = 1$.
+Rückwärts: $1 = 15 - 7 \cdot 2 = 15 - 7(17 - 15) = 8 \cdot 15 - 7 \cdot 17$.
+Also $17 \cdot (-7) - 15 \cdot (-8) = 1$.
+\begin{ergebnis} $x = -7$, $y = -8$; alle Lösungen $x = -7 + 15t$, $y = -8 + 17t$; z.\,B. $x = 8$, $y = 9$. \end{ergebnis}

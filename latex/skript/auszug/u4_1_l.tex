@@ -1,0 +1,34 @@
+\textbf{Lösung zu Übung 4, Aufgabe 1}
+
+\begin{loesung}
+$\Omega = \{1 \le k \le 1000\}$. Sei $A_i = \{\ \Omega \mid i \text{ ist Teiler von } 1000\ \}$.
+% Hinweis: so im Original (gemeint ist wohl A_i = { k in Omega | i ist Teiler von k }).
+Die gesuchte Anzahl ist dann
+\begin{align*}
+|\,\Omega \setminus A_2 \cup A_3 \cup A_5\,| &= |\Omega| - \alpha_1 + \alpha_2 - \alpha_3
+\end{align*}
+mit
+\begin{align*}
+\alpha_1 &= |A_2| + |A_3| + |A_5|\\
+\alpha_2 &= |A_2 \cap A_3| + |A_2 \cap A_5| + |A_3 \cap A_5|\\
+\alpha_3 &= |A_2 \cap A_3 \cap A_5|
+\end{align*}
+\begin{align*}
+&|A_2| = \frac{1000}{2}, \qquad |A_3| = \left\lfloor \frac{1000}{3} \right\rfloor, \qquad |A_5| = \frac{1000}{5},\\
+\Rightarrow\quad &\alpha_1 = 500 + 333 + 200 = 1033\\
+&|A_2 \cap A_3| = \left\lfloor \frac{1000}{6} \right\rfloor, \quad |A_2 \cap A_5| = \frac{1000}{10}, \quad |A_3 \cap A_5| = \left\lfloor \frac{1000}{15} \right\rfloor\\
+\Rightarrow\quad &\alpha_2 = 166 + 100 + 66 = 332\\
+&|A_2 \cap A_3 \cap A_5| = \left\lfloor \frac{1000}{30} \right\rfloor,\\
+\Rightarrow\quad &\alpha_3 = 33\\
+\Rightarrow\quad &|\,\Omega \setminus A_2 \cup A_3 \cup A_5\,| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3\\
+&= 1000 - 1033 + 332 - 33 = 266
+\end{align*}
+
+Schneller findet man die Lösung, wenn man die Produktformel benutzt, die hier aber nur näherungsweise gilt:
+\begin{align*}
+|\,\Omega \setminus A_2 \cup A_3 \cup A_5\,| &= 1000 \cdot \left(1 - \frac{1}{2}\right)\left(1 - \frac{1}{3}\right)\left(1 - \frac{1}{5}\right)\\
+&= 100 \cdot \frac{8}{3}\\
+&= 266{,}66
+\end{align*}
+% Hinweis: "100 * 8/3" so im Original (entspricht 1000 * 4/15).
+\end{loesung}

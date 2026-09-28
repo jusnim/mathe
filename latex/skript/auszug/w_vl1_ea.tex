@@ -1,0 +1,167 @@
+\subsubsection*{Division mit Rest, Euklidischer Algorithmus}
+
+
+Unter welcher Bedingung ist die Gleichung $a \cdot x + b \cdot y = d$ lösbar?
+
+\begin{lemma}[Lemma von Bezout]
+Gegeben $a, b \in \Z$. Dann existieren Zahlen $x, y \in \Z$ mit
+\[ a \cdot x + b \cdot y = \ggT(a, b) \qquad (*) \]
+\end{lemma}
+
+\begin{korollar}[Folgerung]
+Die Gleichung $a \cdot x + b \cdot y = d$ ist genau dann lösbar, wenn $\ggT(a, b) \mid d$.
+\end{korollar}
+
+\subsubsection*{Hauptsatz der Arithmetik, Primfaktorzerlegung}
+
+Alle Zahlen aus $\boldsymbol{N}$.
+
+\begin{satz}[Hauptsatz der Arithmetik]
+Jede natürliche Zahl $a > 1$ ist eindeutig (bis auf die Reihenfolge) ein Produkt von Primzahlpotenzen:
+\[ a = p_1^{n1} \cdot p_2^{n2} \cdot \ldots \cdot p_k^{nk} \]
+\end{satz}
+
+Es ist schwer, für eine große Zahl $a$ diese Zerlegung zu gewinnen.\\
+(Sieb des Eratosthenes)
+
+\begin{definition}[ggT, kgV]
+Sei $R(a, b) = \{ r \mid r \mid a \text{ und } r \mid b \}$ die Menge der gemeinsamen Teiler von $a, b$. Dann ist
+\[ \boldsymbol{\ggT(a, b) = \max \{ r \mid r \in R(a, b) \}} \]
+äquivalent dazu ist
+\[ r \in R(a, b) \quad \Rightarrow \quad r \mid \ggT(a, b) \]
+Zwei Zahlen $a, b$ mit $\ggT(a, b) = 1$ heißen teilerfremd.
+\[ \boldsymbol{\kgV(a, b) = \min \{ s \mid a \mid s \text{ und } b \mid s \}} \]
+\[ \kgV(a, b) \cdot \ggT(a, b) = a \cdot b \]
+\end{definition}
+
+Zur Bestimmung des $\ggT(a, b)$ wird die Primfaktorzerlegung nicht benötigt.
+
+\begin{satz}[Division mit Rest]
+Sei $a > b > 0$ gegeben. Dann sind die Zahlen $q, r$ mit
+\[ a = q \cdot b + r \qquad 0 \leq r < b \]
+eindeutig bestimmt.
+\end{satz}
+
+\begin{algorithmus}[Euklidischer Algorithmus]
+Der \textbf{Euklidische Algorithmus} berechnet $\ggT(a, b)$.
+\end{algorithmus}
+
+\begin{beispiel}
+$a = 1965$, $\;b = 225$
+\begin{align*}
+1965 &= 8 \cdot 225 + 165 \\
+225 &= 1 \cdot 165 + 60 \\
+165 &= 2 \cdot 60 + 45 \\
+60 &= 1 \cdot 45 + 15 \\
+45 &= 3 \cdot 15 + 0
+\end{align*}
+$\ggT(a, b)$ ist der letzte von Null verschiedene Zahl in der Folge der Reste, also
+\[ \ggT(1965, 225) = 15. \]
+\end{beispiel}
+
+Allgemein:
+\begin{align*}
+a &= q_0 \cdot b + r_1 \\
+b &= q_1 \cdot r_1 + r_2 \\
+&\ \ \ldots \\
+r_{i-1} &= q_i \cdot r_i + r_{i+1} = (q_i \ \ 1) \begin{pmatrix} r_i \\ r_{i+1} \end{pmatrix} \\
+&\ \ \ldots \\
+r_{n-2} &= q_{n-1} \cdot r_{n-1} + r_n, \qquad r_n > 0 \\
+r_{n-1} &= q_n \cdot r_n + 0
+\end{align*}
+
+\begin{satz}[Euklid]
+\[ \ggT(a, b) = r_n \]
+\end{satz}
+
+\begin{proof}
+denn: $r_n \mid a$, $\;r_n \mid b$ und jeder Teiler von $a$ und $b$ teilt $r_n$.
+\end{proof}
+
+\begin{proof}[Beweis des Lemmas von Bezout]
+Sei $Q_i = \begin{pmatrix} q_i & 1 \\ 1 & 0 \end{pmatrix}$. Mit $Q_i$ schreibt man
+\[ \begin{pmatrix} r_{i-1} \\ r_i \end{pmatrix} = Q_i \begin{pmatrix} r_i \\ r_{i+1} \end{pmatrix} = Q_i\, Q_{i+1} \begin{pmatrix} r_{i+1} \\ r_{i+2} \end{pmatrix}, \]
+also mit
+\[ Q = Q_0 \ldots Q_n = \begin{pmatrix} s & u \\ t & v \end{pmatrix} \]
+\[ \Rightarrow \quad \begin{pmatrix} a \\ b \end{pmatrix} = \begin{pmatrix} q_0 & 1 \\ 1 & 0 \end{pmatrix} \ldots \begin{pmatrix} q_n & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} r_n \\ 0 \end{pmatrix} = Q \begin{pmatrix} r_n \\ 0 \end{pmatrix} = \begin{pmatrix} s \\ t \end{pmatrix} r_n \]
+Es ist $\operatorname{Det} Q_i = -1$, also
+\[ \operatorname{Det} Q = s\,v - t\,u = (-1)^{n+1} \]
+Im wichtigsten Fall, $a, b$ teilerfremd, also $r_n = 1$, entnimmt man eine Lösung von $(*)$ $\operatorname{Det} Q$. Andernfalls muss $\operatorname{Det} Q$ noch mit $r_n$ multipliziert werden.
+\[ a \cdot v - b \cdot u = s\, r_n \cdot v - t\, r_n \cdot u = \pm r_n \]
+Damit ist das Lemma von Bezout bewiesen.
+\end{proof}
+
+\begin{beispiel}[Fortsetzung]
+$a = 1965$, $\;b = 225$,\\
+Gesucht: Lösung der Gleichung $1965\, x + 225 \cdot y = 15$
+\begin{align*}
+Q &= \begin{pmatrix} 8 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 3 & 1 \\ 1 & 0 \end{pmatrix} \\
+&= \begin{pmatrix} 131 & 35 \\ 15 & 4 \end{pmatrix} = \begin{pmatrix} s & u \\ t & v \end{pmatrix}
+\end{align*}
+\[ \operatorname{Det} Q = 131 \cdot 4 - 15 \cdot 35 = -1 \quad | \cdot (-15) \]
+\[ \Rightarrow \quad 1965 \cdot (-4) + 225 \cdot 35 = 15 \]
+\end{beispiel}
+
+\subsubsection*{Wie schnell ist der EA?}
+
+Für alle $1 \leq i \leq n - 1$ gilt die Abschätzung
+\[ r_{i-1} = q_i \cdot r_i + r_{i+1} \geq 1 \cdot r_i + r_{i+1} > 2\, r_{i+1} \]
+\begin{align*}
+&\text{Insbesondere} && b > 2\, r_2 > 2^2 r_4 > 2^3 r_6 > \ldots > 2^n\, r_{2n} \\
+&\text{Aus} && 2^n > b \quad \text{folgt} \quad r_{2n} = 0 \\
+&\text{m.a.W.} && n > \log_2 b \quad \text{folgt} \quad r_{2n} = 0
+\end{align*}
+
+\begin{satz}
+Der EA benötigt höchstens $O(\log_2 b)$ Iterationen bis zum $\ggT(a, b)$.
+\end{satz}
+
+$\log_2 b$ ist die Anzahl der Binärstellen von $b$.\\
+Der EA hat die Komplexität $O(\log b)$ bzw.\ linear in der Anzahl der Dezimal- (Binär-) stellen von $b$.
+
+\subsubsection*{Homomorphismen von Gruppen}
+
+\begin{definition}
+Seien $(G,+)$, $(H,+)$ zwei Gruppen und $f : G \to H$ eine Abbildung von $G$ nach $H$. Falls
+\[ f(g + g') = f(g) + f(g') \qquad \text{für alle } g, g' \in G, \]
+dann heißt $f$ ein (\textbf{Gruppen-})\textbf{Homomorphismus} von $G$ nach $H$.
+\end{definition}
+
+Die Struktur von $G$ findet sich also in $H$ wieder, wenn auch meist etwas gröber.
+
+\begin{beispiel}
+$G = \Z$, $\;H = \Zm{m}$, $\;f(g) = [g]$
+\end{beispiel}
+
+\begin{definition}
+Falls $G, H$ Ringe sind und zusätzlich
+\[ f(g \cdot g') = f(g) \cdot f(g') \qquad \text{für alle } g, g' \in G, \]
+gilt, ist $f$ ein \textbf{Ringhomomorphismus}.
+
+Ist $f$ zusätzlich bijektiv, so spricht man von einem \textbf{Isomorphismus}.
+
+Gruppen (Ringe) $G, H$ heißen \textbf{isomorph}, falls ein Isomorphismus $f : G \to H$ existiert. Man schreibt dann $G \cong H$.
+\end{definition}
+
+\subsubsection*{Der Ring $\Zm{m} \times \Zm{n}$}
+
+Auf dem kartesischen Produkt $\Zm{m} \times \Zm{n}$ sind Addition und Multiplikation wie folgt erklärt
+\begin{align*}
+(a_1, a_2) + (b_1, b_2) &= (a_1 + b_1, a_2 + b_2) \\
+(a_1, a_2) \cdot (b_1, b_2) &= (a_1 \cdot b_1, a_2 \cdot b_2)
+\end{align*}
+$\Zm{m} \times \Zm{n}$ ist ein Ring mit dem Einselement $(1, 1)$.
+\[ f : \Zm{m \cdot n} \to \Zm{m} \times \Zm{n}, \quad \text{mit} \]
+\[ f(z) = (z \bmod m,\ z \bmod n) \]
+ist ein Homomorphismus.
+
+\begin{beispiel}
+Die Ringe $\Zm{12}$, $\;\Zm{2} \times \Zm{6}$ sind nicht isomorph, denn
+\[ f(0) = f(6) = (0,0) \qquad f(1) = f(7) = (1,1) \]
+$f$ ist nicht surjektiv, da die Bilder $(0, 1)$, $(1, 0)$ nicht vorkommen;\\
+$f$ ist nicht injektiv, da die Bilder $(0, 0)$, $(1, 1)$ je zwei Urbilder haben.
+\end{beispiel}
+
+Der Chinesische Restsatz gibt die Bedingung an unter der die Ringe
+\[ \Zm{m \cdot n}, \quad \Zm{m} \times \Zm{n} \]
+isomorph sind.

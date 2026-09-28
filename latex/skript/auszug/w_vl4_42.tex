@@ -1,0 +1,96 @@
+\subsubsection*{4.2 Lineare Codes}
+
+
+\begin{definition}[linearer Code]
+Der Code $C$ heißt \textbf{linear}, wenn $C \subseteq F_q^{\,n}$ ein Unterraum von $F_q^{\,n}$ ist,\\
+d.h.\ wenn $\mathbf{o} \in C$ und\\
+\begin{tabular}{lll}
+(A) & $\mathbf{c} + \mathbf{c}' \in C$ & für alle \ $\mathbf{c}, \mathbf{c}' \in C$ \\
+(M) & $a\,\mathbf{c} \in C$ & für alle \ $\mathbf{c} \in C$, \ $a \in F_q$ \\
+\end{tabular}
+\end{definition}
+
+Sei $k = \operatorname{Dim} C$. Dann existieren $k$ l.u.\ Codewörter $\mathbf{g}_1, \dots, \mathbf{g}_k \in C$.\\
+Die $\mathbf{g}_1, \dots, \mathbf{g}_k$ bilden dann eine Basis von $C$.\\
+Sei $G$ die $(k, n)$-Matrix mit den Zeilen $\mathbf{g}_1, \dots, \mathbf{g}_k$.
+\[ C = \{\, a_1\mathbf{g}_1 + \dots + a_k\mathbf{g}_k \mid a_1, \dots, a_k \in F_q \,\} = \{\, \mathbf{a}\,G \mid \mathbf{a} \in F_q^{\,k} \,\} \]
+$C$ = Zeilenraum von $G$.
+
+\begin{definition}[Erzeugermatrix]
+Eine $(k, n)$-Matrix $G$ mit
+\[ C = \{\, \mathbf{a}\,G \mid \mathbf{a} \in F_q^{\,k} \,\} \quad \text{und} \quad k = \operatorname{Dim} C = \operatorname{Rang} G \]
+heißt \textbf{Erzeugermatrix} des Codes $C$.
+\end{definition}
+
+\begin{korollar}[Folgerung]
+\[ |C| = |F_q^{\,k}| = q^k \qquad \square \]
+\end{korollar}
+
+Jede Nachricht $\mathbf{a} \in F_q^{\,k}$ besitzt ein Codewort aus $C$. Die \textbf{Codierungsfunktion}
+\[ \varphi : F_q^{\,k} \to C \qquad \mathbf{a} \to \mathbf{c} = \mathbf{a}\,G \]
+ist bijektiv.
+
+Parameter des linearen Codes $C$: \ $[n, k, d]_q$, \ $k = \operatorname{Dim} C = \operatorname{Dim} F_q^{\,k}$, \ $d = d_C$.\\
+Informationsdichte \ bei linearen Codes; \ $k / n$.
+
+\begin{beispiel}[Wiederholungscode]
+\[ \varphi : F_q \to C, \quad a \to (a, a, \dots, a) = a\,(1\ 1\ \dots\ 1) \]
+\[ G = (1\ 1\ \dots\ 1), \quad d_C = n \]
+$C$ ist ein $[n, 1, n]_q$ Code.
+
+Informationsdichte = $1/n$ = fast 0\,\% \ für großes $n$,\\
+$d_C = n$, \ d.h.\ $C$ korrigiert
+$\begin{cases} (n-1)/2 \\ n/2 - 1 \end{cases}$
+Fehler, falls $n$
+$\begin{cases} \textit{ungerade} \\ \textit{gerade} \end{cases}$
+\end{beispiel}
+
+\begin{beispiel}[Paritätscode]
+\[ \varphi : F_q^{\,n-1} \to C, \quad (a_1, \dots, a_{n-1}) \to (a_1, \dots, a_{n-1}, \textstyle\sum a_i) = \mathbf{a}
+\begin{pmatrix} 1 & & & 1 \\ & \ddots & & \vdots \\ & & 1 & 1 \end{pmatrix}, \quad d_C = 2 \]
+$C$ ist ein $[n, n-1, 2]$ Code, \quad d.h.\ 1 Fehler erkennend.\\
+Informationsdichte = $(n-1)/n = 1 - 1/n$ = fast 100\,\% \ für großes $n$,\\
+$d_C = 2$, \ d.h.\ $C$ kann keinen Fehler korrigieren.
+\end{beispiel}
+
+\begin{definition}[Kontrollmatrix]
+\textbf{Kontrollmatrix} für $C$\\
+Eine $(n-k, n)$-Matrix $H$ mit
+\[ C = \operatorname{Kern} H = \{\, \mathbf{c} \in F_q^{\,n} \mid H\,\mathbf{c}^T = \mathbf{o} \,\} \]
+$H$ heißt \textbf{Kontrollmatrix} für $C$.
+\end{definition}
+
+\begin{tabular}{ll}
+\textbf{Systematische Form der Kontrollmatrix} & $H = (E_{n-k} \mid A)$ \\
+\textbf{Systematische Form der Erzeugermatrix} & $G = (-A^T \mid E_k)$ \\
+\end{tabular}
+
+Es gilt \qquad $H\,G^T = O$ \ bzw.\ \ $G\,H^T = O$
+
+\paragraph{Dimensionsformel}
+\[ \operatorname{Rang} G + \operatorname{Rang} H = n, \quad \operatorname{Rang} G = k, \quad \operatorname{Rang} H = n - k \]
+
+\paragraph{Minimalgewicht $d_C$ eines linearen Codes $C$}
+\begin{align*}
+d_C &= \min\{\, |\mathbf{c} - \mathbf{c}'| \mid \mathbf{c}, \mathbf{c}' \in C,\ \mathbf{c} \neq \mathbf{c}' \,\} \\
+&= \min\{\, |\mathbf{c}| \mid \mathbf{c} \in C,\ \mathbf{c} \neq \mathbf{o} \,\}
+\end{align*}
+\begin{align*}
+& H\,\mathbf{c}^T = \mathbf{o} \ \Rightarrow \ |\mathbf{c}| \text{ Spalten von } H \text{ sind l.a.} \\
+\Rightarrow\quad & d_C = 1 + \max\{\, e \mid \text{jeweils } e \text{ Spalten von } H \text{ sind l.u.} \,\}
+\end{align*}
+
+\begin{satz}[Dualitätssatz]
+Je $s$ Spalten der Kontrollmatrix $H$ seien l.\,u. \ Dann ist\\
+\begin{tabular}{ll}
+schwacher: & $s + 1 \leq d_C \leq |\mathbf{c}|$ \\
+starker: & $\max\{s + 1\} = d_C = \min\{\, |\mathbf{c}| \mid \mathbf{o} \neq \mathbf{c} \in C \,\}$ \\
+\end{tabular}
+\end{satz}
+
+Man nutzt den Dualitätssatz zur Bestimmung von $d_C$.
+
+\paragraph{Forderungen an einen Code $C$}
+- viele Fehler korrigierend ( $s$, $d_C$ groß ),
+
+% ------------------------------------------------------------

@@ -1,0 +1,290 @@
+% Lernskript für 16 Stunden: Lernplan, Stoff, Aufschreiben, Übungen und Lösungen in einem Dokument.
+% Die Auszüge in skript/auszug/ erzeugt skript/auszug.py 1:1 aus den übertragenen Dateien.
+\input{skript/kopf}
+\pagestyle{fancy}\fancyhf{}
+\lhead{Lernskript: 16 Stunden bis zur Klausur}\rhead{Seite \thepage}
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\renewcommand{\arraystretch}{1.15}
+
+\newcommand{\A}[1]{\input{skript/auszug/#1}}
+% Kopf eines Blocks: Titel, Zeit, Ziel
+\newcommand{\block}[3]{\clearpage\section{#1 \hfill\normalsize\textmd{#2}}\begin{merke}\textbf{Ziel:} #3\end{merke}}
+\newcommand{\lesen}{\subsection*{\colorbox{blue!10}{\strut\ Lesen\ }}}
+\newcommand{\aufschreiben}{\subsection*{\colorbox{orange!15}{\strut\ Aufschreiben (für den Spickzettel)\ }}}
+\newcommand{\ueben}{\subsection*{\colorbox{green!12}{\strut\ Üben\ }}\textit{Erst selbst rechnen, dann die Lösungen am Ende des Blocks ansehen.}\par}
+\newcommand{\loesungen}{\subsection*{\colorbox{gray!15}{\strut\ Lösungen\ }}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries Lernskript: 16 Stunden bis zur Klausur}\\[4pt]
+{\large Diskrete Mathematik -- alles in einem Dokument}
+\end{center}
+
+\begin{merke}
+\textbf{So arbeitest du.} Arbeite die Blöcke von vorne nach hinten ab. Jeder Block hat vier Teile:
+\begin{enumerate}
+\item \colorbox{blue!10}{Lesen}: der Stoff aus der Vorlesung, 1:1 übernommen. Nur das, was für die Klausur zählt.
+\item \colorbox{orange!15}{Aufschreiben}: Rezept und Musterrechnung. Das schreibst du auf deinen Spickzettel.
+      In der Klausur machst du die Musterrechnung mit neuen Zahlen nach.
+\item \colorbox{green!12}{Üben}: Aufgaben aus Klausur, Klausurvorbereitung und Übungen.
+\item \colorbox{gray!15}{Lösungen}: die Lösungen des Dozenten (bzw. geprüfte Lösungen zur Klausur).
+\end{enumerate}
+Die Klausur hat ein festes Schema: \textbf{RSA -- Siebformel -- Euklid -- Chinesischer Restsatz -- Modulo-11-Code}.
+Nur die Zahlen ändern sich. Diese fünf Themen bekommen fast die ganze Zeit.
+Du kennst Vorlesung 1 und 2 schon. Deshalb sind die Lese-Teile dort kurz.
+\end{merke}
+
+\subsection*{Zeitplan}
+\begin{tabular}{@{}rp{6.2cm}rp{6.8cm}@{}}
+\toprule
+Block & Thema & Zeit & Übungen\\
+\midrule
+0 & Start, Formelsammlung & 0:30 & --\\
+1 & Schnelles Potenzieren, Euler & 1:15 & Ü4 A7\\
+2 & RSA & 1:45 & KV 7, Ü4 A9, Klausur 1\\
+3 & Euklid, diophantische Gleichung & 1:15 & KV 3, Ü2 A4, Ü2 A5, Klausur 3\\
+4 & Chinesischer Restsatz & 1:00 & KV 8, Ü3 A1, Klausur 4\\
+5 & Siebformel & 1:00 & Ü4 A1, KV 6, Klausur 2, GP 2\\
+\multicolumn{4}{c}{\textit{lange Pause}}\\
+6 & $\varphi$ und Primfaktoren & 0:45 & KV 4, Ü3 A2\\
+7 & Codes: Grundbegriffe & 1:00 & --\\
+8 & Modulo-11-Code & 2:00 & Ü6 A9, Klausur 5, GP 4\\
+9 & ISBN-10 und Turnierplan & 1:00 & KV 1, KV 2, KV 5\\
+10 & Übungsklausur (90 min + Vergleich) & 2:00 & 5 Aufgaben\\
+11 & Spickzettel fertig machen & 1:30 & --\\
+12 & Puffer: Schwächen wiederholen & 1:00 & --\\
+\midrule
+ & & \textbf{16:00} & \\
+\bottomrule
+\end{tabular}
+
+\medskip
+Nach jedem Block 10 Minuten Pause. Wenn die Zeit knapp wird: Block 9 und 12 weglassen, nie Block 10.
+
+\tableofcontents
+
+% ===========================================================================
+\block{Block 0: Start}{0:30}{Die Formeln einmal sehen und den Spickzettel anfangen.}
+\aufschreiben
+Schreib diese Seite als erste Seite auf deinen Spickzettel. Die Inversen-Tabelle mod 11 und die Zweierpotenzen brauchst du sicher.
+\A{r_formeln}
+
+% ===========================================================================
+\block{Block 1: Schnelles Potenzieren und Satz von Euler}{1:15}{$a^k \bmod m$ von Hand berechnen. Wissen, warum $a^{\varphi(m)} \equiv 1$ gilt. Das ist die Grundlage für RSA.}
+\lesen
+\A{w_vl3_31}
+\textit{Aus 3.2 brauchst du vor allem die Sätze von Fermat und Euler. Ordnung und primitive Elemente nur überfliegen.}
+\A{w_vl3_32}
+
+\aufschreiben
+\begin{rezept}{Rezept: $a^k \bmod m$}
+\begin{enumerate}
+\item $k$ binär schreiben: $k = 2^{i_1} + 2^{i_2} + \dots$
+\item Tabelle $a^1, a^2, a^4, a^8, \dots$: jede Zeile ist das Quadrat der vorigen, sofort mod $m$.
+\item Die Zeilen der benötigten Zweierpotenzen multiplizieren, nach jedem Schritt mod $m$.
+\item Abkürzung (Euler/Fermat): bei $\ggT(a, m) = 1$ darf man $k$ durch $k \bmod \varphi(m)$ ersetzen.
+\end{enumerate}
+\end{rezept}
+
+\ueben
+\A{u4_7_a}
+
+\loesungen
+\A{u4_7_l}
+
+% ===========================================================================
+\block{Block 2: RSA}{1:45}{Klausuraufgabe 1 komplett lösen können: $e$ binär, $c$, Entschlüsselungsformel, $\varphi(m)$, $d$ auf zwei Wegen.}
+\lesen
+\A{w_vl3_33}
+
+\aufschreiben
+\A{r_rsa}
+
+\ueben
+\A{kv7_a}
+\A{u4_9_a}
+\A{k1_a}
+\begin{bemerkung}
+Das Gedächtnisprotokoll (Aufgabe 1) hatte dieselben Zahlen wie Übung 4, Aufgabe 9 ($m = 2803$, Schlüssel $113$, $w = 715$).
+Lies in der Klausur genau, ob der gegebene Schlüssel $e$ oder $d$ ist.
+\end{bemerkung}
+
+\loesungen
+\A{kv7_l}
+\A{u4_9_l}
+\A{k1_l}
+
+% ===========================================================================
+\block{Block 3: Euklid und diophantische Gleichung}{1:15}{$\ggT$ mit dem EA, eine Lösung von $ax - by = c$ (rückwärts oder mit Matrix $Q$), alle Lösungen, Inverse mod $m$.}
+\lesen
+\textit{Kennst du aus Vorlesung 1. Nur zum Auffrischen; die Beispiele genau ansehen.}
+\A{w_vl1_ea}
+
+\aufschreiben
+\A{r_euklid}
+
+\ueben
+\A{kv3_a}
+\A{u2_4_a}
+\A{u2_5_a}
+\A{k3_a}
+
+\loesungen
+\A{kv3_l}
+\A{u2_4_l}
+\A{u2_5_l}
+\A{k3_l}
+
+% ===========================================================================
+\block{Block 4: Chinesischer Restsatz}{1:00}{Zwei Kongruenzen lösen, auch mit dem Ergebnis einer Voraufgabe; alle Lösungen und die kleinste positive.}
+\lesen
+\A{w_vl1_crt}
+
+\aufschreiben
+\A{r_crt}
+
+\ueben
+\A{kv8_a}
+\A{u3_1_a}
+\A{k4_a}
+
+\loesungen
+\A{kv8_l}
+\A{u3_1_l}
+\A{k4_l}
+
+% ===========================================================================
+\block{Block 5: Siebformel (Inklusion -- Exklusion)}{1:00}{Zahlen $\le N$ zählen, die durch keine von drei Zahlen teilbar sind, mit $A_i$ und $\alpha_i$.}
+\lesen
+\A{w_vl2_25}
+
+\aufschreiben
+\A{r_sieb}
+
+\ueben
+\A{u4_1_a}
+\A{kv6_a}
+\A{k2_a}
+\A{gp2_a}
+
+\loesungen
+\A{u4_1_l}
+\A{kv6_l}
+\A{k2_l}
+
+\textbf{Lösung zu Gedächtnisprotokoll, Aufgabe 2} ($N = 840$; Teiler 2, 3, 5)
+\begin{align*}
+\alpha_1 &= 420 + 280 + 168 = 868, \qquad
+\alpha_2 = \tfrac{840}{6} + \tfrac{840}{10} + \tfrac{840}{15} = 140 + 84 + 56 = 280, \qquad
+\alpha_3 = \tfrac{840}{30} = 28,\\
+&840 - 868 + 280 - 28 = 224 .
+\end{align*}
+\begin{ergebnis} $224$ \ (Kontrolle: $840 \cdot \frac12 \cdot \frac23 \cdot \frac45 = 224$) \end{ergebnis}
+
+% ===========================================================================
+\block{Block 6: $\varphi(n)$ und Primfaktoren}{0:45}{$n$ zerlegen und $\varphi(n)$ auf zwei Wegen berechnen. Das brauchst du bei RSA für $\varphi(m)$ und $\varphi(\varphi(m))$.}
+\lesen
+\A{w_vl1_phi}
+
+\aufschreiben
+\begin{rezept}{Rezept $\varphi(n)$}
+\begin{enumerate}
+\item Probedivision durch $2, 3, 5, 7, 11, \dots$ bis $p^2 > $ Rest. Ergebnis $n = p_1^{k_1} \cdots p_r^{k_r}$.
+\item Weg 1: $\varphi(n) = n \cdot (1 - \frac{1}{p_1}) \cdots (1 - \frac{1}{p_r})$.
+\item Weg 2: $\varphi(n) = (p_1^{k_1} - p_1^{k_1 - 1}) \cdots (p_r^{k_r} - p_r^{k_r - 1})$.
+\end{enumerate}
+Beispiel: $360 = 2^3 \cdot 3^2 \cdot 5$, $\varphi(360) = 360 \cdot \frac12 \cdot \frac23 \cdot \frac45 = 96 = 4 \cdot 6 \cdot 4$.
+\end{rezept}
+
+\ueben
+\A{kv4_a}
+\A{u3_2_a}
+
+\loesungen
+\A{kv4_l}
+\A{u3_2_l}
+
+% ===========================================================================
+\block{Block 7: Codes -- die Grundbegriffe}{1:00}{Verstehen, was Code, Hamming-Abstand, Erzeugermatrix $G$, Kontrollmatrix $H$ und Syndrom sind. Mehr brauchst du für den Modulo-11-Code nicht.}
+\lesen
+\textit{4.1 überfliegen: Merke dir nur Hamming-Abstand, Minimalabstand $d$ und „korrigiert $\lfloor (d-1)/2 \rfloor$ Fehler“.}
+\A{w_vl4_41}
+\textit{4.2 genauer lesen: $G$, $H$, $H c^T = 0$, systematische Form.}
+\A{w_vl4_42}
+
+% ===========================================================================
+\block{Block 8: Modulo-11-Code $[10, 8, 3]_{11}$}{2:00}{Klausuraufgabe 5 komplett lösen: $H$, $c_9$, $c_{10}$, Syndrome, entscheiden, welches Wort nicht dekodierbar ist, dekodieren, Probe.}
+\lesen
+\A{w_vl6_63}
+
+\aufschreiben
+\A{r_mod11}
+
+\ueben
+\A{u6_9_a}
+\A{k5_a}
+\A{gp4_a}
+\begin{bemerkung}
+Im Gedächtnisprotokoll haben die Wörter nur 9 Stellen (eine Ziffer fehlt). Mit einer ergänzten 0 ist das zweite Wort
+genau $r_2 = 1150000733$ aus der Klausur. Rechne die Aufgabe mit den Klausurwörtern.
+\end{bemerkung}
+
+\loesungen
+\A{u6_9_l}
+\A{k5_l}
+
+% ===========================================================================
+\block{Block 9: ISBN-10 und Turnierplan}{1:00}{Zwei kleine Themen, die in der Klausurvorbereitung vorkamen. Schnell gelernt, falls sie doch drankommen.}
+\lesen
+\A{w_vl1_isbn}
+
+\aufschreiben
+\begin{rezept}{Rezept ISBN-10 und Turnierplan}
+\textbf{ISBN-10:} $\sum_{i=1}^{10} i\, c_i \equiv 0 \pmod{11}$. Da $10 \equiv -1$: $c_{10} \equiv \sum_{i=1}^{9} i\,c_i \pmod{11}$; 10 schreibt man X.\\
+\textbf{Turnierplan:} $2m$ Mannschaften, Runden $r = 1, \dots, 2m-1$. In Runde $r$ spielt $x$ gegen $y$ mit $x + y \equiv r \pmod{2m-1}$;
+die Mannschaft $x$ mit $2x \equiv r$ spielt gegen Mannschaft $2m$.
+\end{rezept}
+
+\ueben
+\A{kv1_a}
+\A{kv2_a}
+\A{kv5_a}
+
+\loesungen
+\A{kv1_l}
+\A{kv2_l}
+\A{kv5_l}
+
+% ===========================================================================
+\block{Block 10: Übungsklausur}{2:00}{Die Klausur einmal unter echten Bedingungen schreiben: 90 Minuten, nur mit deinem Spickzettel. Danach vergleichen und Fehler in den Spickzettel übernehmen.}
+\input{skript/uebungsklausur}
+
+% ===========================================================================
+\block{Block 11: Spickzettel fertig machen}{1:30}{Alles, was du in der Klausur brauchst, in der Reihenfolge der Klausur sortiert.}
+\begin{enumerate}
+\item[\cb] \textbf{Seite 1}: Formelsammlung aus Block 0 mit Inversen-Tabelle mod 11 und Zweierpotenzen.
+\item[\cb] \textbf{RSA}: Rezept und die komplette Musterrechnung aus Block 2. Die Falle „$p$ oder $q$ keine Primzahl“ rot markieren.
+\item[\cb] \textbf{Siebformel}: Schema mit $A_i$, $\alpha_1$, $\alpha_2$, $\alpha_3$ und der kgV-Regel.
+\item[\cb] \textbf{Euklid}: EA-Tabelle, Rückwärts-Einsetzen, Matrix $Q$, allgemeine Lösung.
+\item[\cb] \textbf{Restsatz}: Ansatz $mx - ny = b - a$, alle Lösungen $z_0 + k\,mn$, Probe.
+\item[\cb] \textbf{Modulo-11-Code}: $H$, Formeln $c_9$, $c_{10}$, Syndrom, $x = s_2/s_1$, die zwei Fälle „nicht dekodierbar“.
+\item[\cb] \textbf{Fehler aus der Übungsklausur} (Block 10) mit dem richtigen Weg daneben.
+\item[\cb] Primzahlen bis 100: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97.
+\end{enumerate}
+
+\subsection*{Tipps für die Klausur}
+\begin{itemize}
+\item Mit der sichersten Aufgabe anfangen. Euklid und Siebformel gehen schnell.
+\item Bei RSA zuerst prüfen: Sind $p$ und $q$ wirklich Primzahlen?
+\item Jede Rechnung mit Probe beenden: $e\,d \equiv 1$, $H c^T = 0$, $z$ in beide Kongruenzen einsetzen.
+\item Formeln hinschreiben, auch wenn die Rechnung nicht fertig wird. Das gibt Teilpunkte.
+\end{itemize}
+
+% ===========================================================================
+\block{Block 12: Puffer}{1:00}{Die schwächste Stelle aus der Übungsklausur noch einmal üben.}
+Nimm die Aufgabe, bei der du in Block 10 am meisten Fehler hattest, und rechne die passenden Übungen aus dem Block noch einmal
+-- diesmal ohne in die Lösung zu schauen. Danach: schlafen.
+
+\end{document}

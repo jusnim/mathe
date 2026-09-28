@@ -1,0 +1,17 @@
+\textbf{Lösung zu Klausur 29.07.2026, Aufgabe 2}
+
+$\Omega = \{1 \le k \le 720\}$, $|\Omega| = 720$, $A_i = \{k \in \Omega \mid i \text{ teilt } k\}$ für $i = 3, 4, 5$.
+Gesucht: $|\Omega \setminus (A_3 \cup A_4 \cup A_5)| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3$ mit
+\begin{align*}
+\alpha_1 &= |A_3| + |A_4| + |A_5| = \tfrac{720}{3} + \tfrac{720}{4} + \tfrac{720}{5} = 240 + 180 + 144 = 564,\\
+\alpha_2 &= |A_3 \cap A_4| + |A_3 \cap A_5| + |A_4 \cap A_5| = \tfrac{720}{12} + \tfrac{720}{15} + \tfrac{720}{20} = 60 + 48 + 36 = 144,\\
+\alpha_3 &= |A_3 \cap A_4 \cap A_5| = \tfrac{720}{60} = 12 .
+\end{align*}
+(Schnittmengen über das kgV: $\kgV(3,4) = 12$, $\kgV(3,5) = 15$, $\kgV(4,5) = 20$, $\kgV(3,4,5) = 60$.)
+\[
+720 - 564 + 144 - 12 = 288 .
+\]
+Kontrolle: $720 \cdot (1 - \tfrac13)(1 - \tfrac14)(1 - \tfrac15) = 720 \cdot \tfrac23 \cdot \tfrac34 \cdot \tfrac45 = 288$.
+\begin{ergebnis} $288$ Zahlen $\le 720$ sind durch keine der Zahlen $3, 4, 5$ teilbar. \end{ergebnis}
+
+% ---------------------------------------------------------------------------

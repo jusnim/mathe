@@ -1,0 +1,15 @@
+\textbf{Lösung zu Übung 4, Aufgabe 3}
+
+\begin{loesung}
+Die Teiler von $n = p$ sind $1, p$, also $d(p) = 1 + 1$.\\
+Die Teiler von $n = p^e$ sind $1, p, p^2, \ldots, p^e$, also $d(p^e) = 1 + e$
+\[
+\Rightarrow\qquad d(n) = (1 + e_1) \cdots (1 + e_r)
+\]
+\[
+\sigma(p) = 1 + p, \qquad \sigma(p^e) = 1 + p + p^2 + \ldots + p^e = \frac{p^{1+e} - 1}{p - 1},
+\]
+\[
+\Rightarrow\qquad \sigma(n) = \frac{p_1^{1+e_1} - 1}{p_1 - 1} \cdot \ldots \cdot \frac{p_r^{1+e_r} - 1}{p_r - 1}
+\]
+\end{loesung}

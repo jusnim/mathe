@@ -1,0 +1,28 @@
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.6cm}>{\raggedright\arraybackslash}p{13.2cm}@{}}
+\toprule
+RSA & $m = p\,q$, öffentlich $(m, e)$, privat $d$ mit $e\,d \equiv 1 \pmod{\varphi(m)}$.
+Verschlüsseln $c \equiv w^e \pmod m$. Entschlüsseln $w \equiv c^d \pmod m$.
+$d$ über EA (Bezout) oder $d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}$.\\
+$\varphi$ & $\varphi(p) = p - 1$, $\varphi(p^k) = p^k - p^{k-1}$, $\varphi(ab) = \varphi(a)\varphi(b)$ bei $\ggT(a,b) = 1$,
+$\varphi(n) = n \prod_{p \mid n} (1 - \frac1p)$.\\
+Euler / Fermat & $a^{\varphi(m)} \equiv 1 \pmod m$ bei $\ggT(a, m) = 1$; \ $a^{p-1} \equiv 1 \pmod p$.
+Exponent kürzen: $a^k \equiv a^{k \bmod \varphi(m)}$.\\
+EA & $a = q_0 b + r_1$, $b = q_1 r_1 + r_2$, \dots; letzter Rest $\neq 0$ ist $\ggT$.\\
+Bezout & Es gibt $x, y$ mit $ax + by = \ggT(a,b)$. $ax + by = c$ lösbar $\Leftrightarrow$ $\ggT(a,b) \mid c$.\\
+Matrix $Q$ & $Q = \prod_i \begin{pmatrix} q_i & 1\\ 1 & 0 \end{pmatrix} = \begin{pmatrix} s & u\\ t & v\end{pmatrix}$,
+$\det Q = sv - tu = (-1)^{n+1}$, $a = s \cdot \ggT$, $b = t \cdot \ggT$.\\
+Alle Lösungen & von $ax - by = c$: \ $x = x_0 + \frac{b}{g}\,t$, \ $y = y_0 + \frac{a}{g}\,t$ \ ($g = \ggT$, $t \in \Z$).\\
+Restsatz & $z \equiv a \ (m)$, $z \equiv b \ (n)$: \ $z = mx + a = ny + b$ $\Rightarrow$ $mx - ny = b - a$.
+Alle Lösungen $z \equiv z_0 \pmod{mn}$ bei $\ggT(m,n) = 1$.\\
+Siebformel & $|\Omega \setminus (A_1 \cup A_2 \cup A_3)| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3$;
+$|A_a \cap A_b| = \lfloor N / \kgV(a,b) \rfloor$.\\
+Modulo-11-Code & $H = \begin{pmatrix} 1 & \cdots & 1\\ 1 & \cdots & 10\end{pmatrix}$,
+$c_9 \equiv \sum_{i=1}^8 (1+i)c_i$, $c_{10} \equiv \sum_{i=1}^8 (9-i)c_i$,
+$S = (s_1, s_2)^T = H r^T$, Fehler $e_x = s_1$ an Stelle $x = s_2/s_1$.\\
+Inverse mod 11 & \begin{tabular}{c|cccccccccc} $a$ & 1&2&3&4&5&6&7&8&9&10\\ \hline $a^{-1}$ & 1&6&4&3&9&2&8&7&5&10 \end{tabular}\\
+Zweierpotenzen & $2^0..2^{12}$: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096\\
+ISBN-10 & $\sum_{i=1}^{10} i\, c_i \equiv 0 \pmod{11}$, $X = 10$.\\
+Turnierplan & $2m$ Teams, Runde $r$: $x$ gegen $y$ mit $x + y \equiv r \pmod{2m-1}$;
+Team $x$ mit $2x \equiv r$ spielt gegen Team $2m$.\\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,113 @@
+\subsubsection*{3.3 Die RSA-Verschlüsselung}
+
+
+Ändern nun die Blickrichtung und fragen, für welche Exponenten $e\,d$ ist
+\[
+  a^{e\,d} \equiv a \qquad (\bmod\ m)?
+\]
+Multiplizieren die Euler-Formel mit $a$ und finden
+\[
+  a^{1 + \varphi(m)} \equiv a \pmod{m}
+\]
+also \quad $e\,d = 1$ oder $1 + \boldsymbol{\varphi}(m)$ \quad allgemein: \quad $e\,d = 1 \pmod{\varphi(m)}$
+
+\begin{definition}[RSA: Ver- und Entschlüsselung]
+So kann man das Klartextwort $a \in \Z$ verschlüsseln: \quad $a \to c = a^e$\\
+$c \in \Z$ ist das Codewort
+
+entschlüsseln: \quad $a \to c = a^e \to a = a^{ed} \pmod{m}$
+
+Man nennt $e$ den Verschlüsselungsexponenten (encoding exponent) und\\
+$d$ den Entschlüsselungsexponenten (decoding exponent).\\
+Die einzige Bedingung an $e$ ist \ $e \in \Zm{\varphi(m)}^*$, also $\ggT(e, \varphi(m)) = 1$.\\
+$d$ ist die Inverse von $e$ in $\Zm{\varphi(m)}^*$.
+\end{definition}
+
+\begin{beispiel}
+Sei $m = 101$, $e = 13 \in \Zm{\varphi(m)}^*$, \quad $\varphi(101) = 100$.\\
+$13 \cdot 7 \cdot 11 = 1001 \equiv 1 \pmod{100}$, also\\
+$d = 77$. Verschlüsselt werden soll die Zahl $a = 8 \in \Zm{m}^*$
+\[
+  c \equiv a^e = 8^{13} \equiv 18 \qquad (\bmod\ 101) \qquad (\text{Codewort})
+\]
+\begin{align*}
+  & 13 = 1 + 2^2 + 2^3, \\
+  & 8^{13} = 8^8 \cdot 8^4 \cdot 8 \\
+  & 8^2 = 64 \\
+  & 8^4 = 4096 \equiv 56 \pmod{101} \\
+  & 8^8 = 3136 \equiv 5 \pmod{101} \\
+  \Rightarrow\quad & c \equiv 8 \cdot 56 \cdot 5 = 2240 \equiv 18 \pmod{101} && (\text{Codewort}) \\
+  & a = 18^{77} = 8^{13 \cdot 77} \equiv 8 \pmod{101} && (\text{Klartextwort})
+\end{align*}
+\end{beispiel}
+
+\subsubsection*{Alice, Bob und Oscar}
+
+Alice verschlüsselt $a \to c = a^e$ und sendet $c$ an Bob. \hfill (Kundin einer Bank)\\
+Bob ist im Besitz von $d$ und entschlüsselt $c \to a = c^d$ \hfill (Bank)\\
+Oscar versucht den Klartext $a$ zu bekommen.
+
+\begin{beispiel}
+Hätte Oscar eine Chance an $a$ zu kommen, wenn er sich $m$ und das verschlüsselte Wort $c$ besorgt?
+
+Ja, ganz einfach. Oscar stellt fest, dass $m = 101$ eine Primzahl ist, dann ist $\varphi(m) = m - 1$. Oscar rechnet selbst $d$ aus
+\[
+  e\,d \equiv 1 \quad (\bmod\ \varphi(m)) \qquad \Rightarrow \qquad a = c^d
+\]
+\end{beispiel}
+
+Wie kann das verhindert (oder sehr schwer gemacht) werden?
+
+\begin{definition}[Öffentlicher und privater Schlüssel]
+\textbf{Öffentlicher Schlüssel}\\
+Alice muss verschlüsseln können
+\[
+  c = a^e \quad (\bmod\ m)
+\]
+$\Rightarrow$ \quad öffentlich ist $e$, $m$
+
+\textbf{Privater Schlüssel}\\
+Bob muss entschlüsseln können
+\[
+  a = c^d \quad (\bmod\ m)
+\]
+Bob hat $d$ aus
+\[
+  e\,d \equiv 1 \quad (\bmod\ \varphi(m))
+\]
+berechnet.\\
+$\Rightarrow$ \quad privat ist $d$, $\varphi(m)$
+\end{definition}
+
+Wie macht es Bob dem Oscar schwer $\varphi(m)$ zu berechnen? Bob setzt
+\begin{align*}
+  & m = p \cdot q, && p, q \text{ große Primzahlen.} \\
+  \Rightarrow\quad & \varphi(m) = (p - 1)(q - 1)
+\end{align*}
+Aber $p$, $q$ und damit auch $\varphi(m)$ kennt nur Bob.
+
+\begin{beispiel}
+Bob wählt $p = 101$, $q = 113$\\
+$m = 11413$, \quad $\varphi(m) = 100 \cdot 112 = 11200 = 2^6 \cdot 5^2 \cdot 7$.\\
+$e \in \Zm{\varphi(m)}^*$, darf also nicht durch 2, 5 oder 7 teilbar sein. Setzen $e = 3533$.\\
+In der Praxis prüft man $e \in \Zm{\varphi(m)}^*$ bei der Berechnung von $d$ mit dem EA.
+\begin{align*}
+  & d \equiv e^{-1} \pmod{\varphi(m)} \\
+  \Rightarrow\quad & d = 6597
+\end{align*}
+Alice wählt die Zahl $a = 9726 \in \Zm{m}^*$ und berechnet.
+\begin{align*}
+  c &\equiv a^e = 9726^{3533} \equiv \qquad (\bmod\ m) \\
+    &= 5761
+\end{align*}
+Alice sendet $c$ an Bob und rechnet
+\begin{align*}
+  a &= 5761^{6597} \qquad (\bmod\ m) \\
+    &= 9726
+\end{align*}
+% UNSICHER: Im Original steht "Alice sendet c an Bob und rechnet"; gemeint ist vermutlich, dass Bob die Entschlüsselung rechnet. Wortlaut unverändert übernommen.
+\end{beispiel}
+
+\begin{bemerkung}[Fazit]
+Solange es unmöglich ist $m = p \cdot q$ zu faktorisieren, ist RSA ein sicheres Verschlüsselungsverfahren.
+\end{bemerkung}

@@ -1,0 +1,50 @@
+\textbf{Lösung zu Übung 6, Aufgabe 9}
+
+\begin{loesung}
+Inverse Modulo 11
+\begin{center}
+\begin{tabular}{c|rrrrrrrrrr}
+$a$      & 1 & 2  & 3 & 4 & 5  & $-5$ & $-4$ & $-3$ & $-2$ & $-1$\\
+\midrule
+$a^{-1}$ & 1 & $-5$ & 4 & 3 & $-2$ & 2 & $-3$ & $-4$ & 5 & $-1$\\
+\end{tabular}
+\end{center}
+
+\begin{align*}
+\mathbf{r}_1 &= 1\,1\,5\,1\,1\,1\,1\,1\,0\,3\\
+\mathbf{r}_2 &= 1\,1\,5\,6\,1\,1\,1\,1\,0\,3\\
+\mathbf{r}_3 &= 1\,1\,1\,1\,1\,1\,1\,1\,0\,3
+\end{align*}
+
+\[
+H = \begin{pmatrix}
+1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10
+\end{pmatrix}
+\equiv
+\begin{pmatrix}
+1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+1 & 2 & 3 & 4 & 5 & -5 & -4 & -3 & -2 & -1
+\end{pmatrix}
+\]
+
+$\mathbf{e} = \mathbf{r} - \mathbf{c} = (\,0 \dots m \dots 0\,)$, \quad
+$S(\mathbf{r}) = \begin{pmatrix} s_0\\ s_1 \end{pmatrix} = \begin{pmatrix} 1\\ x \end{pmatrix} y$, \quad
+$\mathbf{c} = \mathbf{r} - \mathbf{e}$
+
+\[
+S(\mathbf{r}_1) = \begin{pmatrix} 15\\ 4 \cdot 3 \end{pmatrix} = \begin{pmatrix} 4\\ 4 \cdot 3 \end{pmatrix} = \begin{pmatrix} 1\\ 3 \end{pmatrix} 4
+\qquad\Rightarrow\ x = 3,\ y = 4
+\]
+$\Rightarrow \mathbf{c}_1 = 1\,1\,1\,1\,1\,1\,1\,1\,0\,3 = \mathbf{r}_3$
+
+\[
+S(\mathbf{r}_2) = \begin{pmatrix} 9\\ 1 + 5 \cdot 4 \end{pmatrix} = \begin{pmatrix} -2\\ -1 \end{pmatrix} = \begin{pmatrix} 1\\ 6 \end{pmatrix} (-2)
+\qquad\Rightarrow\ x = 6,\ y = -2
+\]
+$\Rightarrow \mathbf{c}_2 = 1\,1\,5\,6\,1\,3\,1\,1\,0\,3$
+
+\[
+S(\mathbf{r}_3) = \begin{pmatrix} 0\\ 0 \end{pmatrix} \qquad\Rightarrow \mathbf{c}_3 = \mathbf{r}_3
+\]
+\end{loesung}

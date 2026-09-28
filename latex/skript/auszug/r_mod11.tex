@@ -1,0 +1,38 @@
+\subsection*{Das Minimum an Theorie}
+\begin{itemize}
+\item Ein \textbf{Code} ist eine Menge erlaubter Wörter (Codewörter). Hier: Wörter mit 10 Ziffern aus $\{0, \dots, 10\}$, gerechnet mod 11.
+\item $[10, 8, 3]_{11}$ heißt: Länge 10, davon 8 Nachrichtenziffern, Mindestabstand 3. Der Code \textbf{korrigiert 1 Fehler}.
+\item Die \textbf{Kontrollmatrix} $H$ entscheidet: $c$ ist Codewort $\Leftrightarrow$ $H c^T = 0$.
+\item Das \textbf{Syndrom} $S(r) = H r^T$ eines empfangenen Worts $r$. $S = 0$: kein Fehler.
+      Ein Fehler der Größe $e_x$ an Stelle $x$ gibt $S = e_x \cdot (1, x)^T$.
+\end{itemize}
+
+\begin{rezept}{Rezept Modulo-11-Code}
+\begin{enumerate}
+\item $H = \begin{pmatrix} 1&1&1&1&1&1&1&1&1&1\\ 1&2&3&4&5&6&7&8&9&10 \end{pmatrix}$.
+\item Codieren: $c_i = a_i$ ($i \le 8$), $c_9 \equiv \sum_{i=1}^{8} (1+i) c_i$, \ $c_{10} \equiv \sum_{i=1}^{8} (9-i) c_i \pmod{11}$.
+\item Syndrom: $s_1 = \sum r_i$, \ $s_2 = \sum i \cdot r_i$ (beide mod 11).
+\item Auswerten:
+  \begin{itemize}
+  \item $s_1 = s_2 = 0$: $r$ ist Codewort.
+  \item $s_1 \ne 0$: $x = s_2 \cdot s_1^{-1} \bmod 11$ (Tabelle!). Ist $x \in \{1, \dots, 10\}$: Fehler an Stelle $x$, Größe $s_1$;
+        korrigieren $c_x = r_x - s_1 \bmod 11$.
+  \item $x = 0$ \textbf{oder} ($s_1 = 0$, $s_2 \ne 0$): \textbf{nicht dekodierbar}, mindestens 2 Fehler.
+  \end{itemize}
+\item Probe: für das korrigierte $c$ beide Summen berechnen, beide $\equiv 0$.
+\end{enumerate}
+\end{rezept}
+
+\subsection*{Musterrechnung (Klausur)}
+$a = 1\,1\,5\,0\,0\,0\,0\,5$: $c_9 = 2 + 3 + 20 + 45 = 70 \equiv 4$, \ $c_{10} = 8 + 7 + 30 + 5 = 50 \equiv 6$.
+\begin{ergebnis} $c = 1\,1\,5\,0\,0\,0\,0\,5\,4\,6$ \end{ergebnis}
+$r_1 = 1150000511$: $s_1 = 14 \equiv 3$, $s_2 = 77 \equiv 0$ $\Rightarrow$ $x = 0 \cdot 3^{-1} = 0$ $\Rightarrow$ \textbf{nicht dekodierbar}.\\
+$r_2 = 1150000733$: $s_1 = 20 \equiv 9$, $s_2 = 131 \equiv 10$ $\Rightarrow$ $x = 10 \cdot 9^{-1} = 10 \cdot 5 = 50 \equiv 6$, Größe 9.
+$c_6 = 0 - 9 \equiv 2$.
+\begin{ergebnis} $c = 1\,1\,5\,0\,0\,2\,0\,7\,3\,3$ \ (Probe: $\sum c_i = 22 \equiv 0$, $\sum i c_i = 143 \equiv 0$) \end{ergebnis}
+
+\begin{achtung}
+\textbf{Fallen.} (1) Die Stellen zählen ab 1. (2) Division mod 11 = Multiplikation mit der Inversen aus der Tabelle.
+(3) In Übung 6 heißen die Syndromteile $s_0, s_1$ statt $s_1, s_2$: gleiche Rechnung.
+(4) Eine andere Form von $H$ (systematisch) gibt andere Syndromzahlen, aber dasselbe Codewort. Nimm die Form der Aufgabe.
+\end{achtung}

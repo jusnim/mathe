@@ -1,0 +1,87 @@
+\textbf{Lösung zu Übung 4, Aufgabe 9}
+
+\begin{loesung}
+1.\ $m = 2803$, $a = 715$
+\begin{enumerate}[label=\alph*)]
+  \item $e = 113$, binär $e = 1110001$
+  \[
+  c = a^e = 715 * 715^{16} * 715^{32} * 715^{64} \equiv 715 * 163 * 2287 * 2774 \equiv 708 \pmod{2803}
+  \]
+  \item $w = c^d \pmod m$
+  \item 1.\ Lösungsweg
+  \[
+  e\,d \equiv 1 \pmod{\varphi(m)}. \qquad 113 * d \equiv 1 \pmod{2802}. \qquad \text{EA mit } 2802,\ 113
+  \]
+  \begin{align*}
+  2802 &= 24 * 113 + 90\\
+  113 &= 1 * 90 + 23\\
+  90 &= 3 * 23 + 21\\
+  23 &= 1 * 21 + 2\\
+  21 &= 10 * 2 + 1\\
+  2 &= 2 * 1
+  \end{align*}
+  \[
+  Q = \begin{pmatrix} 24 & 1\\ 1 & 0 \end{pmatrix}
+      \begin{pmatrix} 1 & 1\\ 1 & 0 \end{pmatrix}
+      \begin{pmatrix} 3 & 1\\ 1 & 0 \end{pmatrix}
+      \begin{pmatrix} 1 & 1\\ 1 & 0 \end{pmatrix}
+      \begin{pmatrix} 10 & 1\\ 1 & 0 \end{pmatrix}
+      \begin{pmatrix} 2 & 1\\ 1 & 0 \end{pmatrix}
+    = \begin{pmatrix} 2802 & 1339\\ 113 & 54 \end{pmatrix}
+  \]
+  \[
+  \det Q = 2802 * 54 - 113 * 1339 = 1
+  \]
+  \[
+  \Rightarrow\quad d = -1339 \equiv 1463 \pmod{2802}
+  \]
+
+  2.\ Lösungsweg
+  \begin{align*}
+  & d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}. \qquad \varphi(\varphi(2803)) = \varphi(2802), \quad 2802 = 2 * 3 * 467\\
+  \Rightarrow\quad & \varphi(\varphi(2803)) = 2 * 466 = 932\\
+  \Rightarrow\quad & \varphi(\varphi(2803)) - 1 = 931 = 512 + 256 + 128 + 32 + 2 + 1
+  \end{align*}
+\end{enumerate}
+
+Rechnung modulo 2802
+\begin{align*}
+e &= 113\\
+e^2 &= 1561\\
+e^4 &= 1783\\
+e^8 &= 1621\\
+e^{16} &= 2167\\
+e^{32} &= 2539\\
+e^{64} &= 1921\\
+e^{128} &= 7\\
+e^{256} &= 49\\
+e^{512} &= 2401
+\end{align*}
+\[
+d = 113 * 1561 * 2539 * 7 * 49 * 2401 \equiv 1463 \pmod{2802}
+\]
+
+\medskip
+Probe:
+\[
+a = c^d = 708^{1463} = 708 * 2330 * 2292 * 1957 * 951 * 822\ 161 * 2323 \equiv 715 \pmod{2803}
+\]
+% Hinweis: "822 161" so im Original (fehlendes * zwischen 822 und 161).
+
+\[
+1463 = 1024 + 256 + 128 + 32 + 16 + 4 + 2 + 1
+\]
+\begin{align*}
+c^1 &= 708 \qquad \text{alles } \pmod{2803}\\
+c^2 &= 2330\\
+c^4 &= 2292\\
+c^8 &= 442\\
+c^{16} &= 1957\\
+c^{32} &= 951\\
+c^{64} &= 1835\\
+c^{128} &= 822\\
+c^{256} &= 161\\
+c^{512} &= 694\\
+c^{1024} &= 2323
+\end{align*}
+\end{loesung}

@@ -1,0 +1,126 @@
+\subsubsection*{2.5 Prinzip der Inklusion und Exklusion -- Siebmethode}
+
+
+Oft ist es einfacher die Elemente einer Menge $\Omega$ zu zählen, die gewisse $r$ Eigenschaften besitzen, als diejenigen, die keine dieser $r$ Eigenschaften haben.
+
+Gegeben: \quad $A_i = \{ a \in \Omega \mid a \text{ besitzt Eigenschaft } i \}$, \quad $i = 1, 2, \dots, r$\\
+Gesucht: \quad $|\,\Omega \setminus A_1 \cup \dots \cup A_r\,|$\\
+z.\,B.\ gilt für
+\begin{align*}
+r = 2 &\qquad |\,\Omega \setminus A_1 \cup A_2\,| = |\Omega| - (\,|A_1| + |A_2|\,) + |A_1 \cap A_2| \\
+r = 3 &\qquad |\,\Omega \setminus A_1 \cup A_2 \cup A_3\,| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3
+\end{align*}
+mit
+\begin{align*}
+\alpha_1 &= |A_1| + |A_2| + |A_3| \\
+\alpha_2 &= |A_1 \cap A_2| + |A_1 \cap A_3| + |A_2 \cap A_3| \\
+\alpha_3 &= |A_1 \cap A_2 \cap A_3|
+\end{align*}
+
+\begin{satz}[Allgemein]
+\[
+|\,\Omega \setminus A_1 \cup \dots \cup A_r\,| = |\Omega| - \alpha_1 + \alpha_2 - \dots + (-1)^r \alpha_r
+\]
+\begin{itemize}
+\item[-] $\alpha_k$ ist die Summe der Anzahlen sämtlicher Durchschnitte von $k$ Mengen,
+\item[-] $\alpha_k$ enthält $\binom{r}{k}$ Summanden.
+\end{itemize}
+\end{satz}
+
+\begin{beispiel}
+An einer Musikschule werden 73 Kinder unterrichtet.
+20 lernen Flöte, 25 Geige und 52 Klavier.
+7 lernen Flöte und Geige, 12 Flöte und Klavier, 17 Geige und Klavier
+und genau einer, Fritzchen, lernt alle drei Instrumente.
+Wie viele Schüler erlernen keines dieser drei Instrumente?
+
+\textbf{Lösung:} \quad $|\Omega| = 73$, \ $r = 3$
+\begin{align*}
+|\,\Omega \setminus A_1 \cup A_2 \cup A_3\,| &= |\Omega| - \alpha_1 + \alpha_2 - \alpha_3 \\
+&= 73 - (20 + 25 + 52) + (7 + 12 + 17) - 1 \\
+&= 73 - 97 + 36 - 1 \\
+&= 11
+\end{align*}
+\end{beispiel}
+
+\begin{satz}[Formel für $\varphi(n)$]
+\[
+n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r} = \prod_{p\mid n} p^e, \qquad \Omega = \Z_n
+\]
+\begin{align*}
+\varphi(n) &= |\{ z \in \Z_n \mid \ggT(z, n) = 1 \}| \\
+&= |\,\Z_n^*\,| \\
+&= |\{ z \in \Z_n \mid \text{keines der } p_i \text{ teilt } z \}|
+\end{align*}
+\[
+A_i = \{ z \in \Omega \mid p_i \text{ teilt } z \}
+\]
+Die Elemente aus $A_i$ dürfen nicht mitgezählt werden. Dann ist
+\begin{align*}
+\varphi(n) &= |\,\Omega \setminus A_1 \cup A_2 \cup \dots \cup A_r\,| \\
+&= n - \alpha_1 + \alpha_2 - \alpha_3 + \dots + (-1)^r \alpha_r
+\end{align*}
+In $\Omega$ gibt es
+\begin{align*}
+|A_i| &= \frac{n}{p_i} && \text{Vielfache von } p_i, \\
+|A_i \cap A_j| &= \frac{n}{p_i p_j} && \text{Vielfache von } p_i p_j, \\
+&\dots \\
+|A_1 \cap \dots \cap A_r| &= \frac{n}{p_1 p_2 \cdot \ldots \cdot p_r} && \text{Vielfache von } p_1 p_2 \dots p_r.
+\end{align*}
+\begin{align*}
+\Rightarrow \varphi(n) &= n - \left(\frac{n}{p_1} + \frac{n}{p_2} + \dots + \frac{n}{p_r}\right) + \left(\frac{n}{p_1p_2} + \frac{n}{p_1p_3} + \dots\right) - + \dots + (-1)^r\left(\frac{n}{p_1p_2\cdots p_r}\right) \\
+&= n \left(1 - \frac{1}{p_1}\right)\cdot\left(1 - \frac{1}{p_2}\right)\cdots\left(1 - \frac{1}{p_r}\right) \qquad \square
+\end{align*}
+\end{satz}
+
+\begin{beispiel}
+$n = 60 = 2^2 \cdot 3 \cdot 5$, \qquad $p_1 = 2$, \ $p_2 = 3$, \ $p_3 = 5$
+\[
+\Rightarrow \quad \varphi(60) = 60 \left(1 - \frac{1}{2}\right)\cdot\left(1 - \frac{1}{3}\right)\cdots\left(1 - \frac{1}{5}\right) = 60 \cdot \frac{1}{2}\cdot\frac{2}{3}\cdot\frac{4}{5} = 60 \cdot \frac{4}{15} = 16
+\]
+2. Lösung:
+\[
+\varphi(60) = \varphi(2^2)\,\varphi(3)\,\varphi(5) = (2^2 - 2) \cdot 2 \cdot 4 = 16
+\]
+\end{beispiel}
+
+\begin{beispiel}[Derangement Problem (vertauschte Hüte)]
+$n$ Personen geben an der Garderobe ihren Hut ab. Die Garderobenfrau bringt die Hüte durcheinander.
+\begin{enumerate}[label=\alph*.]
+\item Auf wie viele Arten bringt sie das Kunststück fertig, jeder Person den falschen Hut zu geben?
+\item Wie hoch ist die Wahrscheinlichkeit, dass jeder den falschen Hut bekommt?
+\end{enumerate}
+
+Denken uns die Hüte und die Personen mit $1, \dots, n$ numeriert. Die Zuordnung der Hüte zu den Personen ist dann eine Permutation $\pi$ von $\N_n$.
+$\pi(i) = j$ bedeutet, Person $i$ bekommt Hut $j$.
+Ein Punkt $i$ mit $\pi(i) = i$ heißt \emph{Fixpunkt} der Permutation $\pi$. Ein \emph{Derangement} ist eine fixpunktfreie Permutation. Hier ist
+
+$\Omega = S_n$ \ Menge der Permutationen von $n$ Objekten, \quad $|\Omega| = n!$, \quad $r = n$\\
+$A_k =$ \quad \ ,,\ \quad mit $k$ Fixpunkten, z.\,B.\ an den Stellen $1, 2, \dots, k$.
+\[
+|A_k| = (n-k)!
+\]
+$\alpha_k$ ist die Anzahl der Permutationen mit $k$ Fixpunkten.
+Es gibt $\binom{n}{k}$ Möglichkeiten diese $k$ Elemente auszuwählen, also
+\[
+\alpha_k = \binom{n}{k}\cdot(n-k)! = \frac{n!}{k!}
+\]
+
+a. Die Anzahl der Derangements ist
+\begin{align*}
+d_n &= n! - \alpha_1 + \alpha_2 - \alpha_3 + \dots + (-1)^n \alpha_n. \\
+d_n &= n! \left(1 - \frac{1}{1!} + \frac{1}{2!} - \dots + (-1)^n\frac{1}{n!}\right)
+\end{align*}
+
+b. Die gesuchte Wahrscheinlichkeit bei $n$ Hüten ist
+\[
+P_n = \frac{d_n}{|\Omega|} = 1 - \frac{1}{1!} + \frac{1}{2!} - \dots + (-1)^n\frac{1}{n!}
+\]
+Andererseits ist
+\[
+e^x = 1 + \frac{x}{1!} + \frac{x^2}{2!} + \dots + \frac{x^n}{n!} + \dots \qquad \text{konvergent für alle } x
+\]
+Damit erhalten wir \quad $P_n = 1/e = 0{,}3678\ldots$
+\end{beispiel}
+
+%------------------------------------------------------------

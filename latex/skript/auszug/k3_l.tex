@@ -1,0 +1,25 @@
+\textbf{Lösung zu Klausur 29.07.2026, Aufgabe 3}
+
+\teil{a}
+\[
+\begin{array}{r@{\;=\;}l}
+17 & 1 \cdot 15 + 2\\
+15 & 7 \cdot 2 + 1\\
+2 & 2 \cdot 1 + 0
+\end{array}
+\qquad\Rightarrow\quad \ggT(17, 15) = 1 .
+\]
+
+\teil{b} EA rückwärts:
+\begin{align*}
+1 &= 15 - 7 \cdot 2 = 15 - 7 \cdot (17 - 15) = 8 \cdot 15 - 7 \cdot 17 .
+\end{align*}
+Also $17 \cdot (-7) - 15 \cdot (-8) = -119 + 120 = 1$.
+
+(Mit der Matrix $Q = \begin{pmatrix}1&1\\1&0\end{pmatrix}\begin{pmatrix}7&1\\1&0\end{pmatrix}\begin{pmatrix}2&1\\1&0\end{pmatrix} = \begin{pmatrix}17&8\\15&7\end{pmatrix}$,
+$\det Q = 17 \cdot 7 - 15 \cdot 8 = -1$, ergibt sich dieselbe Lösung.)
+
+Alle Lösungen: $x = -7 + 15t$, $y = -8 + 17t$ ($t \in \Z$). Für $t = 1$: $x = 8$, $y = 9$ ($17 \cdot 8 - 15 \cdot 9 = 136 - 135 = 1$).
+\begin{ergebnis} $\ggT(17,15) = 1$; eine Lösung: $x = -7$, $y = -8$ (ebenso $x = 8$, $y = 9$). \end{ergebnis}
+
+% ---------------------------------------------------------------------------

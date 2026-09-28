@@ -1,0 +1,112 @@
+\subsubsection*{4.1 Error Correcting Codes}
+
+
+\begin{beispiel}
+Codewörter: \quad $\mathbf{c}_1 = 100110$, $\mathbf{c}_2 = 010101$, $\mathbf{c}_3 = 001011$, $\mathbf{c}_4 = 000000$
+\end{beispiel}
+
+Mit Wörtern wollen wir rechnen. Deshalb kommen die Buchstaben aus einem Körper $F = F_q$, \ $q$ Primzahlpotenz.
+
+\begin{definition}[Code]
+Der \textbf{Code} $C$ ist die Menge der Codewörter $C \subseteq F_q^{\,n}$, \ $n$ ist die Wortlänge.
+\end{definition}
+
+\begin{tabular}{ll}
+obiges Beispiel: & $n = 6$, \ $q = 2$ \\
+ISBN10: & $n = 10$, \ $q = 11$ \\
+\end{tabular}
+
+$q = 2$: binärer Code, \quad $q = 3$: ternärer Code.
+
+\paragraph{Senden und Empfangen einer Nachricht $\mathbf{a} \in F_q^{\,k}$, \ $k < n$}
+Codierungsfunktion \ $\varphi : F_q^{\,k} \to F_q^{\,n}$, \quad $\mathbf{a} = a_1 \dots a_k$, \quad $\varphi(\mathbf{a}) = \mathbf{c}$
+
+% GRAFIK: Senkrechtes Ablaufdiagramm mit Pfeilen nach unten; beim Übertragungsschritt ein Pfeil von rechts "<- mögliche Fehler".
+\[
+\begin{array}{ll}
+\mathbf{a} \text{ codieren: } \varphi(\mathbf{a}) = \mathbf{c} \in C \ \text{ Codewort} & \\
+\quad\downarrow & \\
+\mathbf{c} \text{ senden} & \\
+\quad\downarrow & \qquad\leftarrow \quad \text{mögliche Fehler} \\
+\mathbf{r} \in F_q^{\,n} \text{ empfangen} & \\
+\quad\downarrow & \\
+\mathbf{r} \text{ decodieren: } \mathbf{r} \to \mathbf{c} \in C \ \text{ gesendetes Codewort} & \\
+\quad\downarrow & \\
+\mathbf{a} = \varphi^{-1}(\mathbf{c}) \ \text{ Nachricht} &
+\end{array}
+\]
+
+$\varphi$ injektiv (eineindeutig), aber nicht surjektiv.
+
+Fehler \textbf{erkennen:} \ $\mathbf{r} \in C$ ?\\
+Fehler \textbf{korrigieren:} \ $\mathbf{r} \to \mathbf{c}$. \ $\mathbf{r}$ auf das nächtgelegene Codewort $\mathbf{c}$ abbilden.
+
+\paragraph{$\mathbf{c}$ ist unbekannt. Wie kann der Empfänger $\mathbf{r} \neq \mathbf{c}$ erkennen?}
+\textbf{Lösung}: Es werden nicht alle Wörter aus $F_q^{\,n}$ als Codewörter zugelassen,
+\[ C \neq F_q^{\,n} \]
+
+\begin{beispiel}
+$C = \{\mathbf{c}_1, \mathbf{c}_2, \mathbf{c}_3, \mathbf{c}_4\}$\\
+Zwei Codewörter unterscheiden sich in mindestens 3 Stellen,\\
+d.h.\ $e < 3$ Fehler werden erkannt.\\
+$\mathbf{r} = 010001$ \ ist kein Codewort.\\
+Unter der Annahme, dass 2 Fehler seltener sind als 1 Fehler, wird das Wort
+\[ \mathbf{r} \to \mathbf{c}_2 = 010101 \]
+rekonstruiert. $\mathbf{y}$ unterscheidet sich in 2 Stellen von $\mathbf{c}_4$. 2 Fehler kann $C$ nicht korrigieren.
+% UNSICHER: im Original steht "y"; gemeint ist vermutlich r = 010001 (unterscheidet sich in 2 Stellen von c4 = 000000).
+\end{beispiel}
+
+\begin{definition}[Gewicht]
+Definieren das \textbf{Gewicht} eines Wortes $\mathbf{w} \in F_q^{\,n}$
+\[ |\mathbf{w}| = |\{\, i \mid w_i \neq 0 \,\}| \]
+\end{definition}
+
+\begin{definition}[Hamming Abstand]
+Der \textbf{Hamming Abstand} \quad $|\mathbf{v}-\mathbf{w}|$\\
+gibt an, an wie vielen Stellen sich die Wörter $\mathbf{v}, \mathbf{w} \in F_q^{\,n}$ unterscheiden.
+\end{definition}
+
+Für den Hamming Abstand gelten die \textbf{Abstandsregeln}: \ $\mathbf{v}, \mathbf{w}, \mathbf{y} \in F_q^{\,n}$
+\begin{center}
+\begin{tabular}{ll}
+$|\mathbf{v}-\mathbf{w}| = |\mathbf{w}-\mathbf{v}|$ & Symmetrie \\
+$|\mathbf{v}-\mathbf{w}| \geq 0$ & positiv semidefinit \\
+$|\mathbf{v}-\mathbf{w}| = 0 \ \Rightarrow \ \mathbf{w} = \mathbf{y}$ & positiv definit \\
+$|\mathbf{v}-\mathbf{w}| \leq |\mathbf{v}-\mathbf{y}| + |\mathbf{y}-\mathbf{w}|$ & Dreiecksungleichung \\
+\end{tabular}
+\end{center}
+% UNSICHER: "w = y" so im Original; gemeint ist vermutlich v = w.
+
+\begin{definition}[Minimalgewicht]
+\textbf{Minimalgewicht} des Codes $C$ \ (minimum distance)
+\[ d_C := \min\{\, |\mathbf{c} - \mathbf{c}'| \mid \mathbf{c}, \mathbf{c}' \in C,\ \mathbf{c} \neq \mathbf{c}' \,\} \]
+\end{definition}
+
+\begin{beispiel}
+Der obige Code $C$ hat das Minimalgewicht $d_C = 3$.
+\end{beispiel}
+
+\begin{satz}
+Sei $e$ = Anzahl der Fehler im Wort $\mathbf{r}$.\\
+\begin{tabular}{lcl}
+$C$ \textit{erkennt} das Wort $\mathbf{r}$ als falsch & $\Leftrightarrow$ & $e + 1 \leq d_C$ \\
+$C$ \textit{korrigiert} das Wort $\mathbf{r} \to \mathbf{c}$ & $\Leftrightarrow$ & $2e + 1 \leq d_C$ \\
+\end{tabular}
+\end{satz}
+
+\begin{definition}
+Falls \ $d_C \geq e + 1$ \ heißt $C$ \textbf{$e$-Fehler-erkennend};\\
+falls \ $d_C \geq 2e + 1$ \ heißt $C$ \textbf{$e$-Fehler-korrigierend}.
+\end{definition}
+
+\paragraph{Forderungen an einen Code $C$}
+\begin{tabular}{ll}
+- schnelles Codieren: & $\varphi(\mathbf{a}) = \mathbf{c}$ \\
+- schnelles Decodieren: & $\mathbf{r} \to \mathbf{c}$, \ $\varphi^{-1}(\mathbf{c}) = \mathbf{a}$ \\
+- viele Fehler korrigierend & $d_C$ groß, \\
+- hohe Informationsdichte. & $|C| / |F_q^{\,n}|$ \\
+\end{tabular}
+
+\paragraph{Parameter des Codes $C$} \qquad $[n, |C|, d_C]_q$
+
+% ------------------------------------------------------------

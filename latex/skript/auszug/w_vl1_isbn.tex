@@ -1,0 +1,61 @@
+\subsubsection*{Der ISBN Code (ISBN10)}
+
+
+\begin{definition}[Wort]
+Ein \textbf{Wort} $\boldsymbol{w}$ ist ein Zeilenvektor aus $\Zm{11}^{10}$ bestehend aus 10 Elementen von $\Zm{11}$.
+\[ \boldsymbol{w} = w_1\, w_2 \ldots w_{10} \]
+\[ w_i \in \Zm{11} \quad \text{Buchstabe} \]
+\end{definition}
+
+$\Zm{11}^{10}$ ist ein Vektorraum über dem Körper $\Zm{11}$.\\
+denn: Man kann Wörter addieren und mit Elementen von $\Zm{11}$ multiplizieren.
+
+\begin{beispiel}
+\[ \boldsymbol{\Zm{2}^3} = \{ \begin{array}[t]{llll} 000 & 001 & 010 & 011 \\ 100 & 101 & 110 & 111 \,\} \end{array} \]
+\end{beispiel}
+
+\begin{satz}
+Die Anzahl der Wörter ist $|\Zm{11}^{10}| = 11^{10}$.
+\end{satz}
+
+Sei $C$ die Menge der \textbf{ISBN10}-Nummern (Menge der Codewörter).
+\[ C \subseteq \Zm{11}^{10} \]
+
+\begin{beispiel}
+\textbf{0-387-98999-4}, \quad \textbf{3-528-06580-$\boldsymbol{X}$}
+\end{beispiel}
+
+\[ \boldsymbol{c} = c_1\text{-}c_2\, c_3\, c_4\text{-}c_5\, c_6\, c_7\, c_8\, c_9\text{-}c_{10} \in C \]
+\begin{tabular}{ll}
+$c_1$ & Sprache, \\
+$c_2\, c_3\, c_4$ & Verlag, \\
+$c_5 \ldots c_9$ & vergibt der Verlag, \\
+$c_{10}$ & Prüfziffer.
+\end{tabular}\\
+$0 \leq c_1, \ldots, c_9 < 10$
+
+Die Prüfziffer $c_{10}$ wird so bestimmt, dass die gewichtete Prüfsumme
+\[ \sum_{i=1}^{10} i\, c_i \equiv 0 \pmod{11} \qquad (*) \]
+verschwindet. Dann ist
+\[ \sum_{i=1}^{10} i\, c_i = \sum_{i=1}^{9} i\, c_i + 10\, c_{10} \equiv \sum_{i=1}^{9} i\, c_i - c_{10} \equiv 0 \pmod{11} \]
+\[ \Rightarrow \quad c_{10} \equiv \sum_{i=1}^{9} i\, c_i \pmod{11} \]
+Man schreibt $X$ an Stelle von 10.
+
+Sei $\boldsymbol{c} \in C$, $\boldsymbol{r} \in \Zm{11}^{10}$, $\boldsymbol{h} = 1\ 2\ 3\ 4\ 5\ 6\ 7\ 8\ 9\ 10$. Dann erhält $(*)$ die Form
+\[ \boldsymbol{h}\, \boldsymbol{c}^T \equiv 0 \pmod{11}. \]
+Wenn sich $\boldsymbol{r}$ und $\boldsymbol{c}$ an genau einer (Fehler-)Stelle $x$ unterscheiden, ist der Fehlervektor
+\[ \boldsymbol{e} = \boldsymbol{r} - \boldsymbol{c} = 0\ 0 \ldots y \ldots 0\ 0, \qquad y = r_x - c_x \neq 0 \quad \text{Fehlergröße} \]
+
+\begin{satz}
+ISBN10 erkennt genau einen Fehler.
+\end{satz}
+
+\begin{proof}
+\[ \sum_{i=1}^{10} i\, r_i = \boldsymbol{h}\, \boldsymbol{r}^T = \boldsymbol{h}\, \boldsymbol{c}^T + \boldsymbol{h}\, \boldsymbol{e}^T \equiv \boldsymbol{h}\, \boldsymbol{e}^T = x\, y \pmod{11}, \quad x, y \neq 0 \]
+Da $\Zm{11}$ ein Körper ist, gibt es keine Nullteiler, also
+\[ x\, y \neq 0 \quad \Leftrightarrow \quad x \neq 0 \text{ und } y \neq 0 \qedhere \]
+\end{proof}
+
+\begin{beispiel}
+Sind obige Nummern ISBN10 Nummern?
+\end{beispiel}

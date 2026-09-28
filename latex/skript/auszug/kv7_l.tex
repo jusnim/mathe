@@ -1,0 +1,37 @@
+\textbf{Lösung zu Klausurvorbereitung 7}
+
+\begin{loesung}
+\textbf{1. Lösungsweg:} Satz von Euler, Schnelles Potenzieren
+\begin{align*}
+& e\,d \equiv 1 \pmod{\varphi(m)}, \quad \varphi(101) = 100, && a^{\varphi(m)} \equiv 1 \pmod m\\
+\Rightarrow\quad & d = e^{\varphi(\varphi(m)) - 1} \equiv 1 \pmod{\varphi(m)} && \varphi(\varphi(m)) = \varphi(100) = 40\\
+\Rightarrow\quad & \varphi(\varphi(m)) - 1 = 39 = 1 + 2 + 4 + 32\\
+& 13,\quad 13^2 \equiv 69,\quad 13^4 \equiv 69^2 \equiv 61,\quad \dots,\quad 13^{32} \equiv 81\\
+\Rightarrow\quad & d = e^{39} \equiv 1 \pmod{100}\\
+\Rightarrow\quad & d \equiv 13 \cdot 69 \cdot 61 \cdot 81 \equiv 77 \pmod{100}
+\end{align*}
+% Hinweis: In der Quelle steht "13^2", "13^4", "69^2", "13^32" in Textschreibweise und "*" als Malzeichen.
+
+\textbf{2. Lösungsweg:} Lemma von Bezout, EA
+\[
+e\,d - \varphi(m)\,y = 1 \quad\Leftrightarrow\quad e\,d \equiv 1 \pmod{\varphi(m)}
+\]
+EA mit $\varphi(m)$ und $e$
+\begin{align*}
+100 &= 7 \cdot 13 + 9\\
+13 &= 1 \cdot 9 + 4\\
+9 &= 2 \cdot 4 + 1\\
+4 &= 4 \cdot 1
+\end{align*}
+\[
+Q = \begin{pmatrix} 7 & 1\\ 1 & 0\end{pmatrix}
+\begin{pmatrix} 1 & 1\\ 1 & 0\end{pmatrix}
+\begin{pmatrix} 2 & 1\\ 1 & 0\end{pmatrix}
+\begin{pmatrix} 4 & 1\\ 1 & 0\end{pmatrix}
+= \begin{pmatrix} 8 & 7\\ 1 & 1\end{pmatrix}
+\begin{pmatrix} 9 & 2\\ 4 & 1\end{pmatrix}
+= \begin{pmatrix} 100 & 23\\ 13 & 3\end{pmatrix}
+\]
+$\operatorname{Det} Q = 100 \cdot 3 - 13 \cdot 23 = 1$\\
+$\Rightarrow\quad d = -23 \equiv 77 \pmod{100}$
+\end{loesung}

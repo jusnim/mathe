@@ -1,0 +1,15 @@
+\begin{rezept}{Rezept $z \equiv a \pmod m$, $z \equiv b \pmod n$}
+\begin{enumerate}
+\item Ansatz $z = m x + a = n y + b$ $\Rightarrow$ $m x - n y = b - a$.
+\item Mit dem EA (oder dem Ergebnis der Voraufgabe) $m x' - n y' = 1$ lösen.
+\item Mit $b - a$ multiplizieren: $x = x'(b-a)$, $y = y'(b-a)$.
+\item $z_0 = m x + a$. Kontrolle: $z_0 = n y + b$.
+\item Alle Lösungen $z = z_0 + k \cdot m n$. Kleinste positive: so oft $mn$ addieren, bis $z > 0$.
+\item Probe: $z$ durch $m$ und $n$ teilen, Reste prüfen.
+\end{enumerate}
+\end{rezept}
+
+\subsection*{Musterrechnung ($z \equiv 8 \bmod 17$, $z \equiv 5 \bmod 15$)}
+$17x - 15y = 5 - 8 = -3$. Aus Aufgabe 3: $17 \cdot 8 - 15 \cdot 9 = 1$. Mal $(-3)$: $x = -24$, $y = -27$.
+$z = 17 \cdot (-24) + 8 = -400$. Alle Lösungen $z = -400 + 255k$.
+\begin{ergebnis} kleinste positive Lösung $z = -400 + 2 \cdot 255 = 110$ \ (Probe: $110 = 6 \cdot 17 + 8 = 7 \cdot 15 + 5$) \end{ergebnis}

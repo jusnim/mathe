@@ -1,0 +1,25 @@
+\textbf{Lösung zu Klausur 29.07.2026, Aufgabe 4}
+
+\teil{a} Ansatz: $z = 17x + 8 = 15y + 5$, also
+\[
+17x - 15y = 5 - 8 = -3 .
+\]
+Aus Aufgabe 3: $17 \cdot 8 - 15 \cdot 9 = 1$. Multiplikation mit $-3$:
+\[
+17 \cdot (-24) - 15 \cdot (-27) = -3, \qquad x = -24,\ y = -27 .
+\]
+\[
+z = 17 \cdot (-24) + 8 = -400 = 15 \cdot (-27) + 5 .
+\]
+(Mit $x = -7$, $y = -8$ aus Aufgabe 3 erhält man $x = 21$, $y = 24$ und $z = 365$; das ist dieselbe Restklasse.)
+
+\teil{b} Da $\ggT(17, 15) = 1$, sind alle Lösungen $z \equiv -400 \pmod{17 \cdot 15 = 255}$:
+\[
+z = -400 + k \cdot 255 \quad (k \in \Z).
+\]
+Kleinste positive Lösung: $z = -400 + 2 \cdot 255 = 110$.
+
+Probe: $110 = 6 \cdot 17 + 8 \equiv 8 \pmod{17}$ \checkmark, \quad $110 = 7 \cdot 15 + 5 \equiv 5 \pmod{15}$ \checkmark
+\begin{ergebnis} $z \equiv 110 \pmod{255}$, also $z = 110 + 255k$ ($k \in \Z$); kleinste positive Lösung $z = 110$. \end{ergebnis}
+
+% ---------------------------------------------------------------------------
