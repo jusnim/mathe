@@ -1,0 +1,425 @@
+% Quelle: 4. Lineare Codes.pdf
+% Art: Vorlesung
+% Themen: Fehlerkorrigierende Codes, Hamming-Abstand, Gewicht, Minimalgewicht, Fehlererkennung und -korrektur, lineare Codes, Erzeugermatrix, Kontrollmatrix, systematische Form, Dualitätssatz, Wiederholungscode, Paritätscode, binärer Hamming-Code, q-närer Hamming-Code, Syndromdecodierung, Klassenführer, Hamming-Schranke, perfekte Codes, Golay-Codes, Singleton-Schranke, MDS-Codes
+\section{4. Lineare Codes}
+
+\textit{Irren ist menschlich, wer aber auf Irrtümern beharrt, \dots}
+
+% ------------------------------------------------------------
+\subsection{4.1 Error Correcting Codes}
+
+\begin{beispiel}
+Codewörter: \quad $\mathbf{c}_1 = 100110$, $\mathbf{c}_2 = 010101$, $\mathbf{c}_3 = 001011$, $\mathbf{c}_4 = 000000$
+\end{beispiel}
+
+Mit Wörtern wollen wir rechnen. Deshalb kommen die Buchstaben aus einem Körper $F = F_q$, \ $q$ Primzahlpotenz.
+
+\begin{definition}[Code]
+Der \textbf{Code} $C$ ist die Menge der Codewörter $C \subseteq F_q^{\,n}$, \ $n$ ist die Wortlänge.
+\end{definition}
+
+\begin{tabular}{ll}
+obiges Beispiel: & $n = 6$, \ $q = 2$ \\
+ISBN10: & $n = 10$, \ $q = 11$ \\
+\end{tabular}
+
+$q = 2$: binärer Code, \quad $q = 3$: ternärer Code.
+
+\paragraph{Senden und Empfangen einer Nachricht $\mathbf{a} \in F_q^{\,k}$, \ $k < n$}
+Codierungsfunktion \ $\varphi : F_q^{\,k} \to F_q^{\,n}$, \quad $\mathbf{a} = a_1 \dots a_k$, \quad $\varphi(\mathbf{a}) = \mathbf{c}$
+
+% GRAFIK: Senkrechtes Ablaufdiagramm mit Pfeilen nach unten; beim Übertragungsschritt ein Pfeil von rechts "<- mögliche Fehler".
+\[
+\begin{array}{ll}
+\mathbf{a} \text{ codieren: } \varphi(\mathbf{a}) = \mathbf{c} \in C \ \text{ Codewort} & \\
+\quad\downarrow & \\
+\mathbf{c} \text{ senden} & \\
+\quad\downarrow & \qquad\leftarrow \quad \text{mögliche Fehler} \\
+\mathbf{r} \in F_q^{\,n} \text{ empfangen} & \\
+\quad\downarrow & \\
+\mathbf{r} \text{ decodieren: } \mathbf{r} \to \mathbf{c} \in C \ \text{ gesendetes Codewort} & \\
+\quad\downarrow & \\
+\mathbf{a} = \varphi^{-1}(\mathbf{c}) \ \text{ Nachricht} &
+\end{array}
+\]
+
+$\varphi$ injektiv (eineindeutig), aber nicht surjektiv.
+
+Fehler \textbf{erkennen:} \ $\mathbf{r} \in C$ ?\\
+Fehler \textbf{korrigieren:} \ $\mathbf{r} \to \mathbf{c}$. \ $\mathbf{r}$ auf das nächtgelegene Codewort $\mathbf{c}$ abbilden.
+
+\paragraph{$\mathbf{c}$ ist unbekannt. Wie kann der Empfänger $\mathbf{r} \neq \mathbf{c}$ erkennen?}
+\textbf{Lösung}: Es werden nicht alle Wörter aus $F_q^{\,n}$ als Codewörter zugelassen,
+\[ C \neq F_q^{\,n} \]
+
+\begin{beispiel}
+$C = \{\mathbf{c}_1, \mathbf{c}_2, \mathbf{c}_3, \mathbf{c}_4\}$\\
+Zwei Codewörter unterscheiden sich in mindestens 3 Stellen,\\
+d.h.\ $e < 3$ Fehler werden erkannt.\\
+$\mathbf{r} = 010001$ \ ist kein Codewort.\\
+Unter der Annahme, dass 2 Fehler seltener sind als 1 Fehler, wird das Wort
+\[ \mathbf{r} \to \mathbf{c}_2 = 010101 \]
+rekonstruiert. $\mathbf{y}$ unterscheidet sich in 2 Stellen von $\mathbf{c}_4$. 2 Fehler kann $C$ nicht korrigieren.
+% UNSICHER: im Original steht "y"; gemeint ist vermutlich r = 010001 (unterscheidet sich in 2 Stellen von c4 = 000000).
+\end{beispiel}
+
+\begin{definition}[Gewicht]
+Definieren das \textbf{Gewicht} eines Wortes $\mathbf{w} \in F_q^{\,n}$
+\[ |\mathbf{w}| = |\{\, i \mid w_i \neq 0 \,\}| \]
+\end{definition}
+
+\begin{definition}[Hamming Abstand]
+Der \textbf{Hamming Abstand} \quad $|\mathbf{v}-\mathbf{w}|$\\
+gibt an, an wie vielen Stellen sich die Wörter $\mathbf{v}, \mathbf{w} \in F_q^{\,n}$ unterscheiden.
+\end{definition}
+
+Für den Hamming Abstand gelten die \textbf{Abstandsregeln}: \ $\mathbf{v}, \mathbf{w}, \mathbf{y} \in F_q^{\,n}$
+\begin{center}
+\begin{tabular}{ll}
+$|\mathbf{v}-\mathbf{w}| = |\mathbf{w}-\mathbf{v}|$ & Symmetrie \\
+$|\mathbf{v}-\mathbf{w}| \geq 0$ & positiv semidefinit \\
+$|\mathbf{v}-\mathbf{w}| = 0 \ \Rightarrow \ \mathbf{w} = \mathbf{y}$ & positiv definit \\
+$|\mathbf{v}-\mathbf{w}| \leq |\mathbf{v}-\mathbf{y}| + |\mathbf{y}-\mathbf{w}|$ & Dreiecksungleichung \\
+\end{tabular}
+\end{center}
+% UNSICHER: "w = y" so im Original; gemeint ist vermutlich v = w.
+
+\begin{definition}[Minimalgewicht]
+\textbf{Minimalgewicht} des Codes $C$ \ (minimum distance)
+\[ d_C := \min\{\, |\mathbf{c} - \mathbf{c}'| \mid \mathbf{c}, \mathbf{c}' \in C,\ \mathbf{c} \neq \mathbf{c}' \,\} \]
+\end{definition}
+
+\begin{beispiel}
+Der obige Code $C$ hat das Minimalgewicht $d_C = 3$.
+\end{beispiel}
+
+\begin{satz}
+Sei $e$ = Anzahl der Fehler im Wort $\mathbf{r}$.\\
+\begin{tabular}{lcl}
+$C$ \textit{erkennt} das Wort $\mathbf{r}$ als falsch & $\Leftrightarrow$ & $e + 1 \leq d_C$ \\
+$C$ \textit{korrigiert} das Wort $\mathbf{r} \to \mathbf{c}$ & $\Leftrightarrow$ & $2e + 1 \leq d_C$ \\
+\end{tabular}
+\end{satz}
+
+\begin{definition}
+Falls \ $d_C \geq e + 1$ \ heißt $C$ \textbf{$e$-Fehler-erkennend};\\
+falls \ $d_C \geq 2e + 1$ \ heißt $C$ \textbf{$e$-Fehler-korrigierend}.
+\end{definition}
+
+\paragraph{Forderungen an einen Code $C$}
+\begin{tabular}{ll}
+- schnelles Codieren: & $\varphi(\mathbf{a}) = \mathbf{c}$ \\
+- schnelles Decodieren: & $\mathbf{r} \to \mathbf{c}$, \ $\varphi^{-1}(\mathbf{c}) = \mathbf{a}$ \\
+- viele Fehler korrigierend & $d_C$ groß, \\
+- hohe Informationsdichte. & $|C| / |F_q^{\,n}|$ \\
+\end{tabular}
+
+\paragraph{Parameter des Codes $C$} \qquad $[n, |C|, d_C]_q$
+
+% ------------------------------------------------------------
+\subsection{4.2 Lineare Codes}
+
+\begin{definition}[linearer Code]
+Der Code $C$ heißt \textbf{linear}, wenn $C \subseteq F_q^{\,n}$ ein Unterraum von $F_q^{\,n}$ ist,\\
+d.h.\ wenn $\mathbf{o} \in C$ und\\
+\begin{tabular}{lll}
+(A) & $\mathbf{c} + \mathbf{c}' \in C$ & für alle \ $\mathbf{c}, \mathbf{c}' \in C$ \\
+(M) & $a\,\mathbf{c} \in C$ & für alle \ $\mathbf{c} \in C$, \ $a \in F_q$ \\
+\end{tabular}
+\end{definition}
+
+Sei $k = \operatorname{Dim} C$. Dann existieren $k$ l.u.\ Codewörter $\mathbf{g}_1, \dots, \mathbf{g}_k \in C$.\\
+Die $\mathbf{g}_1, \dots, \mathbf{g}_k$ bilden dann eine Basis von $C$.\\
+Sei $G$ die $(k, n)$-Matrix mit den Zeilen $\mathbf{g}_1, \dots, \mathbf{g}_k$.
+\[ C = \{\, a_1\mathbf{g}_1 + \dots + a_k\mathbf{g}_k \mid a_1, \dots, a_k \in F_q \,\} = \{\, \mathbf{a}\,G \mid \mathbf{a} \in F_q^{\,k} \,\} \]
+$C$ = Zeilenraum von $G$.
+
+\begin{definition}[Erzeugermatrix]
+Eine $(k, n)$-Matrix $G$ mit
+\[ C = \{\, \mathbf{a}\,G \mid \mathbf{a} \in F_q^{\,k} \,\} \quad \text{und} \quad k = \operatorname{Dim} C = \operatorname{Rang} G \]
+heißt \textbf{Erzeugermatrix} des Codes $C$.
+\end{definition}
+
+\begin{korollar}[Folgerung]
+\[ |C| = |F_q^{\,k}| = q^k \qquad \square \]
+\end{korollar}
+
+Jede Nachricht $\mathbf{a} \in F_q^{\,k}$ besitzt ein Codewort aus $C$. Die \textbf{Codierungsfunktion}
+\[ \varphi : F_q^{\,k} \to C \qquad \mathbf{a} \to \mathbf{c} = \mathbf{a}\,G \]
+ist bijektiv.
+
+Parameter des linearen Codes $C$: \ $[n, k, d]_q$, \ $k = \operatorname{Dim} C = \operatorname{Dim} F_q^{\,k}$, \ $d = d_C$.\\
+Informationsdichte \ bei linearen Codes; \ $k / n$.
+
+\begin{beispiel}[Wiederholungscode]
+\[ \varphi : F_q \to C, \quad a \to (a, a, \dots, a) = a\,(1\ 1\ \dots\ 1) \]
+\[ G = (1\ 1\ \dots\ 1), \quad d_C = n \]
+$C$ ist ein $[n, 1, n]_q$ Code.
+
+Informationsdichte = $1/n$ = fast 0\,\% \ für großes $n$,\\
+$d_C = n$, \ d.h.\ $C$ korrigiert
+$\begin{cases} (n-1)/2 \\ n/2 - 1 \end{cases}$
+Fehler, falls $n$
+$\begin{cases} \textit{ungerade} \\ \textit{gerade} \end{cases}$
+\end{beispiel}
+
+\begin{beispiel}[Paritätscode]
+\[ \varphi : F_q^{\,n-1} \to C, \quad (a_1, \dots, a_{n-1}) \to (a_1, \dots, a_{n-1}, \textstyle\sum a_i) = \mathbf{a}
+\begin{pmatrix} 1 & & & 1 \\ & \ddots & & \vdots \\ & & 1 & 1 \end{pmatrix}, \quad d_C = 2 \]
+$C$ ist ein $[n, n-1, 2]$ Code, \quad d.h.\ 1 Fehler erkennend.\\
+Informationsdichte = $(n-1)/n = 1 - 1/n$ = fast 100\,\% \ für großes $n$,\\
+$d_C = 2$, \ d.h.\ $C$ kann keinen Fehler korrigieren.
+\end{beispiel}
+
+\begin{definition}[Kontrollmatrix]
+\textbf{Kontrollmatrix} für $C$\\
+Eine $(n-k, n)$-Matrix $H$ mit
+\[ C = \operatorname{Kern} H = \{\, \mathbf{c} \in F_q^{\,n} \mid H\,\mathbf{c}^T = \mathbf{o} \,\} \]
+$H$ heißt \textbf{Kontrollmatrix} für $C$.
+\end{definition}
+
+\begin{tabular}{ll}
+\textbf{Systematische Form der Kontrollmatrix} & $H = (E_{n-k} \mid A)$ \\
+\textbf{Systematische Form der Erzeugermatrix} & $G = (-A^T \mid E_k)$ \\
+\end{tabular}
+
+Es gilt \qquad $H\,G^T = O$ \ bzw.\ \ $G\,H^T = O$
+
+\paragraph{Dimensionsformel}
+\[ \operatorname{Rang} G + \operatorname{Rang} H = n, \quad \operatorname{Rang} G = k, \quad \operatorname{Rang} H = n - k \]
+
+\paragraph{Minimalgewicht $d_C$ eines linearen Codes $C$}
+\begin{align*}
+d_C &= \min\{\, |\mathbf{c} - \mathbf{c}'| \mid \mathbf{c}, \mathbf{c}' \in C,\ \mathbf{c} \neq \mathbf{c}' \,\} \\
+&= \min\{\, |\mathbf{c}| \mid \mathbf{c} \in C,\ \mathbf{c} \neq \mathbf{o} \,\}
+\end{align*}
+\begin{align*}
+& H\,\mathbf{c}^T = \mathbf{o} \ \Rightarrow \ |\mathbf{c}| \text{ Spalten von } H \text{ sind l.a.} \\
+\Rightarrow\quad & d_C = 1 + \max\{\, e \mid \text{jeweils } e \text{ Spalten von } H \text{ sind l.u.} \,\}
+\end{align*}
+
+\begin{satz}[Dualitätssatz]
+Je $s$ Spalten der Kontrollmatrix $H$ seien l.\,u. \ Dann ist\\
+\begin{tabular}{ll}
+schwacher: & $s + 1 \leq d_C \leq |\mathbf{c}|$ \\
+starker: & $\max\{s + 1\} = d_C = \min\{\, |\mathbf{c}| \mid \mathbf{o} \neq \mathbf{c} \in C \,\}$ \\
+\end{tabular}
+\end{satz}
+
+Man nutzt den Dualitätssatz zur Bestimmung von $d_C$.
+
+\paragraph{Forderungen an einen Code $C$}
+- viele Fehler korrigierend ( $s$, $d_C$ groß ),
+
+% ------------------------------------------------------------
+\subsection{4.3 Der binäre Hamming Code $H_2(m)$, \ $F = F_2$}
+
+\begin{definition}[binärer Hamming Code]
+Die Spalten der Kontrollmatrix $H$ enthalten die Binärdarstellung der Zahlen
+\[ 1, 2, \dots, n = 2^m - 1. \]
+m.a.W.\ \dots\ enthalten sämtliche von Null verschiedene $m$-Tupel bestehend aus Nullen und Einsen.
+\end{definition}
+
+Verschiedene Anordnungen der Spalten liefern isomorphe Codes. Hier ist eine systematische Form des Codes.
+
+\begin{beispiel}
+$H_2(3)$, \ $n = 2^m - 1 = 7$,
+% Leere Einträge der Matrizen wie im Original (entsprechen 0).
+\[
+H = \begin{pmatrix} 1 & & & 1 & 0 & 1 & 1 \\ & 1 & & 1 & 1 & 1 & 0 \\ & & 1 & 0 & 1 & 1 & 1 \end{pmatrix}, \qquad
+G = \begin{pmatrix} 1 & 1 & 0 & 1 & & & \\ 0 & 1 & 1 & & 1 & & \\ 1 & 1 & 1 & & & 1 & \\ 1 & 0 & 1 & & & & 1 \end{pmatrix}
+= \begin{pmatrix} g_1 \\ g_2 \\ g_3 \\ g_4 \end{pmatrix}
+\]
+% GRAFIK: Unter G: geschweifte Klammer unter den Spalten 1--3 mit "Kontrolle", unter den Spalten 4--7 mit "Information".
+(Spalten 1--3 von $G$: \textit{Kontrolle}, Spalten 4--7: \textit{Information})
+
+\textbf{Bestimmung von $d_C$} \qquad $s + 1 \leq d_C \leq |\mathbf{c}|$\\
+\begin{tabular}{ll}
+Je 2 Spalten von $H$ linear unabhängig & $\Rightarrow \ 2 \leq s$ \\
+$\Rightarrow \ 3 \leq s + 1 \leq d_C \leq |\mathbf{g}_1| = 3$ & $\Rightarrow \ d_C = 3$ \\
+\end{tabular}\\
+d.h.\ $H_2(3)$ ist ein \ $[7, 4, 3]_2$ Code, $|H_2(3)| = 2^k = 16$, \ 1-Fehler korrigierend.
+\end{beispiel}
+
+\begin{satz}
+Die Parameter von $H_2(m)$ sind \ $[n, k, d]_q = [\,n = 2^m - 1,\ n - m,\ 3\,]_2$.
+\end{satz}
+
+\paragraph{Kodieren}
+\[ \mathbf{a} = (a_1\ a_2\ a_3\ a_4) \ \to \ \mathbf{c} = \mathbf{a}\,G = c_1\ c_2\ c_3\ a_1\ a_2\ a_3\ a_4 \]
+mit
+\begin{align*}
+c_1 &= a_1 + a_3 + a_4 \\
+c_2 &= a_1 + a_2 + a_3 \\
+c_3 &= a_2 + a_3 + a_4
+\end{align*}
+
+\paragraph{Dekodieren}
+\begin{tabular}{ll}
+$\mathbf{c} \in H_2(m)$ & Codewort (gesendet) \\
+$\mathbf{r} \in F_2^{\,n}$ & empfangenes Wort \\
+$\mathbf{e} = \mathbf{r} - \mathbf{c}$ & Fehlerwort \\
+$S(\mathbf{r}) := H\,\mathbf{r}^T \in F_2^{\,m}$ & \textbf{Syndrom} des Wortes $\mathbf{r}$ \\
+\end{tabular}
+
+1.\ Fall: $\mathbf{c} = \mathbf{r} \in C \ \Rightarrow \ S(\mathbf{r}) = \mathbf{o}$. \ Die zu den Spalten von $E$ in $G$ gehörenden Stellen in $\mathbf{c}$ enthalten die Nachricht $\mathbf{a}$
+\[ \mathbf{c} = (c_1\ \dots\ c_m \mid a_1\ \dots\ a_k). \]
+
+2.\ Fall: $\mathbf{e} = \mathbf{r} - \mathbf{c}$ \ enthält genau 1 Fehler $e_x = 1$ an der Stelle $x$
+\[ \mathbf{e} = (0\ 0\ \dots\ 1\ \dots\ 0) \]
+\[ S(\mathbf{r}) := H\,\mathbf{r}^T = H\,\mathbf{c}^T + H\,\mathbf{e}^T = H\,\mathbf{e}^T = \mathbf{h}_x = x\text{-te Spalte von } H \]
+$F_2 = \{0, 1\}$\\
+$\Rightarrow$ Ändern den Buchstaben an der Stelle $x$ von $\mathbf{r}$
+\[ \mathbf{c} := \mathbf{r} - \mathbf{e} = r_1\ r_2\ \dots\ r_x{-}1\ \dots\ r_n \]
+
+\begin{algorithmus}
+\ \\
+Berechne das Syndrom \ $S(\mathbf{r}) := H\,\mathbf{r}^T$\\
+If ( $S(\mathbf{r}) = \mathbf{o}$ ) \ $\mathbf{c} = \mathbf{r}$;\\
+Else\\
+\hspace*{2em} Ermittle den Spaltenindex $x$ von $H$ mit \ $S(\mathbf{r}) = \mathbf{h}_x$;\\
+\hspace*{2em} $\mathbf{c} = \mathbf{r} - \mathbf{e}$ \qquad // Ändere die Stelle $x$ in $\mathbf{r}$\\
+End If
+\end{algorithmus}
+
+% ------------------------------------------------------------
+\subsection{4.4 Der $q$-näre Hamming Code $H_q(m)$, \ $F = F_q$}
+
+Wie viele Spalten hat die Kontrollmatrix $H$ von $H_q(m)$, so dass jeweils $s = 2$ Spalten l.u.\ sind?\\
+Die Punkte der Geraden
+\[ g_h = \{\, \lambda\,\mathbf{h} \mid \lambda \in F \,\} \subseteq F^m \]
+sind l.a. Die Spalten von $H$ dürfen also höchstens einen Repräsentanten von $g_h$ enthalten. Die $g_h \setminus \{\mathbf{o}\}$ bilden eine Zerlegung von $F^m \setminus \{\mathbf{o}\}$ in \textbf{Klassen}. Jede Klasse besitzt $q - 1$ Elemente.
+
+\begin{definition}[$q$-närer Hamming Code]
+Die Spalten von $H$ bestehen aus Repräsentanten $\mathbf{h}$ der 1-dimensionalen Unterräume (Geraden durch $\mathbf{o}$) des Vektorraums $F^m$.\\
+Anzahl dieser Klassen: \qquad $n = (q^m - 1) / (q - 1)$
+\end{definition}
+
+\begin{beispiel}
+$H_3(2)$, \ $F = F_3$
+\[ n = (3^2 - 1)/(3 - 1) = 4, \quad k = n - m = 4 - 2 = 2, \quad |H_3(2)| = 3^2 = 9 \]
+Klassen von $F^2$
+\[
+H = (E \mid A) = \begin{pmatrix} 1 & 0 & 1 & 1 \\ 0 & 1 & 1 & 2 \end{pmatrix}, \qquad
+G = (-A^T \mid E) = \begin{pmatrix} 2 & 2 & 1 & 0 \\ 2 & 1 & 0 & 1 \end{pmatrix}
+\]
+\[ 2 + 1 \leq s + 1 \leq d_C \leq 3 \quad \Rightarrow \quad d_C = 3 \]
+d.h.\ 1-Fehler korrigierend.
+
+% GRAFIK: Sternförmiges Diagramm der Klassen von F_3^2 mit 00 in der Mitte; vier Geraden durch 00:
+% waagerecht 20 -- 00 -- 10, senkrecht 01 -- 00 -- 02, diagonal 11 (oben rechts) -- 00 -- 22 (unten links),
+% diagonal 21 (oben links) -- 00 -- 12 (unten rechts).
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+Gerade durch $00$ & Klasse (ohne $00$) \\
+\midrule
+waagerecht & $\{10,\ 20\}$ \\
+senkrecht & $\{01,\ 02\}$ \\
+diagonal & $\{11,\ 22\}$ \\
+diagonal & $\{21,\ 12\}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{beispiel}
+
+\paragraph{Dekodieren in $H_q(m)$}
+1.\ Fall: \ $\mathbf{c} = \mathbf{r} \in C \ \Rightarrow \ S(\mathbf{r}) = \mathbf{o}$.
+\[ \mathbf{c} = (c_1\ \dots\ c_m \mid a_1\ \dots\ a_k). \]
+2.\ Fall: $\mathbf{e} = \mathbf{r} - \mathbf{c}$ \ enthält genau 1 Fehler $e_x$ \ an der Stelle $x$
+\begin{align*}
+& \mathbf{e} = (0\ \dots\ e_x\ \dots\ 0) \\
+\Rightarrow\quad & S(\mathbf{r}) := H\,\mathbf{r}^T = H\,\mathbf{e}^T = \mathbf{h}_x\,e_x \\
+\Rightarrow\quad & \mathbf{c} = \mathbf{r} - \mathbf{e} = r_1\ \dots\ r_x{-}e_x\ \dots\ r_n \quad \text{d.h. } e_x \text{ vom } x\text{-ten Element subtrahieren.}
+\end{align*}
+
+\begin{definition}[Klassenführer]
+Am schnellsten findet man Fehlerstelle $x$ und Fehlergröße $e_x$, wenn das erste von Null verschiedene Element in jeder Spalte von $H$ eine 1 ist.\\
+Solche Repräsentanten der Klassen heißen \textbf{Klassenführer}.
+\end{definition}
+
+\begin{algorithmus}
+\ \\
+Berechne das Syndrom \ $S(\mathbf{r}) := H\,\mathbf{r}^T$\\
+If ( $S(\mathbf{r}) = \mathbf{o}$ ) \ $\mathbf{c} = \mathbf{r}$;\\
+Else\\
+\hspace*{2em} Ermittle den Spaltenindex $x$ von $H$ mit \ $H\,\mathbf{e}^T = \mathbf{h}_x\,e_x$;\\
+\hspace*{2em} $\mathbf{c} = \mathbf{r} - \mathbf{e}$\\
+End If
+\end{algorithmus}
+
+\begin{beispiel}
+$H_3(2)$, \quad $\mathbf{r}_1 = 1111$, \ $\mathbf{r}_2 = 0011$
+\begin{align*}
+S(\mathbf{r}_1) &= H\,\mathbf{r}_1^T = \begin{pmatrix} 0 \\ 1 \end{pmatrix} = \mathbf{h}_2 \ \Rightarrow \ x = 2,\ e_2 = 1 \ \Rightarrow \ \mathbf{c}_1 = 1011 \\
+S(\mathbf{r}_2) &= H\,\mathbf{r}_2^T = \begin{pmatrix} 2 \\ 0 \end{pmatrix} = \mathbf{h}_1\,2 \ \Rightarrow \ x = 1,\ e_1 = 2 \ \Rightarrow \ \mathbf{c}_2 = 1011
+\end{align*}
+\end{beispiel}
+
+% ------------------------------------------------------------
+\subsection{4.5 Schranken für die Anzahl $|C|$ der Codewörter}
+
+Der Code $C \subseteq F_q^{\,n}$ korrigiere $e$ Fehler, d.h.\ $2e + 1 \leq d_C$.\\
+Gesucht: \qquad $|C| \leq$ obere Schranke
+
+\begin{definition}[Kugel um $\mathbf{c}$ mit Radius $e$ (Ball)]
+\[ B(e) := \{\, \mathbf{v} \in F_q^{\,n} \mid |\mathbf{c} - \mathbf{v}| \leq e \,\}. \]
+\end{definition}
+
+Die Kugeln $B(e)$ um die $|C|$ Codewörter dürfen sich nicht überschneiden.
+\[ \Rightarrow \qquad |C| \cdot |B(e)| \leq |F_q^{\,n}| = q^n \]
+\[ |B(e)| = \sum_{i=0}^{e} |\{\, \mathbf{v} \in F_q^{\,n} \mid |\mathbf{c} - \mathbf{v}| = i \,\}| \]
+Anzahl der Wörter mit Abstand $i$ von $\mathbf{c} = c_1\,c_2 \dots c_n$
+\begin{align*}
+|\{\, \mathbf{v} \in F_q^{\,n} \mid |\mathbf{c} - \mathbf{v}| = 0 \,\}| &= 1 \\
+|\{\, \mathbf{v} \in F_q^{\,n} \mid |\mathbf{c} - \mathbf{v}| = 1 \,\}| &= n\,(q - 1)
+\end{align*}
+Es gibt $n$ Stellen an denen sich $\mathbf{c}$, $\mathbf{v}$ unterscheiden können.\\
+An jeder Stelle von $\mathbf{v}$ können $q - 1$ verschiedene Buchstaben stehen.
+
+Analog
+\[ |\{\, \mathbf{v} \in F_q^{\,n} \mid d(\mathbf{c}, \mathbf{v}) = 2 \,\}| = \binom{n}{2}\,(q - 1)^2 \]
+Allgemein
+\[ |\{\, \mathbf{v} \in F_q^{\,n} \mid d(\mathbf{c}, \mathbf{v}) = i \,\}| = \binom{n}{i}\,(q - 1)^i \]
+\[ \Rightarrow \qquad |B(e)| = \sum_{i=0}^{e} \binom{n}{i} (q-1)^i \]
+
+\begin{satz}[Hamming-Schranke]
+\[ |C| \cdot \sum_{i=0}^{e} \binom{n}{i} (q-1)^i \leq q^n \]
+\end{satz}
+
+\begin{definition}[perfekt]
+Gilt in dieser Ungleichung "`="', dann sind die "`Zwischenräume"' zwischen den Kugeln $B(e)$ leer. So ein Code $C$ heißt \textbf{perfekt}.
+\end{definition}
+
+\begin{beispiel}
+$C = H_2(m)$ \ ist ein $[n, n - m, 3]_2$ Code.\\
+$n = 2^m - 1$, \ $e = 1$, $q = 2$
+\[ |C| = 2^k = 2^{n-m}, \qquad \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + n = 2^m \]
+\[ \Rightarrow \qquad |C| \cdot \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 2^{n-m} \cdot 2^m = 2^n \qquad \square \]
+\end{beispiel}
+
+\begin{satz}
+Sämtliche Hamming Codes $H_q(m)$ \ sind perfekt.
+\end{satz}
+
+\begin{bemerkung}
+Es gibt nur wenige perfekte Codes,
+\begin{itemize}
+\item[-] die trivialen Codes \ $C = \{\mathbf{o}\}$, $C = F_q^{\,n}$
+\item[-] die ungeraden binären Wiederholungscodes \ $[2m+1, 1, 2m+1]_2$
+\item[-] die Hamming Codes $H_q(m)$
+\item[-] binäre Golay Code \quad $[23, 12, 7]_2$
+\item[-] ternäre Golay Code \ $[11, 6, 5]_3$
+\end{itemize}
+\end{bemerkung}
+
+\begin{satz}[Die Singleton-Schranke]
+Sei $C$ ein (nicht notwendig linearer) $[n, k, d]_q$ Code. Entferne aus jedem $\mathbf{c} \in C$ die letzten $d-1$ Buchstaben. Die Restwörter sind dann immer noch voneinander verschieden.
+\[ \Rightarrow \qquad |C| \leq q^{n-d+1} \]
+Falls $C$ linear ist, also $|C| = q^k$ vereinfacht sich das zu
+\[ k + d \leq n + 1 \]
+\end{satz}
+
+\begin{definition}[MDS-Code]
+Ein Code, der die Singleton-Schranke mit "`="' erfüllt, heißt \textbf{MDS-Code} (maximum distance separable).
+\end{definition}
