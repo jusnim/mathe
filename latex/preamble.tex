@@ -16,7 +16,18 @@
 \newtheorem{beispiel}[definition]{Beispiel}
 \newtheorem{bemerkung}[definition]{Bemerkung}
 \newtheorem{algorithmus}[definition]{Algorithmus}
-\newtheorem{aufgabe}{Aufgabe}[section]
+\newtheorem{aufgabeN}{Aufgabe}[section]
+\renewcommand{\theaufgabeN}{\arabic{aufgabeN}}
+% Aufgabe mit eigenem Titel (z. B. [Aufgabe 3]) zeigt nur diesen Titel, sonst fortlaufende Nummer.
+\newcommand{\aufgtitel}{}
+\newtheorem*{aufgabeT}{\aufgtitel}
+\newif\ifaufgtitel
+\newenvironment{aufgabe}[1][]{\def\aufgtmp{#1}\ifx\aufgtmp\empty\aufgtitelfalse\begin{aufgabeN}\else\aufgtiteltrue\def\aufgtitel{#1}\begin{aufgabeT}\fi}{\ifaufgtitel\end{aufgabeT}\else\end{aufgabeN}\fi}
+% Nummern der Sätze usw. laufen je Abschnitt neu, ohne Abschnittsnummer davor.
+\renewcommand{\thedefinition}{\arabic{definition}}
+% Abschnitte ohne Nummer; die Titel tragen die Nummern der Unterlagen selbst.
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{2}
 \newenvironment{loesung}{\par\noindent\textbf{Lösung.}\ }{\par}
 
 % Kurzbefehle
