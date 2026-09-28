@@ -5,20 +5,24 @@
 \begin{enumerate}[label=\alph*)]
   \item $e = 113$, binär $e = 1110001$
   \[
-  c = a^e = 715 * 715^{16} * 715^{32} * 715^{64} \equiv 715 * 163 * 2287 * 2774 \equiv 708 \pmod{2803}
+  % KORRIGIERT: "715^16 = 163" (richtig: 1653); "c = a^e" statt Kongruenz; "*" als Malzeichen
+  c \equiv a^e = 715 \cdot 715^{16} \cdot 715^{32} \cdot 715^{64} \equiv 715 \cdot 1653 \cdot 2287 \cdot 2774 \equiv 708 \pmod{2803}
   \]
-  \item $w = c^d \pmod m$
+  % KORRIGIERT: "(mod m)" als Wert, jetzt \bmod
+  \item $w = c^d \bmod m$
   \item 1.\ Lösungsweg
   \[
-  e\,d \equiv 1 \pmod{\varphi(m)}. \qquad 113 * d \equiv 1 \pmod{2802}. \qquad \text{EA mit } 2802,\ 113
+  % KORRIGIERT: "*" als Malzeichen (ganze Rechnung); Voraussetzung ggT(e, phi(m)) = 1 ergänzt
+  e \cdot d \equiv 1 \pmod{\varphi(m)}. \]\[ 113 \cdot d \equiv 1 \pmod{2802} \ (\varphi(2803) = 2802, \text{ da } 2803 \text{ prim}). \]\[ \text{EA mit } 2802,\ 113
   \]
+  Die Inverse von $e$ existiert, weil $\ggT(113, 2802) = 1$ (letzter Rest $\neq 0$ im EA ist $1$).
   \begin{align*}
-  2802 &= 24 * 113 + 90\\
-  113 &= 1 * 90 + 23\\
-  90 &= 3 * 23 + 21\\
-  23 &= 1 * 21 + 2\\
-  21 &= 10 * 2 + 1\\
-  2 &= 2 * 1
+  2802 &= 24 \cdot 113 + 90\\
+  113 &= 1 \cdot 90 + 23\\
+  90 &= 3 \cdot 23 + 21\\
+  23 &= 1 \cdot 21 + 2\\
+  21 &= 10 \cdot 2 + 1\\
+  2 &= 2 \cdot 1
   \end{align*}
   \[
   Q = \begin{pmatrix} 24 & 1\\ 1 & 0 \end{pmatrix}
@@ -30,7 +34,7 @@
     = \begin{pmatrix} 2802 & 1339\\ 113 & 54 \end{pmatrix}
   \]
   \[
-  \det Q = 2802 * 54 - 113 * 1339 = 1
+  \det Q = 2802 \cdot 54 - 113 \cdot 1339 = 1
   \]
   \[
   \Rightarrow\quad d = -1339 \equiv 1463 \pmod{2802}
@@ -38,13 +42,14 @@
 
   2.\ Lösungsweg
   \begin{align*}
-  & d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}. \qquad \varphi(\varphi(2803)) = \varphi(2802), \quad 2802 = 2 * 3 * 467\\
-  \Rightarrow\quad & \varphi(\varphi(2803)) = 2 * 466 = 932\\
+  & d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)} \quad (\text{Euler, da } \ggT(e, \varphi(m)) = 1).\\
+  & \qquad \varphi(\varphi(2803)) = \varphi(2802), \quad 2802 = 2 \cdot 3 \cdot 467\\
+  \Rightarrow\quad & \varphi(\varphi(2803)) = 2 \cdot 466 = 932\\
   \Rightarrow\quad & \varphi(\varphi(2803)) - 1 = 931 = 512 + 256 + 128 + 32 + 2 + 1
   \end{align*}
 \end{enumerate}
 
-Rechnung modulo 2802
+Rechnung modulo 2802 (alle Gleichungen als $\equiv \pmod{2802}$ zu lesen)
 \begin{align*}
 e &= 113\\
 e^2 &= 1561\\
@@ -58,21 +63,21 @@ e^{256} &= 49\\
 e^{512} &= 2401
 \end{align*}
 \[
-d = 113 * 1561 * 2539 * 7 * 49 * 2401 \equiv 1463 \pmod{2802}
+d = 113 \cdot 1561 \cdot 2539 \cdot 7 \cdot 49 \cdot 2401 \equiv 1463 \pmod{2802}
 \]
 
 \medskip
 Probe:
 \[
-a = c^d = 708^{1463} = 708 * 2330 * 2292 * 1957 * 951 * 822\ 161 * 2323 \equiv 715 \pmod{2803}
+% KORRIGIERT: "a = c^d = ..." statt Kongruenz; "822 161" ohne Malzeichen
+a \equiv c^d = 708^{1463} \equiv 708 \cdot 2330 \cdot 2292 \cdot 1957 \cdot 951 \cdot 822 \cdot 161 \cdot 2323 \equiv 715 \pmod{2803}
 \]
-% Hinweis: "822 161" so im Original (fehlendes * zwischen 822 und 161).
 
 \[
 1463 = 1024 + 256 + 128 + 32 + 16 + 4 + 2 + 1
 \]
 \begin{align*}
-c^1 &= 708 \qquad \text{alles } \pmod{2803}\\
+c^1 &= 708 \qquad \text{alles modulo } 2803\\
 c^2 &= 2330\\
 c^4 &= 2292\\
 c^8 &= 442\\

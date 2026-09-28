@@ -3,6 +3,8 @@
 \begin{loesung}
 Inverse Modulo 11
 \begin{center}
+% KORRIGIERT: Tabelle ohne Hinweis, dass a * a^{-1} ≡ 1 (mod 11) gemeint ist
+(Es gilt $a \cdot a^{-1} \equiv 1 \pmod{11}$; alle Inversen existieren, da $11$ prim ist und $\ggT(a, 11) = 1$ für $a \not\equiv 0$.)
 \begin{tabular}{c|rrrrrrrrrr}
 $a$      & 1 & 2  & 3 & 4 & 5  & $-5$ & $-4$ & $-3$ & $-2$ & $-1$\\
 \midrule
@@ -16,6 +18,7 @@ $a^{-1}$ & 1 & $-5$ & 4 & 3 & $-2$ & 2 & $-3$ & $-4$ & 5 & $-1$\\
 \mathbf{r}_3 &= 1\,1\,1\,1\,1\,1\,1\,1\,0\,3
 \end{align*}
 
+% KORRIGIERT: "≡" ohne Modulangabe
 \[
 H = \begin{pmatrix}
 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
@@ -26,25 +29,32 @@ H = \begin{pmatrix}
 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
 1 & 2 & 3 & 4 & 5 & -5 & -4 & -3 & -2 & -1
 \end{pmatrix}
+\pmod{11}
 \]
 
-$\mathbf{e} = \mathbf{r} - \mathbf{c} = (\,0 \dots m \dots 0\,)$, \quad
-$S(\mathbf{r}) = \begin{pmatrix} s_0\\ s_1 \end{pmatrix} = \begin{pmatrix} 1\\ x \end{pmatrix} y$, \quad
+% KORRIGIERT: Fehlergröße hieß erst "m", danach "y"; "=" statt "≡ (mod 11)"; Voraussetzungen (ein Fehler, y ≠ 0) fehlten
+Bei genau einem Fehler an Stelle $x$ mit Fehlergröße $y \not\equiv 0$ gilt:
+$\mathbf{e} = \mathbf{r} - \mathbf{c} = (\,0 \dots y \dots 0\,)$, \quad
+$S(\mathbf{r}) = H\mathbf{r}^T = \begin{pmatrix} s_0\\ s_1 \end{pmatrix} \equiv y \cdot \begin{pmatrix} 1\\ x \end{pmatrix} \pmod{11}$, \quad
+also $y \equiv s_0$ und $x \equiv s_1 \cdot s_0^{-1} \pmod{11}$ (die Inverse existiert, da $s_0 \not\equiv 0$), \quad
 $\mathbf{c} = \mathbf{r} - \mathbf{e}$
 
 \[
-S(\mathbf{r}_1) = \begin{pmatrix} 15\\ 4 \cdot 3 \end{pmatrix} = \begin{pmatrix} 4\\ 4 \cdot 3 \end{pmatrix} = \begin{pmatrix} 1\\ 3 \end{pmatrix} 4
+% KORRIGIERT: "=" statt "≡ (mod 11)" in den Syndromrechnungen (s_1(r_1) = 78 ≡ 1 ≡ 4 · 3)
+S(\mathbf{r}_1) = \begin{pmatrix} 15\\ 78 \end{pmatrix} \equiv \begin{pmatrix} 4\\ 4 \cdot 3 \end{pmatrix} = 4 \cdot \begin{pmatrix} 1\\ 3 \end{pmatrix} \pmod{11}
 \qquad\Rightarrow\ x = 3,\ y = 4
 \]
-$\Rightarrow \mathbf{c}_1 = 1\,1\,1\,1\,1\,1\,1\,1\,0\,3 = \mathbf{r}_3$
+$\Rightarrow \mathbf{c}_1 = \mathbf{r}_1 - \mathbf{e} = 1\,1\,(5 - 4)\,1\,1\,1\,1\,1\,0\,3 = 1\,1\,1\,1\,1\,1\,1\,1\,0\,3 = \mathbf{r}_3$
 
 \[
-S(\mathbf{r}_2) = \begin{pmatrix} 9\\ 1 + 5 \cdot 4 \end{pmatrix} = \begin{pmatrix} -2\\ -1 \end{pmatrix} = \begin{pmatrix} 1\\ 6 \end{pmatrix} (-2)
-\qquad\Rightarrow\ x = 6,\ y = -2
+S(\mathbf{r}_2) \equiv \begin{pmatrix} 4 + 5\\ 1 + 4 \cdot 5 \end{pmatrix} = \begin{pmatrix} 9\\ 21 \end{pmatrix} \equiv \begin{pmatrix} -2\\ -1 \end{pmatrix} \equiv (-2) \cdot \begin{pmatrix} 1\\ 6 \end{pmatrix} \pmod{11}
+\]\[
+\Rightarrow\ y = -2,\ x \equiv (-1) \cdot (-2)^{-1} \equiv (-1) \cdot 5 \equiv 6 \pmod{11}
 \]
-$\Rightarrow \mathbf{c}_2 = 1\,1\,5\,6\,1\,3\,1\,1\,0\,3$
+($\mathbf{r}_2$ unterscheidet sich von $\mathbf{r}_1$ nur an Stelle $4$ um $+5$, daher $S(\mathbf{r}_2) = S(\mathbf{r}_1) + 5 \cdot (1, 4)^T$.)
+$\Rightarrow \mathbf{c}_2 = \mathbf{r}_2 - \mathbf{e} = 1\,1\,5\,6\,1\,(1 + 2)\,1\,1\,0\,3 = 1\,1\,5\,6\,1\,3\,1\,1\,0\,3$
 
 \[
-S(\mathbf{r}_3) = \begin{pmatrix} 0\\ 0 \end{pmatrix} \qquad\Rightarrow \mathbf{c}_3 = \mathbf{r}_3
+S(\mathbf{r}_3) = \begin{pmatrix} 11\\ 66 \end{pmatrix} \equiv \begin{pmatrix} 0\\ 0 \end{pmatrix} \pmod{11} \qquad\Rightarrow \mathbf{c}_3 = \mathbf{r}_3
 \]
 \end{loesung}

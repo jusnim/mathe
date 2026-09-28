@@ -28,7 +28,8 @@ In einer kommutativen Gruppe $G$ gilt zusätzlich
 \end{definition}
 
 Die Menge $(\Z, +)$ ist eine kommutative Gruppe.\\
-Es gibt genau zwei Gruppen der Ordnung 4. \qquad Cayley-Diagramme.
+% KORRIGIERT: ohne „bis auf Isomorphie“
+Es gibt (bis auf Isomorphie) genau zwei Gruppen der Ordnung 4. \qquad Cayley-Diagramme.
 
 \begin{beispiel}[Restklassengruppe $\Zm{4}$ und Kleinsche Vierergruppe $V_4$]\ \\[1ex]
 Restklassengruppe $\Zm{4}$:
@@ -62,7 +63,8 @@ $x_1, x_2, y_1, y_2, m \in \Z$, $m \geq 2$
 \begin{definition}
 Wir nennen $x_1$ \textbf{kongruent} zu $x_2$ \textbf{modulo} $m$ und schreiben
 \[ x_1 \equiv x_2 \pmod{m}, \]
-wenn $m$ teilt $x_1 - x_2$, in Zeichen $m \mid x_2 - x_1$.
+% KORRIGIERT: Zeichen war $m \mid x_2 - x_1$ (andere Reihenfolge als im Text)
+wenn $m$ teilt $x_1 - x_2$, in Zeichen $m \mid (x_1 - x_2)$.
 \end{definition}
 
 Die Relation $\equiv$ ist eine Äquivalenzrelation. Durch $\equiv$ wird die Menge $\Z$ in $m$ Restklassen zerlegt.\\
@@ -84,18 +86,22 @@ Die erste Aussage folgt sofort aus der Addition der obigen Gleichungen.
 Nun der Beweis der zweiten Aussage
 \begin{align*}
 \Rightarrow \quad x_1 y_1 - x_2 y_2 &= x_1 (y_1 - y_2) + (x_1 - x_2)\, y_2 \\
-&= x_1\, m\, y + m\, x\, y_2 \qedhere
+% KORRIGIERT: letzter Schritt (Ausklammern von m) fehlte, Malpunkte ergänzt
+&= x_1 \cdot m \cdot y + m \cdot x \cdot y_2 = m \cdot (x_1 \cdot y + x \cdot y_2) \qedhere
 \end{align*}
 \end{proof}
 
 \begin{bemerkung}[Vorsicht beim Kürzen]
-\textbf{Vorsicht Beim Kürzen! Durch Nullteiler darf nicht geteilt werden}
+\textbf{Vorsicht Beim Kürzen! Durch Nullteiler darf nicht geteilt werden}\\
+% KORRIGIERT: Bedingung fürs Kürzen fehlte
+Kürzen durch $a$ modulo $m$ ist nur erlaubt, wenn $\ggT(a, m) = 1$.
 \end{bemerkung}
 
 \begin{beispiel}
 \[ 3 \cdot 1 \equiv 3 \cdot 5 \pmod{6} \quad \text{Daraus folgt nicht} \quad 1 \equiv 5 \pmod{6} \]
-3 ist ein Nullteiler (mod 6) wegen
-\[ 3 \cdot 2 \equiv 0 \pmod{6} \]
+% KORRIGIERT: Bedingung $2 \not\equiv 0$ fehlte
+$3$ ist ein Nullteiler modulo $6$ wegen
+\[ 3 \cdot 2 \equiv 0 \pmod{6}, \quad 2 \not\equiv 0 \pmod{6} \]
 \end{beispiel}
 
 Schauen uns nun Anwendungen aus verschiedenen Gebieten der DM an.
@@ -105,9 +111,11 @@ Kongruenzen verwendet man oft, um bestimmte Aussagen zu falsifizieren.
 \begin{beispiel}
 Ist $9 \cdot 14 = 128$?\\
 Falls ja, muss diese auch wahr sein, wenn man sie modulo 2 betrachtet
-\[ 0 \equiv 0 \pmod{2} \quad \surd \text{ Test bestanden} \]
+% KORRIGIERT: stand nur „0 ≡ 0 (mod 2)“ ohne Bezug zu beiden Seiten
+\[ 9 \cdot 14 \equiv 0, \quad 128 \equiv 0 \pmod{2} \quad \surd \text{ Test bestanden} \]
 Falls ja, muss sie auch wahr sein, wenn man sie modulo 3 betrachtet
-\[ 0 \equiv 2 \pmod{3} \quad f \text{ Test nicht bestanden} \]
+% KORRIGIERT: stand „0 ≡ 2 (mod 3)  f“ (falsche Aussage als Kongruenz geschrieben)
+\[ 9 \cdot 14 \equiv 0, \quad 128 \equiv 2 \pmod{3}, \quad 0 \not\equiv 2 \pmod{3} \quad \text{falsch: Test nicht bestanden} \]
 \[ 9 \cdot 14 \neq 128 \]
 \end{beispiel}
 
@@ -124,18 +132,20 @@ Sei $x = (x_n\, x_{n-1} \ldots x_1\, x_0)_{10}$ eine ganze positive Zahl.
 
 \begin{proof}
 a) Denn:
-\[ x = x_0 + x_1\, 10 + x_2\, 10^2 + \ldots + x_n\, 10^n \]
-Es ist $10^r \equiv 1 \pmod{9}$ für alle $r$, z.B. $1000 = 999 + 1 \equiv 1 \pmod{9}$
+% KORRIGIERT: Malpunkte fehlten ($x_1\,10$), Quantor „für alle $r$“ ohne $r \geq 0$
+\[ x = x_0 + x_1 \cdot 10 + x_2 \cdot 10^2 + \ldots + x_n \cdot 10^n \]
+Es ist $10^r \equiv 1 \pmod{9}$ für alle $r \geq 0$, z.B. $1000 = 999 + 1 \equiv 1 \pmod{9}$
 \[ \Rightarrow \quad x \equiv x_0 + x_1 + \ldots + x_n \pmod{9} \]
 
 b) Denn:
 \begin{align*}
 10 &= 11 - 1 \equiv -1 \pmod{11}, \\
 100 &= 99 + 1 \equiv 1 \pmod{11}, \\
-\Rightarrow \quad 1000 &= 10 \cdot 100 \equiv -1 \cdot 1 = -1 \pmod{11}
+% KORRIGIERT: „-1 · 1“ ohne Klammer; „10^r = (-1)^r (mod 11)“ mit = statt ≡; „+ \ldots +“ fehlte
+\Rightarrow \quad 1000 &= 10 \cdot 100 \equiv (-1) \cdot 1 = -1 \pmod{11}
 \end{align*}
-Allgemein: $10^r = (-1)^r \pmod{11}$
-\[ \Rightarrow \quad x \equiv x_0 - x_1 + x_2 - x_3 \ldots (-1)^n x_n \pmod{11} \qedhere \]
+Allgemein: $10^r \equiv (-1)^r \pmod{11}$ für alle $r \geq 0$
+\[ \Rightarrow \quad x \equiv x_0 - x_1 + x_2 - x_3 + \ldots + (-1)^n x_n \pmod{11} \qedhere \]
 \end{proof}
 
 \subsubsection*{Rundenturniere}
@@ -155,7 +165,8 @@ Runde 1 & Runde 2 & Runde 3 \\
 
 \begin{algorithmus}[Rundenturnier]
 Allgemein:\\
-Runde $r$ spielt $x$ gegen $y$, wenn $x + y \equiv r \pmod{2m - 1}$ für $1 \leq x, y \leq 2m - 1$.\\
+% KORRIGIERT: Bedingung $x \neq y$ fehlte
+Runde $r$ spielt $x$ gegen $y$, wenn $x + y \equiv r \pmod{2m - 1}$ für $1 \leq x, y \leq 2m - 1$ mit $x \neq y$.\\
 Falls $x + x \equiv r \pmod{2m - 1}$, spielt $x$ gegen $2m$.
 \end{algorithmus}
 
@@ -181,7 +192,8 @@ $\lambda$ sagt, wie oft jede 2-elementige Teilmenge der Varietäten $\{1, 2, \ld
 Turniere sind also $(v, 2, 1)$-BIBDs. Das Besondere an Turnieren ist, dass sie \textbf{auflösbar} sind, d.h.\ jede der $v - 1$ Parallelklassen (Runden) enthält sämtliche Varietäten (Mannschaften).
 
 weitere Parameter von BIBDs:\\
-$b$ = Anzahl der Blöcke, $B \subseteq \binom{V}{k}$, hier $B = \binom{V}{2}$, $\; b = \binom{v}{2}$.\\
+% KORRIGIERT: $V$ war nicht erklärt
+$b$ = Anzahl der Blöcke, $B \subseteq \binom{V}{k}$ mit $V = \{1, 2, \ldots, v\}$, hier $B = \binom{V}{2}$, $\; b = \binom{v}{2}$.\\
 $r$ sagt, wie oft jede Varietät im Blockplan vorkommt, hier $r = v - 1$.
 \end{definition}
 
@@ -229,7 +241,9 @@ Der \textbf{Herschel Graph}
 besteht aus 9 Flächen, jede hat $i = 4$ Grenzen. Das bedeutet
 \[ (4 - 2)\,\varphi'_4 = (4 - 2)\,\varphi''_4 \qquad \varphi'_4 + \varphi''_4 = 9. \]
 \begin{align*}
-\Rightarrow &\quad 2\,\varphi'_i = 9 \\
+% KORRIGIERT: stand $2\,\varphi'_i = 9$ (Index $i$ statt $4$), Zwischenschritt $\varphi'_4 = \varphi''_4$ fehlte
+\Rightarrow &\quad \varphi'_4 = \varphi''_4 \\
+\Rightarrow &\quad 2 \cdot \varphi'_4 = 9 \\
 \Rightarrow &\quad 0 \equiv 1 \pmod{2},
 \end{align*}
 ein Widerspruch, also besitzt der Herschel Graph keinen Hamilton Zyklus.
@@ -244,12 +258,14 @@ Zerlegen die Menge der ganzen Zahlen $\Z$ in $m$ \textbf{Restklassen} (Cosets):
 m\Z &:= \{ 0, \pm m, \pm 2m, \ldots \} \\
 1 + m\Z &:= \{ 1, 1 \pm m, 1 \pm 2m, \ldots \} \\
 &\ \ \ldots \\
-m-1 + m\Z &:= \{ m-1, m-1 \pm m, m-1 \pm 2m, \ldots \}
+% KORRIGIERT: Klammern um $m-1$ fehlten
+(m-1) + m\Z &:= \{ m-1, (m-1) \pm m, (m-1) \pm 2m, \ldots \}
 \end{align*}
 
 \begin{definition}[Restklassengruppe]
 $m\Z$ ist eine Untergruppe von $\Z$. Die Restklassenmenge
-\[ \Z / m\Z := \{ m\Z, 1 + m\Z, \ldots, m-1 + m\Z \} \]
+% KORRIGIERT: Klammern um $m-1$ fehlten
+\[ \Z / m\Z := \{ m\Z, 1 + m\Z, \ldots, (m-1) + m\Z \} \]
 oder kurz
 \[ \Zm{m} := \{ [0], [1], \ldots, [m-1] \} \]
 $(\Zm{m}, +)$ ist eine Gruppe, die \textbf{Restklassengruppe} von $\Z$ nach dem Modul $m$.
@@ -266,7 +282,8 @@ $m = 3$, $\Zm{3} := \{ [0], [1], [2] \}$ mit
 
 In $\Zm{m}$ sind Addition und Multiplikation erlaubt
 \[ [a] + [b] := [a + b], \qquad [a] \cdot [b] := [a \cdot b], \]
-allerdings ist $(\Zm{m} / \{0\}\ \cdot)$ im allg.\ keine Gruppe, da Axiom (G4) nicht gilt.\\
+% KORRIGIERT: stand $(\Zm{m} / \{0\}\ \cdot)$ (Quotient statt Mengendifferenz, Komma fehlte)
+allerdings ist $(\Zm{m} \setminus \{[0]\}, \cdot)$ im allg.\ keine Gruppe, da Axiom (G4) nicht gilt.\\
 Deswegen ist $\Zm{m}$ ein Ring, aber im Allg.\ kein Körper.
 
 \begin{definition}
@@ -295,15 +312,18 @@ Bezeichnen mit $\Zm{m}^*$ die Menge der Einheiten von $\Zm{m}$. Falls $\Zm{m}^* 
 \end{definition}
 
 \begin{satz}
-$[a] \in \Zm{m}$ besitzt genau dann ein Inverses $[a]^{-1}$, wenn $\ggT(a, m) = 1$.\\
-Andernfalls ist $[a]$ ein Nullteiler, d.h.\ es gibt ein $[b] \in \Zm{m}$ mit $[a \cdot b] = [0]$.
+% KORRIGIERT: Voraussetzung $a \in \Z$ und Bedingung $[b] \neq [0]$ fehlten
+Sei $a \in \Z$. $[a] \in \Zm{m}$ besitzt genau dann ein Inverses $[a]^{-1}$, wenn $\ggT(a, m) = 1$.\\
+Andernfalls ist $[a]$ ein Nullteiler, d.h.\ es gibt ein $[b] \in \Zm{m}$ mit $[b] \neq [0]$ und $[a \cdot b] = [0]$.
 \end{satz}
 
 \begin{proof}
 \begin{align*}
+% KORRIGIERT: Quantor „es gibt x, y“ und Begründung der Rückrichtung fehlten
 &\ggT(a, m) = 1 && \text{Lemma von Bezout} \\
-\Leftrightarrow\quad &m \cdot x + a \cdot y = 1 && \text{ist lösbar} \\
-\Leftrightarrow\quad &a \cdot y \equiv 1 \pmod{m} \\
+\Leftrightarrow\quad &m \cdot x + a \cdot y = 1 && \text{ist lösbar mit } x, y \in \Z \\
+& && \text{(Rückrichtung: jeder gemeinsame Teiler von $a$, $m$ teilt $1$)} \\
+\Leftrightarrow\quad &a \cdot y \equiv 1 \pmod{m} && \text{für ein } y \in \Z \\
 \Leftrightarrow\quad &[y] = [a]^{-1} && \qedhere
 \end{align*}
 \end{proof}
@@ -313,11 +333,12 @@ Genau dann ist $\Zm{m}$ ein Körper, wenn $m$ eine Primzahl ist.
 \end{satz}
 
 \begin{proof}
-zu beweisen ist Axiom (G4) für $(\Zm{p} \setminus \{0\}, \cdot)$
+% KORRIGIERT: im Beweis stand $p$ statt $m$ (Primzahl wurde schon vorausgesetzt); Begründung des letzten Schritts fehlte
+zu beweisen ist Axiom (G4) für $(\Zm{m} \setminus \{[0]\}, \cdot)$
 \begin{align*}
-&\ggT(1, p) = \ggT(2, p) = \ldots = \ggT(p-1, p) = 1 \\
-\Leftrightarrow\quad &p \text{ ist Primzahl.} \\
-\Leftrightarrow\quad &\text{Jedes Element aus } \Zm{p} \setminus \{0\} \text{ ist Einheit.} \qedhere
+&\ggT(1, m) = \ggT(2, m) = \ldots = \ggT(m-1, m) = 1 \\
+\Leftrightarrow\quad &m \text{ ist Primzahl.} \\
+\Leftrightarrow\quad &\text{Jedes Element aus } \Zm{m} \setminus \{[0]\} \text{ ist Einheit} && \text{(voriger Satz).} \qedhere
 \end{align*}
 \end{proof}
 
@@ -334,7 +355,8 @@ Die Menge $\Zm{n}^*$ ist bezüglich der Multiplikation eine Gruppe.
 
 \begin{proof}
 Ist das Axiom (G1) erfüllt? Seien $a, b \in \Zm{n}^*$. Hat $a \cdot b$ ein Inverses?
-\[ a \cdot b \cdot b^{-1} \cdot a^{-1} = 1 \quad \text{also ist} \quad (a \cdot b)^{-1} = b^{-1} \cdot a^{-1} \qedhere \]
+% KORRIGIERT: Rechenbereich $\Zm{n}$ ergänzt
+\[ a \cdot b \cdot b^{-1} \cdot a^{-1} = a \cdot 1 \cdot a^{-1} = 1 \ \text{ in } \Zm{n} \quad \text{also ist} \quad (a \cdot b)^{-1} = b^{-1} \cdot a^{-1} \qedhere \]
 \end{proof}
 
 \subsection{Der ISBN Code (ISBN10)}
@@ -385,13 +407,16 @@ Wenn sich $\boldsymbol{r}$ und $\boldsymbol{c}$ an genau einer (Fehler-)Stelle $
 \[ \boldsymbol{e} = \boldsymbol{r} - \boldsymbol{c} = 0\ 0 \ldots y \ldots 0\ 0, \qquad y = r_x - c_x \neq 0 \quad \text{Fehlergröße} \]
 
 \begin{satz}
-ISBN10 erkennt genau einen Fehler.
+% KORRIGIERT: stand „erkennt genau einen Fehler“
+ISBN10 erkennt jeden einzelnen Fehler (Fehler an genau einer Stelle).
 \end{satz}
 
 \begin{proof}
-\[ \sum_{i=1}^{10} i\, r_i = \boldsymbol{h}\, \boldsymbol{r}^T = \boldsymbol{h}\, \boldsymbol{c}^T + \boldsymbol{h}\, \boldsymbol{e}^T \equiv \boldsymbol{h}\, \boldsymbol{e}^T = x\, y \pmod{11}, \quad x, y \neq 0 \]
+% KORRIGIERT: Malpunkt, „≢ … (mod 11)“ statt „≠“ und Schluss (Fehler wird erkannt) ergänzt
+\[ \sum_{i=1}^{10} i\, r_i = \boldsymbol{h}\, \boldsymbol{r}^T = \boldsymbol{h}\, \boldsymbol{c}^T + \boldsymbol{h}\, \boldsymbol{e}^T \equiv \boldsymbol{h}\, \boldsymbol{e}^T = x \cdot y \pmod{11}, \quad x, y \not\equiv 0 \pmod{11} \]
 Da $\Zm{11}$ ein Körper ist, gibt es keine Nullteiler, also
-\[ x\, y \neq 0 \quad \Leftrightarrow \quad x \neq 0 \text{ und } y \neq 0 \qedhere \]
+\[ x \cdot y \not\equiv 0 \pmod{11} \quad \Leftrightarrow \quad x \not\equiv 0 \text{ und } y \not\equiv 0 \pmod{11} \]
+Also ist $\boldsymbol{h}\, \boldsymbol{r}^T \not\equiv 0 \pmod{11}$, d.h.\ $\boldsymbol{r} \notin C$: der Fehler wird erkannt.
 \end{proof}
 
 \begin{beispiel}
@@ -403,7 +428,8 @@ Sind obige Nummern ISBN10 Nummern?
 Unter welcher Bedingung ist die Gleichung $a \cdot x + b \cdot y = d$ lösbar?
 
 \begin{lemma}[Lemma von Bezout]
-Gegeben $a, b \in \Z$. Dann existieren Zahlen $x, y \in \Z$ mit
+% KORRIGIERT: Voraussetzung „nicht beide 0“ fehlte
+Gegeben $a, b \in \Z$, nicht beide gleich $0$. Dann existieren Zahlen $x, y \in \Z$ mit
 \[ a \cdot x + b \cdot y = \ggT(a, b) \qquad (*) \]
 \end{lemma}
 
@@ -413,32 +439,38 @@ Die Gleichung $a \cdot x + b \cdot y = d$ ist genau dann lösbar, wenn $\ggT(a, 
 
 \subsubsection*{Hauptsatz der Arithmetik, Primfaktorzerlegung}
 
-Alle Zahlen aus $\boldsymbol{N}$.
+% KORRIGIERT: stand $\boldsymbol{N}$
+Alle Zahlen aus $\N$.
 
 \begin{satz}[Hauptsatz der Arithmetik]
 Jede natürliche Zahl $a > 1$ ist eindeutig (bis auf die Reihenfolge) ein Produkt von Primzahlpotenzen:
-\[ a = p_1^{n1} \cdot p_2^{n2} \cdot \ldots \cdot p_k^{nk} \]
+% KORRIGIERT: Exponenten standen als $n1, n2, nk$; Voraussetzungen an $p_i$, $n_i$ fehlten
+\[ a = p_1^{n_1} \cdot p_2^{n_2} \cdot \ldots \cdot p_k^{n_k} \]
+mit paarweise verschiedenen Primzahlen $p_1, \ldots, p_k$ und $n_1, \ldots, n_k \geq 1$.
 \end{satz}
 
 Es ist schwer, für eine große Zahl $a$ diese Zerlegung zu gewinnen.\\
 (Sieb des Eratosthenes)
 
 \begin{definition}[ggT, kgV]
-Sei $R(a, b) = \{ r \mid r \mid a \text{ und } r \mid b \}$ die Menge der gemeinsamen Teiler von $a, b$. Dann ist
-\[ \boldsymbol{\ggT(a, b) = \max \{ r \mid r \in R(a, b) \}} \]
-äquivalent dazu ist
-\[ r \in R(a, b) \quad \Rightarrow \quad r \mid \ggT(a, b) \]
+% KORRIGIERT: „|“ doppelt (Mengenklammer und Teiler), Quantor „für alle r“ fehlte
+Sei $R(a, b) = \{ r \in \N : r \mid a \text{ und } r \mid b \}$ die Menge der gemeinsamen Teiler von $a, b$. Dann ist
+\[ \boldsymbol{\ggT(a, b) = \max R(a, b)} \]
+äquivalent dazu ist $\ggT(a, b) \in R(a, b)$ und
+\[ r \mid \ggT(a, b) \qquad \text{für alle } r \in R(a, b) \]
 Zwei Zahlen $a, b$ mit $\ggT(a, b) = 1$ heißen teilerfremd.
-\[ \boldsymbol{\kgV(a, b) = \min \{ s \mid a \mid s \text{ und } b \mid s \}} \]
+% KORRIGIERT: „|“ doppelt, $s \in \N$ fehlte
+\[ \boldsymbol{\kgV(a, b) = \min \{ s \in \N : a \mid s \text{ und } b \mid s \}} \]
 \[ \kgV(a, b) \cdot \ggT(a, b) = a \cdot b \]
 \end{definition}
 
 Zur Bestimmung des $\ggT(a, b)$ wird die Primfaktorzerlegung nicht benötigt.
 
 \begin{satz}[Division mit Rest]
-Sei $a > b > 0$ gegeben. Dann sind die Zahlen $q, r$ mit
+% KORRIGIERT: stand „Dann sind die Zahlen q, r mit … eindeutig bestimmt“ (Existenz, $q, r \in \Z$ fehlten)
+Seien $a, b \in \Z$ mit $a > b > 0$ gegeben. Dann gibt es Zahlen $q, r \in \Z$ mit
 \[ a = q \cdot b + r \qquad 0 \leq r < b \]
-eindeutig bestimmt.
+und diese sind eindeutig bestimmt.
 \end{satz}
 
 \begin{algorithmus}[Euklidischer Algorithmus]
@@ -454,11 +486,13 @@ $a = 1965$, $\;b = 225$
 60 &= 1 \cdot 45 + 15 \\
 45 &= 3 \cdot 15 + 0
 \end{align*}
-$\ggT(a, b)$ ist der letzte von Null verschiedene Zahl in der Folge der Reste, also
+% KORRIGIERT: stand „der letzte von Null verschiedene Zahl“
+$\ggT(a, b)$ ist der letzte von Null verschiedene Rest in der Folge der Reste, also
 \[ \ggT(1965, 225) = 15. \]
 \end{beispiel}
 
-Allgemein:
+% KORRIGIERT: Bezeichnungen $r_{-1} = a$, $r_0 = b$ fehlten (werden unten benutzt)
+Allgemein (mit $r_{-1} := a$, $r_0 := b$):
 \begin{align*}
 a &= q_0 \cdot b + r_1 \\
 b &= q_1 \cdot r_1 + r_2 \\
@@ -485,14 +519,17 @@ also mit
 \[ \Rightarrow \quad \begin{pmatrix} a \\ b \end{pmatrix} = \begin{pmatrix} q_0 & 1 \\ 1 & 0 \end{pmatrix} \ldots \begin{pmatrix} q_n & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} r_n \\ 0 \end{pmatrix} = Q \begin{pmatrix} r_n \\ 0 \end{pmatrix} = \begin{pmatrix} s \\ t \end{pmatrix} r_n \]
 Es ist $\operatorname{Det} Q_i = -1$, also
 \[ \operatorname{Det} Q = s\,v - t\,u = (-1)^{n+1} \]
-Im wichtigsten Fall, $a, b$ teilerfremd, also $r_n = 1$, entnimmt man eine Lösung von $(*)$ $\operatorname{Det} Q$. Andernfalls muss $\operatorname{Det} Q$ noch mit $r_n$ multipliziert werden.
-\[ a \cdot v - b \cdot u = s\, r_n \cdot v - t\, r_n \cdot u = \pm r_n \]
+% KORRIGIERT: stand „entnimmt man eine Lösung von (*) Det Q“
+Im wichtigsten Fall, $a, b$ teilerfremd, also $r_n = 1$, entnimmt man eine Lösung von $(*)$ aus $\operatorname{Det} Q$. Andernfalls muss $\operatorname{Det} Q$ noch mit $r_n$ multipliziert werden.
+% KORRIGIERT: Zwischenschritt und Malpunkte ergänzt
+\[ a \cdot v - b \cdot u = s \cdot r_n \cdot v - t \cdot r_n \cdot u = r_n \cdot (s\,v - t\,u) = \pm r_n \]
 Damit ist das Lemma von Bezout bewiesen.
 \end{proof}
 
 \begin{beispiel}[Fortsetzung]
 $a = 1965$, $\;b = 225$,\\
-Gesucht: Lösung der Gleichung $1965\, x + 225 \cdot y = 15$
+% KORRIGIERT: Malpunkt uneinheitlich ($1965\, x$)
+Gesucht: Lösung der Gleichung $1965 \cdot x + 225 \cdot y = 15$
 \begin{align*}
 Q &= \begin{pmatrix} 8 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 3 & 1 \\ 1 & 0 \end{pmatrix} \\
 &= \begin{pmatrix} 131 & 35 \\ 15 & 4 \end{pmatrix} = \begin{pmatrix} s & u \\ t & v \end{pmatrix}
@@ -506,16 +543,18 @@ Q &= \begin{pmatrix} 8 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & 0
 Für alle $1 \leq i \leq n - 1$ gilt die Abschätzung
 \[ r_{i-1} = q_i \cdot r_i + r_{i+1} \geq 1 \cdot r_i + r_{i+1} > 2\, r_{i+1} \]
 \begin{align*}
-&\text{Insbesondere} && b > 2\, r_2 > 2^2 r_4 > 2^3 r_6 > \ldots > 2^n\, r_{2n} \\
-&\text{Aus} && 2^n > b \quad \text{folgt} \quad r_{2n} = 0 \\
-&\text{m.a.W.} && n > \log_2 b \quad \text{folgt} \quad r_{2n} = 0
+% KORRIGIERT: Laufindex hieß $n$, obwohl $n$ schon der Index des letzten Restes ist (jetzt $k$, mit $r_j := 0$ für $j > n$)
+&\text{Insbesondere} && b > 2\, r_2 > 2^2 r_4 > 2^3 r_6 > \ldots > 2^k\, r_{2k} \\
+&\text{Aus} && 2^k > b \quad \text{folgt} \quad r_{2k} = 0 \\
+&\text{m.a.W.} && k > \log_2 b \quad \text{folgt} \quad r_{2k} = 0
 \end{align*}
 
 \begin{satz}
 Der EA benötigt höchstens $O(\log_2 b)$ Iterationen bis zum $\ggT(a, b)$.
 \end{satz}
 
-$\log_2 b$ ist die Anzahl der Binärstellen von $b$.\\
+% KORRIGIERT: stand „$\log_2 b$ ist die Anzahl der Binärstellen“ (genau ist es $\lfloor \log_2 b \rfloor + 1$)
+$\log_2 b$ ist ungefähr die Anzahl der Binärstellen von $b$ (genau: $\lfloor \log_2 b \rfloor + 1$).\\
 Der EA hat die Komplexität $O(\log b)$ bzw.\ linear in der Anzahl der Dezimal- (Binär-) stellen von $b$.
 
 \subsubsection*{Homomorphismen von Gruppen}
@@ -552,13 +591,16 @@ Auf dem kartesischen Produkt $\Zm{m} \times \Zm{n}$ sind Addition und Multiplika
 $\Zm{m} \times \Zm{n}$ ist ein Ring mit dem Einselement $(1, 1)$.
 \[ f : \Zm{m \cdot n} \to \Zm{m} \times \Zm{n}, \quad \text{mit} \]
 \[ f(z) = (z \bmod m,\ z \bmod n) \]
-ist ein Homomorphismus.
+% KORRIGIERT: Begründung der Wohldefiniertheit ergänzt
+ist ein Homomorphismus (wohldefiniert, da $m \mid m \cdot n$ und $n \mid m \cdot n$).
 
 \begin{beispiel}
 Die Ringe $\Zm{12}$, $\;\Zm{2} \times \Zm{6}$ sind nicht isomorph, denn
 \[ f(0) = f(6) = (0,0) \qquad f(1) = f(7) = (1,1) \]
 $f$ ist nicht surjektiv, da die Bilder $(0, 1)$, $(1, 0)$ nicht vorkommen;\\
-$f$ ist nicht injektiv, da die Bilder $(0, 0)$, $(1, 1)$ je zwei Urbilder haben.
+$f$ ist nicht injektiv, da die Bilder $(0, 0)$, $(1, 1)$ je zwei Urbilder haben.\\
+% KORRIGIERT: Begründung fehlte, dass auch kein anderer Isomorphismus existiert
+(Auch kein anderer Isomorphismus existiert: $1$ hat in $\Zm{12}$ die additive Ordnung $12$, in $\Zm{2} \times \Zm{6}$ hat jedes Element höchstens die Ordnung $6$.)
 \end{beispiel}
 
 Der Chinesische Restsatz gibt die Bedingung an unter der die Ringe
@@ -577,7 +619,7 @@ z &\equiv a_n \pmod{m_n}
 lösbar? Wenn ja, wie und wie viele Lösungen existieren?
 
 \begin{satz}[Chinesischer Restsatz]
-Sei $m, n \geq 2$. Falls $\ggT(m, n) = 1$, gilt
+Seien $m, n \geq 2$. Falls $\ggT(m, n) = 1$, gilt
 \[ \Zm{m \cdot n} \cong \Zm{m} \times \Zm{n} \]
 \end{satz}
 
@@ -591,7 +633,8 @@ Lösen die simultanen Kongruenzen ($\ggT(m, n) = 1$)
 z &\equiv a \pmod{m} \\
 z &\equiv b \pmod{n}
 \end{align*}
-Wenn eine Lösung $x, y \in \boldsymbol{Z}$ der Gleichung
+% KORRIGIERT: stand $\boldsymbol{Z}$
+Wenn eine Lösung $x, y \in \Z$ der Gleichung
 \[ m\,x - n\,y = b - a \]
 existiert, erfüllt
 \[ z = m\,x + a = n\,y + b \]
@@ -610,25 +653,27 @@ Lösen zuerst
 &z \equiv 3 \pmod{11}, && a = 3 \\
 &z \equiv 6 \pmod{8}, && b = 6 \\
 &\text{EA mit } 11, 8, && d = b - a = 3 \\
+% KORRIGIERT: stand „z = 11 + 3 = 1 · 8 + 6 ≡ 14 (mod 88)“ (Gleichung und Kongruenz vermischt)
 &11 = 1 \cdot 8 + 3 && |\ + a \\
-\Rightarrow\quad &z = 11 + 3 = 1 \cdot 8 + 6 \equiv 14 \pmod{88}
+\Rightarrow\quad &11 \cdot 1 + 3 = 8 \cdot 1 + 6 = 14, \quad \text{also} \quad z \equiv 14 \pmod{88 = 11 \cdot 8}
 \end{align*}
 Lösen dann
 \begin{align*}
 &z \equiv 14 \pmod{88}, && a = 14 \\
-&z \equiv 1 \pmod{15}, && b = 6 % Hinweis: "b = 6" steht so in der Quelle; gemeint ist offenbar b = 1 (vgl. d = 1 - 14)
-\\
+% KORRIGIERT: stand $b = 6$
+&z \equiv 1 \pmod{15}, && b = 1 \\
 &\text{EA mit } 88, 15, && d = b - a = 1 - 14 = -13 \\
 &88 = 5 \cdot 15 + 13 && |\cdot(-1) \quad |\ + a \\
 &-88 + 14 = -5 \cdot 15 + 1 \\
-\Rightarrow\quad &z \equiv -88 + 14 = -74 \pmod{88 \cdot 15}
+\Rightarrow\quad &z \equiv -88 + 14 = -74 \pmod{88 \cdot 15 = 1320}
 \end{align*}
 Falls die kleinste Lösung $z > 0$ gesucht ist
 \[ z = -74 + 1320 = 1246 \]
 \end{beispiel}
 
 \begin{bemerkung}
-Der Ring-Isomorphismus $f : \Zm{m \cdot n} \to \Zm{m} \times \Zm{n}$ bildet Einheiten auf Einheiten und Nullteiler auf Nullteiler ab. Insbesondere ist die Einschränkung auf Einheiten
+% KORRIGIERT: Voraussetzung $\ggT(m, n) = 1$ fehlte
+Der Ring-Isomorphismus $f : \Zm{m \cdot n} \to \Zm{m} \times \Zm{n}$ (für $\ggT(m, n) = 1$) bildet Einheiten auf Einheiten und Nullteiler auf Nullteiler ab. Insbesondere ist die Einschränkung auf Einheiten
 \[ f : \Zm{m \cdot n}^* \to \Zm{m}^* \times \Zm{n}^* \]
 ein Gruppen-Isomorphismus.
 \end{bemerkung}
@@ -636,18 +681,20 @@ ein Gruppen-Isomorphismus.
 \subsection{Eulersche $\varphi$-Funktion}
 
 \begin{definition}[Eulersche $\varphi$-Funktion]
-\[ \varphi(m) = |\{ 1 \leq a \leq m \mid \ggT(a, m) = 1 \}| = |\Zm{m}^*| \]
+% KORRIGIERT: $a \in \Z$ fehlte
+\[ \varphi(m) = |\{ a \in \Z : 1 \leq a \leq m,\ \ggT(a, m) = 1 \}| = |\Zm{m}^*| \]
 \end{definition}
 
 \begin{satz}[Berechnung von $\varphi(m)$]
 \begin{align*}
 \varphi(p) &= p - 1 && && p \text{ Primzahl} \\
-\varphi(p^k) &= p^k \left( 1 - \frac{1}{p} \right) = p^k - p^{k-1} \\
+% KORRIGIERT: Voraussetzungen $p$ Primzahl, $k \geq 1$ fehlten; Exponent $k$ hängt von $p$ ab ($k_p$)
+\varphi(p^k) &= p^k \left( 1 - \frac{1}{p} \right) = p^k - p^{k-1} && && p \text{ Primzahl},\ k \geq 1 \\
 \varphi(m\,n) &= \varphi(m)\, \varphi(n) && (*) && \ggT(m, n) = 1 \\
 m &= \sum_{d \mid m} \varphi(d) && (**) && \text{(Gauß)}
 \end{align*}
 Mit diesen Formeln kommt man aus, denn
-\[ m = \prod_{p \mid m} p^k \qquad \Rightarrow \qquad \varphi(m) = \prod_{p \mid m} \varphi\left(p^k\right) \]
+\[ m = \prod_{p \mid m,\ p \text{ prim}} p^{k_p} \qquad \Rightarrow \qquad \varphi(m) = \prod_{p \mid m,\ p \text{ prim}} \varphi\left(p^{k_p}\right) \]
 \end{satz}
 
 \begin{beispiel}
@@ -676,7 +723,8 @@ für $(**)$ $m = 12$
 \end{beispiel}
 
 \begin{proof}[Beweis von $(**)$]
-\[ \left\{ \frac{h}{m} \;\middle|\; 1 \leq h \leq m \right\} = \bigcup_{d \mid m} \left\{ \frac{a}{d} \;\middle|\; \ggT(a, d) = 1 \right\} \]
+% KORRIGIERT: Bedingung $1 \leq a \leq d$ fehlte
+\[ \left\{ \frac{h}{m} \;\middle|\; 1 \leq h \leq m \right\} = \bigcup_{d \mid m} \left\{ \frac{a}{d} \;\middle|\; 1 \leq a \leq d,\ \ggT(a, d) = 1 \right\} \]
 Die Mengen rechts sind disjunkt, zählen ihre Elemente.
 \[ \Rightarrow \quad m = \sum_{d \mid m} \varphi(d) \quad \text{das beweist } (**). \qedhere \]
 \end{proof}

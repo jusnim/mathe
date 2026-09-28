@@ -52,8 +52,9 @@ d.h.\ $e < 3$ Fehler werden erkannt.\\
 $\mathbf{r} = 010001$ \ ist kein Codewort.\\
 Unter der Annahme, dass 2 Fehler seltener sind als 1 Fehler, wird das Wort
 \[ \mathbf{r} \to \mathbf{c}_2 = 010101 \]
-rekonstruiert. $\mathbf{y}$ unterscheidet sich in 2 Stellen von $\mathbf{c}_4$. 2 Fehler kann $C$ nicht korrigieren.
-% UNSICHER: im Original steht "y"; gemeint ist vermutlich r = 010001 (unterscheidet sich in 2 Stellen von c4 = 000000).
+rekonstruiert.
+% KORRIGIERT: im Original stand "y" statt r (r = 010001 unterscheidet sich in 2 Stellen von c4 = 000000)
+$\mathbf{r}$ unterscheidet sich in 2 Stellen von $\mathbf{c}_4$. 2 Fehler kann $C$ nicht korrigieren.
 \end{beispiel}
 
 \begin{definition}[Gewicht]
@@ -71,11 +72,11 @@ Für den Hamming Abstand gelten die \textbf{Abstandsregeln}: \ $\mathbf{v}, \mat
 \begin{tabular}{ll}
 $|\mathbf{v}-\mathbf{w}| = |\mathbf{w}-\mathbf{v}|$ & Symmetrie \\
 $|\mathbf{v}-\mathbf{w}| \geq 0$ & positiv semidefinit \\
-$|\mathbf{v}-\mathbf{w}| = 0 \ \Rightarrow \ \mathbf{w} = \mathbf{y}$ & positiv definit \\
+% KORRIGIERT: im Original stand "w = y" statt "v = w"
+$|\mathbf{v}-\mathbf{w}| = 0 \ \Rightarrow \ \mathbf{v} = \mathbf{w}$ & positiv definit \\
 $|\mathbf{v}-\mathbf{w}| \leq |\mathbf{v}-\mathbf{y}| + |\mathbf{y}-\mathbf{w}|$ & Dreiecksungleichung \\
 \end{tabular}
 \end{center}
-% UNSICHER: "w = y" so im Original; gemeint ist vermutlich v = w.
 
 \begin{definition}[Minimalgewicht]
 \textbf{Minimalgewicht} des Codes $C$ \ (minimum distance)
@@ -87,10 +88,11 @@ Der obige Code $C$ hat das Minimalgewicht $d_C = 3$.
 \end{beispiel}
 
 \begin{satz}
-Sei $e$ = Anzahl der Fehler im Wort $\mathbf{r}$.\\
+% KORRIGIERT: im Original "Sei e = Anzahl der Fehler im Wort r ... C erkennt/korrigiert das Wort r"; die Äquivalenz gilt nur für "jedes Wort mit höchstens e Fehlern"
+Sei $e \geq 1$ eine natürliche Zahl.\\
 \begin{tabular}{lcl}
-$C$ \textit{erkennt} das Wort $\mathbf{r}$ als falsch & $\Leftrightarrow$ & $e + 1 \leq d_C$ \\
-$C$ \textit{korrigiert} das Wort $\mathbf{r} \to \mathbf{c}$ & $\Leftrightarrow$ & $2e + 1 \leq d_C$ \\
+$C$ \textit{erkennt} jedes Wort $\mathbf{r}$ mit höchstens $e$ Fehlern als falsch & $\Leftrightarrow$ & $e + 1 \leq d_C$ \\
+$C$ \textit{korrigiert} jedes Wort $\mathbf{r}$ mit höchstens $e$ Fehlern, $\mathbf{r} \to \mathbf{c}$ & $\Leftrightarrow$ & $2e + 1 \leq d_C$ \\
 \end{tabular}
 \end{satz}
 

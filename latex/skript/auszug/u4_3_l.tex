@@ -3,13 +3,14 @@
 \begin{loesung}
 Die Teiler von $n = p$ sind $1, p$, also $d(p) = 1 + 1$.\\
 Die Teiler von $n = p^e$ sind $1, p, p^2, \ldots, p^e$, also $d(p^e) = 1 + e$
+% KORRIGIERT: Begründung (Multiplikativität, ggT = 1, p - 1 != 0) ergänzt; \ldots/\cdots vereinheitlicht
 \[
-\Rightarrow\qquad d(n) = (1 + e_1) \cdots (1 + e_r)
+\Rightarrow\qquad d(n) = (1 + e_1) \cdots (1 + e_r) \qquad (\text{da } \ggT(p_i^{e_i}, p_j^{e_j}) = 1 \text{ für } i \neq j)
 \]
 \[
-\sigma(p) = 1 + p, \qquad \sigma(p^e) = 1 + p + p^2 + \ldots + p^e = \frac{p^{1+e} - 1}{p - 1},
+\sigma(p) = 1 + p, \qquad \sigma(p^e) = 1 + p + p^2 + \cdots + p^e = \frac{p^{1+e} - 1}{p - 1} \quad (p \geq 2, \text{ also } p - 1 \neq 0),
 \]
 \[
-\Rightarrow\qquad \sigma(n) = \frac{p_1^{1+e_1} - 1}{p_1 - 1} \cdot \ldots \cdot \frac{p_r^{1+e_r} - 1}{p_r - 1}
+\Rightarrow\qquad \sigma(n) = \frac{p_1^{1+e_1} - 1}{p_1 - 1} \cdots \frac{p_r^{1+e_r} - 1}{p_r - 1}
 \]
 \end{loesung}

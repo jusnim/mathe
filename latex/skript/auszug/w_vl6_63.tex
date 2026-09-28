@@ -34,35 +34,44 @@ Formen $H$ in systematische Form $(A \mid E)$ um (Einheitsmatrix rechts), um die
 \end{align*}
 
 Sei $\mathbf{r}$ wie in Abschnitt 1.3 das empfangene Wort. Falls $\mathbf{r} = \mathbf{c}$, dann gilt
+% KORRIGIERT: "s(r)" statt einheitlich S(r)
 \[
-  \mathbf{s}(\mathbf{r}) = H\,\mathbf{r}^T = H\,\mathbf{c}^T = \mathbf{o}
+  S(\mathbf{r}) = H\,\mathbf{r}^T = H\,\mathbf{c}^T = \mathbf{o}
 \]
 Falls ein Fehler an der Fehlerstelle $x$ mit der Größe $e_x$ auftrat, sieht $\mathbf{r}$ so aus
 \begin{align*}
   & \mathbf{r} = \mathbf{c} + \mathbf{e} \quad\text{mit}\quad \mathbf{e} = (0\ \dots\ 0\ e_x\ 0\ \dots\ 0)\\
   \Rightarrow\qquad & H\,\mathbf{r}^T = H\,\mathbf{e}^T = \begin{pmatrix} e_x\\ x e_x \end{pmatrix}
     = \begin{pmatrix} 1\\ x \end{pmatrix} e_x = \begin{pmatrix} s_1\\ s_2 \end{pmatrix}\\
-  & s_1 = e_x,\quad s_2 = x\,e_x,\quad x = \frac{s_2}{s_1},\quad c_x = r_x - e_x
+  % KORRIGIERT: "x = s_2/s_1, c_x = r_x - e_x" ohne Modul und ohne Begründung für die Division
+  & s_1 = e_x,\quad s_2 \equiv x \cdot e_x,\quad x \equiv s_2 \cdot s_1^{-1},\quad c_x \equiv r_x - e_x \pmod{11}
 \end{align*}
-d.h.\ $s_1$ ist die Fehlergröße und die Fehlerstelle ist $x = s_2 / s_1$.
+($s_1 = e_x \neq 0$, da ein Fehler auftrat; wegen $\ggT(s_1, 11) = 1$ ist $s_1$ modulo $11$ invertierbar.)\\
+d.h.\ $s_1$ ist die Fehlergröße und die Fehlerstelle ist $x \equiv s_2 \cdot s_1^{-1} \pmod{11}$.
 
 \begin{beispiel}
 Sei $\mathbf{a} = 0\ 0\ \dots\ 0$, 8 Nullen, dann ist $\mathbf{c} = 0\ 0\ \dots\ 0\ 0\ 0$, 10 Nullen.\\
 Angenommen
 \[ \mathbf{r} = 0\ 0\ \dots\ 0\ 5\ 0. \]
-Dann ist $S(\mathbf{r}) = H\,\mathbf{r}^T = \begin{pmatrix} 5\\ 45 \end{pmatrix} = \begin{pmatrix} 1\\ 9 \end{pmatrix} 5$, also $e_x = 5$, $x = 9$.\\
+% KORRIGIERT: "(1 9)^T 5" ohne Malpunkt
+Dann ist $S(\mathbf{r}) = H\,\mathbf{r}^T = \begin{pmatrix} 5\\ 45 \end{pmatrix} = \begin{pmatrix} 1\\ 9 \end{pmatrix} \cdot 5$, also $e_x = 5$, $x = 9$.\\
 Tatsächlich ist $\mathbf{c} = \mathbf{o}$ Codewort in jedem linearen Code.
 \end{beispiel}
 
 \begin{beispiel}
 Sei $\mathbf{r} = 3\ 5\ \dots\ 0\ 0\ 0$.\\
-Dann ist $\mathbf{s} = H\,\mathbf{r}^T = \begin{pmatrix} 8\\ 13 \end{pmatrix} = \begin{pmatrix} 8\\ 2 \end{pmatrix}$, also $e_x = 8$, $x = 2/8 = 1/4 = 3$.\\
-Wegen $3 \cdot 4 = 12 = 1$, also $c_3 = 0 - 8 = 3$
+% KORRIGIERT: "=" statt "\equiv (mod 11)"; Kürzen von 2/8 und Inverse ohne Begründung
+Dann ist $\mathbf{s} = H\,\mathbf{r}^T = \begin{pmatrix} 8\\ 13 \end{pmatrix} \equiv \begin{pmatrix} 8\\ 2 \end{pmatrix} \pmod{11}$, also $e_x = 8$,
+$x \equiv 2 \cdot 8^{-1} \equiv 1 \cdot 4^{-1} \equiv 3 \pmod{11}$
+(Kürzen mit $2$ erlaubt, da $\ggT(2, 11) = 1$; $4^{-1}$ existiert, da $\ggT(4, 11) = 1$).\\
+Wegen $3 \cdot 4 = 12 \equiv 1 \pmod{11}$, also $c_3 \equiv 0 - 8 \equiv 3 \pmod{11}$
 \[ \mathbf{c} = 3\ 5\ 3\ \dots\ 0\ 0\ 0. \]
 % Im Original als "1.3 + 2.5 + 3.3" (Punkt als Malzeichen) geschrieben.
-Tatsächlich ist $H\,\mathbf{c}^T = \begin{pmatrix} 3+5+3\\ 1\cdot 3 + 2\cdot 5 + 3\cdot 3 \end{pmatrix} = \begin{pmatrix} 11\\ 22 \end{pmatrix} = \begin{pmatrix} 0\\ 0 \end{pmatrix}$, also $\mathbf{c}$ ein Codewort.
+% KORRIGIERT: "(11 22)^T = (0 0)^T" statt \equiv (mod 11)
+Tatsächlich ist $H\,\mathbf{c}^T = \begin{pmatrix} 3+5+3\\ 1\cdot 3 + 2\cdot 5 + 3\cdot 3 \end{pmatrix} = \begin{pmatrix} 11\\ 22 \end{pmatrix} \equiv \begin{pmatrix} 0\\ 0 \end{pmatrix} \pmod{11}$, also $\mathbf{c}$ ein Codewort.
 \end{beispiel}
 
 \begin{bemerkung}
-Falls $s_1 = 0$ und $s_2 \neq 0$, enthält $r$ mehr als einen Fehler.
+% KORRIGIERT: "r" statt fett gedrucktem Vektor
+Falls $s_1 = 0$ und $s_2 \neq 0$, enthält $\mathbf{r}$ mehr als einen Fehler.
 \end{bemerkung}

@@ -1,8 +1,10 @@
 \textbf{Lösung zu Klausurvorbereitung 2}
 
 \begin{loesung}
-$\mathbf{e} = \mathbf{r} - \mathbf{c}$
+$\mathbf{e} = \mathbf{r} - \mathbf{c}$ hat an der Stelle $x$ den Eintrag $c_y - c_x$, an der Stelle $y$ den Eintrag $c_x - c_y$ und sonst $0$. Es ist $\mathbf{h} = (1, 2, \dots, 10)$.
+% KORRIGIERT: Begründungen ergänzt (h c^T = 0; warum das Produkt nicht 0 ist).
 \[
-\Rightarrow \mathbf{h}\,\mathbf{r}^T = \mathbf{h}\,\mathbf{e}^T = x\,(c_y - c_x) + y\,(c_x - c_y) = (x - y)\,(c_y - c_x) \neq 0
+\Rightarrow \mathbf{h}\,\mathbf{r}^T = \mathbf{h}\,\mathbf{c}^T + \mathbf{h}\,\mathbf{e}^T = \mathbf{h}\,\mathbf{e}^T = x \cdot (c_y - c_x) + y \cdot (c_x - c_y) = (x - y) \cdot (c_y - c_x) \neq 0 \quad \text{in } \Zm{11}
 \]
+denn $\mathbf{h}\,\mathbf{c}^T = 0$ (Codewort), $x - y \not\equiv 0 \pmod{11}$ wegen $1 \le x < y \le 10$, $c_y - c_x \not\equiv 0 \pmod{11}$ (sonst gäbe es keinen Fehler), und $\Zm{11}$ ist ein Körper ($11$ ist prim), also ist das Produkt zweier Elemente $\neq 0$ wieder $\neq 0$.
 \end{loesung}

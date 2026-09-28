@@ -3,14 +3,15 @@
 
 Man schreibt im Restklassenring $\Zm{m}$, wie im Körper $\R$
 \[
-  a^k := a \cdot a \cdot \ldots \cdot a \qquad (a \neq 0)
+% KORRIGIERT: Anzahl der Faktoren und Bereich von k fehlten
+  a^k := \underbrace{a \cdot a \cdot \ldots \cdot a}_{k \text{ Faktoren}} \qquad (a \neq 0,\ k \in \N,\ k \geq 1)
 \]
 Wie immer, wenn es um Multiplikation geht, schließen wir die 0 aus.
 
 \begin{algorithmus}[Schnelles Potenzieren]
 Nutzen die Binärdarstellung von
 \[
-  k = k_0 \cdot 2^0 + k_1 \cdot 2^1 + k_2 \cdot 2^2 + \ldots + k_r \cdot 2^r . \qquad k_i \in \{0, 1\}
+  k = k_0 \cdot 2^0 + k_1 \cdot 2^1 + k_2 \cdot 2^2 + \ldots + k_r \cdot 2^r , \qquad k_i \in \{0, 1\}
 \]
 \end{algorithmus}
 
@@ -20,8 +21,9 @@ Gesucht $12^{100} \pmod{34}$
   & 100 = 2^6 + 2^5 + 2^2 \\
   \Rightarrow\quad & 12^{100} = 12^{64} \cdot 12^{32} \cdot 12^{4} \\
   & 12 \\
-  & 12^2 \equiv 136 + 8 \pmod{34} \\
-  & 12^4 \equiv 8^2 \equiv -4 \pmod{34} \\
+% KORRIGIERT: Original "12^2 \equiv 136 + 8", Rest 8 fehlte
+  & 12^2 = 144 = 136 + 8 \equiv 8 \pmod{34} \\
+  & 12^4 \equiv 8^2 = 64 \equiv -4 \pmod{34} \\
   & 12^8 \equiv (-4)^2 = 16 \pmod{34} \\
   & 12^{16} \equiv 16^2 = 272 - 16 \equiv -16 \pmod{34} \\
   & 12^{32} \equiv (-16)^2 \equiv -16 \pmod{34} \\

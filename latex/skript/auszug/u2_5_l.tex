@@ -13,13 +13,15 @@ Das bedeutet \quad $a\,x \equiv 1 \pmod{m}$, also $x = a^{-1}$ in $\Zm{m}$.
 EA für 11, 6\\
 $11 = 1\cdot 6 + 5,\quad 6 = 1\cdot 5 + 1,\quad 5 = 5\cdot 1$\\
 EA rückwärts\\
-$1 = 6 - 5 = 6 - (11 - 6) = 6\cdot 2 - 11 = 6\cdot 2$ in $\Zm{11}$ \quad $\Rightarrow$ \quad $6^{-1} = 2$ in $\Zm{11}$
+% KORRIGIERT: "6 \cdot 2 - 11 = 6 \cdot 2 in Z_11" statt "\equiv ... (mod 11)"
+$1 = 6 - 5 = 6 - (11 - 6) = 6\cdot 2 - 11 \equiv 6\cdot 2 \pmod{11}$ \quad $\Rightarrow$ \quad $6^{-1} = 2$ in $\Zm{11}$
 
 \item $6$ in $\Zm{17}$\\
 EA für 17, 6\\
 $17 = 2\cdot 6 + 5,\quad 6 = 1\cdot 5 + 1,\quad 5 = 5\cdot 1$\\
 EA rückwärts\\
-$1 = 6 - 5 = 6 - (17 - 2\cdot 6) = 6\cdot 3 - 17 = 6\cdot 3$ in $\Zm{17}$ \quad $\Rightarrow$ \quad $6^{-1} = 3$ in $\Zm{17}$
+% KORRIGIERT: "6 \cdot 3 - 17 = 6 \cdot 3 in Z_17" statt "\equiv ... (mod 17)"
+$1 = 6 - 5 = 6 - (17 - 2\cdot 6) = 6\cdot 3 - 17 \equiv 6\cdot 3 \pmod{17}$ \quad $\Rightarrow$ \quad $6^{-1} = 3$ in $\Zm{17}$
 
 \item $3$ in $\Zm{10}$\\
 EA für 10, 3\\
@@ -31,6 +33,7 @@ $1 = 10 - 3\cdot 3 = 10 + 3\cdot(-3)$ \quad $\Rightarrow$ \quad $3^{-1} = -3 = 7
 EA für 12, 5\\
 $12 = 2\cdot 5 + 2,\quad 5 = 2\cdot 2 + 1$\\
 EA rückwärts\\
-$1 = 5 - 2\cdot 2 = 5 - 2\,(12 - 2\cdot 5) = 5\cdot 5 - 2\cdot 12 = 5\cdot 5$ in $\Zm{12}$ \quad $\Rightarrow$ \quad $5^{-1} = 5$ in $\Zm{12}$
+% KORRIGIERT: Malpunkt fehlte bei 2 (12 - 2 \cdot 5); "5 \cdot 5 - 2 \cdot 12 = 5 \cdot 5 in Z_12" statt "\equiv ... (mod 12)"
+$1 = 5 - 2\cdot 2 = 5 - 2\cdot(12 - 2\cdot 5) = 5\cdot 5 - 2\cdot 12 \equiv 5\cdot 5 \pmod{12}$ \quad $\Rightarrow$ \quad $5^{-1} = 5$ in $\Zm{12}$
 \end{enumerate}
 \end{loesung}

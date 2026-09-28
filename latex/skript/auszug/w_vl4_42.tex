@@ -27,14 +27,15 @@ heißt \textbf{Erzeugermatrix} des Codes $C$.
 \end{korollar}
 
 Jede Nachricht $\mathbf{a} \in F_q^{\,k}$ besitzt ein Codewort aus $C$. Die \textbf{Codierungsfunktion}
-\[ \varphi : F_q^{\,k} \to C \qquad \mathbf{a} \to \mathbf{c} = \mathbf{a}\,G \]
+% KORRIGIERT: Zuordnungspfeil "\to" durch "\mapsto" ersetzt (auch in den beiden folgenden Beispielen)
+\[ \varphi : F_q^{\,k} \to C \qquad \mathbf{a} \mapsto \mathbf{c} = \mathbf{a}\,G \]
 ist bijektiv.
 
 Parameter des linearen Codes $C$: \ $[n, k, d]_q$, \ $k = \operatorname{Dim} C = \operatorname{Dim} F_q^{\,k}$, \ $d = d_C$.\\
 Informationsdichte \ bei linearen Codes; \ $k / n$.
 
 \begin{beispiel}[Wiederholungscode]
-\[ \varphi : F_q \to C, \quad a \to (a, a, \dots, a) = a\,(1\ 1\ \dots\ 1) \]
+\[ \varphi : F_q \to C, \quad a \mapsto (a, a, \dots, a) = a\,(1\ 1\ \dots\ 1) \]
 \[ G = (1\ 1\ \dots\ 1), \quad d_C = n \]
 $C$ ist ein $[n, 1, n]_q$ Code.
 
@@ -46,16 +47,18 @@ $\begin{cases} \textit{ungerade} \\ \textit{gerade} \end{cases}$
 \end{beispiel}
 
 \begin{beispiel}[Paritätscode]
-\[ \varphi : F_q^{\,n-1} \to C, \quad (a_1, \dots, a_{n-1}) \to (a_1, \dots, a_{n-1}, \textstyle\sum a_i) = \mathbf{a}
+\[ \varphi : F_q^{\,n-1} \to C, \quad (a_1, \dots, a_{n-1}) \mapsto (a_1, \dots, a_{n-1}, \textstyle\sum a_i) = \mathbf{a}
 \begin{pmatrix} 1 & & & 1 \\ & \ddots & & \vdots \\ & & 1 & 1 \end{pmatrix}, \quad d_C = 2 \]
-$C$ ist ein $[n, n-1, 2]$ Code, \quad d.h.\ 1 Fehler erkennend.\\
+% KORRIGIERT: im Original fehlte der Index q bei [n, n-1, 2]
+$C$ ist ein $[n, n-1, 2]_q$ Code, \quad d.h.\ 1 Fehler erkennend.\\
 Informationsdichte = $(n-1)/n = 1 - 1/n$ = fast 100\,\% \ für großes $n$,\\
 $d_C = 2$, \ d.h.\ $C$ kann keinen Fehler korrigieren.
 \end{beispiel}
 
 \begin{definition}[Kontrollmatrix]
 \textbf{Kontrollmatrix} für $C$\\
-Eine $(n-k, n)$-Matrix $H$ mit
+% KORRIGIERT: Voraussetzung "Rang H = n - k" ergänzt
+Eine $(n-k, n)$-Matrix $H$ mit $\operatorname{Rang} H = n - k$ und
 \[ C = \operatorname{Kern} H = \{\, \mathbf{c} \in F_q^{\,n} \mid H\,\mathbf{c}^T = \mathbf{o} \,\} \]
 $H$ heißt \textbf{Kontrollmatrix} für $C$.
 \end{definition}
@@ -76,14 +79,16 @@ d_C &= \min\{\, |\mathbf{c} - \mathbf{c}'| \mid \mathbf{c}, \mathbf{c}' \in C,\ 
 &= \min\{\, |\mathbf{c}| \mid \mathbf{c} \in C,\ \mathbf{c} \neq \mathbf{o} \,\}
 \end{align*}
 \begin{align*}
-& H\,\mathbf{c}^T = \mathbf{o} \ \Rightarrow \ |\mathbf{c}| \text{ Spalten von } H \text{ sind l.a.} \\
+% KORRIGIERT: Voraussetzung c != o ergänzt und gesagt, welche Spalten l.a. sind
+& \mathbf{c} \in C,\ \mathbf{c} \neq \mathbf{o}:\ H\,\mathbf{c}^T = \mathbf{o} \ \Rightarrow \ \text{die } |\mathbf{c}| \text{ Spalten } \mathbf{h}_i \text{ von } H \text{ mit } c_i \neq 0 \text{ sind l.a.} \\
 \Rightarrow\quad & d_C = 1 + \max\{\, e \mid \text{jeweils } e \text{ Spalten von } H \text{ sind l.u.} \,\}
 \end{align*}
 
 \begin{satz}[Dualitätssatz]
 Je $s$ Spalten der Kontrollmatrix $H$ seien l.\,u. \ Dann ist\\
 \begin{tabular}{ll}
-schwacher: & $s + 1 \leq d_C \leq |\mathbf{c}|$ \\
+% KORRIGIERT: Quantor "für alle c in C mit c != o" ergänzt
+schwacher: & $s + 1 \leq d_C \leq |\mathbf{c}|$ \ für alle $\mathbf{c} \in C$, $\mathbf{c} \neq \mathbf{o}$ \\
 starker: & $\max\{s + 1\} = d_C = \min\{\, |\mathbf{c}| \mid \mathbf{o} \neq \mathbf{c} \in C \,\}$ \\
 \end{tabular}
 \end{satz}

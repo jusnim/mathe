@@ -12,7 +12,7 @@ Gegeben: $w = 1511$, $m = 43 \cdot 57 = 2451$, $e = 221$.
 
 Schnelles Potenzieren: $1511^{221} = 1511^{1} \cdot 1511^{4} \cdot 1511^{8} \cdot 1511^{16} \cdot 1511^{64} \cdot 1511^{128}$.
 
-Quadrattabelle (mod 2451):
+Quadrattabelle ($\bmod 2451$):
 \[
 \begin{array}{r@{\;\equiv\;}l@{\qquad}l}
 1511^{1}   & 1511 & \leftarrow\\
@@ -25,7 +25,7 @@ Quadrattabelle (mod 2451):
 1511^{128} & 1339^2 = 1792921 = 731 \cdot 2451 + 1240 \equiv 1240 & \leftarrow
 \end{array}
 \]
-Produkt Schritt für Schritt (mod 2451):
+Produkt Schritt für Schritt (alle $\equiv$ modulo $2451$):
 \begin{align*}
 1511 \cdot 823 &= 1243553 \equiv 896\\
 896 \cdot 853 &= 764288 \equiv 2027\\
@@ -36,16 +36,17 @@ Produkt Schritt für Schritt (mod 2451):
 \begin{ergebnis} $c = 1511^{221} \bmod 2451 = 896$ \end{ergebnis}
 
 \teil{c} \textbf{Entschlüsseln.} Formel (Bob): $w \equiv c^d \pmod m$.
-Das funktioniert, weil $e \cdot d \equiv 1 \pmod{\varphi(m)}$ und nach Euler
-$c^d \equiv (w^e)^d = w^{ed} \equiv w \pmod m$.
+Das funktioniert, weil $e \cdot d \equiv 1 \pmod{\varphi(m)}$, also $e \cdot d = 1 + k \cdot \varphi(m)$ mit $k \in \N$.
+Nach Euler gilt $w^{\varphi(m)} \equiv 1 \pmod m$ (bei $\ggT(w, m) = 1$; hier ist $\ggT(1511, 2451) = 1$). Damit
+$c^d \equiv (w^e)^d = w^{ed} = w \cdot \bigl(w^{\varphi(m)}\bigr)^k \equiv w \cdot 1^k = w \pmod m$.
 
 \teil{d} \textbf{$\varphi(m)$.} Achtung: $57 = 3 \cdot 19$ ist keine Primzahl. Vollständige Zerlegung:
 \[
 2451 = 3 \cdot 19 \cdot 43 .
 \]
-Da $\varphi$ multiplikativ ist und $\varphi(p) = p - 1$ für Primzahlen:
+Da $\varphi(ab) = \varphi(a) \cdot \varphi(b)$ für teilerfremde $a, b$ gilt und $\varphi(p) = p - 1$ für Primzahlen:
 \[
-\varphi(2451) = \varphi(3)\,\varphi(19)\,\varphi(43) = 2 \cdot 18 \cdot 42 = 1512 .
+\varphi(2451) = \varphi(3) \cdot \varphi(19) \cdot \varphi(43) = 2 \cdot 18 \cdot 42 = 1512 .
 \]
 \begin{ergebnis} $\varphi(m) = 1512$ \end{ergebnis}
 \begin{achtung}
@@ -71,22 +72,23 @@ e \cdot d \equiv 1 \pmod{\varphi(m)}, \quad\text{also}\quad 221 \cdot d \equiv 1
 \end{array}
 \qquad\Rightarrow\quad \ggT(1512, 221) = 1 .
 \]
-Matrix $Q = \prod \begin{pmatrix} q_i & 1\\ 1 & 0\end{pmatrix}$ mit $q = 6,1,5,3,5,2$:
+Matrix $Q = \prod_{i=1}^{6} \begin{pmatrix} q_i & 1\\ 1 & 0\end{pmatrix}$ mit $(q_1, \dots, q_6) = (6, 1, 5, 3, 5, 2)$:
 \[
 Q = \begin{pmatrix} 1512 & 691\\ 221 & 101 \end{pmatrix}, \qquad
 \det Q = 1512 \cdot 101 - 221 \cdot 691 = 1 .
 \]
-Also $221 \cdot (-691) \equiv 1 \pmod{1512}$ und $d = -691 \equiv 821 \pmod{1512}$.
+Wegen $1512 \cdot 101 \equiv 0 \pmod{1512}$ folgt $221 \cdot (-691) \equiv 1 \pmod{1512}$ und $d = -691 \equiv 821 \pmod{1512}$.
 
-\emph{Weg 2: Satz von Euler.} Aus $e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)}$ folgt
+\emph{Weg 2: Satz von Euler.} Da $\ggT(e, \varphi(m)) = \ggT(221, 1512) = 1$ (Weg 1), gilt nach Euler $e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)}$. Also ist $e \cdot e^{\varphi(\varphi(m)) - 1} \equiv 1$, und es folgt
 $d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}$.
-Mit $1512 = 2^3 \cdot 3^3 \cdot 7$ ist $\varphi(1512) = 4 \cdot 18 \cdot 6 = 432$, also
+Mit $1512 = 2^3 \cdot 3^3 \cdot 7$ ist $\varphi(1512) = \varphi(2^3) \cdot \varphi(3^3) \cdot \varphi(7) = 4 \cdot 18 \cdot 6 = 432$, also
 \[
 d \equiv 221^{431} \pmod{1512}.
 \]
 $431 = 110101111_2 = 256 + 128 + 32 + 8 + 4 + 2 + 1$. Quadrattabelle (mod 1512):
 $221^{1} = 221$, $221^{2} \equiv 457$, $221^{4} \equiv 193$, $221^{8} \equiv 961$, $221^{16} \equiv 1201$,
 $221^{32} \equiv 1465$, $221^{64} \equiv 697$, $221^{128} \equiv 457$, $221^{256} \equiv 193$.
+Produkt der Zeilen mit Bit 1 (mod 1512):
 \begin{align*}
 221 \cdot 457 &\equiv 1205, & 1205 \cdot 193 &\equiv 1229, & 1229 \cdot 961 &\equiv 197,\\
 197 \cdot 1465 &\equiv 1325, & 1325 \cdot 457 &\equiv 725, & 725 \cdot 193 &\equiv 821 .
@@ -94,7 +96,7 @@ $221^{32} \equiv 1465$, $221^{64} \equiv 697$, $221^{128} \equiv 457$, $221^{256
 Kontrolle: $221 \cdot 821 = 181441 = 120 \cdot 1512 + 1 \equiv 1 \pmod{1512}$.
 \begin{ergebnis} $d = 821$ \end{ergebnis}
 
-\emph{Probe:} $896^{821} \bmod 2451$ mit $821 = 1100110101_2$:
+\emph{Probe:} $896^{821} \bmod 2451$ mit $821 = 1100110101_2$ (alle $\equiv$ modulo $2451$):
 Quadrate $896^{1} = 896$, $896^{4} \equiv 1240$, $896^{16} \equiv 853$, $896^{32} \equiv 2113$, $896^{256} \equiv 1240$, $896^{512} \equiv 823$;
 Produkt $896 \cdot 1240 \equiv 737$, $\cdot 853 \equiv 1205$, $\cdot 2113 \equiv 2027$, $\cdot 1240 \equiv 1205$, $\cdot 823 \equiv 1511 = w$. \checkmark
 

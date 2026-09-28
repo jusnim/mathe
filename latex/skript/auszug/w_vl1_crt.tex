@@ -11,7 +11,7 @@ z &\equiv a_n \pmod{m_n}
 lösbar? Wenn ja, wie und wie viele Lösungen existieren?
 
 \begin{satz}[Chinesischer Restsatz]
-Sei $m, n \geq 2$. Falls $\ggT(m, n) = 1$, gilt
+Seien $m, n \geq 2$. Falls $\ggT(m, n) = 1$, gilt
 \[ \Zm{m \cdot n} \cong \Zm{m} \times \Zm{n} \]
 \end{satz}
 
@@ -25,7 +25,8 @@ Lösen die simultanen Kongruenzen ($\ggT(m, n) = 1$)
 z &\equiv a \pmod{m} \\
 z &\equiv b \pmod{n}
 \end{align*}
-Wenn eine Lösung $x, y \in \boldsymbol{Z}$ der Gleichung
+% KORRIGIERT: stand $\boldsymbol{Z}$
+Wenn eine Lösung $x, y \in \Z$ der Gleichung
 \[ m\,x - n\,y = b - a \]
 existiert, erfüllt
 \[ z = m\,x + a = n\,y + b \]
@@ -44,25 +45,27 @@ Lösen zuerst
 &z \equiv 3 \pmod{11}, && a = 3 \\
 &z \equiv 6 \pmod{8}, && b = 6 \\
 &\text{EA mit } 11, 8, && d = b - a = 3 \\
+% KORRIGIERT: stand „z = 11 + 3 = 1 · 8 + 6 ≡ 14 (mod 88)“ (Gleichung und Kongruenz vermischt)
 &11 = 1 \cdot 8 + 3 && |\ + a \\
-\Rightarrow\quad &z = 11 + 3 = 1 \cdot 8 + 6 \equiv 14 \pmod{88}
+\Rightarrow\quad &11 \cdot 1 + 3 = 8 \cdot 1 + 6 = 14, \quad \text{also} \quad z \equiv 14 \pmod{88 = 11 \cdot 8}
 \end{align*}
 Lösen dann
 \begin{align*}
 &z \equiv 14 \pmod{88}, && a = 14 \\
-&z \equiv 1 \pmod{15}, && b = 6 % Hinweis: "b = 6" steht so in der Quelle; gemeint ist offenbar b = 1 (vgl. d = 1 - 14)
-\\
+% KORRIGIERT: stand $b = 6$
+&z \equiv 1 \pmod{15}, && b = 1 \\
 &\text{EA mit } 88, 15, && d = b - a = 1 - 14 = -13 \\
 &88 = 5 \cdot 15 + 13 && |\cdot(-1) \quad |\ + a \\
 &-88 + 14 = -5 \cdot 15 + 1 \\
-\Rightarrow\quad &z \equiv -88 + 14 = -74 \pmod{88 \cdot 15}
+\Rightarrow\quad &z \equiv -88 + 14 = -74 \pmod{88 \cdot 15 = 1320}
 \end{align*}
 Falls die kleinste Lösung $z > 0$ gesucht ist
 \[ z = -74 + 1320 = 1246 \]
 \end{beispiel}
 
 \begin{bemerkung}
-Der Ring-Isomorphismus $f : \Zm{m \cdot n} \to \Zm{m} \times \Zm{n}$ bildet Einheiten auf Einheiten und Nullteiler auf Nullteiler ab. Insbesondere ist die Einschränkung auf Einheiten
+% KORRIGIERT: Voraussetzung $\ggT(m, n) = 1$ fehlte
+Der Ring-Isomorphismus $f : \Zm{m \cdot n} \to \Zm{m} \times \Zm{n}$ (für $\ggT(m, n) = 1$) bildet Einheiten auf Einheiten und Nullteiler auf Nullteiler ab. Insbesondere ist die Einschränkung auf Einheiten
 \[ f : \Zm{m \cdot n}^* \to \Zm{m}^* \times \Zm{n}^* \]
 ein Gruppen-Isomorphismus.
 \end{bemerkung}

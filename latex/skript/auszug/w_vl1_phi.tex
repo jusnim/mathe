@@ -2,18 +2,20 @@
 
 
 \begin{definition}[Eulersche $\varphi$-Funktion]
-\[ \varphi(m) = |\{ 1 \leq a \leq m \mid \ggT(a, m) = 1 \}| = |\Zm{m}^*| \]
+% KORRIGIERT: $a \in \Z$ fehlte
+\[ \varphi(m) = |\{ a \in \Z : 1 \leq a \leq m,\ \ggT(a, m) = 1 \}| = |\Zm{m}^*| \]
 \end{definition}
 
 \begin{satz}[Berechnung von $\varphi(m)$]
 \begin{align*}
 \varphi(p) &= p - 1 && && p \text{ Primzahl} \\
-\varphi(p^k) &= p^k \left( 1 - \frac{1}{p} \right) = p^k - p^{k-1} \\
+% KORRIGIERT: Voraussetzungen $p$ Primzahl, $k \geq 1$ fehlten; Exponent $k$ hängt von $p$ ab ($k_p$)
+\varphi(p^k) &= p^k \left( 1 - \frac{1}{p} \right) = p^k - p^{k-1} && && p \text{ Primzahl},\ k \geq 1 \\
 \varphi(m\,n) &= \varphi(m)\, \varphi(n) && (*) && \ggT(m, n) = 1 \\
 m &= \sum_{d \mid m} \varphi(d) && (**) && \text{(Gauß)}
 \end{align*}
 Mit diesen Formeln kommt man aus, denn
-\[ m = \prod_{p \mid m} p^k \qquad \Rightarrow \qquad \varphi(m) = \prod_{p \mid m} \varphi\left(p^k\right) \]
+\[ m = \prod_{p \mid m,\ p \text{ prim}} p^{k_p} \qquad \Rightarrow \qquad \varphi(m) = \prod_{p \mid m,\ p \text{ prim}} \varphi\left(p^{k_p}\right) \]
 \end{satz}
 
 \begin{beispiel}
@@ -42,7 +44,8 @@ für $(**)$ $m = 12$
 \end{beispiel}
 
 \begin{proof}[Beweis von $(**)$]
-\[ \left\{ \frac{h}{m} \;\middle|\; 1 \leq h \leq m \right\} = \bigcup_{d \mid m} \left\{ \frac{a}{d} \;\middle|\; \ggT(a, d) = 1 \right\} \]
+% KORRIGIERT: Bedingung $1 \leq a \leq d$ fehlte
+\[ \left\{ \frac{h}{m} \;\middle|\; 1 \leq h \leq m \right\} = \bigcup_{d \mid m} \left\{ \frac{a}{d} \;\middle|\; 1 \leq a \leq d,\ \ggT(a, d) = 1 \right\} \]
 Die Mengen rechts sind disjunkt, zählen ihre Elemente.
 \[ \Rightarrow \quad m = \sum_{d \mid m} \varphi(d) \quad \text{das beweist } (**). \qedhere \]
 \end{proof}

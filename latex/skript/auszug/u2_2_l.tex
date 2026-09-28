@@ -2,6 +2,8 @@
 
 \begin{loesung}
 \[
-\mathbf{e} = \mathbf{r} - \mathbf{c} \;\Rightarrow\; \mathbf{h}\,\mathbf{r}^T = \mathbf{h}\,\mathbf{e}^T = x\,(c_y - c_x) + y\,(c_x - c_y) = (x - y)\,(c_y - c_x) \neq 0
+% KORRIGIERT: "h r^T = h e^T" und "\neq 0" ohne "(mod 11)" und ohne Begründung; h c^T = 0 nicht erwähnt
+\mathbf{e} = \mathbf{r} - \mathbf{c} \;\Rightarrow\; \mathbf{h}\,\mathbf{r}^T \equiv \mathbf{h}\,\mathbf{e}^T = x\,(c_y - c_x) + y\,(c_x - c_y) = (x - y)\,(c_y - c_x) \not\equiv 0 \pmod{11}
 \]
+(Es gilt $\mathbf{h}\,\mathbf{c}^T \equiv 0 \pmod{11}$, da $\mathbf{c}$ Codewort ist. Wegen $1 \le x, y \le 10$, $x \neq y$ und $c_x \neq c_y$ ist kein Faktor durch 11 teilbar; da 11 prim ist, ist auch das Produkt nicht durch 11 teilbar.)
 \end{loesung}

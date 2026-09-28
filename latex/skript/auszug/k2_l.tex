@@ -1,6 +1,6 @@
 \textbf{Lösung zu Klausur 29.07.2026, Aufgabe 2}
 
-$\Omega = \{1 \le k \le 720\}$, $|\Omega| = 720$, $A_i = \{k \in \Omega \mid i \text{ teilt } k\}$ für $i = 3, 4, 5$.
+$\Omega = \{k \in \N \mid 1 \le k \le 720\}$, $|\Omega| = 720$, $A_i = \{k \in \Omega \mid i \text{ teilt } k\}$ für $i = 3, 4, 5$.
 Gesucht: $|\Omega \setminus (A_3 \cup A_4 \cup A_5)| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3$ mit
 \begin{align*}
 \alpha_1 &= |A_3| + |A_4| + |A_5| = \tfrac{720}{3} + \tfrac{720}{4} + \tfrac{720}{5} = 240 + 180 + 144 = 564,\\
@@ -11,7 +11,7 @@ Gesucht: $|\Omega \setminus (A_3 \cup A_4 \cup A_5)| = |\Omega| - \alpha_1 + \al
 \[
 720 - 564 + 144 - 12 = 288 .
 \]
-Kontrolle: $720 \cdot (1 - \tfrac13)(1 - \tfrac14)(1 - \tfrac15) = 720 \cdot \tfrac23 \cdot \tfrac34 \cdot \tfrac45 = 288$.
+Kontrolle (erlaubt, weil $3, 4, 5$ paarweise teilerfremd sind und $3 \cdot 4 \cdot 5 = 60 \mid 720$): $720 \cdot (1 - \tfrac13)(1 - \tfrac14)(1 - \tfrac15) = 720 \cdot \tfrac23 \cdot \tfrac34 \cdot \tfrac45 = 288$.
 \begin{ergebnis} $288$ Zahlen $\le 720$ sind durch keine der Zahlen $3, 4, 5$ teilbar. \end{ergebnis}
 
 % ---------------------------------------------------------------------------

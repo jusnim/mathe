@@ -2,36 +2,43 @@
 
 
 \begin{bemerkung}
+% KORRIGIERT: G war nicht eingeführt
 Die Einheiten sind genau die Elemente $k \in \Zm{m}$ mit $\ggT(k, m) = 1$.\\
-$(\Zm{m}^*, \cdot\,)$ ist eine abelsche Gruppe,
+$(\Zm{m}^*, \cdot\,)$ ist eine abelsche Gruppe. Für eine endliche Gruppe $G$ ist
 \[
   \operatorname{ord}(G) = |G|, \qquad\qquad \operatorname{ord}(\Zm{m}^*) = \varphi(m).
 \]
 \end{bemerkung}
 
 \begin{bemerkung}[Kürzungsregel]
-Für Einheiten $a \in \Zm{m}^*$ gilt
+% KORRIGIERT: Quantor für x, y und Begründung fehlten
+Für Einheiten $a \in \Zm{m}^*$ und alle $x, y \in \Zm{m}$ gilt (Multiplikation mit $a^{-1}$)
 \[
   a \cdot x = a \cdot y \quad \Rightarrow \quad x = y \qquad\qquad \text{Kürzungsregel}
 \]
 \end{bemerkung}
 
-Sei $p$ eine Primzahl. Dann ist
+% KORRIGIERT: Original "Sei p eine Primzahl. Dann ist": Voraussetzung a fehlte; {a1, a2, ...} statt {a·1, a·2, ...};
+% "=" statt "\equiv ... (mod p)"; Kürzen von (p-1)! ohne Begründung
+Sei $p$ eine Primzahl und $a \in \Zm{p}^*$. Nach der Kürzungsregel sind $a \cdot 1, a \cdot 2, \ldots, a \cdot (p - 1)$ paarweise verschieden. Dann ist (in $\Zm{p}$)
 \begin{align*}
-  \Rightarrow\quad & \Zm{p}^* = \{1, 2, 3, \ldots, p - 1\} = \{a1, a2, a3, \ldots, a(p - 1)\} \\
+  \Rightarrow\quad & \Zm{p}^* = \{1, 2, 3, \ldots, p - 1\} = \{a \cdot 1, a \cdot 2, a \cdot 3, \ldots, a \cdot (p - 1)\} \\
   \intertext{Dann stimmen auch die Produkte überein}
-  \Rightarrow\quad & 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) = a^{p-1} \cdot 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) \\
-  \Rightarrow\quad & 1 = a^{p-1}
+  \Rightarrow\quad & 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) \equiv a^{p-1} \cdot 1 \cdot 2 \cdot 3 \cdot \ldots \cdot (p - 1) \pmod{p} \\
+  \intertext{Wegen $\ggT((p - 1)!, p) = 1$ ist $(p - 1)!$ in $\Zm{p}$ invertierbar, man darf also kürzen:}
+  \Rightarrow\quad & 1 \equiv a^{p-1} \pmod{p}
 \end{align*}
 
 \begin{beispiel}
-$p = 7$, $a = 3$ $\Rightarrow$ $\{a1, a2, a3, \ldots, a6\} = \{3, 6, 2, 5, 1, 4\}$
+% KORRIGIERT: {a1, a2, ...} statt {a·1, a·2, ...}
+$p = 7$, $a = 3$ $\Rightarrow$ $\{a \cdot 1, a \cdot 2, a \cdot 3, \ldots, a \cdot 6\} = \{3, 6, 2, 5, 1, 4\}$ \ (in $\Zm{7}$)
 \end{beispiel}
 
 \begin{satz}[Fermat]
-Sei $p$ eine Primzahl und $a \in \Zm{p}^*$, dann gilt \hfill $a^{\operatorname{ord} G} = 1$.
+% KORRIGIERT: G nicht benannt; Voraussetzung für die Form in Z fehlte
+Sei $p$ eine Primzahl und $a \in \Zm{p}^*$, dann gilt \hfill $a^{\operatorname{ord} G} = 1$ \ (mit $G = \Zm{p}^*$).
 \begin{align*}
-  & a^{p-1} \equiv 1 \pmod{p} \\
+  & a^{p-1} \equiv 1 \pmod{p} \qquad \text{für alle } a \in \Z \text{ mit } p \nmid a \\
   \text{bzw.}\quad & a^{p-1} = 1 \quad (\text{in } \Zm{p}). \qquad \square
 \end{align*}
 \end{satz}
@@ -39,7 +46,8 @@ Sei $p$ eine Primzahl und $a \in \Zm{p}^*$, dann gilt \hfill $a^{\operatorname{o
 Im Beweis haben wir genutzt, dass $\Zm{p}^*$ abelsch ist.
 
 \begin{definition}[Bezeichnung]
-Die kleinste Zahl $k > 0$ mit $a^k = 1$ heißt \textbf{Ordnung von $a$} in $G$. Die Menge
+% KORRIGIERT: G und a waren nicht eingeführt
+Sei $G$ eine endliche Gruppe und $a \in G$. Die kleinste Zahl $k > 0$ mit $a^k = 1$ heißt \textbf{Ordnung von $a$} in $G$. Die Menge
 \[
   \langle a \rangle := \{\, a, a^2, a^3, \ldots, a^k = 1 \,\} \subseteq G
 \]
@@ -47,7 +55,7 @@ ist eine zyklische Gruppe der Ordnung $k$.
 
 Ein Element $g \in G$ mit $\operatorname{ord}(g) = |G|$ heißt erzeugendes Element (oder \textbf{primitiv}) von $G$. Für solches $g$ gilt
 \[
-  G = \{\, g, g^2, \ldots, g^k = 1 \} = \langle g \rangle
+  G = \{\, g, g^2, \ldots, g^k = 1 \} = \langle g \rangle \qquad (k = |G|)
 \]
 Besitzt $G$ ein primitives Element, so heißt $G$ zyklisch. Zyklische Gruppen sind abelsch.
 \end{definition}
@@ -62,7 +70,8 @@ $\Zm{7}^* = \{1, 2, \ldots, 6\}$
 \end{beispiel}
 
 \begin{bemerkung}
-Fermat war begeistert von seinem Satz. Er zeige, dass die Griechen noch nicht alles wußten.
+Fermat war begeistert von seinem Satz. % KORRIGIERT: Tippfehler "zeige"
+Er zeigte, dass die Griechen noch nicht alles wußten.
 
 Euler hat den Satz von Fermat etwa 100 Jahre später auf $\Zm{m}^*$ übertragen.\\
 $\operatorname{ord} \Zm{m}^* = \boldsymbol{\varphi}(m)$.
@@ -80,18 +89,20 @@ Formulierung in $\Z$
 \end{satz}
 
 \begin{beispiel}
-Fortsetzung: $\varphi(34) = \varphi(2 \cdot 17) = \varphi(2) \cdot \varphi(17) = 1 \cdot 16$
+% KORRIGIERT: "=" und "\neq" statt "\equiv" und "\not\equiv"; Begründung für phi(2·17) = phi(2)·phi(17) fehlte
+Fortsetzung: $\varphi(34) = \varphi(2 \cdot 17) = \varphi(2) \cdot \varphi(17) = 1 \cdot 16 = 16$ \ (da $\ggT(2, 17) = 1$)
 \[
-  \Rightarrow \quad 12^{16} = -16 \neq 1 \pmod{34}
+  \Rightarrow \quad 12^{16} \equiv -16 \not\equiv 1 \pmod{34}
 \]
-Kein Wunder: $\ggT(12, 34) = 2$ teilt jede Potenz von 12 mod 34.
+Kein Wunder: $\ggT(12, 34) = 2$ teilt jede Potenz von 12 mod 34. Der Satz von Euler setzt $\ggT(a, m) = 1$ voraus.
 \end{beispiel}
 
 \begin{bemerkung}
 Falls $\ggT(a, m) = 1$, geht das Potenzieren schneller:
 \begin{align*}
-  & k = q \cdot \varphi(m) + r \equiv r && (\bmod\ \varphi(m)) \\
-  \Rightarrow\quad & a^k = (a^{\varphi(m)})^q \cdot a^r \equiv 1^q \cdot a^r = a^r && (\bmod\ m) \qquad \square
+% KORRIGIERT: Bereich von r und Verweis auf Euler fehlten; Modulschreibweise vereinheitlicht
+  & k = q \cdot \varphi(m) + r,\ 0 \leq r < \varphi(m), \quad \text{also } k \equiv r \pmod{\varphi(m)} \\
+  \Rightarrow\quad & a^k = (a^{\varphi(m)})^q \cdot a^r \equiv 1^q \cdot a^r = a^r \pmod{m} \quad (\text{Euler}) \qquad \square
 \end{align*}
 \end{bemerkung}
 
@@ -99,9 +110,10 @@ Falls $\ggT(a, m) = 1$, geht das Potenzieren schneller:
 Gesucht: $11^{16} \pmod{34}$
 \begin{align*}
   & 11 \\
-  & 11^2 = 121 = 3 \cdot 34 + 19 \\
-  & 11^4 \equiv 19^2 = 361 = 10 \cdot 34 + 21 \pmod{34} \\
-  & 11^8 \equiv 21^2 = 441 = 13 \cdot 34 - 1 \pmod{34} \\
+% KORRIGIERT: Reste 19, 21, -1 und (mod 34) ergänzt
+  & 11^2 = 121 = 3 \cdot 34 + 19 \equiv 19 \pmod{34} \\
+  & 11^4 \equiv 19^2 = 361 = 10 \cdot 34 + 21 \equiv 21 \pmod{34} \\
+  & 11^8 \equiv 21^2 = 441 = 13 \cdot 34 - 1 \equiv -1 \pmod{34} \\
   & 11^{16} \equiv (-1)^2 = 1 \pmod{34}
 \end{align*}
 \end{beispiel}

@@ -185,7 +185,7 @@ $g(X)$ ist eindeutig bestimmt.
 \begin{align*}
 \Rightarrow\quad & g(X) - h(X) \in C, \quad \operatorname{grad}(g - h)(X) < r \\
 % KORRIGIERT: Begründung ergänzt
-\Rightarrow\quad & g(X) - h(X) = o(X) \quad (\text{sonst ergäbe Normieren ein normiertes Polynom vom Grad} < r \text{ in } C) \\
+\Rightarrow\quad & g(X) - h(X) = o(X) \\ & \quad (\text{sonst ergäbe Normieren ein normiertes Polynom vom Grad} < r \text{ in } C) \\
 \Rightarrow\quad & g(X) = h(X)
 \end{align*}
 % KORRIGIERT: Rest hieß r(X) wie der Grad r; umbenannt in rho(X). Begründungen ergänzt
@@ -312,7 +312,7 @@ Sei $\ggT(n, p) = 1$.
 \begin{enumerate}[label=\alph*)]
 \item Zu jeder Kreisteilungsklasse $B_s$ existiert ein normiertes, irreduzibles Polynom
 \[
-m_s(X), \quad d = |B_s| = \operatorname{grad} m_s(X), \qquad X^n - 1 = \prod_{B_s} m_s(X) \quad (\text{Produkt über alle Kreisteilungsklassen})
+m_s(X), \quad d = |B_s| = \operatorname{grad} m_s(X), \]\[ X^n - 1 = \prod_{B_s} m_s(X) \quad (\text{Produkt über alle Kreisteilungsklassen})
 \]
 \item Falls $n = q \neq p$ eine Primzahl ist, dann haben alle Kreisteilungsklassen $B_s \neq B_0$ dieselbe Länge $d$. Ihre Anzahl ist $\dfrac{q-1}{d}$.
 % KORRIGIERT: Original "ist ihre Anzahl 2"; falsch z.B. für q = 31 (6 Klassen) und q = 73 (8 Klassen)
@@ -390,11 +390,11 @@ c(X) \in C \quad\Leftrightarrow\quad c(X)\cdot h(X) \equiv 0 \quad (\bmod\ X^n -
 \end{satz}
 
 \begin{beispiel}[$\mathbf{F}_2$: \ $X^4 - 1 = (X + 1)^4$]
-\begin{tabular}{lll}
+{\small\begin{tabular}{@{}lll@{}}
 $C_1 = \{\, 0000,\ 1111 \,\}$, & $g(X) = (1 + X)^3$, & $h(X) = 1 + X$ \\
 $C_2 = \{\, 0000,\ 1010,\ 0101,\ 1111 \,\}$, & $g(X) = (1 + X)^2$, & $h(X) = (1 + X)^2$ \\
 $C_3 = \{\, 0000,\ 1100, \dots \,\}$, & $g(X) = 1 + X$, & $h(X) = (1 + X)^3$
-\end{tabular}
+\end{tabular}}
 \end{beispiel}
 
 \paragraph{Kontrollmatrix $H$}

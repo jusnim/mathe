@@ -1,16 +1,16 @@
 \begin{rezept}{Rezept Inklusion--Exklusion}
 \begin{enumerate}
-\item $\Omega = \{1 \le k \le N\}$, $A_i = \{k \in \Omega \mid i \text{ teilt } k\}$ hinschreiben.
+\item $\Omega = \{k \in \N \mid 1 \le k \le N\}$, $A_i = \{k \in \Omega \mid i \text{ teilt } k\}$ hinschreiben.
 \item Gesucht $|\Omega \setminus (A_a \cup A_b \cup A_c)| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3$.
-\item $\alpha_1 = \frac{N}{a} + \frac{N}{b} + \frac{N}{c}$ (abrunden).
+\item $\alpha_1 = \lfloor N/a \rfloor + \lfloor N/b \rfloor + \lfloor N/c \rfloor$.
 \item $\alpha_2$: Schnittmengen über das \textbf{kgV}: $|A_a \cap A_b| = \lfloor N / \kgV(a,b) \rfloor$.
 \item $\alpha_3 = \lfloor N / \kgV(a, b, c) \rfloor$.
-\item Einsetzen. Kontrolle (nur bei paarweise teilerfremden Teilern): $N (1 - \frac1a)(1 - \frac1b)(1 - \frac1c)$.
+\item Einsetzen. Kontrolle (nur bei paarweise teilerfremden Teilern und $a \cdot b \cdot c \mid N$): $N \cdot (1 - \frac1a)(1 - \frac1b)(1 - \frac1c)$.
 \end{enumerate}
 \end{rezept}
 
 \subsection*{Musterrechnung ($N = 720$; Teiler 3, 4, 5)}
-$\alpha_1 = 240 + 180 + 144 = 564$, \ $\alpha_2 = \frac{720}{12} + \frac{720}{15} + \frac{720}{20} = 60 + 48 + 36 = 144$, \ $\alpha_3 = \frac{720}{60} = 12$.
+$\alpha_1 = \frac{720}{3} + \frac{720}{4} + \frac{720}{5} = 240 + 180 + 144 = 564$, \ $\alpha_2 = \frac{720}{12} + \frac{720}{15} + \frac{720}{20} = 60 + 48 + 36 = 144$, \ $\alpha_3 = \frac{720}{60} = 12$.
 \begin{ergebnis} $720 - 564 + 144 - 12 = 288$ \end{ergebnis}
 \begin{achtung}
 \textbf{Falle:} Bei Teilern wie 2 und 4 ist $A_2 \cap A_4 = A_4$ ($\kgV = 4$, nicht $8$). Immer das kgV nehmen, nicht das Produkt.

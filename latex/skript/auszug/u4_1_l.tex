@@ -1,11 +1,12 @@
 \textbf{Lösung zu Übung 4, Aufgabe 1}
 
 \begin{loesung}
-$\Omega = \{1 \le k \le 1000\}$. Sei $A_i = \{\ \Omega \mid i \text{ ist Teiler von } 1000\ \}$.
-% Hinweis: so im Original (gemeint ist wohl A_i = { k in Omega | i ist Teiler von k }).
+% KORRIGIERT: "Omega = {1 <= k <= 1000}" ohne Grundmenge, "A_i = { Omega | i ist Teiler von 1000 }"
+$\Omega = \{k \in \Z \mid 1 \le k \le 1000\}$. Sei $A_i = \{\, k \in \Omega \mid i \text{ ist Teiler von } k \,\}$.
 Die gesuchte Anzahl ist dann
+% KORRIGIERT: Klammern um A_2 u A_3 u A_5 fehlten (hier und unten)
 \begin{align*}
-|\,\Omega \setminus A_2 \cup A_3 \cup A_5\,| &= |\Omega| - \alpha_1 + \alpha_2 - \alpha_3
+|\,\Omega \setminus (A_2 \cup A_3 \cup A_5)\,| &= |\Omega| - \alpha_1 + \alpha_2 - \alpha_3
 \end{align*}
 mit
 \begin{align*}
@@ -20,15 +21,16 @@ mit
 \Rightarrow\quad &\alpha_2 = 166 + 100 + 66 = 332\\
 &|A_2 \cap A_3 \cap A_5| = \left\lfloor \frac{1000}{30} \right\rfloor,\\
 \Rightarrow\quad &\alpha_3 = 33\\
-\Rightarrow\quad &|\,\Omega \setminus A_2 \cup A_3 \cup A_5\,| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3\\
+\Rightarrow\quad &|\,\Omega \setminus (A_2 \cup A_3 \cup A_5)\,| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3\\
 &= 1000 - 1033 + 332 - 33 = 266
 \end{align*}
 
 Schneller findet man die Lösung, wenn man die Produktformel benutzt, die hier aber nur näherungsweise gilt:
+% KORRIGIERT: "=" statt "ungefähr gleich"; "266,66" statt 266,6 periodisch
 \begin{align*}
-|\,\Omega \setminus A_2 \cup A_3 \cup A_5\,| &= 1000 \cdot \left(1 - \frac{1}{2}\right)\left(1 - \frac{1}{3}\right)\left(1 - \frac{1}{5}\right)\\
+|\,\Omega \setminus (A_2 \cup A_3 \cup A_5)\,| &\approx 1000 \cdot \left(1 - \frac{1}{2}\right)\left(1 - \frac{1}{3}\right)\left(1 - \frac{1}{5}\right)\\
 &= 100 \cdot \frac{8}{3}\\
-&= 266{,}66
+&= 266{,}\overline{6}
 \end{align*}
 % Hinweis: "100 * 8/3" so im Original (entspricht 1000 * 4/15).
 \end{loesung}

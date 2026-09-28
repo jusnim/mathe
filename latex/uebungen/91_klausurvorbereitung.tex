@@ -205,8 +205,8 @@ Berechnen Sie $d$ aus der Vorlesung. In Kapitel 3 waren $m = 101$, $e = 13$.
 \textbf{1. Lösungsweg:} Satz von Euler, Schnelles Potenzieren
 % KORRIGIERT: Original: "d = e^{\varphi(\varphi(m))-1} \equiv 1 (mod \varphi(m))" und "d = e^{39} \equiv 1 (mod 100)" (richtig: e \cdot d \equiv 1 bzw. d \equiv e^{39}); Voraussetzungen ggT = 1 und (mod 100) bei den Potenzen ergänzt.
 \begin{align*}
-& e \cdot d \equiv 1 \pmod{\varphi(m)}, \quad \varphi(101) = 100, && a^{\varphi(m)} \equiv 1 \pmod m \ \text{ für } \ggT(a, m) = 1\\
-\Rightarrow\quad & d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}, \text{ denn } e \cdot d \equiv e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)} && \text{(wegen } \ggT(13, 100) = 1\text{)}\\
+& e \cdot d \equiv 1 \pmod{\varphi(m)}, \quad \varphi(101) = 100 \qquad (\text{Euler: } a^{\varphi(m)} \equiv 1 \pmod m \text{ für } \ggT(a, m) = 1)\\
+\Rightarrow\quad & d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}, \text{ denn } e \cdot d \equiv e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)}\\ & \qquad (\text{wegen } \ggT(13, 100) = 1)\\
 & \varphi(\varphi(m)) = \varphi(100) = 40\\
 \Rightarrow\quad & \varphi(\varphi(m)) - 1 = 39 = 1 + 2 + 4 + 32\\
 & 13,\quad 13^2 \equiv 69,\quad 13^4 \equiv 69^2 \equiv 61,\quad \dots,\quad 13^{32} \equiv 81 \pmod{100}\\

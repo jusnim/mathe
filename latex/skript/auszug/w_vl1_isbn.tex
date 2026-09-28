@@ -47,13 +47,16 @@ Wenn sich $\boldsymbol{r}$ und $\boldsymbol{c}$ an genau einer (Fehler-)Stelle $
 \[ \boldsymbol{e} = \boldsymbol{r} - \boldsymbol{c} = 0\ 0 \ldots y \ldots 0\ 0, \qquad y = r_x - c_x \neq 0 \quad \text{Fehlergröße} \]
 
 \begin{satz}
-ISBN10 erkennt genau einen Fehler.
+% KORRIGIERT: stand „erkennt genau einen Fehler“
+ISBN10 erkennt jeden einzelnen Fehler (Fehler an genau einer Stelle).
 \end{satz}
 
 \begin{proof}
-\[ \sum_{i=1}^{10} i\, r_i = \boldsymbol{h}\, \boldsymbol{r}^T = \boldsymbol{h}\, \boldsymbol{c}^T + \boldsymbol{h}\, \boldsymbol{e}^T \equiv \boldsymbol{h}\, \boldsymbol{e}^T = x\, y \pmod{11}, \quad x, y \neq 0 \]
+% KORRIGIERT: Malpunkt, „≢ … (mod 11)“ statt „≠“ und Schluss (Fehler wird erkannt) ergänzt
+\[ \sum_{i=1}^{10} i\, r_i = \boldsymbol{h}\, \boldsymbol{r}^T = \boldsymbol{h}\, \boldsymbol{c}^T + \boldsymbol{h}\, \boldsymbol{e}^T \equiv \boldsymbol{h}\, \boldsymbol{e}^T = x \cdot y \pmod{11}, \quad x, y \not\equiv 0 \pmod{11} \]
 Da $\Zm{11}$ ein Körper ist, gibt es keine Nullteiler, also
-\[ x\, y \neq 0 \quad \Leftrightarrow \quad x \neq 0 \text{ und } y \neq 0 \qedhere \]
+\[ x \cdot y \not\equiv 0 \pmod{11} \quad \Leftrightarrow \quad x \not\equiv 0 \text{ und } y \not\equiv 0 \pmod{11} \]
+Also ist $\boldsymbol{h}\, \boldsymbol{r}^T \not\equiv 0 \pmod{11}$, d.h.\ $\boldsymbol{r} \notin C$: der Fehler wird erkannt.
 \end{proof}
 
 \begin{beispiel}

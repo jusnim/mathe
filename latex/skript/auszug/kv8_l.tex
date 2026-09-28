@@ -3,9 +3,10 @@
 \begin{loesung}
 \begin{align*}
 & z = m\,x + a = n\,y + b\\
-\Rightarrow\quad & m\,x - n\,y = b - a \qquad \text{Lemma von Beout}
+% KORRIGIERT: Original "Beout" (Tippfehler); Bedeutung von m, n, a, b ergänzt.
+\Rightarrow\quad & m\,x - n\,y = b - a \qquad \text{Lemma von Bezout}
 \end{align*}
-% Hinweis: "Beout" wörtlich aus der Quelle (Tippfehler für "Bezout").
+mit $m = 13$, $a = 5$, $n = 15$, $b = 4$ und $x, y \in \Z$.
 
 Euklidischer Algorithmus
 \begin{align*}
@@ -13,8 +14,10 @@ Euklidischer Algorithmus
 & 13 = 6 \cdot 2 + 1\\
 \Rightarrow\quad & 1 = 13 - 6 \cdot 2 = 13 - 6 \cdot (15 - 1 \cdot 13) = 7 \cdot 13 - 6 \cdot 15\\
 \Rightarrow\quad & b - a = 4 - 5 = -1 = 6 \cdot 15 - 7 \cdot 13\\
-\Rightarrow\quad & z = 5 - 13 \cdot 7 = 4 - 6 \cdot 15 = -86 \pmod{195}
+% KORRIGIERT: Original "z = -86 (mod 195)"; richtig ist "\equiv", mit Begründung für den Modul 195.
+\Rightarrow\quad & z = 5 - 13 \cdot 7 = 4 - 6 \cdot 15 = -86\\
+\Rightarrow\quad & z \equiv -86 \pmod{195} \quad \text{(da } \ggT(13, 15) = 1 \text{ ist, ist } 13 \cdot 15 = 195 \text{ der Modul)}
 \end{align*}
-Also ist die kleinste positive Lösung
+Alle Lösungen sind also $z = -86 + 195\,k$ mit $k \in \Z$. Also ist die kleinste positive Lösung
 \[ \Rightarrow\quad z = -86 + 195 = 109 \]
 \end{loesung}

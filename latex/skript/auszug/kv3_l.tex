@@ -46,18 +46,22 @@ Q &= \begin{pmatrix} 3 & 1\\ 1 & 0\end{pmatrix}
 = \begin{pmatrix} 401 & 103\\ 109 & 28\end{pmatrix}
 \end{align*}
 \begin{align*}
-\operatorname{Det} Q = 401 \cdot 28 - 109 \cdot 103 &= 1 && | \cdot 6\\
+% KORRIGIERT: Begründung für den Übergang zur nächsten Zeile ergänzt.
+\operatorname{Det} Q = 401 \cdot 28 - 109 \cdot 103 &= 1 && | \cdot 6 \quad \text{(es ist } 6 \cdot 401 = 2406,\ 6 \cdot 109 = 654\text{)}\\
 2406 \cdot 28 - 654 \cdot 103 &= 6 && | \cdot 4\\
 2406 \cdot 112 - 654 \cdot 412 &= 24
 \end{align*}
 \end{enumerate}
 
-\textbf{c)} Für alle weiteren Lösungen dieser Gleichung muss gelten
-\[ 2406\,x - 654\,y = 0 \]
+% KORRIGIERT: Original: "Für alle weiteren Lösungen dieser Gleichung muss gelten 2406x - 654y = 0" (gilt nur für die Differenz zweier Lösungen).
+\textbf{c)} Ist $(x, y)$ eine weitere Lösung, so muss für die Differenz zur Lösung $(3, 11)$ gelten
+\[ 2406 \cdot (x - 3) - 654 \cdot (y - 11) = 0 \]
 Es ist
 \[ 2406 \cdot \frac{654}{6} - 654 \cdot \frac{2406}{6} = 0 \]
 also
 \[ 2406 \cdot 109 - 654 \cdot 401 = 0 \]
+% KORRIGIERT: Begründung der Vollständigkeit und "t \in \Z" ergänzt.
+Da $\ggT(401, 109) = 1$ ist, sind dies bis auf ganzzahlige Vielfache alle Lösungen von $2406\,x - 654\,y = 0$.
 Damit erhält man für die allgemeine Lösung von $2406\,x - 654\,y = 24$
-\[ x = 3 + 109\,t, \qquad y = 11 + 401\,t \]
+\[ x = 3 + 109\,t, \qquad y = 11 + 401\,t, \qquad t \in \Z \]
 \end{loesung}
