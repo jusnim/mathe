@@ -1,0 +1,683 @@
+% Quelle: 1. Ring der ganzen Zahlen.pdf
+% Art: Vorlesung
+% Themen: Gruppenaxiome, Restklassengruppe Z4, Kleinsche Vierergruppe, Kongruenzen, Nullteiler, Teilbarkeitsregeln, Rundenturniere, BIBD, Hamilton-Zyklus, Grinberg-Formel, Herschel-Graph, Restklassenring Zm, Einheiten, Körper Zp, ISBN10, Lemma von Bezout, Hauptsatz der Arithmetik, ggT, kgV, Division mit Rest, Euklidischer Algorithmus, Matrixdarstellung EA, Laufzeit EA, Homomorphismen, Isomorphismen, Ring Zm x Zn, Chinesischer Restsatz, simultane Kongruenzen, Eulersche phi-Funktion
+
+\section{Der Ring der ganzen Zahlen $\Z$, endliche Körper $F$}
+
+\subsection*{Gruppen}
+
+\begin{definition}[Gruppe]
+Eine Gruppe $G$ ist eine Menge mit einer inneren Verknüpfung „$+$“, die folgenden Axiomen genügt:
+\begin{description}
+\item[(G1) innere Verknüpfung] $\;+ : G \times G \to G$\\
+d.h. zu je zwei Elementen $u, v \in G$ existiert eindeutig ein Element
+\[ u + v \in G \]
+\item[(G2) assoziativ:]
+\[ (u + v) + w = u + (v + w) \qquad \text{für alle } u, v, w \in G \]
+\item[(G3) Existenz eines Nullelementes]\ \\
+Es gibt ein neutrales Element $o \in G$, so dass gilt
+\[ u + o = u \qquad \text{für alle } u \in G \]
+\item[(G4) Existenz eines entgegengesetzten Elementes] $\;-u \in G$\\
+Zu jedem Element $u \in G$ gibt es ein Element $-u \in G$, so dass
+\[ u + (-u) = o \]
+\end{description}
+In einer kommutativen Gruppe $G$ gilt zusätzlich
+\begin{description}
+\item[(G5) kommutativ:]
+\[ u + v = v + u \qquad \text{für alle } u, v \in G \]
+\end{description}
+\end{definition}
+
+Die Menge $(\Z, +)$ ist eine kommutative Gruppe.\\
+Es gibt genau zwei Gruppen der Ordnung 4. \qquad Cayley-Diagramme.
+
+\begin{beispiel}[Restklassengruppe $\Zm{4}$ und Kleinsche Vierergruppe $V_4$]\ \\[1ex]
+Restklassengruppe $\Zm{4}$:
+\[
+\begin{array}{c|cccc}
++ & \mathbf{0} & \mathbf{1} & \mathbf{2} & \mathbf{3} \\ \hline
+\mathbf{0} & 0 & 1 & 2 & 3 \\
+\mathbf{1} & 1 & 2 & 3 & 0 \\
+\mathbf{2} & 2 & 3 & 0 & 1 \\
+\mathbf{3} & 3 & 0 & 1 & 2
+\end{array}
+\]
+Kleinsche Vierergruppe $V_4$:
+\[
+\begin{array}{c|cccc}
++ & \mathbf{0} & \boldsymbol{r} & \boldsymbol{g} & \boldsymbol{b} \\ \hline
+\mathbf{0} & 0 & r & g & b \\
+\boldsymbol{r} & r & 0 & b & g \\
+\boldsymbol{g} & g & b & 0 & r \\
+\boldsymbol{b} & b & g & r & 0
+\end{array}
+\]
+\end{beispiel}
+
+Anwendung der Kleinschen Vierergruppe: Färben von ebenen Graphen
+
+\subsection{Kongruenzen}
+
+$x_1, x_2, y_1, y_2, m \in \Z$, $m \geq 2$
+
+\begin{definition}
+Wir nennen $x_1$ \textbf{kongruent} zu $x_2$ \textbf{modulo} $m$ und schreiben
+\[ x_1 \equiv x_2 \pmod{m}, \]
+wenn $m$ teilt $x_1 - x_2$, in Zeichen $m \mid x_2 - x_1$.
+\end{definition}
+
+Die Relation $\equiv$ ist eine Äquivalenzrelation. Durch $\equiv$ wird die Menge $\Z$ in $m$ Restklassen zerlegt.\\
+$\equiv$ ist mit der Addition und Multiplikation kompatibel.
+
+\begin{satz}
+Falls
+\[ x_1 \equiv x_2 \pmod{m}, \qquad y_1 \equiv y_2 \pmod{m} \]
+\[ \Rightarrow \quad x_1 + y_1 \equiv x_2 + y_2 \pmod{m}, \qquad x_1 y_1 \equiv x_2 y_2 \pmod{m} \]
+\end{satz}
+
+\begin{proof}
+Es existieren $x, y \in \Z$ mit $x_1 - x_2 = m\,x$, $y_1 - y_2 = m\,y$.\\
+Zeigen, dass
+\[ x_1 + y_1 - (x_2 + y_2) \quad\text{und}\quad x_1 y_1 - x_2 y_2 \]
+Vielfache von $m$ sind.\\
+Die erste Aussage folgt sofort aus der Addition der obigen Gleichungen.
+\[ x_1 + y_1 - (x_2 + y_2) = m\,(x + y) \]
+Nun der Beweis der zweiten Aussage
+\begin{align*}
+\Rightarrow \quad x_1 y_1 - x_2 y_2 &= x_1 (y_1 - y_2) + (x_1 - x_2)\, y_2 \\
+&= x_1\, m\, y + m\, x\, y_2 \qedhere
+\end{align*}
+\end{proof}
+
+\begin{bemerkung}[Vorsicht beim Kürzen]
+\textbf{Vorsicht Beim Kürzen! Durch Nullteiler darf nicht geteilt werden}
+\end{bemerkung}
+
+\begin{beispiel}
+\[ 3 \cdot 1 \equiv 3 \cdot 5 \pmod{6} \quad \text{Daraus folgt nicht} \quad 1 \equiv 5 \pmod{6} \]
+3 ist ein Nullteiler (mod 6) wegen
+\[ 3 \cdot 2 \equiv 0 \pmod{6} \]
+\end{beispiel}
+
+Schauen uns nun Anwendungen aus verschiedenen Gebieten der DM an.
+
+Kongruenzen verwendet man oft, um bestimmte Aussagen zu falsifizieren.
+
+\begin{beispiel}
+Ist $9 \cdot 14 = 128$?\\
+Falls ja, muss diese auch wahr sein, wenn man sie modulo 2 betrachtet
+\[ 0 \equiv 0 \pmod{2} \quad \surd \text{ Test bestanden} \]
+Falls ja, muss sie auch wahr sein, wenn man sie modulo 3 betrachtet
+\[ 0 \equiv 2 \pmod{3} \quad f \text{ Test nicht bestanden} \]
+\[ 9 \cdot 14 \neq 128 \]
+\end{beispiel}
+
+\subsubsection*{Teilbarkeitsregeln}
+
+Sei $x = (x_n\, x_{n-1} \ldots x_1\, x_0)_{10}$ eine ganze positive Zahl.
+
+\begin{satz}[Teilbarkeitsregeln]\
+\begin{enumerate}[label=\alph*)]
+\item $x$ ist genau dann durch 9 teilbar, wenn ihre Quersumme durch 9 teilbar ist.
+\item $x$ ist genau dann durch 11 teilbar, wenn ihre alternierende Quersumme durch 11 teilbar ist.
+\end{enumerate}
+\end{satz}
+
+\begin{proof}
+a) Denn:
+\[ x = x_0 + x_1\, 10 + x_2\, 10^2 + \ldots + x_n\, 10^n \]
+Es ist $10^r \equiv 1 \pmod{9}$ für alle $r$, z.B. $1000 = 999 + 1 \equiv 1 \pmod{9}$
+\[ \Rightarrow \quad x \equiv x_0 + x_1 + \ldots + x_n \pmod{9} \]
+
+b) Denn:
+\begin{align*}
+10 &= 11 - 1 \equiv -1 \pmod{11}, \\
+100 &= 99 + 1 \equiv 1 \pmod{11}, \\
+\Rightarrow \quad 1000 &= 10 \cdot 100 \equiv -1 \cdot 1 = -1 \pmod{11}
+\end{align*}
+Allgemein: $10^r = (-1)^r \pmod{11}$
+\[ \Rightarrow \quad x \equiv x_0 - x_1 + x_2 - x_3 \ldots (-1)^n x_n \pmod{11} \qedhere \]
+\end{proof}
+
+\subsubsection*{Rundenturniere}
+
+Gegeben sind $2m$ Mannschaften. Organisiere einen Turnierplan, so dass nach $2m - 1$ Spieltagen jede Mannschaft gegen jede andere Mannschaft genau einmal gespielt hat.
+
+\begin{beispiel}
+$2m = 4$
+\begin{center}
+\begin{tabular}{lll}
+Runde 1 & Runde 2 & Runde 3 \\
+1\ 3 & 1\ 4 & 1\ 2 \\
+2\ 4 & 2\ 3 & 3\ 4
+\end{tabular}
+\end{center}
+\end{beispiel}
+
+\begin{algorithmus}[Rundenturnier]
+Allgemein:\\
+Runde $r$ spielt $x$ gegen $y$, wenn $x + y \equiv r \pmod{2m - 1}$ für $1 \leq x, y \leq 2m - 1$.\\
+Falls $x + x \equiv r \pmod{2m - 1}$, spielt $x$ gegen $2m$.
+\end{algorithmus}
+
+\begin{beispiel}
+$2m = 6$
+\begin{center}
+\begin{tabular}{lllll}
+Runde 1 & Runde 2 & Runde 3 & Runde 4 & Runde 5 \\
+1\ 5 & 1\ 6 & 1\ 2 & 1\ 3 & 1\ 4 \\
+2\ 4 & 2\ 5 & 3\ 5 & 2\ 6 & 2\ 3 \\
+3\ 6 & 3\ 4 & 4\ 6 & 4\ 5 & 5\ 6
+\end{tabular}
+\end{center}
+\end{beispiel}
+
+Turnierpläne sind erste Beispiele für \textbf{Blockpläne}, genauer \textbf{BIBDs}.
+
+\begin{definition}[Parameter eines BIBD]
+Parameter eines BIBD:\\
+$v$ = Anzahl der Varietäten, hier $v = 2m$,\\
+$k$ = Länge eines Blocks, hier $k = 2$,\\
+$\lambda$ sagt, wie oft jede 2-elementige Teilmenge der Varietäten $\{1, 2, \ldots, v\}$ im Blockplan vorkommt, hier $\lambda = 1$.\\
+Turniere sind also $(v, 2, 1)$-BIBDs. Das Besondere an Turnieren ist, dass sie \textbf{auflösbar} sind, d.h.\ jede der $v - 1$ Parallelklassen (Runden) enthält sämtliche Varietäten (Mannschaften).
+
+weitere Parameter von BIBDs:\\
+$b$ = Anzahl der Blöcke, $B \subseteq \binom{V}{k}$, hier $B = \binom{V}{2}$, $\; b = \binom{v}{2}$.\\
+$r$ sagt, wie oft jede Varietät im Blockplan vorkommt, hier $r = v - 1$.
+\end{definition}
+
+\begin{satz}
+Es gelten die Gleichungen
+\[ b\,k = v\,r, \qquad\qquad r\,(k - 1) = \lambda\,(v - 1) \]
+Die Parameter $v, k, \lambda$ genügen um alle fünf Parameter des BIBD zu bestimmen.
+\end{satz}
+
+\subsubsection*{Graphentheorie}
+
+\begin{definition}[Hamilton Zyklus]
+Ein Hamilton Zyklus in einem Graphen ist ein geschlossener Kantenzug in diesem Graphen, der sämtliche Knoten genau einmal passiert.
+\end{definition}
+
+\begin{beispiel}
+Das \textbf{3-seitige Prisma} mit $n = 6$ Ecken
+% GRAFIK: Ebene Zeichnung des 3-seitigen Prismas: äußeres großes Dreieck (Ecken oben, unten links, unten rechts),
+% GRAFIK: darin ein kleineres inneres Dreieck (Ecken oben, unten links, unten rechts); jede innere Ecke ist durch
+% GRAFIK: eine Kante mit der entsprechenden äußeren Ecke verbunden (oben-oben, links-links, rechts-rechts). 6 Knoten, 9 Kanten.
+\end{beispiel}
+
+\begin{satz}[Grinberg Formel]
+$G$ sei ein ebener Graph mit Hamilton Zyklus $C$. Dann gilt
+\[ \sum_i (i - 2)\,\varphi'_i = \sum_i (i - 2)\,\varphi''_i \]
+Dabei sind $\varphi'_i, \varphi''_i$ die Anzahlen der Flächen mit $i$ Grenzen im Inneren bzw.\ im Äußeren von $C$.
+\end{satz}
+
+\begin{beispiel}
+Im Prisma ist $\varphi'_3 = 0$, $\;\varphi''_3 = 2$, $\;\varphi'_4 = 2$, $\;\varphi''_4 = 1$,\\
+also
+\[ 2 \cdot 2 = \sum_i (i - 2)\,\varphi'_i = \sum_i (i - 2)\,\varphi''_i = 1 \cdot 2 + 2 \cdot 1 \]
+\end{beispiel}
+
+\begin{beispiel}
+Der \textbf{Herschel Graph}
+% GRAFIK: Herschel-Graph (11 Knoten, 18 Kanten), rautenförmig gezeichnet: Knoten oben, unten, ganz links, ganz rechts;
+% GRAFIK: in der Mitte ein Knoten, umgeben von 4 Knoten (oben-links, oben-rechts, unten-links, unten-rechts), die mit dem
+% GRAFIK: Mittelknoten eine Raute aus 4 Vierecken bilden; dazu je ein Knoten links und rechts der Mitte auf der waagerechten
+% GRAFIK: Mittellinie. Kanten: oben -- oben-links, oben -- oben-rechts, unten -- unten-links, unten -- unten-rechts,
+% GRAFIK: ganz links -- oben, ganz links -- unten, ganz links -- links-innen, ganz rechts -- oben, ganz rechts -- unten,
+% GRAFIK: ganz rechts -- rechts-innen, links-innen -- oben-links, links-innen -- unten-links, rechts-innen -- oben-rechts,
+% GRAFIK: rechts-innen -- unten-rechts, Mitte -- oben-links, Mitte -- oben-rechts, Mitte -- unten-links, Mitte -- unten-rechts.
+
+besteht aus 9 Flächen, jede hat $i = 4$ Grenzen. Das bedeutet
+\[ (4 - 2)\,\varphi'_4 = (4 - 2)\,\varphi''_4 \qquad \varphi'_4 + \varphi''_4 = 9. \]
+\begin{align*}
+\Rightarrow &\quad 2\,\varphi'_i = 9 \\
+\Rightarrow &\quad 0 \equiv 1 \pmod{2},
+\end{align*}
+ein Widerspruch, also besitzt der Herschel Graph keinen Hamilton Zyklus.
+\end{beispiel}
+
+Grinberg hat seine Formel benutzt um ebene kubische Graphen ohne Hamilton-Zyklus zu konstruieren.
+
+\subsection{Der Restklassenring $\Zm{m}$}
+
+Zerlegen die Menge der ganzen Zahlen $\Z$ in $m$ \textbf{Restklassen} (Cosets):
+\begin{align*}
+m\Z &:= \{ 0, \pm m, \pm 2m, \ldots \} \\
+1 + m\Z &:= \{ 1, 1 \pm m, 1 \pm 2m, \ldots \} \\
+&\ \ \ldots \\
+m-1 + m\Z &:= \{ m-1, m-1 \pm m, m-1 \pm 2m, \ldots \}
+\end{align*}
+
+\begin{definition}[Restklassengruppe]
+$m\Z$ ist eine Untergruppe von $\Z$. Die Restklassenmenge
+\[ \Z / m\Z := \{ m\Z, 1 + m\Z, \ldots, m-1 + m\Z \} \]
+oder kurz
+\[ \Zm{m} := \{ [0], [1], \ldots, [m-1] \} \]
+$(\Zm{m}, +)$ ist eine Gruppe, die \textbf{Restklassengruppe} von $\Z$ nach dem Modul $m$.
+\end{definition}
+
+\begin{beispiel}
+$m = 3$, $\Zm{3} := \{ [0], [1], [2] \}$ mit
+\begin{align*}
+[0] &= 3\Z = \{ 0, \pm 3, \pm 6, \ldots \} \\
+[1] &= 1 + 3\Z = \{ 1, 1 \pm 3, 1 \pm 6, 1 \pm 9, \ldots \} \\
+[2] &= 2 + 3\Z = \{ 2, 2 \pm 3, 2 \pm 6, 2 \pm 9, \ldots \}
+\end{align*}
+\end{beispiel}
+
+In $\Zm{m}$ sind Addition und Multiplikation erlaubt
+\[ [a] + [b] := [a + b], \qquad [a] \cdot [b] := [a \cdot b], \]
+allerdings ist $(\Zm{m} / \{0\}\ \cdot)$ im allg.\ keine Gruppe, da Axiom (G4) nicht gilt.\\
+Deswegen ist $\Zm{m}$ ein Ring, aber im Allg.\ kein Körper.
+
+\begin{definition}
+Ein invertierbares Element in einem Ring heißt Einheit.
+\end{definition}
+
+\begin{beispiel}
+Welche Elemente von $\Zm{6} = \{ 0, 1, 2, 3, 4, 5 \}$ sind Einheiten?\\
+Antwort: nur 1, 5 \qquad $1 \cdot 1 = 1$, $\;5 \cdot 5 = 25 = 4 \cdot 6 + 1 \equiv 1 \pmod{6}$\\[1ex]
+$(\Zm{6} \setminus \{0\}, \cdot)$
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$\cdot$ & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} \\ \hline
+\textbf{1} & 1 & 2 & 3 & 4 & 5 \\ \hline
+\textbf{2} & 2 & 4 & 0 & 2 & 4 \\ \hline
+\textbf{3} & 3 & 0 & 3 & 0 & 3 \\ \hline
+\textbf{4} & 4 & 2 & 0 & 4 & 2 \\ \hline
+\textbf{5} & 5 & 4 & 3 & 2 & 1 \\ \hline
+\end{tabular}
+\end{center}
+\end{beispiel}
+
+\begin{definition}
+Bezeichnen mit $\Zm{m}^*$ die Menge der Einheiten von $\Zm{m}$. Falls $\Zm{m}^* = \Zm{m} \setminus \{0\}$, ist $\Zm{m}$ ein Körper.
+\end{definition}
+
+\begin{satz}
+$[a] \in \Zm{m}$ besitzt genau dann ein Inverses $[a]^{-1}$, wenn $\ggT(a, m) = 1$.\\
+Andernfalls ist $[a]$ ein Nullteiler, d.h.\ es gibt ein $[b] \in \Zm{m}$ mit $[a \cdot b] = [0]$.
+\end{satz}
+
+\begin{proof}
+\begin{align*}
+&\ggT(a, m) = 1 && \text{Lemma von Bezout} \\
+\Leftrightarrow\quad &m \cdot x + a \cdot y = 1 && \text{ist lösbar} \\
+\Leftrightarrow\quad &a \cdot y \equiv 1 \pmod{m} \\
+\Leftrightarrow\quad &[y] = [a]^{-1} && \qedhere
+\end{align*}
+\end{proof}
+
+\begin{satz}
+Genau dann ist $\Zm{m}$ ein Körper, wenn $m$ eine Primzahl ist.
+\end{satz}
+
+\begin{proof}
+zu beweisen ist Axiom (G4) für $(\Zm{p} \setminus \{0\}, \cdot)$
+\begin{align*}
+&\ggT(1, p) = \ggT(2, p) = \ldots = \ggT(p-1, p) = 1 \\
+\Leftrightarrow\quad &p \text{ ist Primzahl.} \\
+\Leftrightarrow\quad &\text{Jedes Element aus } \Zm{p} \setminus \{0\} \text{ ist Einheit.} \qedhere
+\end{align*}
+\end{proof}
+
+\begin{beispiel}
+\begin{align*}
+&\Zm{5} = \{[0], [1], [2], [3], [4]\} = \{[0], \pm[1], \pm[2]\} \\
+&[1] \cdot [1] = [1], \quad [-1] \cdot [-1] = [1], \quad [2] \cdot [3] = [1]
+\end{align*}
+\end{beispiel}
+
+\begin{satz}
+Die Menge $\Zm{n}^*$ ist bezüglich der Multiplikation eine Gruppe.
+\end{satz}
+
+\begin{proof}
+Ist das Axiom (G1) erfüllt? Seien $a, b \in \Zm{n}^*$. Hat $a \cdot b$ ein Inverses?
+\[ a \cdot b \cdot b^{-1} \cdot a^{-1} = 1 \quad \text{also ist} \quad (a \cdot b)^{-1} = b^{-1} \cdot a^{-1} \qedhere \]
+\end{proof}
+
+\subsection{Der ISBN Code (ISBN10)}
+
+\begin{definition}[Wort]
+Ein \textbf{Wort} $\boldsymbol{w}$ ist ein Zeilenvektor aus $\Zm{11}^{10}$ bestehend aus 10 Elementen von $\Zm{11}$.
+\[ \boldsymbol{w} = w_1\, w_2 \ldots w_{10} \]
+\[ w_i \in \Zm{11} \quad \text{Buchstabe} \]
+\end{definition}
+
+$\Zm{11}^{10}$ ist ein Vektorraum über dem Körper $\Zm{11}$.\\
+denn: Man kann Wörter addieren und mit Elementen von $\Zm{11}$ multiplizieren.
+
+\begin{beispiel}
+\[ \boldsymbol{\Zm{2}^3} = \{ \begin{array}[t]{llll} 000 & 001 & 010 & 011 \\ 100 & 101 & 110 & 111 \,\} \end{array} \]
+\end{beispiel}
+
+\begin{satz}
+Die Anzahl der Wörter ist $|\Zm{11}^{10}| = 11^{10}$.
+\end{satz}
+
+Sei $C$ die Menge der \textbf{ISBN10}-Nummern (Menge der Codewörter).
+\[ C \subseteq \Zm{11}^{10} \]
+
+\begin{beispiel}
+\textbf{0-387-98999-4}, \quad \textbf{3-528-06580-$\boldsymbol{X}$}
+\end{beispiel}
+
+\[ \boldsymbol{c} = c_1\text{-}c_2\, c_3\, c_4\text{-}c_5\, c_6\, c_7\, c_8\, c_9\text{-}c_{10} \in C \]
+\begin{tabular}{ll}
+$c_1$ & Sprache, \\
+$c_2\, c_3\, c_4$ & Verlag, \\
+$c_5 \ldots c_9$ & vergibt der Verlag, \\
+$c_{10}$ & Prüfziffer.
+\end{tabular}\\
+$0 \leq c_1, \ldots, c_9 < 10$
+
+Die Prüfziffer $c_{10}$ wird so bestimmt, dass die gewichtete Prüfsumme
+\[ \sum_{i=1}^{10} i\, c_i \equiv 0 \pmod{11} \qquad (*) \]
+verschwindet. Dann ist
+\[ \sum_{i=1}^{10} i\, c_i = \sum_{i=1}^{9} i\, c_i + 10\, c_{10} \equiv \sum_{i=1}^{9} i\, c_i - c_{10} \equiv 0 \pmod{11} \]
+\[ \Rightarrow \quad c_{10} \equiv \sum_{i=1}^{9} i\, c_i \pmod{11} \]
+Man schreibt $X$ an Stelle von 10.
+
+Sei $\boldsymbol{c} \in C$, $\boldsymbol{r} \in \Zm{11}^{10}$, $\boldsymbol{h} = 1\ 2\ 3\ 4\ 5\ 6\ 7\ 8\ 9\ 10$. Dann erhält $(*)$ die Form
+\[ \boldsymbol{h}\, \boldsymbol{c}^T \equiv 0 \pmod{11}. \]
+Wenn sich $\boldsymbol{r}$ und $\boldsymbol{c}$ an genau einer (Fehler-)Stelle $x$ unterscheiden, ist der Fehlervektor
+\[ \boldsymbol{e} = \boldsymbol{r} - \boldsymbol{c} = 0\ 0 \ldots y \ldots 0\ 0, \qquad y = r_x - c_x \neq 0 \quad \text{Fehlergröße} \]
+
+\begin{satz}
+ISBN10 erkennt genau einen Fehler.
+\end{satz}
+
+\begin{proof}
+\[ \sum_{i=1}^{10} i\, r_i = \boldsymbol{h}\, \boldsymbol{r}^T = \boldsymbol{h}\, \boldsymbol{c}^T + \boldsymbol{h}\, \boldsymbol{e}^T \equiv \boldsymbol{h}\, \boldsymbol{e}^T = x\, y \pmod{11}, \quad x, y \neq 0 \]
+Da $\Zm{11}$ ein Körper ist, gibt es keine Nullteiler, also
+\[ x\, y \neq 0 \quad \Leftrightarrow \quad x \neq 0 \text{ und } y \neq 0 \qedhere \]
+\end{proof}
+
+\begin{beispiel}
+Sind obige Nummern ISBN10 Nummern?
+\end{beispiel}
+
+\subsection{Division mit Rest, Euklidischer Algorithmus}
+
+Unter welcher Bedingung ist die Gleichung $a \cdot x + b \cdot y = d$ lösbar?
+
+\begin{lemma}[Lemma von Bezout]
+Gegeben $a, b \in \Z$. Dann existieren Zahlen $x, y \in \Z$ mit
+\[ a \cdot x + b \cdot y = \ggT(a, b) \qquad (*) \]
+\end{lemma}
+
+\begin{korollar}[Folgerung]
+Die Gleichung $a \cdot x + b \cdot y = d$ ist genau dann lösbar, wenn $\ggT(a, b) \mid d$.
+\end{korollar}
+
+\subsubsection*{Hauptsatz der Arithmetik, Primfaktorzerlegung}
+
+Alle Zahlen aus $\boldsymbol{N}$.
+
+\begin{satz}[Hauptsatz der Arithmetik]
+Jede natürliche Zahl $a > 1$ ist eindeutig (bis auf die Reihenfolge) ein Produkt von Primzahlpotenzen:
+\[ a = p_1^{n1} \cdot p_2^{n2} \cdot \ldots \cdot p_k^{nk} \]
+\end{satz}
+
+Es ist schwer, für eine große Zahl $a$ diese Zerlegung zu gewinnen.\\
+(Sieb des Eratosthenes)
+
+\begin{definition}[ggT, kgV]
+Sei $R(a, b) = \{ r \mid r \mid a \text{ und } r \mid b \}$ die Menge der gemeinsamen Teiler von $a, b$. Dann ist
+\[ \boldsymbol{\ggT(a, b) = \max \{ r \mid r \in R(a, b) \}} \]
+äquivalent dazu ist
+\[ r \in R(a, b) \quad \Rightarrow \quad r \mid \ggT(a, b) \]
+Zwei Zahlen $a, b$ mit $\ggT(a, b) = 1$ heißen teilerfremd.
+\[ \boldsymbol{\kgV(a, b) = \min \{ s \mid a \mid s \text{ und } b \mid s \}} \]
+\[ \kgV(a, b) \cdot \ggT(a, b) = a \cdot b \]
+\end{definition}
+
+Zur Bestimmung des $\ggT(a, b)$ wird die Primfaktorzerlegung nicht benötigt.
+
+\begin{satz}[Division mit Rest]
+Sei $a > b > 0$ gegeben. Dann sind die Zahlen $q, r$ mit
+\[ a = q \cdot b + r \qquad 0 \leq r < b \]
+eindeutig bestimmt.
+\end{satz}
+
+\begin{algorithmus}[Euklidischer Algorithmus]
+Der \textbf{Euklidische Algorithmus} berechnet $\ggT(a, b)$.
+\end{algorithmus}
+
+\begin{beispiel}
+$a = 1965$, $\;b = 225$
+\begin{align*}
+1965 &= 8 \cdot 225 + 165 \\
+225 &= 1 \cdot 165 + 60 \\
+165 &= 2 \cdot 60 + 45 \\
+60 &= 1 \cdot 45 + 15 \\
+45 &= 3 \cdot 15 + 0
+\end{align*}
+$\ggT(a, b)$ ist der letzte von Null verschiedene Zahl in der Folge der Reste, also
+\[ \ggT(1965, 225) = 15. \]
+\end{beispiel}
+
+Allgemein:
+\begin{align*}
+a &= q_0 \cdot b + r_1 \\
+b &= q_1 \cdot r_1 + r_2 \\
+&\ \ \ldots \\
+r_{i-1} &= q_i \cdot r_i + r_{i+1} = (q_i \ \ 1) \begin{pmatrix} r_i \\ r_{i+1} \end{pmatrix} \\
+&\ \ \ldots \\
+r_{n-2} &= q_{n-1} \cdot r_{n-1} + r_n, \qquad r_n > 0 \\
+r_{n-1} &= q_n \cdot r_n + 0
+\end{align*}
+
+\begin{satz}[Euklid]
+\[ \ggT(a, b) = r_n \]
+\end{satz}
+
+\begin{proof}
+denn: $r_n \mid a$, $\;r_n \mid b$ und jeder Teiler von $a$ und $b$ teilt $r_n$.
+\end{proof}
+
+\begin{proof}[Beweis des Lemmas von Bezout]
+Sei $Q_i = \begin{pmatrix} q_i & 1 \\ 1 & 0 \end{pmatrix}$. Mit $Q_i$ schreibt man
+\[ \begin{pmatrix} r_{i-1} \\ r_i \end{pmatrix} = Q_i \begin{pmatrix} r_i \\ r_{i+1} \end{pmatrix} = Q_i\, Q_{i+1} \begin{pmatrix} r_{i+1} \\ r_{i+2} \end{pmatrix}, \]
+also mit
+\[ Q = Q_0 \ldots Q_n = \begin{pmatrix} s & u \\ t & v \end{pmatrix} \]
+\[ \Rightarrow \quad \begin{pmatrix} a \\ b \end{pmatrix} = \begin{pmatrix} q_0 & 1 \\ 1 & 0 \end{pmatrix} \ldots \begin{pmatrix} q_n & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} r_n \\ 0 \end{pmatrix} = Q \begin{pmatrix} r_n \\ 0 \end{pmatrix} = \begin{pmatrix} s \\ t \end{pmatrix} r_n \]
+Es ist $\operatorname{Det} Q_i = -1$, also
+\[ \operatorname{Det} Q = s\,v - t\,u = (-1)^{n+1} \]
+Im wichtigsten Fall, $a, b$ teilerfremd, also $r_n = 1$, entnimmt man eine Lösung von $(*)$ $\operatorname{Det} Q$. Andernfalls muss $\operatorname{Det} Q$ noch mit $r_n$ multipliziert werden.
+\[ a \cdot v - b \cdot u = s\, r_n \cdot v - t\, r_n \cdot u = \pm r_n \]
+Damit ist das Lemma von Bezout bewiesen.
+\end{proof}
+
+\begin{beispiel}[Fortsetzung]
+$a = 1965$, $\;b = 225$,\\
+Gesucht: Lösung der Gleichung $1965\, x + 225 \cdot y = 15$
+\begin{align*}
+Q &= \begin{pmatrix} 8 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 2 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix} \begin{pmatrix} 3 & 1 \\ 1 & 0 \end{pmatrix} \\
+&= \begin{pmatrix} 131 & 35 \\ 15 & 4 \end{pmatrix} = \begin{pmatrix} s & u \\ t & v \end{pmatrix}
+\end{align*}
+\[ \operatorname{Det} Q = 131 \cdot 4 - 15 \cdot 35 = -1 \quad | \cdot (-15) \]
+\[ \Rightarrow \quad 1965 \cdot (-4) + 225 \cdot 35 = 15 \]
+\end{beispiel}
+
+\subsubsection*{Wie schnell ist der EA?}
+
+Für alle $1 \leq i \leq n - 1$ gilt die Abschätzung
+\[ r_{i-1} = q_i \cdot r_i + r_{i+1} \geq 1 \cdot r_i + r_{i+1} > 2\, r_{i+1} \]
+\begin{align*}
+&\text{Insbesondere} && b > 2\, r_2 > 2^2 r_4 > 2^3 r_6 > \ldots > 2^n\, r_{2n} \\
+&\text{Aus} && 2^n > b \quad \text{folgt} \quad r_{2n} = 0 \\
+&\text{m.a.W.} && n > \log_2 b \quad \text{folgt} \quad r_{2n} = 0
+\end{align*}
+
+\begin{satz}
+Der EA benötigt höchstens $O(\log_2 b)$ Iterationen bis zum $\ggT(a, b)$.
+\end{satz}
+
+$\log_2 b$ ist die Anzahl der Binärstellen von $b$.\\
+Der EA hat die Komplexität $O(\log b)$ bzw.\ linear in der Anzahl der Dezimal- (Binär-) stellen von $b$.
+
+\subsubsection*{Homomorphismen von Gruppen}
+
+\begin{definition}
+Seien $(G,+)$, $(H,+)$ zwei Gruppen und $f : G \to H$ eine Abbildung von $G$ nach $H$. Falls
+\[ f(g + g') = f(g) + f(g') \qquad \text{für alle } g, g' \in G, \]
+dann heißt $f$ ein (\textbf{Gruppen-})\textbf{Homomorphismus} von $G$ nach $H$.
+\end{definition}
+
+Die Struktur von $G$ findet sich also in $H$ wieder, wenn auch meist etwas gröber.
+
+\begin{beispiel}
+$G = \Z$, $\;H = \Zm{m}$, $\;f(g) = [g]$
+\end{beispiel}
+
+\begin{definition}
+Falls $G, H$ Ringe sind und zusätzlich
+\[ f(g \cdot g') = f(g) \cdot f(g') \qquad \text{für alle } g, g' \in G, \]
+gilt, ist $f$ ein \textbf{Ringhomomorphismus}.
+
+Ist $f$ zusätzlich bijektiv, so spricht man von einem \textbf{Isomorphismus}.
+
+Gruppen (Ringe) $G, H$ heißen \textbf{isomorph}, falls ein Isomorphismus $f : G \to H$ existiert. Man schreibt dann $G \cong H$.
+\end{definition}
+
+\subsubsection*{Der Ring $\Zm{m} \times \Zm{n}$}
+
+Auf dem kartesischen Produkt $\Zm{m} \times \Zm{n}$ sind Addition und Multiplikation wie folgt erklärt
+\begin{align*}
+(a_1, a_2) + (b_1, b_2) &= (a_1 + b_1, a_2 + b_2) \\
+(a_1, a_2) \cdot (b_1, b_2) &= (a_1 \cdot b_1, a_2 \cdot b_2)
+\end{align*}
+$\Zm{m} \times \Zm{n}$ ist ein Ring mit dem Einselement $(1, 1)$.
+\[ f : \Zm{m \cdot n} \to \Zm{m} \times \Zm{n}, \quad \text{mit} \]
+\[ f(z) = (z \bmod m,\ z \bmod n) \]
+ist ein Homomorphismus.
+
+\begin{beispiel}
+Die Ringe $\Zm{12}$, $\;\Zm{2} \times \Zm{6}$ sind nicht isomorph, denn
+\[ f(0) = f(6) = (0,0) \qquad f(1) = f(7) = (1,1) \]
+$f$ ist nicht surjektiv, da die Bilder $(0, 1)$, $(1, 0)$ nicht vorkommen;\\
+$f$ ist nicht injektiv, da die Bilder $(0, 0)$, $(1, 1)$ je zwei Urbilder haben.
+\end{beispiel}
+
+Der Chinesische Restsatz gibt die Bedingung an unter der die Ringe
+\[ \Zm{m \cdot n}, \quad \Zm{m} \times \Zm{n} \]
+isomorph sind.
+
+\subsection{Der Chinesische Restsatz}
+
+Ist das System simultaner Kongruenzen
+\begin{align*}
+z &\equiv a_1 \pmod{m_1} \\
+z &\equiv a_2 \pmod{m_2} \qquad (*) \\
+&\ \ \ldots \\
+z &\equiv a_n \pmod{m_n}
+\end{align*}
+lösbar? Wenn ja, wie und wie viele Lösungen existieren?
+
+\begin{satz}[Chinesischer Restsatz]
+Sei $m, n \geq 2$. Falls $\ggT(m, n) = 1$, gilt
+\[ \Zm{m \cdot n} \cong \Zm{m} \times \Zm{n} \]
+\end{satz}
+
+Sei $f : \Zm{m \cdot n} \to \Zm{m} \times \Zm{n}$, mit
+\[ f(z) = (z \bmod m,\ z \bmod n) \]
+Falls $m, n$ teilerfremd sind, dann ist $f$ surjektiv und injektiv, damit bijektiv, also ist $f$ ein Ring-Isomorphismus.
+
+\begin{proof}[Bestimmung von $f^{-1}$ (Beweis des Restsatzes)]
+Lösen die simultanen Kongruenzen ($\ggT(m, n) = 1$)
+\begin{align*}
+z &\equiv a \pmod{m} \\
+z &\equiv b \pmod{n}
+\end{align*}
+Wenn eine Lösung $x, y \in \boldsymbol{Z}$ der Gleichung
+\[ m\,x - n\,y = b - a \]
+existiert, erfüllt
+\[ z = m\,x + a = n\,y + b \]
+beide Kongruenzen. Das ist gewährleistet (Lemma von Bezout), wenn
+\[ \ggT(m, n) \mid b - a. \qedhere \]
+\end{proof}
+
+\begin{beispiel}
+\begin{align*}
+z &\equiv 3 \pmod{11} \\
+z &\equiv 6 \pmod{8} \\
+z &\equiv 1 \pmod{15}
+\end{align*}
+Lösen zuerst
+\begin{align*}
+&z \equiv 3 \pmod{11}, && a = 3 \\
+&z \equiv 6 \pmod{8}, && b = 6 \\
+&\text{EA mit } 11, 8, && d = b - a = 3 \\
+&11 = 1 \cdot 8 + 3 && |\ + a \\
+\Rightarrow\quad &z = 11 + 3 = 1 \cdot 8 + 6 \equiv 14 \pmod{88}
+\end{align*}
+Lösen dann
+\begin{align*}
+&z \equiv 14 \pmod{88}, && a = 14 \\
+&z \equiv 1 \pmod{15}, && b = 6 % Hinweis: "b = 6" steht so in der Quelle; gemeint ist offenbar b = 1 (vgl. d = 1 - 14)
+\\
+&\text{EA mit } 88, 15, && d = b - a = 1 - 14 = -13 \\
+&88 = 5 \cdot 15 + 13 && |\cdot(-1) \quad |\ + a \\
+&-88 + 14 = -5 \cdot 15 + 1 \\
+\Rightarrow\quad &z \equiv -88 + 14 = -74 \pmod{88 \cdot 15}
+\end{align*}
+Falls die kleinste Lösung $z > 0$ gesucht ist
+\[ z = -74 + 1320 = 1246 \]
+\end{beispiel}
+
+\begin{bemerkung}
+Der Ring-Isomorphismus $f : \Zm{m \cdot n} \to \Zm{m} \times \Zm{n}$ bildet Einheiten auf Einheiten und Nullteiler auf Nullteiler ab. Insbesondere ist die Einschränkung auf Einheiten
+\[ f : \Zm{m \cdot n}^* \to \Zm{m}^* \times \Zm{n}^* \]
+ein Gruppen-Isomorphismus.
+\end{bemerkung}
+
+\subsection{Eulersche $\varphi$-Funktion}
+
+\begin{definition}[Eulersche $\varphi$-Funktion]
+\[ \varphi(m) = |\{ 1 \leq a \leq m \mid \ggT(a, m) = 1 \}| = |\Zm{m}^*| \]
+\end{definition}
+
+\begin{satz}[Berechnung von $\varphi(m)$]
+\begin{align*}
+\varphi(p) &= p - 1 && && p \text{ Primzahl} \\
+\varphi(p^k) &= p^k \left( 1 - \frac{1}{p} \right) = p^k - p^{k-1} \\
+\varphi(m\,n) &= \varphi(m)\, \varphi(n) && (*) && \ggT(m, n) = 1 \\
+m &= \sum_{d \mid m} \varphi(d) && (**) && \text{(Gauß)}
+\end{align*}
+Mit diesen Formeln kommt man aus, denn
+\[ m = \prod_{p \mid m} p^k \qquad \Rightarrow \qquad \varphi(m) = \prod_{p \mid m} \varphi\left(p^k\right) \]
+\end{satz}
+
+\begin{beispiel}
+$\varphi(6) = \varphi(2)\, \varphi(3) = 1 \cdot 2 = 2$,
+\begin{align*}
+6 &= 2 \cdot 3 \\
+&= (1 + \varphi(2)) \cdot (1 + \varphi(3)) && \text{Ausmultiplizieren} \\
+&= 1 + \varphi(2) + \varphi(3) + \varphi(2) \cdot \varphi(3) && (*) \\
+&= 1 + \varphi(2) + \varphi(3) + \varphi(6)
+\end{align*}
+\end{beispiel}
+
+\begin{proof}[Beweis der Gleichung $(*)$]
+Aus dem chinesischen Restsatz folgt die Isomorphie der Gruppen
+\[ \Zm{m \cdot n}^* \cong \Zm{m}^* \times \Zm{n}^* \]
+und daraus
+\[ \varphi(m\,n) = \varphi(m)\, \varphi(n) \qquad m, n \text{ teilerfremd} \qedhere \]
+\end{proof}
+
+\begin{beispiel}
+für $(**)$ $m = 12$
+\begin{align*}
+&\left\{ \frac{1}{12}, \frac{2}{12}, \frac{3}{12}, \frac{4}{12}, \frac{5}{12}, \frac{6}{12}, \frac{7}{12}, \frac{8}{12}, \frac{9}{12}, \frac{10}{12}, \frac{11}{12}, \frac{12}{12} \right\} \\
+= &\left\{ \frac{1}{12}, \frac{5}{12}, \frac{7}{12}, \frac{11}{12} \right\} \cup \left\{ \frac{1}{6}, \frac{5}{6} \right\} \cup \left\{ \frac{1}{4}, \frac{3}{4} \right\} \cup \left\{ \frac{1}{3}, \frac{2}{3} \right\} \cup \left\{ \frac{1}{2} \right\} \cup \{1\}
+\end{align*}
+\end{beispiel}
+
+\begin{proof}[Beweis von $(**)$]
+\[ \left\{ \frac{h}{m} \;\middle|\; 1 \leq h \leq m \right\} = \bigcup_{d \mid m} \left\{ \frac{a}{d} \;\middle|\; \ggT(a, d) = 1 \right\} \]
+Die Mengen rechts sind disjunkt, zählen ihre Elemente.
+\[ \Rightarrow \quad m = \sum_{d \mid m} \varphi(d) \quad \text{das beweist } (**). \qedhere \]
+\end{proof}
