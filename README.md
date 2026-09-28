@@ -30,7 +30,26 @@ pip install -r requirements.txt
 python -m pytest -q              # alle Tests müssen bestehen
 ```
 
-### Benutzen
+### Benutzen im Browser (empfohlen)
+
+```bash
+python -m skripte.web
+```
+
+Der Browser öffnet sich unter http://localhost:8000.
+Die Seite braucht kein Internet.
+
+- Links steht die Liste der Skripte. Die Reihenfolge ist die Priorität für die Klausur.
+- Für jedes Skript gibt es ein Formular. Ausfüllen und „Rechnen“ klicken (oder Strg + Enter).
+- Unter „Beispiele aus den Quellen“ startet ein Klick eine Aufgabe aus Übung oder Klausur.
+- Die Ausgabe ist gegliedert: Abschnitte, grüne Ergebnis-Kästen, gelbe Warnungen.
+- Oben steht „Alle Ergebnisse auf einen Blick“.
+- Mit A− und A+ ändert man die Schriftgröße. ◐ wechselt zwischen hell und dunkel.
+- Der Reiter „Priorisierung“ zeigt `PRIORISIERUNG.md` als Seite.
+
+Beenden mit Strg + C im Terminal.
+
+### Benutzen im Terminal
 
 Jedes Skript hat eine Hilfe mit Beispiel: `python -m skripte.<name> --help`.
 Führen Konventionen zu verschiedenen Ergebnissen, dann gibt es `--variante`.
