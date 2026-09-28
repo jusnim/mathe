@@ -1,0 +1,38 @@
+% Quelle: 4. Übung Lösungen.pdf
+% Art: Übung mit Lösungen
+% Themen: Teileranzahlfunktion, Teilersummenfunktion, vollkommene Zahlen, Mersenne-Primzahlen, Inverses in Zm*, Satz von Euler
+\section{4. Übung ,,Diskrete Mathematik``}
+
+\subsection{Teileranzahl- und Teilersummenfunktion, vollkommene Zahlen}
+
+\begin{definition}[Teileranzahl- und Teilersummenfunktion]
+\[
+d(n) = \sum_{d \mid n} 1, \qquad \sigma(n) = \sum_{d \mid n} d \qquad\qquad n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r}.
+\]
+\end{definition}
+
+\begin{bemerkung}[Hinweis zu Aufgabe 3]
+Für $\ggT(m, n) = 1$ gilt $d(m\,n) = d(m)\,d(n)$ bzw.\ $\sigma(m\,n) = \sigma(m)\,\sigma(n)$.
+\end{bemerkung}
+
+\begin{satz}[Formeln für $d(n)$ und $\sigma(n)$, hergeleitet in Aufgabe 3]
+Für $n = p_1^{e_1} p_2^{e_2} \cdots p_r^{e_r}$ gilt
+\[
+d(n) = (1 + e_1) \cdots (1 + e_r), \qquad
+\sigma(n) = \frac{p_1^{1+e_1} - 1}{p_1 - 1} \cdot \ldots \cdot \frac{p_r^{1+e_r} - 1}{p_r - 1}.
+\]
+\end{satz}
+
+\begin{definition}[Vollkommene Zahl]
+Eine Zahl $n$ mit $\sigma(n) = 2n$ heißt \emph{vollkommen}.
+\end{definition}
+
+\begin{definition}[Mersenne Primzahl, aus Aufgabe 6]
+Sei $2^k - 1$ eine Primzahl. Eine solche heißt \emph{Mersenne Primzahl}.
+\end{definition}
+
+\subsection{Formel für $a^{-1}$ in $\Zm{m}^*$}
+
+\begin{satz}[Formel für $a^{-1}$ in $\Zm{m}^*$]
+Es gilt (Satz von Euler) $a\, a^{\varphi(m)-1} = a^{\varphi(m)} = 1$, also $a^{-1} = a^{\varphi(m)-1}$.
+\end{satz}
