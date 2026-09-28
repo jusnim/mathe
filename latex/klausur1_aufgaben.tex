@@ -1,0 +1,95 @@
+% Klausur 1 (29.07.2026): nur Aufgabenstellungen.
+\input{preamble}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\lhead{Diskrete Mathematik -- Klausur 29.07.2026}\rhead{Seite \thepage}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
+\renewcommand{\theaufgabe}{\arabic{aufgabe}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\bfseries Klausur Diskrete Mathematik}\\[4pt]
+{\large 29.07.2026}
+\end{center}
+
+\vspace{6pt}
+\begin{tabular}{@{}p{0.5\textwidth}p{0.45\textwidth}@{}}
+Name: \hrulefill & Matrikelnr.: \hrulefill
+\end{tabular}
+
+\vspace{10pt}
+
+\begin{aufgabe}
+Alice will die Nachricht $w = 1511$ (GO) verschlüsseln und als verschlüsselte Nachricht $c$ (Codewort)
+an Bob senden. Sie verabreden als Modul die Zahl $m = 43 \cdot 57 = 2451$ zu wählen und den
+öffentlichen Schlüssel $e = 221$ zu verwenden.
+\begin{enumerate}[label=\alph*)]
+  \item Schreiben Sie $e$ im Binärsystem.
+  \item Mit welcher Formel verschlüsselt Alice das Wort $w$? Berechnen Sie das Codewort $c$.
+  \item Bob besitzt den privaten Schlüssel $d$. Wie (Formel) entschlüsselt Bob das Codewort $c$?
+  \item Berechnen Sie $\varphi(m)$.
+  \item Oscar erhält Kenntnis von $m$ und $e$. Welche Formeln muss er nutzen, um den privaten
+        Schlüssel $d$ zu berechnen? Berechnen Sie $d$.
+\end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}
+Wie viele positive ganze Zahlen $\leq 720$ sind weder durch $3$, $4$ oder $5$ teilbar?
+Verwenden Sie die Symbole $A_i$, $\alpha_i$ aus der Vorlesung. (Inklusion -- Exklusion)
+\end{aufgabe}
+
+\begin{aufgabe}
+Bestimmen Sie mit Hilfe des Euklidischen Algorithmus
+\begin{enumerate}[label=\alph*)]
+  \item den größten gemeinsamen Teiler von $m = 17$ und $n = 15$,
+  \item eine ganzzahlige Lösung der Gleichung $17x - 15y = 1$.
+\end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}
+Gegeben ist das System simultaner Kongruenzen (Chinesischer Restsatz)
+\begin{align*}
+  z &\equiv 8 \pmod{17}\\
+  z &\equiv 5 \pmod{15}
+\end{align*}
+\begin{enumerate}[label=\alph*)]
+  \item Bestimmen Sie eine ganze Zahl $z$ mit Hilfe des Ergebnisses aus Aufgabe 3.
+  \item Bestimmen Sie sämtliche Lösungen dieses Systems, insbesondere die kleinste positive Lösung.
+\end{enumerate}
+\end{aufgabe}
+
+\begin{aufgabe}
+Die Parameter eines Modulo-11-Codes sind $[10, 8, 3]_{11}$.
+Vorgelegt ist das Klartextwort $a = 1\,1\,5\,0\,0\,0\,0\,5$.
+\begin{enumerate}[label=\alph*)]
+  \item Wie lautet die Kontrollmatrix $H$?
+  \item Berechnen Sie die Kontrollziffern $c_9$, $c_{10}$ und damit das zugehörige Codewort $c$.
+\end{enumerate}
+Empfangen wurden die Wörter
+\begin{align*}
+  r_1 &= 1\,1\,5\,0\,0\,0\,0\,5\,1\,1\\
+  r_2 &= 1\,1\,5\,0\,0\,0\,0\,7\,3\,3
+\end{align*}
+\begin{enumerate}[label=\alph*), start=3]
+  \item Berechnen Sie die Syndrome $S(r_1)$, $S(r_2)$.
+  \item Welches der beiden Wörter $r_1$, $r_2$ ist nicht dekodierbar und warum nicht?
+  \item Dekodieren Sie das andere Wort und geben Sie das Codewort $c$ an.
+  \item Zeigen Sie, dass $c$ tatsächlich ein Codewort ist.
+\end{enumerate}
+\end{aufgabe}
+
+\vfill
+\textbf{Punktzahl:} \rule{3cm}{0.4pt} \qquad \textbf{Note:} \rule{3cm}{0.4pt}
+
+\medskip
+Bewertungsschema (Punkte/Note):\\[2pt]
+{\small
+\begin{tabular}{*{10}{c}}
+\toprule
+29/1.0 & 28/1.3 & 26/1.7 & 25/2.0 & 24/2.3 & 22/2.7 & 21/3.0 & 19/3.3 & 17/3.7 & 15/4.0\\
+\bottomrule
+\end{tabular}}
+
+\end{document}
