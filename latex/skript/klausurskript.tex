@@ -27,30 +27,30 @@ Die Kapitel stehen in der Reihenfolge der Klausur. Die ausführlichen Rechenwege
 \section{Formelsammlung (eine Seite für den Spickzettel)}
 \noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{3.2cm}>{\raggedright\arraybackslash}p{\dimexpr\linewidth-3.2cm-2\tabcolsep\relax}@{}}
 \toprule
-RSA & $m = p\,q$, öffentlich $(m, e)$, privat $d$ mit $e\,d \equiv 1 \pmod{\varphi(m)}$.
+RSA & $m = p \cdot q$ ($p \ne q$ Primzahlen), öffentlich $(m, e)$, privat $d$ mit $e\,d \equiv 1 \pmod{\varphi(m)}$.
 Verschlüsseln $c \equiv w^e \pmod m$. Entschlüsseln $w \equiv c^d \pmod m$.
 $d$ über EA (Bezout) oder $d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}$.\\
-$\varphi$ & $\varphi(p) = p - 1$, $\varphi(p^k) = p^k - p^{k-1}$, $\varphi(ab) = \varphi(a)\varphi(b)$ bei $\ggT(a,b) = 1$,
-$\varphi(n) = n \prod_{p \mid n} (1 - \frac1p)$.\\
-Euler / Fermat & $a^{\varphi(m)} \equiv 1 \pmod m$ bei $\ggT(a, m) = 1$; \ $a^{p-1} \equiv 1 \pmod p$.
-Exponent kürzen: $a^k \equiv a^{k \bmod \varphi(m)}$.\\
+$\varphi$ & $\varphi(p) = p - 1$, $\varphi(p^k) = p^k - p^{k-1}$ ($p$ prim), $\varphi(ab) = \varphi(a) \cdot \varphi(b)$ bei $\ggT(a,b) = 1$,
+$\varphi(n) = n \prod_{p \mid n,\ p \text{ prim}} (1 - \frac1p)$.\\
+Euler / Fermat & $a^{\varphi(m)} \equiv 1 \pmod m$ bei $\ggT(a, m) = 1$; \ $a^{p-1} \equiv 1 \pmod p$ bei $p$ prim, $p \nmid a$.
+Exponent kürzen (nur bei $\ggT(a, m) = 1$): $a^k \equiv a^{k \bmod \varphi(m)} \pmod m$.\\
 EA & $a = q_0 b + r_1$, $b = q_1 r_1 + r_2$, \dots; letzter Rest $\neq 0$ ist $\ggT$.\\
-Bezout & Es gibt $x, y$ mit $ax + by = \ggT(a,b)$. $ax + by = c$ lösbar $\Leftrightarrow$ $\ggT(a,b) \mid c$.\\
+Bezout & Es gibt $x, y \in \Z$ mit $ax + by = \ggT(a,b)$. $ax + by = c$ lösbar $\Leftrightarrow$ $\ggT(a,b) \mid c$.\\
 Matrix $Q$ & $Q = \prod_i \begin{pmatrix} q_i & 1\\ 1 & 0 \end{pmatrix} = \begin{pmatrix} s & u\\ t & v\end{pmatrix}$,
-$\det Q = sv - tu = (-1)^{n+1}$, $a = s \cdot \ggT$, $b = t \cdot \ggT$.\\
+$\det Q = sv - tu = (-1)^{n+1}$ (Faktoren $q_0, \dots, q_n$), $a = s \cdot \ggT$, $b = t \cdot \ggT$.\\
 Alle Lösungen & von $ax - by = c$: \ $x = x_0 + \frac{b}{g}\,t$, \ $y = y_0 + \frac{a}{g}\,t$ \ ($g = \ggT$, $t \in \Z$).\\
-Restsatz & $z \equiv a \ (m)$, $z \equiv b \ (n)$: \ $z = mx + a = ny + b$ $\Rightarrow$ $mx - ny = b - a$.
+Restsatz & $z \equiv a \pmod m$, $z \equiv b \pmod n$: \ $z = mx + a = ny + b$ $\Rightarrow$ $mx - ny = b - a$.
 Alle Lösungen $z \equiv z_0 \pmod{mn}$ bei $\ggT(m,n) = 1$.\\
 Siebformel & $|\Omega \setminus (A_1 \cup A_2 \cup A_3)| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3$;
 $|A_a \cap A_b| = \lfloor N / \kgV(a,b) \rfloor$.\\
 Modulo-11-Code & $H = \begin{pmatrix} 1 & \cdots & 1\\ 1 & \cdots & 10\end{pmatrix}$,
-$c_9 \equiv \sum_{i=1}^8 (1+i)c_i$, $c_{10} \equiv \sum_{i=1}^8 (9-i)c_i$,
-$S = (s_1, s_2)^T = H r^T$, Fehler $e_x = s_1$ an Stelle $x = s_2/s_1$.\\
+$c_9 \equiv \sum_{i=1}^8 (1+i) \cdot c_i$, $c_{10} \equiv \sum_{i=1}^8 (9-i) \cdot c_i \pmod{11}$,
+$S = (s_1, s_2)^T \equiv H r^T \pmod{11}$, Fehler $e_x = s_1$ an Stelle $x \equiv s_2 \cdot s_1^{-1} \pmod{11}$ (bei $s_1 \not\equiv 0$).\\
 Inverse mod 11 & \begin{tabular}{c|cccccccccc} $a$ & 1&2&3&4&5&6&7&8&9&10\\ \hline $a^{-1}$ & 1&6&4&3&9&2&8&7&5&10 \end{tabular}\\
-Zweierpotenzen & $2^0..2^{12}$: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096\\
+Zweierpotenzen & $2^0, \dots, 2^{12}$: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096\\
 ISBN-10 & $\sum_{i=1}^{10} i\, c_i \equiv 0 \pmod{11}$, $X = 10$.\\
 Turnierplan & $2m$ Teams, Runde $r$: $x$ gegen $y$ mit $x + y \equiv r \pmod{2m-1}$;
-Team $x$ mit $2x \equiv r$ spielt gegen Team $2m$.\\
+Team $x$ mit $2x \equiv r \pmod{2m-1}$ spielt gegen Team $2m$.\\
 \bottomrule
 \end{tabular}
 
@@ -63,10 +63,10 @@ Team $x$ mit $2x \equiv r$ spielt gegen Team $2m$.\\
 \item \textbf{Verschlüsseln} $c \equiv w^e \pmod m$ mit schnellem Potenzieren:
   Quadrattabelle $w^1, w^2, w^4, \dots$ (jede Zeile = Quadrat der vorigen, mod $m$), dann die Zeilen mit Bit 1 multiplizieren,
   nach jedem Produkt mod $m$ reduzieren.
-\item \textbf{Formel Entschlüsseln}: $w \equiv c^d \pmod m$, weil $ed \equiv 1 \pmod{\varphi(m)}$ und Euler.
+\item \textbf{Formel Entschlüsseln}: $w \equiv c^d \pmod m$, weil $e \cdot d \equiv 1 \pmod{\varphi(m)}$ und Euler (bei $\ggT(w, m) = 1$).
 \item \textbf{$\varphi(m)$} aus der Primfaktorzerlegung.
-\item \textbf{$d$ (Oscar)}: Weg 1: EA mit $\varphi(m)$ und $e$, rückwärts einsetzen oder Matrix $Q$; $d = e^{-1} \bmod \varphi(m)$.
-      Weg 2: $\varphi(\varphi(m))$ berechnen, $d \equiv e^{\varphi(\varphi(m))-1} \pmod{\varphi(m)}$ mit schnellem Potenzieren.
+\item \textbf{$d$ (Oscar)}: Weg 1: EA mit $\varphi(m)$ und $e$, rückwärts einsetzen oder Matrix $Q$; $d = e^{-1} \bmod \varphi(m)$ (existiert nur bei $\ggT(e, \varphi(m)) = 1$).
+      Weg 2 (Euler, braucht $\ggT(e, \varphi(m)) = 1$): $\varphi(\varphi(m))$ berechnen, $d \equiv e^{\varphi(\varphi(m))-1} \pmod{\varphi(m)}$ mit schnellem Potenzieren.
 \item \textbf{Probe}: $e \cdot d \bmod \varphi(m) = 1$ und (wenn Zeit) $c^d \bmod m = w$.
 \end{enumerate}
 \end{rezept}
@@ -83,16 +83,16 @@ $w = 1511$, $m = 43 \cdot 57 = 2451$, $e = 221$.
 1511^{16} \equiv 2113 \leftarrow & 1511^{32} \equiv 1498 & 1511^{64} \equiv 1339 \leftarrow & 1511^{128} \equiv 1240 \leftarrow
 \end{array}
 \]
-Produkt: $1511 \cdot 823 \equiv 896$, $\cdot 853 \equiv 2027$, $\cdot 2113 \equiv 1154$, $\cdot 1339 \equiv 1076$, $\cdot 1240 \equiv 896$.
+Produkt (mod 2451): $1511 \cdot 823 \equiv 896$, $\cdot 853 \equiv 2027$, $\cdot 2113 \equiv 1154$, $\cdot 1339 \equiv 1076$, $\cdot 1240 \equiv 896$.
 \begin{ergebnis} $c = 896$ \end{ergebnis}
 
 \teil{c} $w \equiv c^d \pmod m$.
 
-\teil{d} $57 = 3 \cdot 19$! Also $m = 3 \cdot 19 \cdot 43$ und $\varphi(m) = 2 \cdot 18 \cdot 42 = 1512$.
+\teil{d} Achtung: $57 = 3 \cdot 19$ ist keine Primzahl. Also $m = 3 \cdot 19 \cdot 43$ und $\varphi(m) = \varphi(3) \cdot \varphi(19) \cdot \varphi(43) = 2 \cdot 18 \cdot 42 = 1512$.
 
 \teil{e} EA $1512 = 6 \cdot 221 + 186$, $221 = 1 \cdot 186 + 35$, $186 = 5 \cdot 35 + 11$, $35 = 3 \cdot 11 + 2$, $11 = 5 \cdot 2 + 1$.
-$Q = \begin{pmatrix}1512 & 691\\ 221 & 101\end{pmatrix}$, $\det Q = 1$ $\Rightarrow$ $221 \cdot (-691) \equiv 1$ $\Rightarrow$ $d = -691 + 1512 = 821$.
-Weg 2: $\varphi(1512) = \varphi(2^3 3^3 7) = 4 \cdot 18 \cdot 6 = 432$, $d \equiv 221^{431} \equiv 821 \pmod{1512}$.
+$Q = \begin{pmatrix}1512 & 691\\ 221 & 101\end{pmatrix}$, $\det Q = 1512 \cdot 101 - 221 \cdot 691 = 1$ $\Rightarrow$ $221 \cdot (-691) \equiv 1 \pmod{1512}$ $\Rightarrow$ $d = -691 + 1512 = 821$.
+Weg 2 ($\ggT(221, 1512) = 1$): $\varphi(1512) = \varphi(2^3 \cdot 3^3 \cdot 7) = 4 \cdot 18 \cdot 6 = 432$, $d \equiv 221^{431} \equiv 821 \pmod{1512}$.
 \begin{ergebnis} $\varphi(m) = 1512$, $d = 821$ (Probe: $221 \cdot 821 = 120 \cdot 1512 + 1$) \end{ergebnis}
 
 \begin{achtung}
@@ -119,17 +119,17 @@ Klausur A1 & siehe oben & $c = 896$, $d = 821$\\
 \section{Siebformel (Klausur Aufgabe 2)}
 \begin{rezept}{Rezept Inklusion--Exklusion}
 \begin{enumerate}
-\item $\Omega = \{1 \le k \le N\}$, $A_i = \{k \in \Omega \mid i \text{ teilt } k\}$ hinschreiben.
+\item $\Omega = \{k \in \N \mid 1 \le k \le N\}$, $A_i = \{k \in \Omega \mid i \text{ teilt } k\}$ hinschreiben.
 \item Gesucht $|\Omega \setminus (A_a \cup A_b \cup A_c)| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3$.
-\item $\alpha_1 = \frac{N}{a} + \frac{N}{b} + \frac{N}{c}$ (abrunden).
+\item $\alpha_1 = \lfloor N/a \rfloor + \lfloor N/b \rfloor + \lfloor N/c \rfloor$.
 \item $\alpha_2$: Schnittmengen über das \textbf{kgV}: $|A_a \cap A_b| = \lfloor N / \kgV(a,b) \rfloor$.
 \item $\alpha_3 = \lfloor N / \kgV(a, b, c) \rfloor$.
-\item Einsetzen. Kontrolle (nur bei paarweise teilerfremden Teilern): $N (1 - \frac1a)(1 - \frac1b)(1 - \frac1c)$.
+\item Einsetzen. Kontrolle (nur bei paarweise teilerfremden Teilern und $a \cdot b \cdot c \mid N$): $N \cdot (1 - \frac1a)(1 - \frac1b)(1 - \frac1c)$.
 \end{enumerate}
 \end{rezept}
 
 \subsection*{Musterrechnung ($N = 720$; Teiler 3, 4, 5)}
-$\alpha_1 = 240 + 180 + 144 = 564$, \ $\alpha_2 = \frac{720}{12} + \frac{720}{15} + \frac{720}{20} = 60 + 48 + 36 = 144$, \ $\alpha_3 = \frac{720}{60} = 12$.
+$\alpha_1 = \frac{720}{3} + \frac{720}{4} + \frac{720}{5} = 240 + 180 + 144 = 564$, \ $\alpha_2 = \frac{720}{12} + \frac{720}{15} + \frac{720}{20} = 60 + 48 + 36 = 144$, \ $\alpha_3 = \frac{720}{60} = 12$.
 \begin{ergebnis} $720 - 564 + 144 - 12 = 288$ \end{ergebnis}
 \begin{achtung}
 \textbf{Falle:} Bei Teilern wie 2 und 4 ist $A_2 \cap A_4 = A_4$ ($\kgV = 4$, nicht $8$). Immer das kgV nehmen, nicht das Produkt.
@@ -151,22 +151,22 @@ Klausur A2 & $N = 720$; 3, 4, 5 & $288$\\
 \section{Euklid und diophantische Gleichung (Klausur Aufgabe 3)}
 \begin{rezept}{Rezept $ax - by = c$}
 \begin{enumerate}
-\item EA-Tabelle: $a = q_0 b + r_1$, $b = q_1 r_1 + r_2$, \dots bis Rest 0. $g = \ggT$ = letzter Rest $\ne 0$.
+\item EA-Tabelle: $a = q_0 b + r_1$, $b = q_1 r_1 + r_2$, \dots bis Rest 0. $g = \ggT(a, b)$ = letzter Rest $\ne 0$.
 \item Lösbar genau dann, wenn $g \mid c$.
 \item \textbf{Rückwärts einsetzen}: vorletzte Zeile nach $g$ umstellen, Reste von unten nach oben ersetzen, bis nur $a$ und $b$ übrig sind:
       $g = a x' + b y'$.
 \item \textbf{Oder Matrix $Q$}: $Q = \prod \begin{pmatrix} q_i & 1\\ 1 & 0\end{pmatrix} = \begin{pmatrix} s & u\\ t & v\end{pmatrix}$,
       $sv - tu = \pm 1$ liefert $x', y'$ direkt.
 \item Mit $c/g$ multiplizieren und an die Form $ax - by$ anpassen (Vorzeichen von $y$!).
-\item Alle Lösungen: $x = x_0 + \frac{b}{g} t$, $y = y_0 + \frac{a}{g} t$. \quad Probe durch Einsetzen.
+\item Alle Lösungen: $x = x_0 + \frac{b}{g} t$, $y = y_0 + \frac{a}{g} t$ ($t \in \Z$). \quad Probe durch Einsetzen.
 \end{enumerate}
 \end{rezept}
 
 \subsection*{Musterrechnung ($17x - 15y = 1$)}
-$17 = 1 \cdot 15 + 2$, \ $15 = 7 \cdot 2 + 1$, \ $2 = 2 \cdot 1$ $\Rightarrow$ $\ggT = 1$.
-Rückwärts: $1 = 15 - 7 \cdot 2 = 15 - 7(17 - 15) = 8 \cdot 15 - 7 \cdot 17$.
+$17 = 1 \cdot 15 + 2$, \ $15 = 7 \cdot 2 + 1$, \ $2 = 2 \cdot 1 + 0$ $\Rightarrow$ $\ggT(17, 15) = 1$.
+Rückwärts: $1 = 15 - 7 \cdot 2 = 15 - 7 \cdot (17 - 15) = 8 \cdot 15 - 7 \cdot 17$.
 Also $17 \cdot (-7) - 15 \cdot (-8) = 1$.
-\begin{ergebnis} $x = -7$, $y = -8$; alle Lösungen $x = -7 + 15t$, $y = -8 + 17t$; z.\,B. $x = 8$, $y = 9$. \end{ergebnis}
+\begin{ergebnis} $x = -7$, $y = -8$; alle Lösungen $x = -7 + 15t$, $y = -8 + 17t$ ($t \in \Z$); z.\,B. $x = 8$, $y = 9$. \end{ergebnis}
 
 \subsection*{Übungen}
 \begin{tabular}{@{}lll@{}}
@@ -184,17 +184,17 @@ Klausur A3 & $17x - 15y = 1$ & $x = -7$, $y = -8$\\
 \begin{rezept}{Rezept $z \equiv a \pmod m$, $z \equiv b \pmod n$}
 \begin{enumerate}
 \item Ansatz $z = m x + a = n y + b$ $\Rightarrow$ $m x - n y = b - a$.
-\item Mit dem EA (oder dem Ergebnis der Voraufgabe) $m x' - n y' = 1$ lösen.
+\item Mit dem EA (oder dem Ergebnis der Voraufgabe) $m x' - n y' = 1$ lösen. Das geht nur bei $\ggT(m, n) = 1$.
 \item Mit $b - a$ multiplizieren: $x = x'(b-a)$, $y = y'(b-a)$.
 \item $z_0 = m x + a$. Kontrolle: $z_0 = n y + b$.
-\item Alle Lösungen $z = z_0 + k \cdot m n$. Kleinste positive: so oft $mn$ addieren, bis $z > 0$.
+\item Alle Lösungen $z = z_0 + k \cdot m n$ ($k \in \Z$). Kleinste positive: so oft $mn$ addieren, bis $z > 0$.
 \item Probe: $z$ durch $m$ und $n$ teilen, Reste prüfen.
 \end{enumerate}
 \end{rezept}
 
-\subsection*{Musterrechnung ($z \equiv 8 \bmod 17$, $z \equiv 5 \bmod 15$)}
+\subsection*{Musterrechnung ($z \equiv 8 \pmod{17}$, $z \equiv 5 \pmod{15}$)}
 $17x - 15y = 5 - 8 = -3$. Aus Aufgabe 3: $17 \cdot 8 - 15 \cdot 9 = 1$. Mal $(-3)$: $x = -24$, $y = -27$.
-$z = 17 \cdot (-24) + 8 = -400$. Alle Lösungen $z = -400 + 255k$.
+$z = 17 \cdot (-24) + 8 = -400$. Alle Lösungen $z = -400 + 255k$ ($k \in \Z$, $255 = 17 \cdot 15$, da $\ggT(17, 15) = 1$).
 \begin{ergebnis} kleinste positive Lösung $z = -400 + 2 \cdot 255 = 110$ \ (Probe: $110 = 6 \cdot 17 + 8 = 7 \cdot 15 + 5$) \end{ergebnis}
 
 \subsection*{Übungen}
@@ -202,7 +202,7 @@ $z = 17 \cdot (-24) + 8 = -400$. Alle Lösungen $z = -400 + 255k$.
 \toprule
 Aufgabe & Angabe & Ergebnis\\
 \midrule
-KV A8 & $z \equiv 5 \bmod 13$, $z \equiv 4 \bmod 15$ & $z \equiv -86 \equiv 109 \pmod{195}$\\
+KV A8 & $z \equiv 5 \pmod{13}$, $z \equiv 4 \pmod{15}$ & $z \equiv -86 \equiv 109 \pmod{195}$\\
 Klausur A4 & siehe oben & $z \equiv 110 \pmod{255}$\\
 \bottomrule
 \end{tabular}
@@ -213,37 +213,37 @@ Klausur A4 & siehe oben & $z \equiv 110 \pmod{255}$\\
 \begin{itemize}
 \item Ein \textbf{Code} ist eine Menge erlaubter Wörter (Codewörter). Hier: Wörter mit 10 Ziffern aus $\{0, \dots, 10\}$, gerechnet mod 11.
 \item $[10, 8, 3]_{11}$ heißt: Länge 10, davon 8 Nachrichtenziffern, Mindestabstand 3. Der Code \textbf{korrigiert 1 Fehler}.
-\item Die \textbf{Kontrollmatrix} $H$ entscheidet: $c$ ist Codewort $\Leftrightarrow$ $H c^T = 0$.
-\item Das \textbf{Syndrom} $S(r) = H r^T$ eines empfangenen Worts $r$. $S = 0$: kein Fehler.
+\item Die \textbf{Kontrollmatrix} $H$ entscheidet: $c$ ist Codewort $\Leftrightarrow$ $H c^T \equiv 0 \pmod{11}$.
+\item Das \textbf{Syndrom} $S(r) = H r^T$ eines empfangenen Worts $r$. $S \equiv 0$: kein Fehler erkannt.
       Ein Fehler der Größe $e_x$ an Stelle $x$ gibt $S = e_x \cdot (1, x)^T$.
 \end{itemize}
 
 \begin{rezept}{Rezept Modulo-11-Code}
 \begin{enumerate}
 \item $H = \begin{pmatrix} 1&1&1&1&1&1&1&1&1&1\\ 1&2&3&4&5&6&7&8&9&10 \end{pmatrix}$.
-\item Codieren: $c_i = a_i$ ($i \le 8$), $c_9 \equiv \sum_{i=1}^{8} (1+i) c_i$, \ $c_{10} \equiv \sum_{i=1}^{8} (9-i) c_i \pmod{11}$.
-\item Syndrom: $s_1 = \sum r_i$, \ $s_2 = \sum i \cdot r_i$ (beide mod 11).
+\item Codieren: $c_i = a_i$ ($i \le 8$), $c_9 \equiv \sum_{i=1}^{8} (1+i) \cdot c_i$, \ $c_{10} \equiv \sum_{i=1}^{8} (9-i) \cdot c_i \pmod{11}$.
+\item Syndrom: $s_1 \equiv \sum_{i=1}^{10} r_i$, \ $s_2 \equiv \sum_{i=1}^{10} i \cdot r_i \pmod{11}$.
 \item Auswerten:
   \begin{itemize}
-  \item $s_1 = s_2 = 0$: $r$ ist Codewort.
-  \item $s_1 \ne 0$: $x = s_2 \cdot s_1^{-1} \bmod 11$ (Tabelle!). Ist $x \in \{1, \dots, 10\}$: Fehler an Stelle $x$, Größe $s_1$;
-        korrigieren $c_x = r_x - s_1 \bmod 11$.
-  \item $x = 0$ \textbf{oder} ($s_1 = 0$, $s_2 \ne 0$): \textbf{nicht dekodierbar}, mindestens 2 Fehler.
+  \item $s_1 \equiv s_2 \equiv 0$: $r$ ist Codewort.
+  \item $s_1 \not\equiv 0$: $x = (s_2 \cdot s_1^{-1}) \bmod 11$ (Tabelle! $s_1^{-1}$ existiert, weil 11 prim ist). Ist $x \in \{1, \dots, 10\}$: Fehler an Stelle $x$, Größe $s_1$;
+        korrigieren $c_x = (r_x - s_1) \bmod 11$.
+  \item $x = 0$ \textbf{oder} ($s_1 \equiv 0$, $s_2 \not\equiv 0$): \textbf{nicht dekodierbar}, mindestens 2 Fehler.
   \end{itemize}
 \item Probe: für das korrigierte $c$ beide Summen berechnen, beide $\equiv 0$.
 \end{enumerate}
 \end{rezept}
 
 \subsection*{Musterrechnung (Klausur)}
-$a = 1\,1\,5\,0\,0\,0\,0\,5$: $c_9 = 2 + 3 + 20 + 45 = 70 \equiv 4$, \ $c_{10} = 8 + 7 + 30 + 5 = 50 \equiv 6$.
+$a = 1\,1\,5\,0\,0\,0\,0\,5$: $c_9 \equiv 2 + 3 + 20 + 45 = 70 \equiv 4$, \ $c_{10} \equiv 8 + 7 + 30 + 5 = 50 \equiv 6 \pmod{11}$.
 \begin{ergebnis} $c = 1\,1\,5\,0\,0\,0\,0\,5\,4\,6$ \end{ergebnis}
-$r_1 = 1150000511$: $s_1 = 14 \equiv 3$, $s_2 = 77 \equiv 0$ $\Rightarrow$ $x = 0 \cdot 3^{-1} = 0$ $\Rightarrow$ \textbf{nicht dekodierbar}.\\
-$r_2 = 1150000733$: $s_1 = 20 \equiv 9$, $s_2 = 131 \equiv 10$ $\Rightarrow$ $x = 10 \cdot 9^{-1} = 10 \cdot 5 = 50 \equiv 6$, Größe 9.
+Alle $\equiv$ modulo 11. $r_1 = 1150000511$: $s_1 \equiv 14 \equiv 3$, $s_2 \equiv 77 \equiv 0$ $\Rightarrow$ $x \equiv 0 \cdot 3^{-1} \equiv 0$ $\Rightarrow$ \textbf{nicht dekodierbar}.\\
+$r_2 = 1150000733$: $s_1 \equiv 20 \equiv 9$, $s_2 \equiv 131 \equiv 10$ $\Rightarrow$ $x \equiv 10 \cdot 9^{-1} \equiv 10 \cdot 5 = 50 \equiv 6$, Größe 9.
 $c_6 = 0 - 9 \equiv 2$.
-\begin{ergebnis} $c = 1\,1\,5\,0\,0\,2\,0\,7\,3\,3$ \ (Probe: $\sum c_i = 22 \equiv 0$, $\sum i c_i = 143 \equiv 0$) \end{ergebnis}
+\begin{ergebnis} $c = 1\,1\,5\,0\,0\,2\,0\,7\,3\,3$ \ (Probe: $\sum c_i = 22 \equiv 0$, $\sum i \cdot c_i = 143 \equiv 0 \pmod{11}$) \end{ergebnis}
 
 \begin{achtung}
-\textbf{Fallen.} (1) Die Stellen zählen ab 1. (2) Division mod 11 = Multiplikation mit der Inversen aus der Tabelle.
+\textbf{Fallen.} (1) Die Stellen zählen ab 1. (2) Division durch $s_1 \not\equiv 0$ modulo 11 heißt Multiplikation mit der Inversen $s_1^{-1}$ aus der Tabelle.
 (3) In Übung 6 heißen die Syndromteile $s_0, s_1$ statt $s_1, s_2$: gleiche Rechnung.
 (4) Eine andere Form von $H$ (systematisch) gibt andere Syndromzahlen, aber dasselbe Codewort. Nimm die Form der Aufgabe.
 \end{achtung}
@@ -274,11 +274,11 @@ KV A4 & $360 = 2^3 \cdot 3^2 \cdot 5$ & $\varphi(360) = 360 \cdot \frac12 \cdot 
 \subsection*{ISBN-10 (35\,\%)}
 Prüfziffer: $c_{10} \equiv \sum_{i=1}^{9} i\,c_i \pmod{11}$ (denn $10 \equiv -1$). Ergebnis 10 schreibt man als X.
 KV A1: $3\text{-}05\text{-}501517$ $\Rightarrow$ $c_{10} = 7$.
-Zahlendreher an Stellen $x \ne y$: Prüfsumme ändert sich um $(x - y)(c_y - c_x) \not\equiv 0$, also erkannt (wenn $c_x \ne c_y$).
+Zahlendreher an Stellen $x \ne y$ mit $c_x \ne c_y$: Die Prüfsumme ändert sich um $(x - y) \cdot (c_y - c_x) \not\equiv 0 \pmod{11}$ (beide Faktoren $\not\equiv 0$, und 11 ist prim), also erkannt.
 
 \subsection*{Turnierplan (25\,\%)}
 $2m$ Mannschaften, $2m-1$ Runden. In Runde $r$ spielt $x$ gegen $y$ ($x \ne y$, beide $\le 2m-1$) mit $x + y \equiv r \pmod{2m-1}$.
-Die eine Mannschaft $x$ mit $2x \equiv r$ spielt gegen Mannschaft $2m$.
+Die eine Mannschaft $x$ mit $2x \equiv r \pmod{2m-1}$ spielt gegen Mannschaft $2m$ ($x$ ist eindeutig, da $\ggT(2, 2m-1) = 1$).
 KV A5: 8 Mannschaften, Runde 1: $2x \equiv 1 \pmod 7$ $\Rightarrow$ $x = 4$ spielt gegen 8; dazu $1\!-\!7$, $2\!-\!6$, $3\!-\!5$.
 
 % ===========================================================================

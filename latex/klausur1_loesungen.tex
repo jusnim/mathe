@@ -48,7 +48,7 @@ Gegeben: $w = 1511$, $m = 43 \cdot 57 = 2451$, $e = 221$.
 
 Schnelles Potenzieren: $1511^{221} = 1511^{1} \cdot 1511^{4} \cdot 1511^{8} \cdot 1511^{16} \cdot 1511^{64} \cdot 1511^{128}$.
 
-Quadrattabelle (mod 2451):
+Quadrattabelle ($\bmod 2451$):
 \[
 \begin{array}{r@{\;\equiv\;}l@{\qquad}l}
 1511^{1}   & 1511 & \leftarrow\\
@@ -61,7 +61,7 @@ Quadrattabelle (mod 2451):
 1511^{128} & 1339^2 = 1792921 = 731 \cdot 2451 + 1240 \equiv 1240 & \leftarrow
 \end{array}
 \]
-Produkt Schritt für Schritt (mod 2451):
+Produkt Schritt für Schritt (alle $\equiv$ modulo $2451$):
 \begin{align*}
 1511 \cdot 823 &= 1243553 \equiv 896\\
 896 \cdot 853 &= 764288 \equiv 2027\\
@@ -72,16 +72,17 @@ Produkt Schritt für Schritt (mod 2451):
 \begin{ergebnis} $c = 1511^{221} \bmod 2451 = 896$ \end{ergebnis}
 
 \teil{c} \textbf{Entschlüsseln.} Formel (Bob): $w \equiv c^d \pmod m$.
-Das funktioniert, weil $e \cdot d \equiv 1 \pmod{\varphi(m)}$ und nach Euler
-$c^d \equiv (w^e)^d = w^{ed} \equiv w \pmod m$.
+Das funktioniert, weil $e \cdot d \equiv 1 \pmod{\varphi(m)}$, also $e \cdot d = 1 + k \cdot \varphi(m)$ mit $k \in \N$.
+Nach Euler gilt $w^{\varphi(m)} \equiv 1 \pmod m$ (bei $\ggT(w, m) = 1$; hier ist $\ggT(1511, 2451) = 1$). Damit
+$c^d \equiv (w^e)^d = w^{ed} = w \cdot \bigl(w^{\varphi(m)}\bigr)^k \equiv w \cdot 1^k = w \pmod m$.
 
 \teil{d} \textbf{$\varphi(m)$.} Achtung: $57 = 3 \cdot 19$ ist keine Primzahl. Vollständige Zerlegung:
 \[
 2451 = 3 \cdot 19 \cdot 43 .
 \]
-Da $\varphi$ multiplikativ ist und $\varphi(p) = p - 1$ für Primzahlen:
+Da $\varphi(ab) = \varphi(a) \cdot \varphi(b)$ für teilerfremde $a, b$ gilt und $\varphi(p) = p - 1$ für Primzahlen:
 \[
-\varphi(2451) = \varphi(3)\,\varphi(19)\,\varphi(43) = 2 \cdot 18 \cdot 42 = 1512 .
+\varphi(2451) = \varphi(3) \cdot \varphi(19) \cdot \varphi(43) = 2 \cdot 18 \cdot 42 = 1512 .
 \]
 \begin{ergebnis} $\varphi(m) = 1512$ \end{ergebnis}
 \begin{achtung}
@@ -107,22 +108,23 @@ e \cdot d \equiv 1 \pmod{\varphi(m)}, \quad\text{also}\quad 221 \cdot d \equiv 1
 \end{array}
 \qquad\Rightarrow\quad \ggT(1512, 221) = 1 .
 \]
-Matrix $Q = \prod \begin{pmatrix} q_i & 1\\ 1 & 0\end{pmatrix}$ mit $q = 6,1,5,3,5,2$:
+Matrix $Q = \prod_{i=1}^{6} \begin{pmatrix} q_i & 1\\ 1 & 0\end{pmatrix}$ mit $(q_1, \dots, q_6) = (6, 1, 5, 3, 5, 2)$:
 \[
 Q = \begin{pmatrix} 1512 & 691\\ 221 & 101 \end{pmatrix}, \qquad
 \det Q = 1512 \cdot 101 - 221 \cdot 691 = 1 .
 \]
-Also $221 \cdot (-691) \equiv 1 \pmod{1512}$ und $d = -691 \equiv 821 \pmod{1512}$.
+Wegen $1512 \cdot 101 \equiv 0 \pmod{1512}$ folgt $221 \cdot (-691) \equiv 1 \pmod{1512}$ und $d = -691 \equiv 821 \pmod{1512}$.
 
-\emph{Weg 2: Satz von Euler.} Aus $e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)}$ folgt
+\emph{Weg 2: Satz von Euler.} Da $\ggT(e, \varphi(m)) = \ggT(221, 1512) = 1$ (Weg 1), gilt nach Euler $e^{\varphi(\varphi(m))} \equiv 1 \pmod{\varphi(m)}$. Also ist $e \cdot e^{\varphi(\varphi(m)) - 1} \equiv 1$, und es folgt
 $d \equiv e^{\varphi(\varphi(m)) - 1} \pmod{\varphi(m)}$.
-Mit $1512 = 2^3 \cdot 3^3 \cdot 7$ ist $\varphi(1512) = 4 \cdot 18 \cdot 6 = 432$, also
+Mit $1512 = 2^3 \cdot 3^3 \cdot 7$ ist $\varphi(1512) = \varphi(2^3) \cdot \varphi(3^3) \cdot \varphi(7) = 4 \cdot 18 \cdot 6 = 432$, also
 \[
 d \equiv 221^{431} \pmod{1512}.
 \]
 $431 = 110101111_2 = 256 + 128 + 32 + 8 + 4 + 2 + 1$. Quadrattabelle (mod 1512):
 $221^{1} = 221$, $221^{2} \equiv 457$, $221^{4} \equiv 193$, $221^{8} \equiv 961$, $221^{16} \equiv 1201$,
 $221^{32} \equiv 1465$, $221^{64} \equiv 697$, $221^{128} \equiv 457$, $221^{256} \equiv 193$.
+Produkt der Zeilen mit Bit 1 (mod 1512):
 \begin{align*}
 221 \cdot 457 &\equiv 1205, & 1205 \cdot 193 &\equiv 1229, & 1229 \cdot 961 &\equiv 197,\\
 197 \cdot 1465 &\equiv 1325, & 1325 \cdot 457 &\equiv 725, & 725 \cdot 193 &\equiv 821 .
@@ -130,13 +132,13 @@ $221^{32} \equiv 1465$, $221^{64} \equiv 697$, $221^{128} \equiv 457$, $221^{256
 Kontrolle: $221 \cdot 821 = 181441 = 120 \cdot 1512 + 1 \equiv 1 \pmod{1512}$.
 \begin{ergebnis} $d = 821$ \end{ergebnis}
 
-\emph{Probe:} $896^{821} \bmod 2451$ mit $821 = 1100110101_2$:
+\emph{Probe:} $896^{821} \bmod 2451$ mit $821 = 1100110101_2$ (alle $\equiv$ modulo $2451$):
 Quadrate $896^{1} = 896$, $896^{4} \equiv 1240$, $896^{16} \equiv 853$, $896^{32} \equiv 2113$, $896^{256} \equiv 1240$, $896^{512} \equiv 823$;
 Produkt $896 \cdot 1240 \equiv 737$, $\cdot 853 \equiv 1205$, $\cdot 2113 \equiv 2027$, $\cdot 1240 \equiv 1205$, $\cdot 823 \equiv 1511 = w$. \checkmark
 
 % ---------------------------------------------------------------------------
 \section*{Aufgabe 2: Inklusion -- Exklusion}
-$\Omega = \{1 \le k \le 720\}$, $|\Omega| = 720$, $A_i = \{k \in \Omega \mid i \text{ teilt } k\}$ für $i = 3, 4, 5$.
+$\Omega = \{k \in \N \mid 1 \le k \le 720\}$, $|\Omega| = 720$, $A_i = \{k \in \Omega \mid i \text{ teilt } k\}$ für $i = 3, 4, 5$.
 Gesucht: $|\Omega \setminus (A_3 \cup A_4 \cup A_5)| = |\Omega| - \alpha_1 + \alpha_2 - \alpha_3$ mit
 \begin{align*}
 \alpha_1 &= |A_3| + |A_4| + |A_5| = \tfrac{720}{3} + \tfrac{720}{4} + \tfrac{720}{5} = 240 + 180 + 144 = 564,\\
@@ -147,7 +149,7 @@ Gesucht: $|\Omega \setminus (A_3 \cup A_4 \cup A_5)| = |\Omega| - \alpha_1 + \al
 \[
 720 - 564 + 144 - 12 = 288 .
 \]
-Kontrolle: $720 \cdot (1 - \tfrac13)(1 - \tfrac14)(1 - \tfrac15) = 720 \cdot \tfrac23 \cdot \tfrac34 \cdot \tfrac45 = 288$.
+Kontrolle (erlaubt, weil $3, 4, 5$ paarweise teilerfremd sind und $3 \cdot 4 \cdot 5 = 60 \mid 720$): $720 \cdot (1 - \tfrac13)(1 - \tfrac14)(1 - \tfrac15) = 720 \cdot \tfrac23 \cdot \tfrac34 \cdot \tfrac45 = 288$.
 \begin{ergebnis} $288$ Zahlen $\le 720$ sind durch keine der Zahlen $3, 4, 5$ teilbar. \end{ergebnis}
 
 % ---------------------------------------------------------------------------
@@ -176,7 +178,7 @@ Alle Lösungen: $x = -7 + 15t$, $y = -8 + 17t$ ($t \in \Z$). Für $t = 1$: $x = 
 
 % ---------------------------------------------------------------------------
 \section*{Aufgabe 4: Chinesischer Restsatz}
-\teil{a} Ansatz: $z = 17x + 8 = 15y + 5$, also
+\teil{a} Gesucht ist $z$ mit $z \equiv 8 \pmod{17}$ und $z \equiv 5 \pmod{15}$. Ansatz: $z = 17x + 8 = 15y + 5$ mit $x, y \in \Z$, also
 \[
 17x - 15y = 5 - 8 = -3 .
 \]
@@ -189,7 +191,7 @@ z = 17 \cdot (-24) + 8 = -400 = 15 \cdot (-27) + 5 .
 \]
 (Mit $x = -7$, $y = -8$ aus Aufgabe 3 erhält man $x = 21$, $y = 24$ und $z = 365$; das ist dieselbe Restklasse.)
 
-\teil{b} Da $\ggT(17, 15) = 1$, sind alle Lösungen $z \equiv -400 \pmod{17 \cdot 15 = 255}$:
+\teil{b} Da $\ggT(17, 15) = 1$, sind alle Lösungen $z \equiv -400 \pmod{255}$ mit $255 = 17 \cdot 15$:
 \[
 z = -400 + k \cdot 255 \quad (k \in \Z).
 \]
@@ -207,7 +209,7 @@ H = \begin{pmatrix}
 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10
 \end{pmatrix}
 \]
-Ein Wort $c$ ist Codewort genau dann, wenn $H c^T = 0$, also
+Ein Wort $c$ ist Codewort genau dann, wenn $H c^T \equiv 0 \pmod{11}$, also
 $\sum_{i=1}^{10} c_i \equiv 0$ und $\sum_{i=1}^{10} i \cdot c_i \equiv 0 \pmod{11}$.
 
 \teil{b} Kontrollziffern für $a = 1\,1\,5\,0\,0\,0\,0\,5$ ($c_i = a_i$ für $i = 1, \dots, 8$):
@@ -217,7 +219,7 @@ c_{10} &\equiv \sum_{i=1}^{8} (9-i)\, c_i = 8 \cdot 1 + 7 \cdot 1 + 6 \cdot 5 + 
 \end{align*}
 \begin{ergebnis} $c_9 = 4$, $c_{10} = 6$, $c = 1\,1\,5\,0\,0\,0\,0\,5\,4\,6$ \end{ergebnis}
 
-\teil{c} Syndrome $S(r) = H r^T = (s_1, s_2)^T$:
+\teil{c} Syndrome $S(r) \equiv H r^T = (s_1, s_2)^T \pmod{11}$ (alle $\equiv$ modulo $11$):
 \begin{align*}
 r_1 = 1\,1\,5\,0\,0\,0\,0\,5\,1\,1:\quad
 s_1 &= 1 + 1 + 5 + 5 + 1 + 1 = 14 \equiv 3,\\
@@ -228,21 +230,22 @@ s_2 &= 1 + 2 + 15 + 56 + 27 + 30 = 131 \equiv 10 \quad\Rightarrow\quad S(r_2) = 
 \end{align*}
 
 \teil{d} Bei genau einem Fehler der Größe $e_x$ an der Stelle $x$ gilt $S = e_x \cdot (1, x)^T$,
-also $e_x = s_1$ und $x = s_2 / s_1$.
+also $e_x \equiv s_1$ und $x \equiv s_2 \cdot s_1^{-1} \pmod{11}$.
+Das geht nur für $s_1 \not\equiv 0$; dann existiert $s_1^{-1}$, weil $11$ eine Primzahl ist.
 
-Für $r_1$: $x = 0 / 3 = 0$. Die Stelle $0$ gibt es nicht (Stellen $1, \dots, 10$).
+Für $r_1$: $x \equiv 0 \cdot 3^{-1} \equiv 0 \pmod{11}$. Die Stelle $0$ gibt es nicht (Stellen $1, \dots, 10$).
 Das Syndrom passt also zu keinem Einzelfehler: $r_1$ enthält mindestens zwei Fehler.
 Der Code hat $d = 3$ und korrigiert nur $1$ Fehler.
 \begin{ergebnis} $r_1$ ist nicht dekodierbar (mindestens 2 Fehler). \end{ergebnis}
 
-\teil{e} Für $r_2$: $e_x = s_1 = 9$ und $x = s_2 / s_1 = 10 \cdot 9^{-1} = 10 \cdot 5 = 50 \equiv 6 \pmod{11}$
-(denn $9 \cdot 5 = 45 \equiv 1$). Fehler an Stelle $6$ mit Größe $9$:
+\teil{e} Für $r_2$: $e_x = s_1 = 9$ und $x \equiv s_2 \cdot s_1^{-1} \equiv 10 \cdot 9^{-1} \equiv 10 \cdot 5 = 50 \equiv 6 \pmod{11}$
+(denn $9 \cdot 5 = 45 \equiv 1 \pmod{11}$). Fehler an Stelle $6$ mit Größe $9$:
 \[
 c_6 = r_6 - 9 = 0 - 9 \equiv 2 \pmod{11}.
 \]
 \begin{ergebnis} $c = 1\,1\,5\,0\,0\,2\,0\,7\,3\,3$ \end{ergebnis}
 
-\teil{f} Probe $H c^T = 0$:
+\teil{f} Probe $H c^T \equiv 0 \pmod{11}$:
 \begin{align*}
 \text{Zeile 1:}\quad & 1 + 1 + 5 + 2 + 7 + 3 + 3 = 22 \equiv 0 \pmod{11},\\
 \text{Zeile 2:}\quad & 1 + 2 + 15 + 12 + 56 + 27 + 30 = 143 = 13 \cdot 11 \equiv 0 \pmod{11}.
