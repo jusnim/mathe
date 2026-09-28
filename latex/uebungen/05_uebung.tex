@@ -61,11 +61,13 @@ G = (\,E \mid A\,) =
 \end{pmatrix}, \qquad
 H = (-A^T \mid E) = (\,2\;2\;2\;2 \mid 1\,)
 \]
-\item $a\,G = 2\;1\;2\;0\;G = 2\;1\;2\;0\;2$
+% KORRIGIERT: "a G = 2 1 2 0 G" (a nicht fett, Klammern fehlten)
+\item $\mathbf{a}\,G = (\,2\;1\;2\;0\,)\,G = 2\;1\;2\;0\;2$ \quad (Paritätsstelle $2+1+2+0 = 5 \equiv 2 \pmod{3}$)
 \item
+% KORRIGIERT: Syndrom ist hier ein Skalar in F_3; "\ne \mathbf{o}" -> "\ne 0" (einheitlich mit der letzten Zeile)
 \begin{align*}
-S(\mathbf{y}_1) &= H\,\mathbf{y}_1^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_1^T = 2 \ne \mathbf{o}\\
-S(\mathbf{y}_2) &= H\,\mathbf{y}_2^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_2^T = 1 \ne \mathbf{o}\\
+S(\mathbf{y}_1) &= H\,\mathbf{y}_1^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_1^T = 2 \ne 0\\
+S(\mathbf{y}_2) &= H\,\mathbf{y}_2^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_2^T = 1 \ne 0\\
 S(\mathbf{y}_3) &= H\,\mathbf{y}_3^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_3^T = 0 \;\Rightarrow\; \mathbf{y}_3 \in C
 \end{align*}
 \end{enumerate}
@@ -91,7 +93,8 @@ Kontrollmatrix
 H = \begin{pmatrix} 1 & 0 & 1\\ 0 & 1 & 1 \end{pmatrix}, \qquad
 G = (-A^T \mid E) = (\,1\;\;1\;\;1\,)
 \]
-Wiederholungscode $C \subseteq F_2^3$
+% KORRIGIERT: "F_2^3" (nicht fett, uneinheitlich)
+Wiederholungscode $C \subseteq \mathbf{F}_2^3$
 \item Hamming Code $H_2(4)$
 \[
 H =
@@ -155,7 +158,8 @@ Die Spalten einer Kontrollmatrix $H$ des $q$-nären Hamming Codes $H_q(m)$ beste
 \begin{enumerate}[label=\alph*)]
 \item Wie viele Elemente besitzt ein 1-dimensionaler Unterraum des $\mathbf{F}_q^m$?
 
-1-dim.\ Unterraum des $\mathbf{F}_q^m$ sind die Geraden
+% KORRIGIERT: Voraussetzung an h fehlte
+1-dim.\ Unterraum des $\mathbf{F}_q^m$ sind die Geraden (mit $\mathbf{h} \in \mathbf{F}_q^m$, $\mathbf{h} \ne \mathbf{o}$)
 \[
 \{\, y\,\mathbf{h} \mid y \in \mathbf{F}_q \,\}, \qquad |\{\, y\,\mathbf{h} \mid y \in \mathbf{F}_q \,\}| = |\mathbf{F}_q| = q
 \]
@@ -184,13 +188,13 @@ H =
 \mathbf{r}_2 &= 0\,0\,0\,0\,0\,0\,0\,0\,0\,0\,1\,2\,2
 \end{align*}
 \begin{align*}
-S(\mathbf{r}_1) &= \begin{pmatrix} 1\\ 2\\ 2 \end{pmatrix}
+% KORRIGIERT: "S(r_1) = ..." ohne H r_1^T; Rechnung in F_3 (mod 3)
+S(\mathbf{r}_1) &= H\,\mathbf{r}_1^T = \begin{pmatrix} 1\\ 2\\ 2 \end{pmatrix} = \mathbf{h}_{13}
 \;\Rightarrow\; x = 13,\ y = 1 \;\Rightarrow\; \mathbf{c}_1 = 0\,0\,0\,0\,0\,0\,0\,0\,0\,0\,1\,1\,1\\
-S(\mathbf{r}_2) &= \begin{pmatrix} 2\\ 1\\ 0 \end{pmatrix} = 2\begin{pmatrix} 1\\ 2\\ 0 \end{pmatrix}
-\;\Rightarrow\; x = 13,\ y = 2 \;\Rightarrow\; \mathbf{c}_2 = 0\,0\,0\,0\,0\,0\,0\,0\,0\,0\,2\,2\,2
+% KORRIGIERT: in der Quelle stand x = 13; (1 2 0)^T ist Spalte h_11, also x = 11
+S(\mathbf{r}_2) &= H\,\mathbf{r}_2^T = \begin{pmatrix} 2\\ 1\\ 0 \end{pmatrix} = 2\begin{pmatrix} 1\\ 2\\ 0 \end{pmatrix} = 2\,\mathbf{h}_{11}
+\;\Rightarrow\; x = 11,\ y = 2 \;\Rightarrow\; \mathbf{c}_2 = 0\,0\,0\,0\,0\,0\,0\,0\,0\,0\,2\,2\,2
 \end{align*}
-% UNSICHER: Bei r_2 steht in der Quelle x = 13, obwohl (1 2 0)^T die Spalte 11 von H ist;
-% c_2 = r_2 - 2 h_11 = 0...0 2 2 2 passt zu x = 11. Quelle unverändert übernommen.
 \end{enumerate}
 \end{loesung}
 
@@ -201,11 +205,13 @@ Prüfen Sie die Hamming Schranke für lineare Codes mit den Parametern $[23, 12,
 \end{aufgabe}
 
 \begin{loesung}
-Hamming Schranke: \quad $|C| \displaystyle\sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |F_q^n| = q^n$
+% KORRIGIERT: "|F_q^n|" (nicht fett); e = Anzahl korrigierbarer Fehler ergänzt
+Hamming Schranke: \quad $|C| \displaystyle\sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |\mathbf{F}_q^n| = q^n$, \quad $e = \lfloor (d-1)/2 \rfloor$
 
 $[23, 12, 7]_2$
 \begin{align*}
-& e = 3,\quad C = 2^k = 2^{12} = 4096,\quad
+% KORRIGIERT: "C = 2^k" statt "|C| = 2^k"
+& e = 3,\quad |C| = 2^k = 2^{12} = 4096,\quad
 \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + 23 + \frac{23\cdot 22}{1\cdot 2} + \frac{23\cdot 22\cdot 21}{1\cdot 2\cdot 3}\\
 &= 24 + 253 + 1771 = 2048 = 2^{11}
 \end{align*}
@@ -216,7 +222,8 @@ Tatsächlich ist
 
 $[11, 6, 5]_3$
 \begin{align*}
-& e = 2,\quad C = 3^k = 3^6 = 729,\quad
+% KORRIGIERT: "C = 3^k" statt "|C| = 3^k"
+& e = 2,\quad |C| = 3^k = 3^6 = 729,\quad
 \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + 11\cdot 2 + \frac{11\cdot 10}{1\cdot 2}\cdot 2^2\\
 &= 23 + 220 = 243 = 3^5
 \end{align*}
@@ -237,14 +244,16 @@ Singleton Schranke: \quad $k + d \le n + 1 \;\Rightarrow\; 5 + 5 \le n + 1 \;\Ri
 
 Hamming Schranke: \quad $|C| \displaystyle\sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |\mathbf{F}_q^n|$, \quad $2e + 1 = d$
 \begin{align*}
-\Rightarrow\quad & 2^k\,(\,1 + n + n\,(n-1)/2\,) \le 2^n, \quad q = 2,\ k = 5\\
+% KORRIGIERT: e = 2 (aus d = 5) ergänzt
+\Rightarrow\quad & 2^k\,(\,1 + n + n\,(n-1)/2\,) \le 2^n, \quad q = 2,\ k = 5,\ e = 2\\
 \Rightarrow\quad & 1 + n + n\,(n-1)/2 \le 2^{n-5}
 \end{align*}
+% KORRIGIERT: für n = 9, 10, 11 stand "\le"; es gilt 46 > 16, 56 > 32, 67 > 64 (Schranke verletzt)
 \begin{tabular}{lll}
-$n = 9$ & $\Rightarrow\; 1 + 9 + 36$ & $\le 2^4 = 16$\\
-$n = 10$ & $\Rightarrow\; 1 + 10 + 45$ & $\le 2^5 = 32$\\
-$n = 11$ & $\Rightarrow\; 1 + 11 + 55$ & $\le 2^6 = 64$\\
-$n = 12$ & $\Rightarrow\; 1 + 12 + 66$ & $\le 2^7 = 128$
+$n = 9$ & $\Rightarrow\; 1 + 9 + 36 = 46$ & $> 2^4 = 16$\\
+$n = 10$ & $\Rightarrow\; 1 + 10 + 45 = 56$ & $> 2^5 = 32$\\
+$n = 11$ & $\Rightarrow\; 1 + 11 + 55 = 67$ & $> 2^6 = 64$\\
+$n = 12$ & $\Rightarrow\; 1 + 12 + 66 = 79$ & $\le 2^7 = 128$
 \end{tabular}
 % Die Quelle endet hier ohne ausformuliertes Ergebnis (nicht ergänzt).
 \end{loesung}
@@ -256,26 +265,32 @@ Prüfen Sie für die linearen Codes mit den Parametern $[10, 8, 3]_{11}$, $[10, 
 \begin{loesung}
 $[10, 8, 3]_{11}$
 
-Hamming Schranke: \quad $|C| \displaystyle\sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |F_q^n|$
+% KORRIGIERT: "|F_q^n|" (nicht fett)
+Hamming Schranke: \quad $|C| \displaystyle\sum_{i=0}^{e} \binom{n}{i} (q-1)^i \le |\mathbf{F}_q^n|$
 \begin{align*}
-& e = 1,\quad k = 8,\quad C = 11^8,\quad \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + 10\cdot 10 = 101\\
+% KORRIGIERT: "C = 11^8" statt "|C| = 11^8"
+& e = 1,\quad k = 8,\quad |C| = 11^8,\quad \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + 10\cdot 10 = 101\\
 & |\mathbf{F}_{11}^{10}| = 11^8\cdot 11^2 = 11^8\cdot 121
 \end{align*}
-d.h.\ es gibt $11^8\cdot 121 - 11^8\cdot 101 = 11^8\cdot 20$ Wörter in $\mathbf{F}_{11}^{10}$, deren Abstand zu einem Codewort mindestens 2 beträgt.
+% KORRIGIERT: "zu einem Codewort" -> "zu jedem Codewort" (Quantor)
+d.h.\ es gibt $11^8\cdot 121 - 11^8\cdot 101 = 11^8\cdot 20$ Wörter in $\mathbf{F}_{11}^{10}$, deren Abstand zu jedem Codewort mindestens 2 beträgt.
 
 Singleton Schranke \quad $k + d \le n + 1$\\
-$k = 8,\ d = 3,\quad n = 10$\\
+% KORRIGIERT: Vergleich fehlte
+$k = 8,\ d = 3,\quad n = 10$: \quad $k + d = 11 = n + 1$\\
 d.h.\ der Code mit den Parametern $[10, 8, 3]_{11}$ ist optimal.
 
 $[10, 6, 5]_{11}$
 \begin{align*}
-& e = 2,\quad k = 6,\quad C = 11^6,\quad \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + 10\cdot 10 + 45\cdot 100 = 4601\\
+% KORRIGIERT: "C = 11^6" statt "|C| = 11^6"
+& e = 2,\quad k = 6,\quad |C| = 11^6,\quad \sum_{i=0}^{e} \binom{n}{i} (q-1)^i = 1 + 10\cdot 10 + 45\cdot 100 = 4601\\
 & |\mathbf{F}_{11}^{10}| = 11^6\cdot 11^4 = 11^6\cdot 14641
 \end{align*}
-d.h.\ es gibt $11^6\cdot 14641 - 11^6\cdot 4601 = 11^6\cdot 10040$ Wörter in $\mathbf{F}_{11}^{10}$, deren Abstand zu einem Codewort mindestens 3 beträgt.
+% KORRIGIERT: "zu einem Codewort" -> "zu jedem Codewort" (Quantor)
+d.h.\ es gibt $11^6\cdot 14641 - 11^6\cdot 4601 = 11^6\cdot 10040$ Wörter in $\mathbf{F}_{11}^{10}$, deren Abstand zu jedem Codewort mindestens 3 beträgt.
 
 Singleton Schranke \quad $k + d \le n + 1$\\
-$k = 6,\ d = 5,\quad n = 10$\\
-d.h.\ der Code mit den Parametern $[10, 8, 3]_{11}$ ist optimal.
-% UNSICHER: Im letzten Satz steht in der Quelle erneut [10, 8, 3]_11; gemeint ist vermutlich [10, 6, 5]_11. Unverändert übernommen.
+% KORRIGIERT: Vergleich fehlte; im letzten Satz stand [10, 8, 3]_11
+$k = 6,\ d = 5,\quad n = 10$: \quad $k + d = 11 = n + 1$\\
+d.h.\ der Code mit den Parametern $[10, 6, 5]_{11}$ ist optimal.
 \end{loesung}
