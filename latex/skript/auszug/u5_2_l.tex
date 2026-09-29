@@ -1,0 +1,26 @@
+\textbf{Lösung zu Übung 5, Aufgabe 2}
+
+\begin{loesung}
+\begin{enumerate}[label=\alph*)]
+\item
+\[
+G = (\,E \mid A\,) =
+\begin{pmatrix}
+1 & & & & 1\\
+& 1 & & & 1\\
+& & 1 & & 1\\
+& & & 1 & 1
+\end{pmatrix}, \qquad
+H = (-A^T \mid E) = (\,2\;2\;2\;2 \mid 1\,)
+\]
+% KORRIGIERT: "a G = 2 1 2 0 G" (a nicht fett, Klammern fehlten)
+\item $\mathbf{a}\,G = (\,2\;1\;2\;0\,)\,G = 2\;1\;2\;0\;2$ \quad (Paritätsstelle $2+1+2+0 = 5 \equiv 2 \pmod{3}$)
+\item
+% KORRIGIERT: Syndrom ist hier ein Skalar in F_3; "\ne \mathbf{o}" -> "\ne 0" (einheitlich mit der letzten Zeile)
+\begin{align*}
+S(\mathbf{y}_1) &= H\,\mathbf{y}_1^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_1^T = 2 \ne 0\\
+S(\mathbf{y}_2) &= H\,\mathbf{y}_2^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_2^T = 1 \ne 0\\
+S(\mathbf{y}_3) &= H\,\mathbf{y}_3^T = (\,2\;2\;2\;2\;\;1\,)\;\mathbf{y}_3^T = 0 \;\Rightarrow\; \mathbf{y}_3 \in C
+\end{align*}
+\end{enumerate}
+\end{loesung}

@@ -84,6 +84,8 @@ for nr in (1, 2, 4, 5):
     aufgabe(f"u2_{nr}", "uebungen/02_uebung.tex", f"Aufgabe {nr}", f"Übung 2, Aufgabe {nr}")
 for nr in (1, 2):
     aufgabe(f"u3_{nr}", "uebungen/03_uebung.tex", f"Aufgabe {nr}", f"Übung 3, Aufgabe {nr}")
+for nr in (1, 2):
+    aufgabe(f"u5_{nr}", "uebungen/05_uebung.tex", f"5\\_{nr}", f"Übung 5, Aufgabe {nr}")
 aufgabe("u6_9", "uebungen/06_uebung.tex", "6\\_9", "Übung 6, Aufgabe 9")
 
 # Klausur vom 29.07.2026 und Gedächtnisprotokoll

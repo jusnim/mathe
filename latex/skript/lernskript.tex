@@ -49,7 +49,7 @@ Block & Thema & Zeit & Übungen\\
 5 & Siebformel & 1:00 & Ü4 A1, KV 6, Klausur 2, GP 2\\
 \multicolumn{4}{c}{\textit{lange Pause}}\\
 6 & $\varphi$ und Primfaktoren & 0:45 & KV 4, Ü3 A2\\
-7 & Codes: Grundbegriffe & 1:00 & --\\
+7 & Codes: Grundbegriffe & 1:00 & Ü5 A1, Ü5 A2\\
 8 & Modulo-11-Code & 2:00 & Ü6 A9, Klausur 5, GP 4\\
 9 & ISBN-10 und Turnierplan & 1:00 & KV 1, KV 2, KV 5\\
 10 & Übungsklausur (90 min + Vergleich) & 2:00 & 5 Aufgaben\\
@@ -213,6 +213,30 @@ Beispiel: $360 = 2^3 \cdot 3^2 \cdot 5$, $\varphi(360) = 360 \cdot \frac12 \cdot
 \A{w_vl4_41}
 \textit{4.2 genauer lesen: $G$, $H$, $H c^T = 0$, systematische Form.}
 \A{w_vl4_42}
+\textit{(Hier endet Abschnitt 4.2 im Original. Die „Forderungen“ werden in 4.3 mit den Hamming-Codes fortgesetzt; das brauchst du nicht.)}
+
+\aufschreiben
+\begin{rezept}{Grundbegriffe linearer Codes}
+\begin{itemize}
+\item Hamming-Abstand $d(\mathbf{u}, \mathbf{v})$ = Anzahl der Stellen, an denen sich $\mathbf{u}$ und $\mathbf{v}$ unterscheiden.
+      Gewicht $|\mathbf{c}|$ = Anzahl der Stellen $\neq 0$. Bei linearen Codes: $d_C = \min\{|\mathbf{c}| : \mathbf{c} \in C,\ \mathbf{c} \neq \mathbf{o}\}$.
+\item $C$ erkennt $d_C - 1$ Fehler und korrigiert $e = \lfloor (d_C - 1)/2 \rfloor$ Fehler.
+\item $[n, k, d]_q$: Wortlänge $n$, Dimension $k$ (also $|C| = q^k$), Minimalabstand $d$, Körper $F_q$.
+\item Erzeugermatrix $G$ ($k \times n$): Codieren $\mathbf{c} = \mathbf{a} \cdot G$.
+      Kontrollmatrix $H$ ($(n-k) \times n$): $\mathbf{c} \in C \Leftrightarrow H \mathbf{c}^T = \mathbf{o}$.
+\item Systematisch: $G = (E_k \mid A)$ $\Leftrightarrow$ $H = (-A^T \mid E_{n-k})$.
+\item Syndrom $S(\mathbf{r}) = H \mathbf{r}^T$. Ist $\mathbf{r} = \mathbf{c} + e_x \cdot \mathbf{e}_x$ (ein Fehler der Größe $e_x$ an Stelle $x$),
+      dann $S(\mathbf{r}) = e_x \cdot \mathbf{h}_x$ ($x$-te Spalte von $H$). Diese Spalte suchen $\Rightarrow$ Fehlerstelle.
+\end{itemize}
+\end{rezept}
+
+\ueben
+\A{u5_1_a}
+\A{u5_2_a}
+
+\loesungen
+\A{u5_1_l}
+\A{u5_2_l}
 
 % ===========================================================================
 \block{Block 8: Modulo-11-Code $[10, 8, 3]_{11}$}{2:00}{Klausuraufgabe 5 komplett lösen: $H$, $c_9$, $c_{10}$, Syndrome, entscheiden, welches Wort nicht dekodierbar ist, dekodieren, Probe.}
