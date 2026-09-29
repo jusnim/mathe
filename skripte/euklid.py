@@ -387,10 +387,74 @@ def ea_rueckwaerts(a: int, b: int, ziel: int | None = None) -> RueckwaertsErgebn
 
 
 def text_rueckwaerts(erg: RueckwaertsErgebnis) -> str:
-    z = [f"EA rückwärts (von r_{erg.k} = {erg.ziel} nach oben einsetzen):"]
-    breite = len(str(erg.ziel))
-    for zl in erg.zeilen:
-        z.append(f"  {erg.ziel:>{breite}} = {zl}")
+    """EA rückwärts in drei Schritten: Zeilen nummerieren, nach dem Rest umstellen, einsetzen.
+
+    Jeder Einsetz-Schritt zeigt: welcher Rest ersetzt wird und aus welcher Zeile,
+    dann das Ausmultiplizieren, dann das Zusammenfassen.
+    """
+    ea, k, ziel = erg.ea, erg.k, erg.ziel
+    z = [f"EA rückwärts (von r_{k} = {ziel} nach oben einsetzen):"]
+    if k < 1:  # Sonderfälle: eine Zahl ist 0 oder b teilt a
+        z += [f"  {ziel} = {zl}" for zl in erg.zeilen]
+        return "\n".join(z)
+
+    br = len(str(ea.gross))
+    z.append("")
+    z.append("1) EA-Zeilen nummerieren")
+    for i, zl in enumerate(ea.zeilen, start=1):
+        z.append(f"  ({i})  {zl.dividend:>{br}} = {zl.q}·{zl.divisor} + {zl.rest}")
+
+    # Zeile (i) liefert den Rest r_i = r_(i−2) − q_(i−1)·r_(i−1).
+    z.append("")
+    z.append("2) Zeilen nach dem Rest umstellen (von unten nach oben, ohne Null-Zeile)")
+    for i in range(k, 0, -1):
+        zl = ea.zeilen[i - 1]
+        z.append(f"  ({i}')  {zl.rest} = {zl.dividend} − {zl.q}·{zl.divisor}")
+
+    z.append("")
+    z.append("3) Rückwärts einsetzen")
+    rechts: list[tuple[str, str]] = []   # (Rechnung, Kommentar)
+    j = k - 1
+    terme = [[1, j - 1], [-ea.zeilen[j].q, j]]
+    rechts.append((_summe([(c, str(ea.r(i))) for c, i in terme]), f"Start: ({k}')"))
+    while j >= 1:
+        pos = 0 if terme[0][1] == j else 1
+        c = terme[pos][0]
+        q = ea.zeilen[j - 1].q
+        rest = ea.r(j)
+        # a) Rest r_j durch die umgestellte Zeile (j') ersetzen, in Klammern
+        innen = f"{ea.r(j - 2)} − {q}·{ea.r(j - 1)}"
+        teile = []
+        for p, (cc, ii) in enumerate(terme):
+            if p == pos:
+                betrag = "" if abs(c) == 1 else f"{abs(c)}·"
+                vz = ("" if c >= 0 else "−") if p == 0 else (" + " if c >= 0 else " − ")
+                teile.append(f"{vz}{betrag}({innen})")
+            else:
+                teile.append(_term(cc, str(ea.r(ii)), p == 0))
+        rechts.append(("".join(teile), f"{rest} ersetzen durch ({j}')"))
+        # b) ausmultiplizieren
+        aus: list[tuple[int, str]] = []
+        for p, (cc, ii) in enumerate(terme):
+            if p == pos:
+                aus += [(c, str(ea.r(j - 2))), (-c * q, str(ea.r(j - 1)))]
+            else:
+                aus.append((cc, str(ea.r(ii))))
+        rechts.append((_summe(aus), "ausmultiplizieren"))
+        # c) gleiche Zahlen zusammenfassen
+        andere = 1 - pos
+        alt = terme[andere][0]
+        terme[andere][0] += -q * c
+        terme[pos] = [c, j - 2]
+        kommentar = (f"{ea.r(j - 1)}er zusammenfassen: {_k(alt)} {'−' if q * c >= 0 else '+'} "
+                     f"{abs(q * c)} = {terme[andere][0]}")
+        rechts.append((_summe([(cc, str(ea.r(ii))) for cc, ii in terme]), kommentar))
+        j -= 1
+
+    breite = max(len(r) for r, _ in rechts)
+    for n, (r, kom) in enumerate(rechts):
+        links = f"{ziel} =" if n == 0 else " " * len(str(ziel)) + " ="
+        z.append(f"  {links} {r:<{breite}}   | {kom}")
     return "\n".join(z)
 
 

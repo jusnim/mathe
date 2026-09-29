@@ -92,7 +92,8 @@ def test_diophantisch_2406_654_rueckwaerts():
     e = loese_diophantisch(2406, 654, 24, "-", "rueckwaerts")
     assert (e.x, e.y) == (3, 11)
     assert (e.dx, e.dy) == (109, 401)   # x = 3 + 109t, y = 11 + 401t
-    assert "24 = 3·2406 − 11·654" in e.text
+    assert "= 3·2406 − 11·654" in e.text
+    assert "444 ersetzen durch (1')" in e.text
 
 
 def test_diophantisch_2406_654_matrix():
