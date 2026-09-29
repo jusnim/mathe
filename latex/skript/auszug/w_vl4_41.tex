@@ -67,8 +67,8 @@ $e$ = Anzahl der Fehler (gekippte Stellen), $\mathbf{r}$ = empfangenes Wort, $d(
 \item Korrigieren = nächstes Codewort wählen. Abstände von $\mathbf{r} = 010001$:
 \[
 d(\mathbf{r}, \mathbf{c}_1) = 5, \quad d(\mathbf{r}, \mathbf{c}_2) = 1, \quad d(\mathbf{r}, \mathbf{c}_3) = 3, \quad d(\mathbf{r}, \mathbf{c}_4) = 2
-\quad\Rightarrow\quad \mathbf{r} \to \mathbf{c}_2 \ (\text{Unterschied nur an Stelle } 4).
 \]
+$\Rightarrow$ $\mathbf{r} \to \mathbf{c}_2$ (Unterschied nur an Stelle 4).
 \item Wurde $\mathbf{c}_4$ gesendet ($e = 2$), ist diese Korrektur falsch: $\mathbf{c}_2$ liegt näher als $\mathbf{c}_4$.
 \end{enumerate}
 Merke: $C$ erkennt $d_C - 1 = 2$ Fehler und korrigiert $\lfloor (d_C - 1)/2 \rfloor = 1$ Fehler.

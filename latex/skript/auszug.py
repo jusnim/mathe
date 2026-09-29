@@ -35,7 +35,11 @@ def aufgabe(name, pfad, titel, neuer_titel):
     s = lies(pfad)
     a = s.index(f"\\begin{{aufgabe}}[{titel}]")
     a_ende = s.index("\\end{aufgabe}", a) + len("\\end{aufgabe}")
-    text = s[a:a_ende].replace(f"[{titel}]", f"[{neuer_titel}]", 1)
+    # Kontext aus der Überschrift davor (z. B. „Wiederholungscode C ⊆ F_3^5“), sonst fehlt, was C ist.
+    uebers = re.findall(r"^\\subsection\{(.*)\}\s*$", s[:a], re.M)
+    if uebers and not uebers[-1].startswith("Aufgabe"):
+        neuer_titel = f"{neuer_titel}: {uebers[-1]}"
+    text = s[a:a_ende].replace(f"[{titel}]", "[{" + neuer_titel + "}]", 1)
     schreibe(name + "_a", text)
     rest = s[a_ende:]
     l = rest.find("\\begin{loesung}")
