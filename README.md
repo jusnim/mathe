@@ -81,7 +81,9 @@ Die Seite merkt sich die letzten Eingaben in diesem Browser.
 - Die Seite (`skripte/web.py`, `skripte/web_static/index.html`) liest die Optionen aus dem Parser.
   Eine neue Option erscheint deshalb ohne Änderung an der Seite.
 - Ein neues Werkzeug trägst du in `GRUPPEN` in `skripte/web.py` ein.
-- Die Werkzeuge laufen auch ohne Seite: `python -m skripte.<name> --help`.
+- Die Werkzeuge laufen auch ohne Seite, mit Tab-Vervollständigung:
+  `python3 skripte/<name>.py --help` (oder `python -m skripte.<name> --help`).
+  Vorher die Umgebung aktivieren: `source .venv/bin/activate` (Windows: `.venv\Scripts\activate`).
 - Tests: `python -m pytest -q` (in der Umgebung `.venv`).
 - Abhängigkeiten: `requirements.txt` (sympy, pytest).
 

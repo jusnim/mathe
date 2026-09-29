@@ -38,6 +38,11 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
+if __package__ in (None, ""):  # direkt gestartet: python3 skripte/<name>.py
+    import os as _os
+    import sys as _sys
+    _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+
 WURZEL = Path(__file__).resolve().parent.parent
 STATISCH = Path(__file__).resolve().parent / "web_static"
 

@@ -46,6 +46,11 @@ import argparse
 import sys
 from dataclasses import dataclass
 
+if __package__ in (None, ""):  # direkt gestartet: python3 skripte/<name>.py
+    import os as _os
+    import sys as _sys
+    _sys.path.insert(0, _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))))
+
 from skripte.euklid import KeinInversesFehler, ggt, inverse, inverse_mit_weg
 from skripte.primfaktor_phi import phi
 from skripte.schnell_potenzieren import ordnung, primitive_elemente
