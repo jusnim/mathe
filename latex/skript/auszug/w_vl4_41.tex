@@ -57,6 +57,23 @@ rekonstruiert.
 $\mathbf{r}$ unterscheidet sich in 2 Stellen von $\mathbf{c}_4$. 2 Fehler kann $C$ nicht korrigieren.
 \end{beispiel}
 
+% ERGÄNZT: Erklärung zum Beispiel (nicht im Original)
+\begin{bemerkung}[Erklärung zum Beispiel]
+$e$ = Anzahl der Fehler (gekippte Stellen), $\mathbf{r}$ = empfangenes Wort, $d(\mathbf{u}, \mathbf{v})$ = Anzahl verschiedener Stellen.
+\begin{enumerate}
+\item Minimalabstand $d_C = \min_{i \neq j} d(\mathbf{c}_i, \mathbf{c}_j) = 3$.
+\item Erkennen: $1 \le e \le d_C - 1 = 2$ $\Rightarrow$ $\mathbf{r} \notin C$, denn ein anderes Codewort braucht $\ge 3$ Änderungen.
+      Bei $e = 3$ kann $\mathbf{r}$ wieder ein Codewort sein.
+\item Korrigieren = nächstes Codewort wählen. Abstände von $\mathbf{r} = 010001$:
+\[
+d(\mathbf{r}, \mathbf{c}_1) = 5, \quad d(\mathbf{r}, \mathbf{c}_2) = 1, \quad d(\mathbf{r}, \mathbf{c}_3) = 3, \quad d(\mathbf{r}, \mathbf{c}_4) = 2
+\quad\Rightarrow\quad \mathbf{r} \to \mathbf{c}_2 \ (\text{Unterschied nur an Stelle } 4).
+\]
+\item Wurde $\mathbf{c}_4$ gesendet ($e = 2$), ist diese Korrektur falsch: $\mathbf{c}_2$ liegt näher als $\mathbf{c}_4$.
+\end{enumerate}
+Merke: $C$ erkennt $d_C - 1 = 2$ Fehler und korrigiert $\lfloor (d_C - 1)/2 \rfloor = 1$ Fehler.
+\end{bemerkung}
+
 \begin{definition}[Gewicht]
 Definieren das \textbf{Gewicht} eines Wortes $\mathbf{w} \in F_q^{\,n}$
 \[ |\mathbf{w}| = |\{\, i \mid w_i \neq 0 \,\}| \]
